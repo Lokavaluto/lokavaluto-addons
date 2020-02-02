@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_article_adhesion_form_view" model="ir.actions.act_window">
+        <field name="name">Articles d'adhésion</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_article_adhesion_form_view"
+              name="Articles d'adhésion"
+              id="menu_action_article_adhesion_form"
+parent="menu_action_configuration"              sequence="15"
+              groups=""
+              />
+</odoo>

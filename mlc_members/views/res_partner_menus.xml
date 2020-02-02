@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_adherents_form_view" model="ir.actions.act_window">
+        <field name="name">Adhérents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Créer un nouveau document</p>
+        </field>
+    </record>
+
+    <menuitem action="action_adherents_form_view"
+              name="Adhérents"
+              id="menu_action_adherents_form"
+              parent="menu_action_adherents_app"              
+              sequence="1"
+              groups=""
+              />
+
+    <record id="action_carte_vierge_form_view" model="ir.actions.act_window">
+        <field name="name">carte vierge</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html"><p><br/></p></field>
+    </record>
+
+    <menuitem action="action_carte_vierge_form_view"
+              name="Cartes vierges"
+              id="menu_action_cartes_vierges_form"
+              parent="menu_action_adherents_app"
+              sequence="5"
+              groups=""
+              />
+</odoo>

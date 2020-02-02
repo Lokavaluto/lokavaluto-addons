@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_membres_analysis_form_view" model="ir.actions.act_window">
+        <field name="name">Analyse des membres</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">report.membership</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,pivot</field>
+    </record>
+
+    <menuitem action="action_membres_analysis_form_view"
+              name="Analysis"
+              id="menu_action_analysis_form"
+parent="menu_action_adherents_app"              sequence="10"
+              groups=""
+              />
+</odoo>
