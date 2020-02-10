@@ -34,4 +34,26 @@
               sequence="5"
               groups=""
               />
+
+<record id="ir_actions_act_window_view_adhrents_r0" model="ir.actions.act_window.view">
+      <field name="multi" eval="False"/>
+      <field name="sequence">0</field>
+      <field name="view_id" ref="members_kanban_view"/>
+      <field name="view_mode">kanban</field>
+      <field name="act_window_id" ref="action_adherents_form_view"/>
+    </record>
+    <record id="ir_actions_act_window_view_adhrents_r1" model="ir.actions.act_window.view">
+      <field name="multi" eval="False"/>
+      <field name="sequence">0</field>
+      <field name="view_id" ref="members_list_view"/>
+      <field name="view_mode">tree</field>
+      <field name="act_window_id" ref="action_adherents_form_view"/>
+    </record>
+    <record id="ir_actions_act_window_view_adhrents_r2" model="ir.actions.act_window.view">
+      <field name="multi" eval="False"/>
+      <field name="sequence">1</field>
+      <field name="view_id" ref="main_members_view"/>
+      <field name="view_mode">form</field>
+      <field name="act_window_id" ref="action_adherents_form_view"/>
+    </record>
 </odoo>
