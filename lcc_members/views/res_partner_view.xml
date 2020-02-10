@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <odoo>
     <!-- TODO: put here a reminder on what to do at the first edition -->
-    <record id="{Lokavaluto-Members} Main Members view_view" model="ir.ui.view">
-        <field name="name">{Lokavaluto-Members} Main Members view.view</field>
+    <record id="main_members_view" model="ir.ui.view">
+        <field name="name">{lcc_members} Main Members View</field>
         <field name="model">res.partner</field>
         <field name="view_type">form</field>
         <field name="arch" type="xml">
@@ -435,8 +435,8 @@
             </form>
         </field>
     </record>
-    <record id="{Lokavaluto-Members} Members search_view" model="ir.ui.view">
-        <field name="name">{Lokavaluto-Members} Members search.view</field>
+    <record id="members_search_view" model="ir.ui.view">
+        <field name="name">{lcc_members} Members search View</field>
         <field name="model">res.partner</field>
         <field name="view_type">search</field>
         <field name="arch" type="xml">
@@ -479,8 +479,8 @@
             </search>
         </field>
     </record>
-    <record id="{lokavaluto members] view members list_view" model="ir.ui.view">
-        <field name="name">{lokavaluto members] view members list.view</field>
+    <record id="members_list_view" model="ir.ui.view">
+        <field name="name">{lcc_members] Members List View</field>
         <field name="model">res.partner</field>
         <field name="view_type">tree</field>
         <field name="inherit_id" ref="membership.membership_members_tree"/>
@@ -493,38 +493,8 @@
             </field>
         </field>
     </record>
-    <record id="{lokavaluto members} search view_view" model="ir.ui.view">
-        <field name="name">{lokavaluto members} search view.view</field>
-        <field name="model">res.partner</field>
-        <field name="view_type">search</field>
-        <field name="inherit_id" ref="membership.view_res_partner_member_filter"/>
-        <field name="arch" type="xml">
-            <data>
-                <xpath expr="//field[@name='category_id']" position="before">
-                    <field name="ref" string="N° Adhérent"/>
-                    <field name="team_id" string="Bassin"/>
-                    <field name="street" string="Raison sociale"/>
-                </xpath>
-                <xpath expr="//filter[@name='customer']" position="before">
-                    <filter string="Mes bassins" name="bassin" domain="[('team_id.member_ids', 'in', uid)]"/>
-                    <separator/>
-                    <filter string="Prospect" name="propect" domain="[('category_id.name', '!=', 'Carte vierge'),('customer','in', [False,True]),('membership_state', 'in', ['none', 'old']), ('company_type', '=', 'company')]"/>
-                    <separator/>
-                    <filter string="Particuliers" name="type_person" domain="[('is_company','=',False)]"/>
-                    <filter string="Professionnels" name="type_company" domain="[('is_company','=',True)]"/>
-                    <separator/>
-                </xpath>
-                <filter name="all_non_members" position="attributes">
-                    <attribute name="domain">[('membership_state', 'in', ['none','canceled','old'])]</attribute>
-                </filter>
-                <filter name="all_members" position="attributes">
-                    <attribute name="domain">[('membership_state', 'in', ['invoiced','paid','free','waiting'])]</attribute>
-                </filter>
-            </data>
-        </field>
-    </record>
-    <record id="{lokavaluto member} view members kanban view_view" model="ir.ui.view">
-        <field name="name">{lokavaluto member} view members kanban view.view</field>
+    <record id="members_kanban_view" model="ir.ui.view">
+        <field name="name">{lcc_members} Members kanban View</field>
         <field name="model">res.partner</field>
         <field name="view_type">kanban</field>
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
