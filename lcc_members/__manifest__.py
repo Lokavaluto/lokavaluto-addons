@@ -63,7 +63,7 @@ The development of this module has been financially supported by:
 Maintainer
 ----------
 
-This module is maintained by the LOKAVALUTO.
+This module is maintained by LOKAVALUTO.
 
 LOKAVALUTO, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and ecosystem for local complementary currency organizations.
