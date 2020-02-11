@@ -8,8 +8,8 @@ from odoo.tools.translate import _
 class res_partner(models.Model):
     _inherit = "res.partner"
 
-    reasonschoosingmlc = fields.Text(
-        string=_("Why did I choos local monay"),
+    reasons_choosing_mlc = fields.Text(
+        string=_("Why did I choose local currency"),
         required=False,
         translate=True,
         readonly=False
@@ -27,13 +27,13 @@ class res_partner(models.Model):
         readonly=False
     )
     member_comment = fields.Text(
-        string=_("Commentaires membre"),
+        string=_("Member comment"),
         required=False,
         translate=False,
         readonly=False
     )
     member_type_id = fields.Many2one(
-        string=_("Type de membres"),
+        string=_("Member's type"),
         required=False,
         translate=False,
         readonly=False
@@ -68,19 +68,13 @@ class res_partner(models.Model):
         translate=True,
         readonly=False
     )
-    currencyexchangeoffice = fields.Boolean(
-        string=_("currency exchange office"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
     twitter_url = fields.Char(
         string=_("Twitter"),
         required=False,
         translate=False,
         readonly=False
     )
-    openingtime = fields.Text(
+    opening_time = fields.Text(
         string=_("Opening Time"),
         required=False,
         translate=True,
@@ -117,7 +111,7 @@ class res_partner(models.Model):
         readonly=False
     )
     currency_exchange_office = fields.Boolean(
-        string=_("Comptoir de change"),
+        string=_("Currency exchange office"),
         required=False,
         translate=False,
         readonly=False
