@@ -143,8 +143,6 @@
                             <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
                             <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="0" colspan="1"/>
                             <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Tags..."/>
-                            <field name="partner_gid" invisible="True"/>
-                            <field name="additional_info" invisible="True"/>
                         </group>
                     </group>
 
