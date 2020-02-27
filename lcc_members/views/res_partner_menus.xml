@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_adherents_form_view" model="ir.actions.act_window">
+        <field name="name">Adhérents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Créer un nouveau document</p>
+        </field>
+    </record>
+
+    <menuitem action="action_adherents_form_view"
+              name="Adhérents"
+              id="menu_action_adherents_form"
+              parent="menu_action_adherents_app"              
+              sequence="1"
+              groups=""
+              />
+
+    <record id="action_carte_vierge_form_view" model="ir.actions.act_window">
+        <field name="name">carte vierge</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html"><p><br/></p></field>
+    </record>
+
+    <menuitem action="action_carte_vierge_form_view"
+              name="Cartes vierges"
+              id="menu_action_cartes_vierges_form"
+              parent="menu_action_adherents_app"
+              sequence="5"
+              groups=""
+              />
+
+<record id="ir_actions_act_window_view_adhrents_r0" model="ir.actions.act_window.view">
+      <field name="multi" eval="False"/>
+      <field name="sequence">0</field>
+      <field name="view_id" ref="members_kanban_view"/>
+      <field name="view_mode">kanban</field>
+      <field name="act_window_id" ref="action_adherents_form_view"/>
+    </record>
+    <record id="ir_actions_act_window_view_adhrents_r1" model="ir.actions.act_window.view">
+      <field name="multi" eval="False"/>
+      <field name="sequence">0</field>
+      <field name="view_id" ref="members_list_view"/>
+      <field name="view_mode">tree</field>
+      <field name="act_window_id" ref="action_adherents_form_view"/>
+    </record>
+    <record id="ir_actions_act_window_view_adhrents_r2" model="ir.actions.act_window.view">
+      <field name="multi" eval="False"/>
+      <field name="sequence">1</field>
+      <field name="view_id" ref="main_members_view"/>
+      <field name="view_mode">form</field>
+      <field name="act_window_id" ref="action_adherents_form_view"/>
+    </record>
+</odoo>

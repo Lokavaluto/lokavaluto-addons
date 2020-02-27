@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_type_adherent_form_view" model="ir.actions.act_window">
+        <field name="name">Type d'adhérent</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">member_type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html"><p><br/></p>
+        </field>
+    </record>
+
+    <menuitem action="action_type_adherent_form_view"
+              name="Type d'adhérent"
+              id="action_type_adherent_form_view"
+              parent="menu_action_configuration"              
+              sequence="5"
+              groups=""
+              />
+</odoo>
