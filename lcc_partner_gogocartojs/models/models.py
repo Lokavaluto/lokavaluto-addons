@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-
 from odoo import models, fields, api
 
-# class partner_gogocartojs(models.Model):
-#     _name = 'partner_gogocartojs.partner_gogocartojs'
+# class lcc_partner_gogocartojs(models.Model):
+#     _name = 'partner_gogocartojs.lcc_partner_gogocartojs'
 
 #     name = fields.Char()
 #     value = fields.Integer()
