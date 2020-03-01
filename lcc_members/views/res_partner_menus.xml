@@ -4,7 +4,6 @@
         <field name="name">Adhérents</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Créer un nouveau document</p>
         </field>
@@ -22,7 +21,6 @@
         <field name="name">carte vierge</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html"><p><br/></p></field>
     </record>
