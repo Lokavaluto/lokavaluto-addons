@@ -4,7 +4,6 @@
     <record id="main_members_view" model="ir.ui.view">
         <field name="name">{lcc_members} Main Members View</field>
         <field name="model">res.partner</field>
-        <field name="view_type">form</field>
         <field name="arch" type="xml">
              <form string="Partners">
                 <sheet>
@@ -436,7 +435,6 @@
     <record id="members_search_view" model="ir.ui.view">
         <field name="name">{lcc_members} Members search View</field>
         <field name="model">res.partner</field>
-        <field name="view_type">search</field>
         <field name="arch" type="xml">
             <search string="Membership Partners">
                 <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]"/>
@@ -480,7 +478,6 @@
     <record id="members_list_view" model="ir.ui.view">
         <field name="name">{lcc_members] Members List View</field>
         <field name="model">res.partner</field>
-        <field name="view_type">tree</field>
         <field name="inherit_id" ref="membership.membership_members_tree"/>
         <field name="arch" type="xml">
             <field name="name" position="before">
@@ -494,7 +491,6 @@
     <record id="members_kanban_view" model="ir.ui.view">
         <field name="name">{lcc_members} Members kanban View</field>
         <field name="model">res.partner</field>
-        <field name="view_type">kanban</field>
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
         <field name="arch" type="xml">
             <data>
