@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <odoo>
+<data>
     <!-- TODO: put here a reminder on what to do at the first edition -->
     <record id="main_members_view" model="ir.ui.view">
-        <field name="name">{lcc_members} Main Members View</field>
+        <field name="name">Main Members View</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
              <form string="Partners">
@@ -433,7 +434,7 @@
         </field>
     </record>
     <record id="members_search_view" model="ir.ui.view">
-        <field name="name">{lcc_members} Members search View</field>
+        <field name="name">Members search View</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <search string="Membership Partners">
@@ -476,7 +477,7 @@
         </field>
     </record>
     <record id="members_list_view" model="ir.ui.view">
-        <field name="name">{lcc_members] Members List View</field>
+        <field name="name">Members List View</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="membership.membership_members_tree"/>
         <field name="arch" type="xml">
@@ -489,7 +490,7 @@
         </field>
     </record>
     <record id="members_kanban_view" model="ir.ui.view">
-        <field name="name">{lcc_members} Members kanban View</field>
+        <field name="name">Members kanban View</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
         <field name="arch" type="xml">
@@ -525,4 +526,5 @@
             </data>
         </field>
     </record>
+</data>
 </odoo>

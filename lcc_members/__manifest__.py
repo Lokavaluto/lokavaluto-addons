@@ -3,7 +3,7 @@
 
 {
     'name': 'lcc_members',
-    'version': '12.0.1.0.4',
+    'version': '12.0.1.0.10',
     'author': 'Lokavaluto',
     'maintainer': 'False',
     'website': 'False',
