@@ -149,17 +149,17 @@ msgstr "Complétion par ville"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Classification (to find easily pro. in the directory)"
-msgstr ""
+msgstr "Classification (pour trouver facilement un pro. dans l'annuaire)"
 
 #. module: lcc_members
 #: model:ir.ui.menu,name:lcc_members.menu_action_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Configuration"
 
 #. module: lcc_members
 #: model:ir.model,name:lcc_members.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -187,7 +187,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_specific_agreement
 #, python-format
 msgid "Convention specific agreement"
-msgstr ""
+msgstr "Accord spécifique"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -233,17 +233,17 @@ msgstr "Livraison"
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__detailed_activity
 #, python-format
 msgid "Detailed activity"
-msgstr ""
+msgstr "Activité détaillée"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Detailled activy (Ex.  lavender honey)"
-msgstr ""
+msgstr "Activité détaillée (Ex. Miel de lavande"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Directory"
-msgstr ""
+msgstr "Annuaire"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__display_name
@@ -515,12 +515,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__opening_time
 #, python-format
 msgid "Opening Time"
-msgstr "Horaire d'ouverture"
+msgstr "Horaires d'ouverture"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Opening hours(ex. every day from 9am to 18pm or opening hours day by day)"
-msgstr "Horaire d'ouverture (ex. tous les jours de 9h à 18h ...)"
+msgstr "Horaires d'ouverture (ex. tous les jours de 9h à 18h ...)"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -786,7 +786,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_signature_date
 #, python-format
 msgid "convention signature date"
-msgstr ""
+msgstr "Date de signature de la convention"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -851,6 +851,6 @@ msgstr "la société parente"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
-msgid "website presentaiton"
-msgstr ""
+msgid "website presentation"
+msgstr "Présentation pour le site internet"
 
