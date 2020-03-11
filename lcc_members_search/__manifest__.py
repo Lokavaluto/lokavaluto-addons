@@ -3,15 +3,14 @@
     'name': "lcc_members_search",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Module to search easily contacts from members module""",
 
     'description': """
-        Long description of module's purpose
+        Module to search easily contacts from members module,
     """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "lokavaluto",
+    'website': "http://www.lokavaluto.fr",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
