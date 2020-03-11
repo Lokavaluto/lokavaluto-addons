@@ -447,7 +447,7 @@
 
                 <filter name="filter_my_partners" help="My Contacts" domain="[('user_id','=',uid)]"/>
                 <separator/>
-                <filter string="Mes bassins" name="bassin" domain="[('team_id.member_ids', 'in', uid)]"/>
+                <filter string="My local group" name="bassin" domain="[('team_id.member_ids', 'in', uid)]"/>
                 <separator/>
                 <filter string="Particuliers" name="type_person" domain="[('is_company','=',False)]"/>
                 <filter string="Professionnels" name="type_company" domain="[('is_company','=',True)]"/>

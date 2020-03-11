@@ -450,8 +450,8 @@ msgstr "Adhésions"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Mes bassins"
-msgstr ""
+msgid "My local group"
+msgstr "Mes groupes locaux"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
