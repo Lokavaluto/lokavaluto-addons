@@ -459,12 +459,8 @@
                 <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
                 <field name="user_id"/>
                 <field name="phone" filter_domain="['|',('phone','ilike',self),('mobile','=',self)]"/>
-                <filter name="all_non_members" position="attributes">
-                    <attribute name="domain">[('membership_state', 'in', ['none','canceled','old'])]</attribute>
-                </filter>
-                <filter name="all_members" position="attributes">
-                    <attribute name="domain">[('membership_state', 'in', ['invoiced','paid','free','waiting'])]</attribute>
-                </filter>
+                <filter name="all_non_members" domain="[('membership_state', 'in', ['none','canceled','old','waiting'])]" string="All non Members" help="None/Canceled/Old/Waiting"/>
+                <filter name="all_members" domain="[('membership_state', 'in', ['invoiced','paid','free'])]" string="All Members" help="Invoiced/Paid/Free"/>   
                 <filter name="filter_running_contract" string="With agreement" domain="['|', ('contract_ids.date_end', '&gt;=', context_today().strftime('%Y-%m-%d')), ('contract_ids.date_end', '=', False)]"/>
                 <group expand="0" name="group_by" string="Group By">
                     <filter name="salesperson" string="Salesperson" domain="[]" context="{'group_by' : 'user_id'}"/>
