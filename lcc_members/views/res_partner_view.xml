@@ -156,7 +156,7 @@
                                 <field name="keywords" placeholder="keywords giving more information on activities. splite keyword using ;" attrs="{'invisible': [('is_company', '=', False)]}"/>
                                 <field name="itinerant" attrs="{'invisible': [('is_company', '=', False)]}"/>
                             </group>
-                            <group name="presentation" string="website presentaiton">
+                            <group name="presentation" string="website presentation">
                                 <field name="opening_time" placeholder="Opening hours(ex. every day from 9am to 18pm or opening hours day by day)" attrs="{'invisible': [('is_company', '=', False)]}"/>
                                 <field name="reasons_choosing_mlc" string="Subscription reason" placeholder="Why the pro. subscribe to LCC? allow to involve customers"/>
                             </group>
