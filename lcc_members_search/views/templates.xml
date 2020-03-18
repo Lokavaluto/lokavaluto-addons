@@ -1,5 +1,46 @@
 <odoo>
-    <data>
+
+    <template id="index">
+    <t t-call="web.html_container">
+        <div class="container">
+        <form id="lccsearch" action="/lcc_members_search/lcc_members_search/search/" method="POST">
+              <div class="row">
+                  <div class="alert alert-primary" role="alert">
+                    <h4 class="alert-heading">Recherche d'adhérent</h4>
+                    <p>Formulaire pour saisir votre receherche</p>
+                    <p>Utilisez les champs ci-dessous pour envoyer vos critères de recherche.</p>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-3"><label>N° Adhérent</label></div>
+                  <div class="col-6"><input name="member_id"  id="member_id" type="text" placeholder="Numéro adhérent"/></div>
+              </div>
+              <div class="row"> 
+                  <div class="col-3"><label>Nom</label></div>
+                  <div class="col-6"><input name="lastname"  id="lastname" type="text" placeholder="nom"/></div>
+              </div>
+              <div class="row"> 
+                  <div class="col-3"><label>Adresse email</label></div>
+                  <div class="col-6"><input type="email" name="email"  id="email" placeholder="aaa@gmail.com"/></div>
+              </div>
+              <div class="row"> 
+                  <div class="col-3"><label>Code Postal</label></div>
+                  <div class="col-6"><input name="zipcode"  id="zipcode" type="text" placeholder="23003"/></div>
+                  <div class="invalid-feedback">
+                    Please provide a valid city.
+                  </div>
+              </div>
+              <div class="mx-auto">
+                <button type="submit" class="btn btn-primary mt8">Chercher</button>
+              </div>
+         </form>
+         </div>
+         </t>
+    </template>
+
+ <data>
+   
 <!--
         <template id="listing">
           <ul>
