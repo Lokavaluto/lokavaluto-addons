@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="lcc_partner_gogocartojs.list">
+      <field name="name">lcc_partner_gogocartojs list</field>
+      <field name="model">lcc_partner_gogocartojs.lcc_partner_gogocartojs</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="lcc_partner_gogocartojs.action_window">
+      <field name="name">lcc_partner_gogocartojs window</field>
+      <field name="res_model">lcc_partner_gogocartojs.lcc_partner_gogocartojs</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="lcc_partner_gogocartojs.action_server">
+      <field name="name">lcc_partner_gogocartojs server</field>
+      <field name="model_id" ref="model_lcc_partner_gogocartojs_lcc_partner_gogocartojs"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="lcc_partner_gogocartojs" id="lcc_partner_gogocartojs.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="lcc_partner_gogocartojs.menu_1" parent="lcc_partner_gogocartojs.menu_root"/>
+    <menuitem name="Menu 2" id="lcc_partner_gogocartojs.menu_2" parent="lcc_partner_gogocartojs.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="lcc_partner_gogocartojs.menu_1_list" parent="lcc_partner_gogocartojs.menu_1"
+              action="lcc_partner_gogocartojs.action_window"/>
+    <menuitem name="Server to list" id="lcc_partner_gogocartojs" parent="lcc_partner_gogocartojs.menu_2"
+              action="lcc_partner_gogocartojs.action_server"/>
+    -->
+  </data>
+</odoo>

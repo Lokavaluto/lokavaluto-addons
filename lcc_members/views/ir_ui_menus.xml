@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+<data>
+    <menuitem name="Members"
+              id="menu_action_adherents_app"
+              sequence="10"
+              />
+
+    <menuitem name="Configuration"
+              id="menu_action_configuration"
+              parent="menu_action_adherents_app"
+              sequence="15"
+              />
+</data>
+</odoo>
