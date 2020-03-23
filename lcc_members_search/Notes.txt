@@ -1,0 +1,22 @@
+Search form : 
+   Creating a first shield page where there is only Captcha
+   Creating template page, 
+   Creating fields
+   Adding translating capabilities, 
+   Adding field's controls for name , email and zipcode, 
+
+Creating controller  : 
+   Controller muste make te search and display information using the render. 
+
+Creating a template : 
+Here is the algorithm that we want to elaborate 
+   If nbContact>0, 
+      If nbContact=1 > display member informations about it's membership  -#CASE1
+      else (>1) then return back to search form and add more criterias    -#CASE2
+   else (<=0) message contact not found and return back to search form    -#CASE3
+
+
+Questions
+   JC : In the result view , what's informations do we must to display in each CASE ? 
+   Njeudy , how could we integrate captcha widget ? 
+   Njeudy, when i open the page in private mode( without session) results return empty page. 
