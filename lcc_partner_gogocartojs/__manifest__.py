@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 {
-    'name': "partner_gogocartojs",
+    'name': "lcc_partner_gogocartojs",
 
     'summary': """
         REST Backend for gogocartojs library
