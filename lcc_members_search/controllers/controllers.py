@@ -11,10 +11,13 @@ class LccMembersSearch(http.Controller):
 
    @http.route('/lcc_members_search/lcc_members_search/search/', auth='public',website=True, csrf=False)
    def search(self, **kw):
-      memberid = kw['member_id']
+      memberid    = kw['member_id']
+      lastname  = kw['lastname']
+      zipcode     = kw['zipcode']
+      email       = kw['email']
       int_memberid = int(memberid)
       partners = http.request.env['res.partner'].search([]),
-      partners_is_empty = False
+      partners_is_empty = True
       #if partners.count() <=0 partners_is_empty = True
 
       #results = self.env['res.partner'].search(['is_company', '=', True])
@@ -22,7 +25,8 @@ class LccMembersSearch(http.Controller):
       return http.request.render('lcc_members_search.listing', {
          'root': '/lcc_members_search/lcc_members_search',
          'partners': http.request.env['res.partner'].search([]),
-         'partners_is_empty': partners_is_empty
+         'partners_is_empty': partners_is_empty,
+         'criterias',{'int_memberid',int_memberid,'lastname':lastname,'zipcode':zipcode,'email':email}
       })
 
    #@http.route('/lcc_members_search/lcc_members_search/objects/', auth='public')

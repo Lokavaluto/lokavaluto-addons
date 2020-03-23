@@ -46,6 +46,7 @@
                   </div>
         </div>
         <t t-esc="partners_is_empty"/>
+        <t t-esc="criterias"/>
         <t t-if="partners_is_empty">
           <p>Test</p>
         </t>
