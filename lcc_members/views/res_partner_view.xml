@@ -63,7 +63,7 @@
                         <field name="commercial_partner_id" invisible="1"/>
                         <field name="company_type" widget="radio" class="oe_edit_only" options="{'horizontal': true}"/>
                         <h1>
-                            <field name="name" default_focus="1" placeholder="Nom commercial" attrs="{'readonly': [('is_company', '=', False)],'required': [('is_company', '=', True)]}" widget="field_partner_autocomplete" />
+                            <field name="name" default_focus="1" placeholder="Commercial Name" attrs="{'readonly': [('is_company', '=', False)],'required': [('is_company', '=', True)]}" widget="field_partner_autocomplete" />
                         </h1>
                         <div class="oe_edit_only">
                             <!--group attrs="{'invisible': [('is_company', '=', True)]}" -->
@@ -98,7 +98,7 @@
                                 <div attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}" class="oe_edit_only">
                                     <b>Company Address:</b>
                                 </div>
-                                <field name="street" placeholder="Rue ou nom légal..." class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                <field name="street" placeholder="Street or legal name" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                                 <field name="street2" placeholder="Street 2..." class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                                 <field name="zip_id" options="{'create_name_field': 'city', 'no_open': True, 'no_create': True}" placeholder="Location completion" class="oe_edit_only" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                                 <field name="city" placeholder="City" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
@@ -107,7 +107,7 @@
                                 <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                             </div>
                             <field name="team_id" string="Local group" options="{'limit': 16, 'create': false, 'create_edit': false}"/>
-                            <field name="user_id" string="Référent" />
+                            <field name="user_id" string="Referent" />
 
                             <field name="vat" placeholder="e.g. BE0477472701" attrs="{'invisible': [('is_company', '=', False)]}" widget="field_partner_autocomplete"/>
                             <field name="company_registry" attrs="{'invisible': [('is_company', '=', False)]}"/>
@@ -156,7 +156,7 @@
                                 <field name="keywords" placeholder="keywords giving more information on activities. splite keyword using ;" attrs="{'invisible': [('is_company', '=', False)]}"/>
                                 <field name="itinerant" attrs="{'invisible': [('is_company', '=', False)]}"/>
                             </group>
-                            <group name="presentation" string="website presentaiton">
+                            <group name="presentation" string="website presentation">
                                 <field name="opening_time" placeholder="Opening hours(ex. every day from 9am to 18pm or opening hours day by day)" attrs="{'invisible': [('is_company', '=', False)]}"/>
                                 <field name="reasons_choosing_mlc" string="Subscription reason" placeholder="Why the pro. subscribe to LCC? allow to involve customers"/>
                             </group>
@@ -182,7 +182,7 @@
                                     <label for="membership_state"/>
                                     <div>
                                         <field name="membership_state"/>
-                                        <button name="383" type="action" string="Buy Membership" attrs="{'invisible':[('free_member','=',True)]}" class="oe_link"/>
+                                        <button name="%(membership.action_membership_invoice_view)d" type="action" string="Buy Membership" attrs="{'invisible':[('free_member','=',True)]}" class="oe_link"/>
                                     </div>
                                 </group>
                                 <group>
@@ -348,7 +348,7 @@
                         </page>
                         <page name="notes" string="Notes">
                             <field name="comment" placeholder="Note..."/>
-                            <field name="private_comment" placeholder="Note privé"/>
+                            <field name="private_comment" placeholder="Private Note"/>
                             <group colspan="2" col="2" groups="sale.group_warning_sale">
                                 <separator string="Warning on the Sales Order" colspan="4"/>
                                 <field name="sale_warn" nolabel="1"/>
@@ -439,18 +439,18 @@
         <field name="arch" type="xml">
             <search string="Membership Partners">
                 <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]"/>
-                <field name="ref" string="N° Adhérent"/>
-                <field name="team_id" string="Bassin"/>
-                <field name="street" string="Raison sociale"/>
+                <field name="ref" string="Member ID"/>
+                <field name="team_id" string="Local group"/>
+                <field name="street" string="Legal name or street"/>
                 <field name="parent_id" domain="[('is_company','=',True)]" operator="child_of"/>
                 <field name="membership_state" string="member status"/>
 
                 <filter name="filter_my_partners" help="My Contacts" domain="[('user_id','=',uid)]"/>
                 <separator/>
-                <filter string="Mes bassins" name="bassin" domain="[('team_id.member_ids', 'in', uid)]"/>
+                <filter string="My local group" name="Local group" domain="[('team_id.member_ids', 'in', uid)]"/>
                 <separator/>
-                <filter string="Particuliers" name="type_person" domain="[('is_company','=',False)]"/>
-                <filter string="Professionnels" name="type_company" domain="[('is_company','=',True)]"/>
+                <filter string="Person" name="type_person" domain="[('is_company','=',False)]"/>
+                <filter string="Professionals" name="type_company" domain="[('is_company','=',True)]"/>
                 <separator/>
                 <filter string="Customers" name="customer" domain="[('customer','=',True), ('parent_id', '=', False)]"/>
                 <filter string="Vendors" name="supplier" domain="[('supplier','=',True), ('parent_id', '=', False)]"/>
@@ -459,12 +459,8 @@
                 <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
                 <field name="user_id"/>
                 <field name="phone" filter_domain="['|',('phone','ilike',self),('mobile','=',self)]"/>
-                <filter name="all_non_members" position="attributes">
-                    <attribute name="domain">[('membership_state', 'in', ['none','canceled','old'])]</attribute>
-                </filter>
-                <filter name="all_members" position="attributes">
-                    <attribute name="domain">[('membership_state', 'in', ['invoiced','paid','free','waiting'])]</attribute>
-                </filter>
+                <filter name="all_non_members" domain="[('membership_state', 'in', ['none','canceled','old','waiting'])]" string="All non Members" help="None/Canceled/Old/Waiting"/>
+                <filter name="all_members" domain="[('membership_state', 'in', ['invoiced','paid','free'])]" string="All Members" help="Invoiced/Paid/Free"/>   
                 <filter name="filter_running_contract" string="With agreement" domain="['|', ('contract_ids.date_end', '&gt;=', context_today().strftime('%Y-%m-%d')), ('contract_ids.date_end', '=', False)]"/>
                 <group expand="0" name="group_by" string="Group By">
                     <filter name="salesperson" string="Salesperson" domain="[]" context="{'group_by' : 'user_id'}"/>
@@ -505,7 +501,7 @@
                         <div class="oe_kanban_bottom_left">
                             <div class="oe_kanban_bottom_right">
                                 <b>
-                                    <span>Bassin:</span>
+                                    <span>Local group:</span>
                                     <field name="team_id" groups="base.group_user"/>
                                 </b>
                             </div>

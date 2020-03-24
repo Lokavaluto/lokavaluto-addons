@@ -6,8 +6,9 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">kanban,tree,form,activity</field>
-        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Créer un nouveau document</p>
-        </field>
+        <field name="context">{"search_default_all_members": 1}</field>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Create new document</p>
+        </field>        
     </record>
 
     <menuitem action="action_adherents_form_view"
@@ -18,7 +19,7 @@
               />
 
     <record id="action_carte_vierge_form_view" model="ir.actions.act_window">
-        <field name="name">carte vierge</field>
+        <field name="name">Blank card</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,form</field>
@@ -26,7 +27,7 @@
     </record>
 
     <menuitem action="action_carte_vierge_form_view"
-              name="Cartes vierges"
+              name="Blank card"
               id="menu_action_cartes_vierges_form_menu"
               parent="menu_action_adherents_app"
               sequence="5"
