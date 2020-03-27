@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_Équipes commerciales_form_view" model="ir.actions.act_window">
+        <field name="name">Équipes commerciales</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.team</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">
+                    Définissez une nouvelles Equipe de Vente
+                </p><p>
+                    Use Sales Teams to organize your sales departments.
+                    Each channel will work with a separate pipeline.
+                </p>
+            
+        </field>
+    </record>
+
+    <menuitem action="action_Équipes commerciales_form_view"
+              name="Groupes locaux"
+              id="menu_action_Groupes locaux_form"
+parent=""              sequence="10"
+              groups=""
+              />
+</odoo>
