@@ -4,3 +4,5 @@ __pycache__/
 
 # Visual Studio cache/options directory
 .vs/
+lcc_members/
+.gitignore
