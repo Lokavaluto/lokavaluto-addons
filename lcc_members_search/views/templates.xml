@@ -20,6 +20,10 @@
                 <div class="col-6"><input name="lastname"  id="lastname" type="text" placeholder="nom"/></div>
             </div>
             <div class="row"> 
+                <div class="col-3"><label>Prénom</label></div>
+                <div class="col-6"><input name="firstname"  id="firstname" type="text" placeholder="prénom"/></div>
+            </div>
+            <div class="row"> 
                 <div class="col-3"><label>Adresse email</label></div>
                 <div class="col-6"><input type="email" name="email"  id="email" placeholder="aaa@gmail.com"/></div>
             </div>
@@ -45,10 +49,18 @@
                     <h4 class="alert-heading">Les résultat de votre recherche</h4>
                   </div>
         </div>
-        <t t-esc="partners_is_empty"/>
-        <t t-esc="criterias"/>
-        <t t-if="partners_is_empty">
-          <p>Test</p>
+        partnerscount:<t t-esc="partnerscount"/>
+        searchfilter : 
+        <t t-esc="searchfilter"/>
+        <t t-if="partners_is_emptyfull">
+          <p>Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche <a href="javascript:history.back()">ici</a></p>
+        </t>
+        <t t-if="member_found">
+          <p>Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche <a href="javascript:history.back()">ici</a></p>
+        </t>
+
+        <t t-if="allisempty">
+          <div class="alert alert-error">Merci de saisir au moins un critère <a href="javascript:history.back()">ici</a></div>
         </t>
         <ul>
           <li t-foreach="partners" t-as="partner">

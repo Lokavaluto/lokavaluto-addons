@@ -1,3 +1,4 @@
 https://www.odoo.com/fr_FR/forum/aide-1/question/how-to-submit-form-from-qweb-155243
 https://www.odoo.com/fr_FR/forum/aide-1/question/solved-odoo12-col-xs-4-and-col-4-is-not-working-in-qweb-report-how-to-solve-it-148503 -> le lien pour ajouter bootstrap dans 
 https://www.odoo.com/documentation/12.0/reference/orm.html#environment
+https://www.odoo.com/documentation/13.0/howtos/website.html

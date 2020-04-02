@@ -107,7 +107,7 @@ msgstr ""
 
 #. module: mlc_members
 #: model_terms:ir.ui.view,arch_db:mlc_members.{Lokavaluto-Members} Main Members view_view
-msgid "Analytic Accounts"
+msgid "Analytic Account"
 msgstr ""
 
 #. module: mlc_members

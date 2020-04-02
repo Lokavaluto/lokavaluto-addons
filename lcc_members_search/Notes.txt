@@ -1,13 +1,13 @@
 Search form : 
    Creating a first shield page where there is only Captcha
-   Creating template page, 
-   Creating fields
+   Creating template page, -> OK
+   Creating fields -> OK
    Adding translating capabilities, 
    Adding field's controls for name , email and zipcode, 
 
 Creating controller  : 
-   Controller muste make te search and display information using the render. 
-
+   Controller must make te search and display information using the render. -> OK
+   add filter domains to the search object  )> OK
 Creating a template : 
 Here is the algorithm that we want to elaborate 
    If nbContact>0, 
