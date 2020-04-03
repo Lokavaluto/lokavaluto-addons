@@ -49,14 +49,15 @@
                     <h4 class="alert-heading">Les résultat de votre recherche</h4>
                   </div>
         </div>
+        <!--
         partnerscount:<t t-esc="partnerscount"/>
         searchfilter : 
-        <t t-esc="searchfilter"/>
+        <t t-esc="searchfilter"/>-->
         <t t-if="partners_is_emptyfull">
           <p>Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche <a href="javascript:history.back()">ici</a></p>
         </t>
         <t t-if="member_found">
-          <p>Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche <a href="javascript:history.back()">ici</a></p>
+          <p>Le contact recherché n'est pas membre. Revenir à l'écran ici<a href="javascript:history.back()">ici</a></p>
         </t>
 
         <t t-if="allisempty">
