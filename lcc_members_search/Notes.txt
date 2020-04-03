@@ -1,15 +1,15 @@
 Search form : 
-   Creating a first shield page where there is only Captcha
+   Creating a first shield page where there is only Captcha -> postponed
    Creating template page, -> OK
    Creating fields -> OK
-   Adding translating capabilities, 
-   Adding field's controls for name , email and zipcode, 
+   Adding translating capabilities,  )> KO 
+   Adding field's controls for name , email and zipcode, )> OK
 
 Creating controller  : 
    Controller must make te search and display information using the render. -> OK
    add filter domains to the search object  )> OK
 Creating a template : 
-Here is the algorithm that we want to elaborate 
+Here is the algorithm that we want to elaborate  -> OK
    If nbContact>0, 
       If nbContact=1 > display member informations about it's membership  -#CASE1
       else (>1) then return back to search form and add more criterias    -#CASE2
@@ -17,6 +17,6 @@ Here is the algorithm that we want to elaborate
 
 
 Questions
-   JC : In the result view , what's informations do we must to display in each CASE ? 
+   JC : In the result view , what's informations do we must to display in each CASE ? -> OK
    Njeudy , how could we integrate captcha widget ? 
-   Njeudy, when i open the page in private mode( without session) results return empty page. 
+   Njeudy, when i open the page in private mode( without session) results return empty page. -> Question posée
