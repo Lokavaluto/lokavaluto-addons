@@ -18,7 +18,7 @@ class LccMembersSearch(http.Controller):
       #init all variables here
       allisempty  = False
       partners_is_empty = False
-      
+
       #test for field content
       if len(memberid)<=0 and len(lastname)<=0 and len(firstname)<=0 and len(zipcode)<=0 and len(email)<=0:
          allisempty = True
@@ -35,7 +35,7 @@ class LccMembersSearch(http.Controller):
          #N°adhérent -> char , field -> ref
          #ref ou (codepostal et nom et prénom et email)
          #replace id field with ref one and memberid string variable
-         searchfilter =[('id','=',int_memberid), 
+         searchfilter =[('ref','=',memberid), 
                         '|',('lastname','ilike',lastname +'%'),
                            ('firstname','ilike',firstname +'%'),
                            ('email','=',email),
@@ -45,7 +45,7 @@ class LccMembersSearch(http.Controller):
          partnerscount = http.request.env['res.partner'].search_count(searchfilter)
          
          if partnerscount == 1:
-            searchfilter =[('id','=',int_memberid), 
+            searchfilter =[('ref','=',memberid), 
                            '|',('lastname','ilike',lastname +'%'),
                               ('firstname','ilike',firstname +'%'),
                               ('email','=',email),
