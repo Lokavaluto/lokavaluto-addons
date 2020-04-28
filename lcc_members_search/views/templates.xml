@@ -1,85 +1,125 @@
 <odoo>
   <template id="searchform">
-  <t t-call="web.html_container">
-      <div class="container">
-      <form id="lccsearch" action="/lcc_members_search/lcc_members_search/search/" method="POST">
+    <t t-call="website.layout">
+      <div id="wrap" t-attf-class="wrap mt-0">
+        <div class="container">
+          <form id="lccsearch" action="/lcc_members_search/lcc_members_search/search/" method="POST">
             <div class="row">
-                <div class="alert alert-primary" role="alert">
-                  <h4 class="alert-heading">Recherche d'adhérent</h4>
-                  <p>Formulaire pour saisir votre receherche</p>
-                  <p>Utilisez les champs ci-dessous pour envoyer vos critères de recherche.</p>
+              <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">Recherche d'adhérent</h4>
+                <p>Formulaire pour saisir votre receherche</p>
+                <p>Utilisez les champs ci-dessous pour envoyer vos critères de recherche.</p>
               </div>
             </div>
 
             <div class="row">
-                <div class="col-3"><label>N° Adhérent</label></div>
-                <div class="col-6"><input name="member_id"  id="member_id" type="text" placeholder="Numéro adhérent"/></div>
+              <div class="col-3">
+                <label>N° Adhérent</label>
+              </div>
+              <div class="col-6">
+                <input name="member_id" id="member_id" type="text" placeholder="Numéro adhérent"/>
+              </div>
             </div>
-            <div class="row"> 
-                <div class="col-3"><label>Nom</label></div>
-                <div class="col-6"><input name="lastname"  id="lastname" type="text" placeholder="nom"/></div>
+            <div class="row">
+              <div class="col-3">
+                <label>Nom</label>
+              </div>
+              <div class="col-6">
+                <input name="lastname" id="lastname" type="text" placeholder="nom"/>
+              </div>
             </div>
-            <div class="row"> 
-                <div class="col-3"><label>Prénom</label></div>
-                <div class="col-6"><input name="firstname"  id="firstname" type="text" placeholder="prénom"/></div>
+            <div class="row">
+              <div class="col-3">
+                <label>Prénom</label>
+              </div>
+              <div class="col-6">
+                <input name="firstname" id="firstname" type="text" placeholder="prénom"/>
+              </div>
             </div>
-            <div class="row"> 
-                <div class="col-3"><label>Adresse email</label></div>
-                <div class="col-6"><input type="email" name="email"  id="email" placeholder="aaa@gmail.com"/></div>
+            <div class="row">
+              <div class="col-3">
+                <label>Adresse email</label>
+              </div>
+              <div class="col-6">
+                <input type="email" name="email" id="email" placeholder="aaa@gmail.com"/>
+              </div>
             </div>
-            <div class="row"> 
-                <div class="col-3"><label>Code Postal</label></div>
-                <div class="col-6"><input name="zipcode"  id="zipcode" type="text" placeholder="23003"/></div>
-                <div class="invalid-feedback">
-                  Please provide a valid city.
-                </div>
+            <div class="row">
+              <div class="col-3">
+                <label>Code Postal</label>
+              </div>
+              <div class="col-6">
+                <input name="zipcode" id="zipcode" type="text" placeholder="23003"/>
+              </div>
+              <div class="invalid-feedback">
+                Please provide a valid city.
+              </div>
             </div>
             <div class="mx-auto">
               <button type="submit" class="btn btn-primary mt8">Chercher</button>
             </div>
-        </form>
+          </form>
         </div>
-        </t>
+      </div>
+    </t>
   </template>
+
   <template id="listing">
-    <t t-call="web.html_container">
-      <div class="container">
-        <div class="row">
-                  <div class="alert alert-primary" role="alert">
-                    <h4 class="alert-heading">Les résultat de votre recherche</h4>
-                  </div>
-        </div>
-        <!--
+    <t t-call="website.layout">
+      <div id="wrap" t-attf-class="wrap mt-0">
+        <div class="container">
+          <div class="row">
+            <div class="alert alert-primary" role="alert">
+              <h4 class="alert-heading">Les résultat de votre recherche</h4>
+            </div>
+          </div>
+          <!--
         partnerscount:<t t-esc="partnerscount"/>
         searchfilter : 
         <t t-esc="searchfilter"/>-->
-        <t t-if="partners_is_emptyfull">
-          <p>Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche <a href="javascript:history.back()">ici</a></p>
-        </t>
-        <t t-if="member_found">
-          <p>Le contact recherché n'est pas membre. Revenir à l'écran ici<a href="javascript:history.back()">ici</a></p>
-        </t>
+          <t t-if="partners_is_emptyfull">
+            <p>
+              Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche
+              <a href="javascript:history.back()">ici</a>
+            </p>
+          </t>
+          <t t-if="member_found">
+            <p>
+              Le contact recherché n'est pas membre. Revenir à l'écran ici
+              <a href="javascript:history.back()">ici</a>
+            </p>
+          </t>
 
-        <t t-if="allisempty">
-          <div class="alert alert-error">Merci de saisir au moins un critère <a href="javascript:history.back()">ici</a></div>
-        </t>
-        <ul>
-          <li t-foreach="partners" t-as="partner">
-            <a t-attf-href="#{ root }/objects/#{ partner.id }">
-              <t t-esc="partner.display_name"/>
-            </a>
-          </li>
-        </ul>
+          <t t-if="allisempty">
+            <div class="alert alert-error">
+              Merci de saisir au moins un critère
+              <a href="javascript:history.back()">ici</a>
+            </div>
+          </t>
+          <ul>
+            <li t-foreach="partners" t-as="partner">
+              <a t-attf-href="#{ root }/objects/#{ partner.id }">
+                <t t-esc="partner.display_name"/>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </t>
   </template>
 
   <template id="object">
-    <h1><t t-esc="object.display_name"/></h1>
+    <h1>
+      <t t-esc="object.display_name"/>
+    </h1>
     <dl>
       <t t-foreach="object._fields" t-as="field">
-        <dt><t t-esc="field"/></dt>
-        <dd><t t-esc="object[field]"/></dd>
+        <dt>
+          <t t-esc="field"/>
+        </dt>
+        <dd>
+          <t t-esc="object[field]"/>
+        </dd>
       </t>
     </dl>
   </template>
