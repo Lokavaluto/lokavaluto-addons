@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_Étiquettes de contact_form_view" model="ir.actions.act_window">
+        <field name="name">Étiquettes de contact</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">
+                Créer une nouvelle étiquette de contact
+              </p><p>
+                Gérez les étiquettes de contact pour mieux les classer à des fins de suivi et d'analyse.
+              </p>
+            
+        </field>
+    </record>
+
+    <menuitem action="action_Étiquettes de contact_form_view"
+              name="Etiquettes"
+              id="menu_action_Etiquettes_form"
+parent=""              sequence="10"
+              groups=""
+              />
+</odoo>
