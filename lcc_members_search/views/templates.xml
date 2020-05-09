@@ -1,13 +1,13 @@
 <odoo>
   <template id="searchform">
-    <t t-call="website.layout">
+    <t t-call="web.html_container">
       <div id="wrap" t-attf-class="wrap mt-0">
         <div class="container">
-          <form id="lccsearch" action="/lcc_members_search/lcc_members_search/search/" method="POST">
+          <form id="lccsearch" action="/lcc_members_search/search/" method="POST">
             <div class="row">
               <div class="alert alert-primary" role="alert">
                 <h4 class="alert-heading">Recherche d'adhérent</h4>
-                <p>Formulaire pour saisir votre receherche</p>
+                <p>Formulaire pour saisir votre recherche</p>
                 <p>Utilisez les champs ci-dessous pour envoyer vos critères de recherche.</p>
               </div>
             </div>
@@ -65,7 +65,7 @@
   </template>
 
   <template id="listing">
-    <t t-call="website.layout">
+    <t t-call="web.html_container">
       <div id="wrap" t-attf-class="wrap mt-0">
         <div class="container">
           <div class="row">
@@ -73,10 +73,7 @@
               <h4 class="alert-heading">Les résultat de votre recherche</h4>
             </div>
           </div>
-          <!--
-        partnerscount:<t t-esc="partnerscount"/>
-        searchfilter : 
-        <t t-esc="searchfilter"/>-->
+
           <t t-if="partners_is_emptyfull">
             <p>
               Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche
@@ -89,6 +86,14 @@
               <a href="javascript:history.back()">ici</a>
             </p>
           </t>
+          <h1>
+            allisempty <t t-esc="allisempty"/>
+            partners_is_emptyfull <t t-esc="partners_is_emptyfull"/>
+            partnerscount <t t-esc="partnerscount"/>
+            partners <t t-esc="partners"/>
+            filter <t t-esc="filter"/>
+            email <t t-esc="email"/>
+          </h1>
 
           <t t-if="allisempty">
             <div class="alert alert-error">
@@ -96,13 +101,6 @@
               <a href="javascript:history.back()">ici</a>
             </div>
           </t>
-          <ul>
-            <li t-foreach="partners" t-as="partner">
-              <a t-attf-href="#{ root }/objects/#{ partner.id }">
-                <t t-esc="partner.display_name"/>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </t>

@@ -4,7 +4,7 @@ from odoo.http import request
 
 class LccMembersSearch(http.Controller):
     @http.route(
-        "/lcc_members_search/lcc_members_search/",
+        "/lcc_members_search/",
         auth="public",
         website=True,
         type="http",
@@ -13,7 +13,7 @@ class LccMembersSearch(http.Controller):
         return request.render("lcc_members_search.searchform", {})
 
     @http.route(
-        "/lcc_members_search/lcc_members_search/search/",
+        "/lcc_members_search/search/",
         auth="public",
         website=True,
         csrf=False,
@@ -44,7 +44,7 @@ class LccMembersSearch(http.Controller):
                 "lcc_members_search.listing",
                 {
                     "partners_is_emptyfull": partners_is_emptyfull,
-                    "allisempty": allisempty,
+                    "allisempty": allisempty
                 },
             )
         else:
@@ -56,11 +56,12 @@ class LccMembersSearch(http.Controller):
                 "|",
                 ("lastname", "ilike", lastname + "%"),
                 ("firstname", "ilike", firstname + "%"),
-                ("email", "=", email),
                 ("zip", "=", zipcode),
+                ("email","=",email)
+                
             ]
-            partners = request.env["res.partner"].sudo().search(searchfilter)
-            partnerscount = request.env["res.partner"].sudo().search_count(searchfilter)
+            partners = http.request.env["res.partner"].sudo().search(searchfilter)
+            partnerscount = http.request.env["res.partner"].sudo().search_count(searchfilter)
 
             if partnerscount == 1:
                 searchfilter = [
@@ -70,20 +71,19 @@ class LccMembersSearch(http.Controller):
                     ("firstname", "ilike", firstname + "%"),
                     ("email", "=", email),
                     ("zip", "=", zipcode),
-                    ("membership_state", "in", ["invoiced", "paid", "free"]),
+                    ("membership_state", "in", ["invoiced", "paid", "free"])
                 ]
 
                 member_found = True
-                partners = request.env["res.partner"].search(searchfilter)
-                partnerscount = request.env["res.partner"].search_count(searchfilter)
+                partners = http.request.env["res.partner"].sudo().search(searchfilter)
+                partnerscount = http.request.env["res.partner"].sudo().search_count(searchfilter)
                 return request.render(
                     "lcc_members_search.listing",
                     {
-                        #'partners': partners,
-                        "partners_is_one": True,
-                        #'searchfilter': searchfilter,
-                        #'partnerscount':partnerscount,
                         "member_found": member_found,
+                        "filter": str(searchfilter),
+                        "partners": str(partners),
+                        "partnerscount" : partnerscount
                     },
                 )
             else:
@@ -91,9 +91,10 @@ class LccMembersSearch(http.Controller):
                 return request.render(
                     "lcc_members_search.listing",
                     {
-                        "partners": partners,
-                        "partners_is_emptyfull": partners_is_emptyfull
-                        #'searchfilter': searchfilter,
-                        #'partnerscount':partnerscount,
+                        "filter": str(searchfilter),
+                        "partners": str(partners),
+                        "email":email,
+                        "partners_is_emptyfull": partners_is_emptyfull,
+                        "partnerscount" : partnerscount
                     },
                 )
