@@ -20,6 +20,7 @@
                 <input name="member_id" id="member_id" type="text" placeholder="Numéro adhérent"/>
               </div>
             </div>
+            <div class="row"> OU </div>
             <div class="row">
               <div class="col-3">
                 <label>Nom</label>
@@ -104,21 +105,5 @@
         </div>
       </div>
     </t>
-  </template>
-
-  <template id="object">
-    <h1>
-      <t t-esc="object.display_name"/>
-    </h1>
-    <dl>
-      <t t-foreach="object._fields" t-as="field">
-        <dt>
-          <t t-esc="field"/>
-        </dt>
-        <dd>
-          <t t-esc="object[field]"/>
-        </dd>
-      </t>
-    </dl>
   </template>
 </odoo>

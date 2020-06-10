@@ -1,6 +1,6 @@
 from odoo import http, _
 from odoo.http import request
-
+from odoo.osv import expression
 
 class LccMembersSearch(http.Controller):
     @http.route(
@@ -19,6 +19,12 @@ class LccMembersSearch(http.Controller):
         csrf=False,
         type="http",
     )
+    # def constructTupleFilter(self, field,op,value,ilikeOp):
+    #     if(len(value)>0): 
+    #         emailtuple=[(field, op, value+ilikeOp)] 
+    #     else: 
+    #         emailtuple=[(field, "=", True)]
+
     def search(self, **kw):
         memberid = kw["member_id"]
         lastname = kw["lastname"]
@@ -28,7 +34,7 @@ class LccMembersSearch(http.Controller):
 
         # init all variables here
         allisempty = False
-        partners_is_empty = False
+        partners_is_emptyfull = False
 
         # test for field content
         if (
@@ -51,37 +57,47 @@ class LccMembersSearch(http.Controller):
             # N°adhérent -> char , field -> ref
             # ref ou (codepostal et nom et prénom et email)
             # replace id field with ref one and memberid string variable
-            searchfilter = [
-                ("ref", "=", memberid),
-                "|",
-                ("lastname", "ilike", lastname + "%"),
-                ("firstname", "ilike", firstname + "%"),
-                ("zip", "=", zipcode),
-                ("email","=",email)
-                
-            ]
-            partners = http.request.env["res.partner"].sudo().search(searchfilter)
-            partnerscount = http.request.env["res.partner"].sudo().search_count(searchfilter)
-
+            filterarray = []
+            if(len(memberid)>=0):
+                filterarray.append([("ref", "=", memberid)])
+            else:
+                if(len(email)>0): 
+                    filterarray.append([("email", "=", email)])
+                if(len(zipcode)>0): 
+                    filterarray.append([("zip", "=", zipcode)])
+                if(len(lastname)>0): 
+                    filterarray.append([("lastname", "ilike", lastname + "%")])
+                if(len(firstname)>0): 
+                    filterarray.append([("firstname", "ilike", firstname + "%")])
+           
+            searchfilter = expression.AND(filterarray)   
+            partners = http.request.env["res.partner"].search(searchfilter)
+            partnerscount = http.request.env["res.partner"].search_count(searchfilter)
+            for aTuple in searchfilter:
+                filterstr = filterstr + print(aTuple)
             if partnerscount == 1:
-                searchfilter = [
-                    ("ref", "=", memberid),
-                    "|",
-                    ("lastname", "ilike", lastname + "%"),
-                    ("firstname", "ilike", firstname + "%"),
-                    ("email", "=", email),
-                    ("zip", "=", zipcode),
-                    ("membership_state", "in", ["invoiced", "paid", "free"])
-                ]
-
+                # searchfilter = [
+                #     ("ref", "=", memberid),
+                #     "|",
+                #     ("lastname", "ilike", lastname + "%"),
+                #     ("firstname", "ilike", firstname + "%"),
+                #     ("email", "=", email),
+                #     ("zip", "=", zipcode),
+                #     ("membership_state", "in", ["invoiced", "paid", "free"])
+                # ]
+                filterarray.append([("membership_state", "in", ["invoiced", "paid", "free"])])
+                searchfilter = expression.AND(filterarray)
                 member_found = True
                 partners = http.request.env["res.partner"].sudo().search(searchfilter)
                 partnerscount = http.request.env["res.partner"].sudo().search_count(searchfilter)
+                filterstr = "null"
+                for aTuple in searchfilter:
+                    filterstr = filterstr + print(aTuple)
                 return request.render(
                     "lcc_members_search.listing",
                     {
                         "member_found": member_found,
-                        "filter": str(searchfilter),
+                        "filter": filterstr,
                         "partners": str(partners),
                         "partnerscount" : partnerscount
                     },
@@ -91,7 +107,7 @@ class LccMembersSearch(http.Controller):
                 return request.render(
                     "lcc_members_search.listing",
                     {
-                        "filter": str(searchfilter),
+                        "filter": filterstr,
                         "partners": str(partners),
                         "email":email,
                         "partners_is_emptyfull": partners_is_emptyfull,
