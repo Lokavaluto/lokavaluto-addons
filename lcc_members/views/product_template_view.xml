@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- TODO: put here a reminder on what to do at the first edition -->
+    <record id="product_template_kanban_view" model="ir.ui.view">
+        <field name="name">product.template.kanban.view</field>
+        <field name="model">product.template</field>
+        <field name="view_type">kanban</field>
+        <field name="inherit_id" ref=""/>
+        <field name="arch" type="xml">
+          b'<kanban class="o_kanban_mobile">\n                    <field name="name"/>\n                    <field name="membership_date_from"/>\n                    <field name="membership_date_to"/>\n                    <field name="list_price"/>\n                    <templates>\n                        <t t-name="kanban-box">\n                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">\n                                <div class="o_kanban_record_top">\n                                    <div class="o_kanban_record_headings">\n                                        <strong class="o_kanban_record_title"><span class="mt4"><field name="name"/></span></strong>\n                                    </div>\n                                    <span class="badge badge-pill"><i class="fa fa-money" role="img" aria-label="Price" title="Price"/> <field name="list_price"/></span>\n                                </div>\n                                <div class="o_kanban_record_body">\n                                    <i class="fa fa-clock-o" role="img" aria-label="Period" title="Period"/><strong> De: </strong><field name="membership_date_from"/><strong/> <field name="membership_date_to"/>\n                                </div>\n                            </div>\n                        </t>\n                    </templates>\n                </kanban>'
+        </field>
+    </record>
+    <record id="Membership Products_view" model="ir.ui.view">
+        <field name="name">Membership Products.view</field>
+        <field name="model">product.template</field>
+        <field name="view_type">form</field>
+        <field name="inherit_id" ref=""/>
+        <field name="arch" type="xml">
+          b'<form string="Articles d\'adh&#233;sion">\n                    <label for="name" class="oe_edit_only"/>\n                    <h1>\n                        <field name="name"/>\n                    </h1>\n                    <group>\n                        <group>\n                            <field name="default_code"/>\n                            <field name="categ_id"/>\n                            <field name="membership" invisible="1"/>\n                            <field name="company_id" groups="base.group_multi_company" options="{\'no_create\': True}"/>\n                            <field name="active"/>\n                        </group>\n                        <group>\n                            <label for="membership_date_from" string="Dur&#233;e d\'adh&#233;sion"/>\n                            <div>\n                                <field name="membership_date_from" required="1" class="oe_inline"/> -\n                                <field name="membership_date_to" required="1" class="oe_inline"/>\n                            </div>\n                            <field name="list_price" string="Frais d\'adh&#233;sion"/>\n                            <field name="property_account_income_id"/>\n                            <field name="taxes_id" widget="many2many_tags" string="Taxes"/>\n                        </group>\n                    </group>\n                    <label for="description"/>\n                    <field colspan="4" name="description" placeholder="Ajouter une description&#8230;"/>\n                    <label for="description_sale"/>\n                    <field colspan="4" name="description_sale" placeholder="Cette note sera affich&#233;e sur les devis..."/>\n                 </form>'
+        </field>
+    </record>
+    <record id="Membership products_view" model="ir.ui.view">
+        <field name="name">Membership products.view</field>
+        <field name="model">product.template</field>
+        <field name="view_type">tree</field>
+        <field name="inherit_id" ref=""/>
+        <field name="arch" type="xml">
+          b'<tree string="Articles d\'adh&#233;sion">\n                    <field name="name"/>\n                    <field name="membership_date_from"/>\n                    <field name="membership_date_to"/>\n                    <field name="list_price" string="Frais d\'adh&#233;sion"/>\n                    <field name="categ_id" invisible="1"/>\n                    <field name="uom_id" invisible="1"/>\n                    <field name="type" invisible="1"/>\n                </tree>'
+        </field>
+    </record>
+</odoo>
