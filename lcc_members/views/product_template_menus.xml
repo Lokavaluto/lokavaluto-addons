@@ -7,6 +7,33 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
+  <!-- from ODOO membership module to delete if necessary <record model="ir.actions.act_window" id="action_membership_products">
+            <field name="name">Membership Products</field>
+            <field name="res_model">product.template</field>
+            <field name="domain">[('membership','=',True), ('type', '=', 'service')]</field>
+            <field name="context">{'membership':True, 'type':'service', 'default_membership': True, 'default_type': 'service'}</field>
+            <field name="search_view_id" ref="membership_product_search_form_view"/>
+        </record> -->
+      <record model="ir.actions.act_window.view" id="action_membership_product_view_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="membership.membership_products_tree"/>
+            <field name="act_window_id" ref="action_article_adhesion_form_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_membership_product_view_form">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="membership.membership_products_form"/>
+            <field name="act_window_id" ref="action_article_adhesion_form_view"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_membership_product_view_kanban">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="membership.membership_products_kanban"/>
+            <field name="act_window_id" ref="action_article_adhesion_form_view"/>
+        </record>
 
     <menuitem action="action_article_adhesion_form_view"
               name="Articles d'adhésion"
