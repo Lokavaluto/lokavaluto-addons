@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- *************************************************************** -->
+        <!--                            Actions                              -->
+        <!-- *************************************************************** -->
+        
+        <record id="action_exchange_counter_config_kanban" model="ir.actions.act_window">
+            <field name="name">Exchange counter</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.config</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain"></field>
+            <field name="search_view_id" ref="point_of_sale.view_pos_config_search" />
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Exchange counter config
+                </p><p>
+                    Configure at least one Exchange Counter to be able to sell through the Exchange Counter interface.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_exchange_counter_adjustment_form" model="ir.actions.act_window">
+            <field name="name">Counter Adjustments</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.inventory</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="stock.view_inventory_tree"/>
+            <field name="search_view_id" ref="stock.view_inventory_filter"/>
+            <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new counter adjustment
+            </p><p>
+                This is used to correct the coupons quantities you have in your exchange counter.
+            </p>
+            </field>
+        </record>
+
+        <record id="action_exchange_counter_conversion" model="ir.actions.act_window">
+            <field name="name">Conversions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.order</field>
+            <field name="view_mode">tree,form,kanban,pivot</field>
+            <field name="view_id" eval="False"/>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No conversion found
+                </p><p>
+                    To record new conversion, start a new session.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_exchange_counter_session" model="ir.actions.act_window">
+            <field name="name">Sessions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.session</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="point_of_sale.view_pos_session_search" />
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No sessions found
+                </p><p>
+                    A session is a period of time, usually one day, during which you sell through the Point of Sale.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_view_exchange_counter_quants" model="ir.actions.act_window">
+            <field name="name">Inventory</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.quant</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html"><p><br/></p></field>
+        </record>
+        
+        <!-- <record model="ir.actions.server" id="action_view_exchange_counter_quants"> 
+            <field name="name">Inventory</field>
+            <field name="model_id" ref="stock.model_stock_quant"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.with_context(
+                    search_default_internal_loc=1,
+                    search_default_productgroup=1,
+                    search_default_locationgroup=1,
+                ).action_view_quants()
+            </field>
+        </record> -->
+
+        <record id="action_picking_tree_exchange_counter" model="ir.actions.act_window">
+            <field name="name">Transfers of Coupons</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="domain"></field>
+            <!-- Clarify the necessity of the following line, and of the "default_company_id" value -->
+            <!--<field name="context">{'contact_display': 'partner_address', 'default_company_id': allowed_company_ids[0]}</field>-->
+            <field name="context">{'contact_display': 'partner_address'}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new transfer
+                </p><p>
+                    Transfers allow you to move coupons from one location to another.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_exchange_counter_check_membership" model="ir.actions.act_window">
+            <field name="name">Check Members</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html"><p><br/></p></field>
+        </record>
+
+
+        <!-- *************************************************************** -->
+        <!--                         Menu items                              -->
+        <!-- *************************************************************** -->
+
+        <!-- Top menu item -->
+        <menuitem
+            id="menu_exchange_counter_root"
+            name="Exchange counter"
+            groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"
+            web_icon="point_of_sale,static/description/icon.png"
+            sequence="20"/>
+
+        <!-- Dashboard -->
+        <menuitem 
+            id="menu_exchange_counter_dashboard" 
+            action="action_exchange_counter_config_kanban" 
+            parent="menu_exchange_counter_root" 
+            name="Dashboard" 
+            sequence="1"/>
+
+        <!-- My counter -->
+        <menuitem 
+            id="menu_exchange_counter_my_counter" 
+            parent="menu_exchange_counter_root" 
+            name="My counter" 
+            sequence="2"/>
+
+        <!-- Membership-->
+        <menuitem 
+            id="menu_exchange_counter_membership"
+            parent="menu_exchange_counter_root" 
+            name="Membership"             
+            sequence="3"/>
+
+        <!-- Configuration-->
+        <menuitem 
+            id="menu_exchange_counter_config" 
+            parent="menu_exchange_counter_root"
+            name="Configuration"              
+            sequence="4"/>
+        
+        <!-- My counter / Counter Adjustment-->
+        <menuitem 
+            id="menu_exchange_counter_adjustments" 
+            parent="menu_exchange_counter_my_counter"
+            action="action_exchange_counter_adjustment_form" 
+            name="Counter adjustments"             
+            sequence="1"/>
+
+        <!-- My counter / Conversions-->
+        <menuitem 
+            id="menu_conversions" 
+            parent="menu_exchange_counter_my_counter" 
+            action="action_exchange_counter_conversion" 
+            name="Conversions"
+            sequence="2"/>
+
+        <!-- My counter / Daily report-->
+        <menuitem 
+            id="menu_sessions" 
+            parent="menu_exchange_counter_my_counter" 
+            action="action_exchange_counter_session" 
+            name="Sessions"
+            sequence="3"/> 
+        
+        <!-- My counter / Inventory valuation-->
+        <menuitem 
+            id="menu_valuation" 
+            parent="menu_exchange_counter_my_counter" 
+            action="action_view_exchange_counter_quants" 
+            name="Inventory Report"
+            sequence="4"/>
+
+        <!-- My counter / Transfers of Coupons-->
+        <menuitem 
+            id="all_picking" 
+            name="Transfers of coupons" 
+            parent="menu_exchange_counter_my_counter" 
+            sequence="5" 
+            action="action_picking_tree_exchange_counter" 
+            groups="stock.group_stock_manager,stock.group_stock_user"/>
+
+
+        <!-- Membership / Check Membership -->
+        <menuitem 
+            id="menu_exchange_counter_check_membership" 
+            name="Check Membership" 
+            parent="menu_exchange_counter_membership" 
+            action="action_exchange_counter_check_membership"
+            sequence="1"/>
+
+        <!-- Membership / Subscribe-->
+        <menuitem 
+            id="menu_exchange_counter_Subscribe" 
+            name="Subscribe" 
+            parent="menu_exchange_counter_membership" 
+            action="action_exchange_counter_check_membership"
+            sequence="2"/>
+
+        <!-- Membership / Subscription transfers-->  <!-- TO BE COMPLETED -->
+        <menuitem 
+            id="menu_exchange_counter_subscription_transfers" 
+            name="Subscription transfers" 
+            parent="menu_exchange_counter_membership" 
+            sequence="3"/>
+
+        
+
+    </data>
+</odoo>
