@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
-    'name': 'lcc_exchange_counter_local',
+    'name': 'lcc_exchange_counters',
     'version': '12.0.1.0.10',
     'author': 'Lokavaluto',
     'maintainer': 'False',
@@ -16,7 +16,7 @@
    :alt: License: AGPL-3
 
 ==========================
-lcc_exchange_counter_local
+lcc_exchange_counters
 ==========================
 
 Exchange counter module for managing local complementary currency's physical transactions:
@@ -29,7 +29,7 @@ It's part of Lokavaluto Project (https://lokavaluto.fr)
 Installation
 ============
 
-Just install lcc_exchange_counter, all dependencies will be installed by default.
+Just install lcc_exchange_counters, all dependencies will be installed by default.
 
 Known issues / Roadmap
 ======================
@@ -88,6 +88,8 @@ mission is to support the collaborative development of Odoo features and ecosyst
 
     # always loaded
     'data': [
+        'security/exchange_counters_security.xml',
+        'security/ir.model.access.csv',
         'views/exchange_counters_menu.xml',
 
     ],
