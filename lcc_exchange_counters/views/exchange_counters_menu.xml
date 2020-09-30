@@ -8,7 +8,7 @@
         <record id="action_exchange_counter_config_kanban" model="ir.actions.act_window">
             <field name="name">Exchange counter</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">pos.config</field>
+            <field name="res_model">exchangecounters.config</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="domain"></field>
             <field name="search_view_id" ref="point_of_sale.view_pos_config_search" />
@@ -125,7 +125,7 @@
         <menuitem
             id="menu_exchange_counter_root"
             name="Exchange counter"
-            groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"
+            groups="group_exchange_counters_user,group_exchange_counters_manager"
             web_icon="point_of_sale,static/description/icon.png"
             sequence="20"/>
 
@@ -156,7 +156,8 @@
             id="menu_exchange_counter_config" 
             parent="menu_exchange_counter_root"
             name="Configuration"              
-            sequence="4"/>
+            sequence="4"
+            groups="group_exchange_counters_manager"/>
         
         <!-- My counter / Counter Adjustment-->
         <menuitem 
