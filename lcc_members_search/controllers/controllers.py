@@ -73,8 +73,11 @@ class LccMembersSearch(http.Controller):
             searchfilter = expression.AND(filterarray)   
             partners = http.request.env["res.partner"].search(searchfilter)
             partnerscount = http.request.env["res.partner"].search_count(searchfilter)
-            for aTuple in searchfilter:
-                filterstr = filterstr + print(aTuple)
+            
+            #filterstr = searchfilter[0:len(searchfilter)]
+            #print('filterstr : ' + ''.join(filterstr))
+            #for a in searchfilter:
+            #    filterstr = filterstr + a
             if partnerscount == 1:
                 # searchfilter = [
                 #     ("ref", "=", memberid),
@@ -90,14 +93,16 @@ class LccMembersSearch(http.Controller):
                 member_found = True
                 partners = http.request.env["res.partner"].sudo().search(searchfilter)
                 partnerscount = http.request.env["res.partner"].sudo().search_count(searchfilter)
-                filterstr = "null"
-                for aTuple in searchfilter:
-                    filterstr = filterstr + print(aTuple)
+                
+                #filterstr = searchfilter[0:len(searchfilter)]
+                #for aTuple in searchfilter:
+                #    filterstr = filterstr + "," + aTuple
+                
                 return request.render(
                     "lcc_members_search.listing",
                     {
                         "member_found": member_found,
-                        "filter": filterstr,
+                        #"filter": ''.joint(filterstr),
                         "partners": str(partners),
                         "partnerscount" : partnerscount
                     },
@@ -107,7 +112,7 @@ class LccMembersSearch(http.Controller):
                 return request.render(
                     "lcc_members_search.listing",
                     {
-                        "filter": filterstr,
+                        #"filter": ''.join(filterstr),
                         "partners": str(partners),
                         "email":email,
                         "partners_is_emptyfull": partners_is_emptyfull,

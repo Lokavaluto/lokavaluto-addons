@@ -88,12 +88,12 @@
             </p>
           </t>
           <h1>
-            allisempty <t t-esc="allisempty"/>
-            partners_is_emptyfull <t t-esc="partners_is_emptyfull"/>
-            partnerscount <t t-esc="partnerscount"/>
-            partners <t t-esc="partners"/>
-            filter <t t-esc="filter"/>
-            email <t t-esc="email"/>
+            <div>allisempty <t t-esc="allisempty"/></div>
+            <div>partners_is_emptyfull <t t-esc="partners_is_emptyfull"/></div>
+            <div>partnerscount <t t-esc="partnerscount"/></div>
+            <div>partners <t t-esc="partners"/></div>
+            <div>filter <t t-esc="filter"/></div>
+            <div>email <t t-esc="email"/></div>
           </h1>
 
           <t t-if="allisempty">

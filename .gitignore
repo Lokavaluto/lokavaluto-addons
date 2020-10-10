@@ -6,5 +6,7 @@ __pycache__/
 .vs/
 lcc_members/
 lcc_partner_gogocartojs/
+lcc_for_partners/
+#module created by SSL for SOL group
 partner_firstname/
 .gitignore
