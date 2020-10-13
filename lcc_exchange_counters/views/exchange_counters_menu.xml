@@ -5,6 +5,7 @@
         <!--                            Actions                              -->
         <!-- *************************************************************** -->
         
+        <!-- Dashboard -->
         <record id="action_exchange_counter_config_kanban" model="ir.actions.act_window">
             <field name="name">Exchange counter</field>
             <field name="type">ir.actions.act_window</field>
@@ -21,12 +22,13 @@
             </field>
         </record>
 
+        <!-- My counter / Counter Adjustment-->
         <record id="action_exchange_counter_adjustment_form" model="ir.actions.act_window">
             <field name="name">Counter Adjustments</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">stock.inventory</field>
+            <field name="res_model">exchangecounters.inventory</field>
             <field name="view_mode">tree,kanban,form</field>
-            <field name="view_id" ref="stock.view_inventory_tree"/>
+            <field name="view_id" ref="exchangecounters_inventory_tree"/>
             <field name="search_view_id" ref="stock.view_inventory_filter"/>
             <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -37,6 +39,7 @@
             </field>
         </record>
 
+        <!-- My counter / Conversions-->
         <record id="action_exchange_counter_conversion" model="ir.actions.act_window">
             <field name="name">Conversions</field>
             <field name="type">ir.actions.act_window</field>
@@ -53,6 +56,7 @@
             </field>
         </record>
 
+        <!-- My counter / Daily report-->
         <record id="action_exchange_counter_session" model="ir.actions.act_window">
             <field name="name">Sessions</field>
             <field name="type">ir.actions.act_window</field>
@@ -68,6 +72,7 @@
             </field>
         </record>
 
+        <!-- My counter / Inventory valuation-->
         <record id="action_view_exchange_counter_quants" model="ir.actions.act_window">
             <field name="name">Inventory</field>
             <field name="type">ir.actions.act_window</field>
@@ -76,19 +81,8 @@
             <field name="help" type="html"><p><br/></p></field>
         </record>
         
-        <!-- <record model="ir.actions.server" id="action_view_exchange_counter_quants"> 
-            <field name="name">Inventory</field>
-            <field name="model_id" ref="stock.model_stock_quant"/>
-            <field name="state">code</field>
-            <field name="code">
-                action = model.with_context(
-                    search_default_internal_loc=1,
-                    search_default_productgroup=1,
-                    search_default_locationgroup=1,
-                ).action_view_quants()
-            </field>
-        </record> -->
 
+        <!-- My counter / Transfers of Coupons-->
         <record id="action_picking_tree_exchange_counter" model="ir.actions.act_window">
             <field name="name">Transfers of Coupons</field>
             <field name="res_model">stock.picking</field>
@@ -108,6 +102,7 @@
             </field>
         </record>
 
+        <!-- TO CHANGE -->
         <record id="action_exchange_counter_check_membership" model="ir.actions.act_window">
             <field name="name">Check Members</field>
             <field name="type">ir.actions.act_window</field>

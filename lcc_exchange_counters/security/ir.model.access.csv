@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_ec_config_user,exchangecounters.config user,model_exchangecounters_config,group_exchange_counters_user,1,1,0,0
 access_ec_config_manager,exchangecounters.config manager,model_exchangecounters_config,group_exchange_counters_manager,1,1,1,1
+access_ec_inventory_user,exchangecounters.inventory user,model_exchangecounters_inventory,stock.group_stock_user,1,1,1,0
+access_ec_inventory_manager,exchangecounters.inventory manager,model_exchangecounters_inventory,stock.group_stock_manager,1,1,1,1
