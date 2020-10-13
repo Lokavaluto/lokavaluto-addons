@@ -90,6 +90,8 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'data': [
         'security/exchange_counters_security.xml',
         'security/ir.model.access.csv',
+        'views/exchange_counters_config_view.xml',
+        'views/exchange_counters_inventory_view.xml',
         'views/exchange_counters_menu.xml',
 
     ],
