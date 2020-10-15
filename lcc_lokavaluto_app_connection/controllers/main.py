@@ -25,7 +25,8 @@ class MobileApplicationJson(http.Controller):
     def get_app_pro_contacts_on_area(self, **kwargs):
         data = []
         all_partner = request.env['res.partner']
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(**kwargs))
+        bounding_box = kwargs.get("bounding_box", {})
+        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(**bounding_box))
         for partner in partners:
             data.append({
                 "autocompleteLabel": partner._get_autocompleteLabel(), 
@@ -59,6 +60,5 @@ class MobileApplicationJson(http.Controller):
                 #TODO "lastLogin": null,
                 #TODO "roles": ["ROLE_PRO", "ROLE_USER"],
                 #TODO "enabled": false      
-            }) 
+            })  
         return Response(json.dumps(data),content_type='application/json;charset=utf-8',status=200)
-
