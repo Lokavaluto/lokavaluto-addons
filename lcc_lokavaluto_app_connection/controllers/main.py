@@ -1,7 +1,11 @@
+import json, logging
+
 from odoo import http, models, fields, api
 from odoo.http import Response, request
 
-import json
+
+
+_logger = logging.getLogger(__name__)
 
 class MobileApplicationJson(http.Controller):
 
@@ -21,18 +25,31 @@ class MobileApplicationJson(http.Controller):
         return Response(json.dumps(data),content_type='application/json;charset=utf-8',status=200)
 
 
-    @http.route('/web/get_application_elements',methods=['POST'], type='json', csrf=False, auth="public")
+    @http.route('/web/get_application_elements',methods=['POST'], type='json', csrf=False, auth="public", website=True)
     def get_app_pro_contacts_on_area(self, **kwargs):
+        # test = request.read()
+        _logger.debug('Hello world')
+        # _logger.debug('test %s', test)
         data = []
-        all_partner = request.env['res.partner']
-        bounding_box = kwargs.get("bounding_box", {})
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(**bounding_box))
+        all_partner = request.env['res.partner'].sudo()
+        _logger.debug('kwargs %s', kwargs)
+        bounding_box = kwargs.get("limit", {})
+        _logger.debug('bounding_box %s', bounding_box)
+        # partners = all_partner.search(all_partner._get_mobile_app_pro_domain(**bounding_box))
+        partners = all_partner.search([])
+        _logger.debug('partners %s', partners)
         for partner in partners:
+            zipCityName =''
+            if partner.zip:
+                zipCityName =partner.zip 
+            if partner.city:
+                zipCityName+= partner.city
+
             data.append({
-                "autocompleteLabel": partner._get_autocompleteLabel(), 
+                # "autocompleteLabel": partner._get_autocompleteLabel(), 
                 "city":partner.city, 
                 "phones": [partner.phone, partner.mobile],
-                "adherent": partner._is_partner_adherent(),
+                # "adherent": partner._is_partner_adherent(),
                 #TODO "mainICC":,
                 #TODO "keywords":[],
                 "name": partner.name,
@@ -46,12 +63,12 @@ class MobileApplicationJson(http.Controller):
                         #TODO "id":,
                         "zipCode":partner.zip,
                         "city":partner.city,
-                        "name": partner.zip + partner.city
+                        "name": zipCityName
                     },
                 },
                 "excerpt": partner.website_short_description,
                 "description": partner.website_description,
-                "image": partner.image,
+                # "image": partner.image, ## return image url 
                 #TODO firstLogin: true,
                 "url": partner.website_url, 
                 "id": partner.id,
@@ -60,5 +77,7 @@ class MobileApplicationJson(http.Controller):
                 #TODO "lastLogin": null,
                 #TODO "roles": ["ROLE_PRO", "ROLE_USER"],
                 #TODO "enabled": false      
-            })  
-        return Response(json.dumps(data),content_type='application/json;charset=utf-8',status=200)
+            }) 
+        _logger.debug('Content of data %s', data) 
+        # return Response(json.dumps(data),content_type='application/json;charset=utf-8',status=200)
+        return json.dumps(data)
