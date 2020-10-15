@@ -1,0 +1,109 @@
+<odoo>
+  <template id="searchform">
+    <t t-call="web.html_container">
+      <div id="wrap" t-attf-class="wrap mt-0">
+        <div class="container">
+          <form id="lccsearch" action="/lcc_members_search/search/" method="POST">
+            <div class="row">
+              <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">Recherche d'adhérent</h4>
+                <p>Formulaire pour saisir votre recherche</p>
+                <p>Utilisez les champs ci-dessous pour envoyer vos critères de recherche.</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-3">
+                <label>N° Adhérent</label>
+              </div>
+              <div class="col-6">
+                <input name="member_id" id="member_id" type="text" placeholder="Numéro adhérent"/>
+              </div>
+            </div>
+            <div class="row"> OU </div>
+            <div class="row">
+              <div class="col-3">
+                <label>Nom</label>
+              </div>
+              <div class="col-6">
+                <input name="lastname" id="lastname" type="text" placeholder="nom"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <label>Prénom</label>
+              </div>
+              <div class="col-6">
+                <input name="firstname" id="firstname" type="text" placeholder="prénom"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <label>Adresse email</label>
+              </div>
+              <div class="col-6">
+                <input type="email" name="email" id="email" placeholder="aaa@gmail.com"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <label>Code Postal</label>
+              </div>
+              <div class="col-6">
+                <input name="zipcode" id="zipcode" type="text" placeholder="23003"/>
+              </div>
+              <div class="invalid-feedback">
+                Please provide a valid city.
+              </div>
+            </div>
+            <div class="mx-auto">
+              <button type="submit" class="btn btn-primary mt8">Chercher</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </t>
+  </template>
+
+  <template id="listing">
+    <t t-call="web.html_container">
+      <div id="wrap" t-attf-class="wrap mt-0">
+        <div class="container">
+          <div class="row">
+            <div class="alert alert-primary" role="alert">
+              <h4 class="alert-heading">Les résultat de votre recherche</h4>
+            </div>
+          </div>
+
+          <t t-if="partners_is_emptyfull">
+            <p>
+              Aucun contact / Plusieurs contact trouvés avec ces critères. Veuillez affiner votre recherche
+              <a href="javascript:history.back()">ici</a>
+            </p>
+          </t>
+          <t t-if="member_found">
+            <p>
+              Le contact recherché n'est pas membre. Revenir à l'écran ici
+              <a href="javascript:history.back()">ici</a>
+            </p>
+          </t>
+          <h1>
+            <div>allisempty <t t-esc="allisempty"/></div>
+            <div>partners_is_emptyfull <t t-esc="partners_is_emptyfull"/></div>
+            <div>partnerscount <t t-esc="partnerscount"/></div>
+            <div>partners <t t-esc="partners"/></div>
+            <div>filter <t t-esc="filter"/></div>
+            <div>email <t t-esc="email"/></div>
+          </h1>
+
+          <t t-if="allisempty">
+            <div class="alert alert-error">
+              Merci de saisir au moins un critère
+              <a href="javascript:history.back()">ici</a>
+            </div>
+          </t>
+        </div>
+      </div>
+    </t>
+  </template>
+</odoo>
