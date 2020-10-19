@@ -14,5 +14,27 @@ class ResPartner(models.Model):
                 ('partner_latitude','>', kwargs.get("minLat")),
                 ('partner_latitude', '<', kwargs.get("maxLat"))]
 
-    def _get_mobile_app_contact_domain(self):
-        return [('in_mobile_app','=',True)]
+    def _get_zipCityName(self):
+        zipCityName =''
+        if self.zip:
+            zipCityName =self.zip 
+        if self.city:
+            zipCityName+= self.city
+        return zipCityName
+
+    def _get_autocompleteLabel(self):
+        autoCompleteLabel = ""
+        if self.name:
+            autoCompleteLabel+= self.name
+        if self._get_zipCityName != '':
+            autoCompleteLabel+= '[' + self._get_zipCityName() + ']' 
+        if self.email:
+            autoCompleteLabel+= '(' + self.email +')'
+        return autoCompleteLabel
+
+    def _is_partner_adherent(self):
+        if self.membership_state in ('paid', 'free'):
+            return True     
+        else :
+            return False
+
