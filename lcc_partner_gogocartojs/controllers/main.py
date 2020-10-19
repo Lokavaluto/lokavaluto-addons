@@ -27,10 +27,14 @@ class PartnerGogocartojs(http.Controller):
                 "city":partner.city,
                 "latitude":partner.partner_latitude,
                 "longitude":partner.partner_longitude,
-                "local_group":partner.team_id.name
+                "local_group":partner.team_id.name,
                 "date_convention_signature": partner.convention_signature_date,
-                "description": partner.detailled_activity,
-                "details": partner.member_comment
+                "main_activity": parnter.industry_id.name,
+                "detailled_activity": partner.detailled_activity,
+                "details": partner.member_comment,
+                "exchange_counter": partner._get_exchange_counter_label(),
+                "itinerant": partner._get_itinerant_label(),
+                "opening_time": partner.opening_time
             })
         return json.dumps(data)
 
