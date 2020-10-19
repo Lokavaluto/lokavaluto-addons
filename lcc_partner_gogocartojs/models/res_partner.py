@@ -7,7 +7,10 @@ class ResPartner(models.Model):
     in_gogocarto = fields.Boolean('In gogocarto')
     
     def _get_gogocarto_domain(self):
-        return [('in_gogocarto','=',True),('is_company','=', True),('membership_state','in',"['paid','free']")]
+        return [('in_gogocarto','=',True),('is_company','=', True),('membership_state','in',['paid', 'free'])]
+
+
+        
 
     def _get_exchange_counter_label(self):
         if self.currency_exchange_office:
