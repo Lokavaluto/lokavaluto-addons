@@ -7,4 +7,4 @@ class ResPartner(models.Model):
     in_gogocarto = fields.Boolean('In gogocarto')
     
     def _get_gogocarto_domain(self):
-        return [('in_gogocarto','=',True),('is_company','=', True)]
+        return [('in_gogocarto','=',True),('is_company','=', True),('membership_state','in',"['paid','free']")]
