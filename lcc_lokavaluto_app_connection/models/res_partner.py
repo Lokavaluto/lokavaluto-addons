@@ -1,5 +1,9 @@
 from odoo import models, fields, api
 
+import logging
+_logger = logging.getLogger(__name__)
+        
+
 class ResPartner(models.Model):
     """ Inherits partner and adds Tasks information in the partner form """
     _inherit = 'res.partner'
@@ -38,3 +42,8 @@ class ResPartner(models.Model):
         else :
             return False
 
+    def in_mobile_app_button(self):
+        """ Inverse the value of the field ``in_mobile_app`` for the current instance. """     
+        self.in_mobile_app = not self.in_mobile_app     
+       
+    
