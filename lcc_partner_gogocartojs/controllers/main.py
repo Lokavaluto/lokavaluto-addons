@@ -9,32 +9,11 @@ class PartnerGogocartojs(http.Controller):
 
 
     @http.route('/web/get_gogocarto_elements',methods=['POST'], type='json', csrf=False, auth="public", website=True)
-    def get_gogocarto_element(self):
+    def get_gogocarto_elements(self):
         data = []
         all_partner = request.env['res.partner'].sudo()
         partners = all_partner.search(all_partner._get_gogocarto_domain())
         for partner in partners:
-            data.append({
-                "id": partner.id,
-                "name": partner.name,
-                "email": partner.email,
-                "website": partner.website,
-                "phone": partner.phone,
-                "mobile": partner.mobile,
-                "street1":partner.street,
-                "street2":partner.street2,
-                "zipCode":partner.zip,
-                "city":partner.city,
-                "latitude":partner.partner_latitude,
-                "longitude":partner.partner_longitude,
-                "local_group":partner.team_id.name,
-                "date_convention_signature": partner.convention_signature_date,
-                "main_activity": partner.industry_id.name,
-                "detailed_activity": partner.detailed_activity,
-                "details": partner.member_comment,
-                "exchange_counter": partner._get_exchange_counter_label(),
-                "itinerant": partner._get_itinerant_label(),
-                "opening_time": partner.opening_time
-            })
-        return json.dumps(data)
+            data.append(partner.app_serialization())
+        return data
 
