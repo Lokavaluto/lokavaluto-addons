@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 class PartnerGogocartojs(http.Controller):
 
 
+
     @http.route('/web/get_gogocarto_elements',methods=['POST'], type='json', csrf=False, auth="public", website=True)
     def get_gogocarto_elements(self):
         data = []
@@ -16,4 +17,12 @@ class PartnerGogocartojs(http.Controller):
         for partner in partners:
             data.append(partner.app_serialization())
         return data
-
+    
+    @http.route('/web/get_http_gogocarto_elements',methods=['GET'], type='http', csrf=False, auth="public", website=True)
+    def get_gogocarto_elements_http(self):
+        data = []
+        all_partner = request.env['res.partner'].sudo()
+        partners = all_partner.search(all_partner._get_gogocarto_domain())
+        for partner in partners:
+            data.append(partner.app_serialization())
+        return Response(json.dumps(data))
