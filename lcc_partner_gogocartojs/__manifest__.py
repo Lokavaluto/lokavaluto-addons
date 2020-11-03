@@ -83,6 +83,8 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'data': [
         # 'security/ir.model.access.csv',
         'views/gogocarto_partner.xml',
+        'views/gogocarto_config_settings_view.xml',
+        'views/gogocarto_menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

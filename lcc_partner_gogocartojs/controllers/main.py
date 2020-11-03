@@ -7,8 +7,6 @@ _logger = logging.getLogger(__name__)
 
 class PartnerGogocartojs(http.Controller):
 
-
-
     @http.route('/web/get_gogocarto_elements',methods=['POST'], type='json', csrf=False, auth="public", website=True)
     def get_gogocarto_elements(self):
         data = []
