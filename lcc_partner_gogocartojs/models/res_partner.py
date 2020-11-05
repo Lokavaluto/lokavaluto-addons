@@ -1,4 +1,8 @@
 from odoo import models, fields, api
+from ast import literal_eval
+import logging
+_logger = logging.getLogger(__name__)
+
 
 class ResPartner(models.Model):
     """ Inherits partner and adds Tasks information in the partner form """
@@ -36,20 +40,34 @@ class ResPartner(models.Model):
 
     #region Public method for JSON Serialization
     def app_serialization(self):
+        ICPSudo = self.env['ir.config_parameter'].sudo()
+        export_field_ids = literal_eval(ICPSudo.get_param('lcc_partner_gogocartojs.export_gogocarto_fields'))
+        export_fields = self.env['ir.model.fields'].search([('model_id', '=', 'res.partner'),('id','in', export_field_ids)])
+
         element = {}
-        self.__add_simple_node(element, "id")
-        self.__add_computed_node(element, "local_group", self._get_local_group_label)
-        self.__add_simple_node(element, "name")
-        self.__add_nested_node(element, "address", "street", "street2","zip", "city")
-        self.__add_nested_node(element, "coords", "partner_latitude", "partner_longitude")
-        self.__add_nested_node(element, "contact_info", "phone", "mobile", "email", "website")
-        self.__add_simple_node(element, "convention_signature_date")
-        self.__add_nested_node(element, "activities", "detailed_activity", "member_comment", "opening_time","legal_activity_code")
-        element["activities"]["main_activity"] = self._get_industry_label()
-        self.__add_computed_node(element,"exchange_counter", self._get_exchange_counter_label)
-        self.__add_computed_node(element,"itinerant", self._get_itinerant_label)
-        self.__add_simple_node(element, "keywords")
-        self.__add_simple_node(element,"reasons_choosing_mlc")
+        for field in export_fields:
+            if field.name == "itinerant":
+                self.__add_computed_node(element,"itinerant", self._get_itinerant_label)
+            elif field.name == "currency_exchange_office":
+                self.__add_computed_node(element,"exchange_counter", self._get_exchange_counter_label)
+            elif field.name == "team_id":
+                self.__add_computed_node(element, "local_group", self._get_local_group_label)
+            else:
+                self.__add_simple_node(element, field.name)
+        
+        # self.__add_simple_node(element, "id")
+        # self.__add_computed_node(element, "local_group", self._get_local_group_label)
+        # self.__add_simple_node(element, "name")
+        # self.__add_nested_node(element, "address", "street", "street2","zip", "city")
+        # self.__add_nested_node(element, "coords", "partner_latitude", "partner_longitude")
+        # self.__add_nested_node(element, "contact_info", "phone", "mobile", "email", "website")
+        # self.__add_simple_node(element, "convention_signature_date")
+        # self.__add_nested_node(element, "activities", "detailed_activity", "member_comment", "opening_time","legal_activity_code")
+        # element["activities"]["main_activity"] = self._get_industry_label()
+        # self.__add_computed_node(element,"exchange_counter", self._get_exchange_counter_label)
+        # self.__add_computed_node(element,"itinerant", self._get_itinerant_label)
+        # self.__add_simple_node(element, "keywords")
+        # self.__add_simple_node(element,"reasons_choosing_mlc")
         return element
     #endregion
         
