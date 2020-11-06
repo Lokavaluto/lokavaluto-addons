@@ -18,7 +18,7 @@ class ResConfigSettings(models.TransientModel):
         res = super(ResConfigSettings, self).get_values()
         ICPSudo = self.env['ir.config_parameter'].sudo()
         gogocarto_map_url = ICPSudo.get_param('lcc_partner_gogocartojs.gogocarto_map_url')
-        export_gogocarto_fields = ICPSudo.get_param('lcc_partner_gogocartojs.export_gogocarto_fields')    
+        export_gogocarto_fields = ICPSudo.get_param('lcc_partner_gogocartojs.export_gogocarto_fields') if ICPSudo.get_param('lcc_partner_gogocartojs.export_gogocarto_fields') else "[]"  
         res.update(
             gogocarto_map_url=gogocarto_map_url,
             export_gogocarto_fields= [(6, 0, literal_eval(export_gogocarto_fields))]
