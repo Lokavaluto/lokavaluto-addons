@@ -10,7 +10,8 @@ class ResConfigSettings(models.TransientModel):
 
     gogocarto_map_url = fields.Char(readonly=False)
     export_gogocarto_fields = fields.Many2many('ir.model.fields', 'export_field_rel', 'export_id', 'fields_id',
-                                               domain="[""('model_id', '=', 'res.partner')""]",
+                                               domain="[""('model_id', '=', 'res.partner')\
+                                                        ,('name', 'not in', ('name','partner_longitude','partner_latitude'))""]",
                                                readonly=False)
 
     @api.model

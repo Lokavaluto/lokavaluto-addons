@@ -11,8 +11,11 @@ class ResPartner(models.Model):
     in_gogocarto = fields.Boolean('In gogocarto')
     
     def _get_gogocarto_domain(self):
-        return [('in_gogocarto','=',True),('is_company','=', True),('membership_state','in',['paid', 'free'])]
-
+        return [('in_gogocarto','=',True),('is_company','=', True)
+                ,('membership_state','in',['paid', 'free'])
+                ,('partner_longitude', '!=', float())
+                ,('partner_latitude', '!=', float())
+                ]
 
     def _get_exchange_counter_label(self):
         if self.currency_exchange_office:
@@ -40,12 +43,11 @@ class ResPartner(models.Model):
 
     #region Public method for JSON Serialization
     def app_serialization(self):
-        ICPSudo = self.env['ir.config_parameter'].sudo()
-        export_field_ids = literal_eval(ICPSudo.get_param('lcc_partner_gogocartojs.export_gogocarto_fields'))
-        export_fields = self.env['ir.model.fields'].search([('model_id', '=', 'res.partner'),('id','in', export_field_ids)])
-
         element = {}
-        for field in export_fields:
+        element["lon"] = self["partner_longitude"]
+        element["lat"] = self["partner_latitude"]
+        self.__add_simple_node(element, "name")
+        for field in self.__get_export_fields():
             if field.name == "itinerant":
                 self.__add_computed_node(element,"itinerant", self._get_itinerant_label)
             elif field.name == "currency_exchange_office":
@@ -72,6 +74,12 @@ class ResPartner(models.Model):
     #endregion
         
     #region Private method to JSON Serialization
+    def __get_export_fields(self):
+        ICPSudo = self.env['ir.config_parameter'].sudo()
+        export_field_ids = literal_eval(ICPSudo.get_param('lcc_partner_gogocartojs.export_gogocarto_fields'))
+        export_fields = self.env['ir.model.fields'].search([('model_id', '=', 'res.partner'),('id','in', export_field_ids)])
+        return export_fields
+
     def __add_simple_node(self, element, fieldName): 
         if getattr(self, fieldName):
             element[fieldName] = self[fieldName]
@@ -84,4 +92,11 @@ class ResPartner(models.Model):
         for arg in args:
             self.__add_simple_node(nest, arg)
         element[nestedName] = nest
+    #endregion
+
+    #region Public method to debug JSON Serialization
+    def debug_field_exported(self):
+        _logger.debug("List of field exported:")
+        for field in self.__get_export_fields():
+            _logger.debug(field.name)
     #endregion
