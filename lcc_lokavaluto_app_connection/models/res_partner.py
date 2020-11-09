@@ -9,6 +9,8 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     in_mobile_app = fields.Boolean('In the mobile map', default = True)
+
+    app_exported_fields = []
     
     def _get_mobile_app_pro_domain(self, **kwargs):
         return [('in_mobile_app','=',True),
@@ -51,34 +53,45 @@ class ResPartner(models.Model):
 #region Public method for JSON Serialization
     def app_serialization(self):
         element = {}
-        self.__add_simple_node(element, "id")
-        self.__add_simple_node(element, "name")
-        self.__add_computed_node(element, "autoCompleteLabel", self._get_autocompleteLabel)
-        self.__add_computed_node(element,"adherent", self._is_partner_adherent)
+        self.__add_app_simple_node(element, "id")
+        self.__add_app_simple_node(element, "name")
+        self.__add_app_computed_node(element, "autoCompleteLabel", self._get_autocompleteLabel)
+        self.__add_app_computed_node(element,"adherent", self._is_partner_adherent)
         # self.__add_computed_node(element,"image", self.__getImage)
         # TODO : mainICC
         # TODO : keywords
-        self.__add_simple_node(element, "email")
-        self.__add_simple_node(element, "website")
-        self.__add_simple_node(element, "website_description")
-        self.__add_simple_node(element, "website_short_description")
-        self.__add_nested_node(element, "address", "street", "street2","zip", "city")
-        self.__add_nested_node(element, "coords", "partner_latitude", "partner_longitude")
-        self.__add_nested_node(element, "phones", "phone", "mobile")
+        self.__add_app_simple_node(element, "email")
+        self.__add_app_simple_node(element, "website")
+        self.__add_app_simple_node(element, "website_description")
+        self.__add_app_simple_node(element, "website_short_description")
+        self.__add_app_nested_node(element, "address", "street", "street2","zip", "city")
+        self.__add_app_nested_node(element, "coords", "partner_latitude", "partner_longitude")
+        self.__add_app_nested_node(element, "phones", "phone", "mobile")
         return element
 #endregion
         
 #region Private method to JSON Serialization
-    def __add_simple_node(self, element, fieldName): 
+    def __add_app_simple_node(self, element, fieldName): 
+        if fieldName not in self.app_exported_fields:
+            self.app_exported_fields.append(fieldName)
         if getattr(self, fieldName):
             element[fieldName] = self[fieldName]
     
-    def __add_computed_node(self, element, fieldLabel, specificMethod):
+    def __add_app_computed_node(self, element, fieldLabel, specificMethod):
+        if fieldLabel not in self.app_exported_fields:
+            self.app_exported_fields.append(fieldLabel)
         element[fieldLabel] = specificMethod()
 
-    def __add_nested_node(self, element, nestedName, *args):
+    def __add_app_nested_node(self, element, nestedName, *args):
         nest = {}
         for arg in args:
-            self.__add_simple_node(nest, arg)
+            self.__add_app_simple_node(nest, arg)
         element[nestedName] = nest
 #endregion
+
+    #region Public method to debug JSON Serialization
+    def debug_app_field_exported(self):
+        _logger.debug("List of field exported for app mobile:")
+        for fieldName in self.app_exported_fields:
+            _logger.debug(fieldName)
+    #endregion
