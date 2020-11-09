@@ -13,6 +13,8 @@ class ResPartner(models.Model):
     def _get_mobile_app_pro_domain(self, **kwargs):
         return [('in_mobile_app','=',True),
                 ('is_company','=', True),
+                ('partner_longitude', '!=', float()),
+                ('partner_latitude', '!=', float()),
                 ('partner_longitude', '>', kwargs.get("minLon")),
                 ('partner_longitude', '<', kwargs.get("maxLon")),
                 ('partner_latitude','>', kwargs.get("minLat")),
