@@ -23,6 +23,6 @@ class PartnerGogocartojs(http.Controller):
         partners = all_partner.search(all_partner._get_gogocarto_domain())
         all_partner.debug_field_exported()
         for partner in partners:
-            data.append(partner.app_serialization())
+            data.append(partner.gogocarto_serialization())
         return data
 
