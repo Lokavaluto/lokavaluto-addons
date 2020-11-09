@@ -42,11 +42,11 @@ class ResPartner(models.Model):
             return ''
 
     #region Public method for JSON Serialization
-    def app_serialization(self):
+    def gogocarto_serialization(self):
         element = {}
-        element["lon"] = self["partner_longitude"]
-        element["lat"] = self["partner_latitude"]
+
         self.__add_simple_node(element, "name")
+        self.__add_nested_node(element,"coords","partner_longitude","partner_latitude")
         for field in self.__get_export_fields():
             if field.name == "itinerant":
                 self.__add_computed_node(element,"itinerant", self._get_itinerant_label)
