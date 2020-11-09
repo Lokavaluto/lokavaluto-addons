@@ -46,7 +46,9 @@ class ResPartner(models.Model):
         element = {}
 
         self.__add_simple_node(element, "name")
-        self.__add_nested_node(element,"coords","partner_longitude","partner_latitude")
+        self.__add_simple_node(element, "partner_longitude")
+        self.__add_simple_node(element, "partner_latitude")
+
         for field in self.__get_export_fields():
             if field.name == "itinerant":
                 self.__add_computed_node(element,"itinerant", self._get_itinerant_label)
@@ -96,7 +98,7 @@ class ResPartner(models.Model):
 
     #region Public method to debug JSON Serialization
     def debug_field_exported(self):
-        _logger.debug("List of field exported:")
+        _logger.debug("List of field exported for gogoCarto:")
         for field in self.__get_export_fields():
             _logger.debug(field.name)
     #endregion
