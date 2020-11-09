@@ -33,4 +33,5 @@ class MobileApplicationJson(http.Controller):
         partners = all_partner.search(all_partner._get_mobile_app_pro_domain(**bounding_box))
         for partner in partners:
             data.append(partner.app_serialization())
+        partners.debug_app_field_exported()
         return data
