@@ -1,26 +1,31 @@
 {
-    'name': "lcc_partner_gogocarto_js",
-
-    'summary': """
-        REST Backend for gogocartojs library
-        """,
-
+    'name': "lcc_partner_gogocarto_export_api",
+    'summary': """ HTTP JSON api to send data for Gogocarto import """,
+    'license': 'AGPL-3'
     'description': """
-   ::image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
-   :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   :alt: License: AGPL-3
+================================
+lcc_partner_gogocarto_export_api
+================================
 
-=======================
-lcc_partner_gogocartojs
-=======================
-
-Lokavaluto Gogocarto connection module, to communicate the Odoo database data needed for a Gogocarto mapa
+Lokavaluto Gogocarto connection module, to communicate the Odoo partner data needed for a Local currencies' Gogocarto map
 It's part of Lokavaluto Project (https://lokavaluto.fr)
+
+This module allow the users to decide:
+
+* the partner to be exported
+* the fields exported for each partner (*name*, *partner_longitude* and *partner_lattitude* automatically exported)
 
 Installation
 ============
 
-Just install lcc_partner_gogocartojs, all dependencies will be installed by default.
+Just install partner_gogocarto_export_api, all dependencies will be installed by default.
+
+To export partners data:
+
+#. Set the fields you want to export in Settings / Gogocarto.
+#. Check the field *"In Gogocarto"* in the partner form view.
+
+And use the link *https://yourodoo.com/web/get_http_gogocarto_elements* in Gogocarto server import configuration (*https://video.colibris-outilslibres.org/videos/watch/c74fc469-c822-4ab8-82a7-a2555e49e576*)
 
 Known issues / Roadmap
 ======================
@@ -45,6 +50,8 @@ Contributors
 ------------
 
 * Stéphan SAINLEGER <https://github.com/stephansainleger>
+* Chloé Migayrou <https://github.com/MigayrouChloe>
+* Nicolas Jeudy <https://github.com/njeudy>
 * Lokavaluto Teams
 
 Funders
@@ -72,22 +79,17 @@ mission is to support the collaborative development of Odoo features and ecosyst
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Website',
+    'category': 'Localization',
     'version': '12.0.1.0.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base',
-                'lcc_members'],
+                'partner_gogocarto_export_api',
+                'lcc_members',
+            ],
 
     # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
-        'views/gogocarto_partner.xml',
-        'views/gogocarto_config_settings_view.xml',
-        'views/gogocarto_menu.xml',
-    ],
+    'data': [],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    'demo': [],
 }
