@@ -838,7 +838,7 @@ msgstr "Code APE"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "member status"
-msgstr "Status d'adhésion"
+msgstr "Statut d'adhésion"
 
 #. module: lcc_members
 #: model:ir.model,name:lcc_members.model_member_type
