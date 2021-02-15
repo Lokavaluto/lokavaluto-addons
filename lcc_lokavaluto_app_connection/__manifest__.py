@@ -14,13 +14,15 @@
 lcc_lokavaluto_app_connection
 =============================
 
-Lokavaluto mobile application connection module, to communicate the Odoo database data needed for the Local Currency mobile app
+Lokavaluto mobile application connection module, to communicate the Odoo
+database data needed for the Local Currency mobile app
 It's part of Lokavaluto Project (https://lokavaluto.fr)
 
 Installation
 ============
 
-Just install lcc_lokavaluto_app_connection, all dependencies will be installed by default.
+Just install lcc_lokavaluto_app_connection, all dependencies
+will be installed by default.
 
 Known issues / Roadmap
 ======================
@@ -45,6 +47,7 @@ Contributors
 ------------
 
 * Stéphan SAINLEGER <https://github.com/stephansainleger>
+* Nicolas JEUDY <https://github.com/njeudy>
 * Lokavaluto Teams
 
 Funders
@@ -68,15 +71,16 @@ mission is to support the collaborative development of Odoo features and ecosyst
 
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Website',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.3',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': [
+        'base',
+        'base_rest',
+        'auth_api_key',
+        'base_rest_datamodel',
+        ],
 
     # always loaded
     'data': [
@@ -84,7 +88,5 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'views/lcc_app_connection_partner.xml'
     ],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    'demo': [],
 }
