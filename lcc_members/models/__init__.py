@@ -3,3 +3,4 @@
 
 from . import res_partner
 from . import member_type
+from . import account_invoice
