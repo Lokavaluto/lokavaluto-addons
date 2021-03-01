@@ -1,8 +1,11 @@
 # Copyright 2020 Lokavaluto ()
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields
+import logging
+from odoo import models, fields, api
 from odoo.tools.translate import _
+
+_logger = logging.getLogger(__name__)
 
 
 class res_partner(models.Model):
@@ -117,3 +120,15 @@ class res_partner(models.Model):
         translate=False,
         readonly=False
     )
+    
+    discount = fields.Html(
+        string="Discount",
+        translate="True",
+    )
+
+    @api.onchange('firstname', 'lastname')
+    def onchange_upper_name(self):
+        if self.lastname != self.lastname.upper():
+            self.lastname = self.lastname.upper()
+        if self.firstname != self.firstname.capitalize():
+            self.firstname = self.firstname.capitalize()
