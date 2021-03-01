@@ -1,5 +1,8 @@
+import logging
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
+
+_logger = logging.getLogger(__name__)
 
 
 class PartnerService(Component):
@@ -17,7 +20,9 @@ class PartnerService(Component):
         """
         Get partner's informations
         """
-        return self._to_json(self._get(_id))
+        parser = self._get_partner_parser()
+        partner = self._get(_id)
+        return partner.jsonify(parser)[0]
 
     def search(self, name):
         """
@@ -27,8 +32,10 @@ class PartnerService(Component):
         partners = self.env["res.partner"].browse([i[0] for i in partners])
         rows = []
         res = {"count": len(partners), "rows": rows}
-        for partner in partners:
-            rows.append(self._to_json(partner))
+        parser = self._get_partner_parser()
+        rows = partners.jsonify(parser)
+        res = {"count": len(partners), "rows": rows}
+        _logger.debug('rows: %s' % rows)
         return res
 
     # pylint:disable=method-required-super
@@ -37,15 +44,16 @@ class PartnerService(Component):
         Create a new partner
         """
         partner = self.env["res.partner"].create(self._prepare_params(params))
-        return self._to_json(partner)
-
+        parser = self._get_partner_parser()
+        return partner.jsonify(parser)
     def update(self, _id, **params):
         """
         Update partner informations
         """
         partner = self._get(_id)
+        parser = self._get_partner_parser()
         partner.write(self._prepare_params(params))
-        return self._to_json(partner)
+        return partner.jsonify(parser)
 
     def archive(self, _id, **params):
         """
@@ -78,6 +86,7 @@ class PartnerService(Component):
     # Validator
     def _validator_return_get(self):
         res = self._validator_create()
+        _logger.debug("res: %s" % res)
         res.update({"id": {"type": "integer", "required": True, "empty": False}})
         return res
 
@@ -97,11 +106,11 @@ class PartnerService(Component):
     def _validator_create(self):
         res = {
             "name": {"type": "string", "required": True, "empty": False},
-            "street": {"type": "string", "required": True, "empty": False},
+            "street": {"type": "string", "nullable": True, "empty": True},
             "street2": {"type": "string", "nullable": True},
-            "zip": {"type": "string", "required": True, "empty": False},
-            "city": {"type": "string", "required": True, "empty": False},
-            "phone": {"type": "string", "nullable": True, "empty": False},
+            "zip": {"type": "string", "nullable": True, "empty": True},
+            "city": {"type": "string", "nullable": True, "empty": True},
+            "phone": {"type": "string", "nullable": True, "empty": True},
             "state": {
                 "type": "dict",
                 "schema": {
@@ -141,21 +150,16 @@ class PartnerService(Component):
     def _validator_archive(self):
         return {}
 
-    def _to_json(self, partner):
-        res = {
-            "id": partner.id,
-            "name": partner.name,
-            "street": partner.street,
-            "street2": partner.street2 or "",
-            "zip": partner.zip,
-            "city": partner.city,
-            "phone": partner.city,
-        }
-        if partner.country_id:
-            res["country"] = {
-                "id": partner.country_id.id,
-                "name": partner.country_id.name,
-            }
-        if partner.state_id:
-            res["state"] = {"id": partner.state_id.id, "name": partner.state_id.name}
-        return res
+    def _get_partner_parser(self):
+        parser = [
+            'id',
+            'name',
+            'street',
+            'street2',
+            'zip',
+            'city',
+            'phone',
+            ('country_id', ['id', 'name']),
+            #('state', ['id','name'])
+        ]
+        return parser
