@@ -174,6 +174,42 @@
                                     <span>)</span>
                                 </div>
                             </group>
+                            <group name="extra_images" string="Extra Images">
+                        <field name="partner_image_ids" class="o_website_sale_image_list" attrs="{'invisible': [('is_company', '=', False)]}" context="{'default_name': name, 'default_partner_id': active_id}" nolabel="1">
+                            <kanban string="Partner Images" class="o_attachments_previews">
+                                <field name="id"/>
+                                <field name="name"/>
+                                <field name="image"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="o_attachment oe_kanban_global_click o_website_sale_image_card">
+                                            <div class="o_attachment_wrap">
+                                                <div class="o_image_box">
+                                                    <div class="o_attachment_image" t-attf-style="background-image:url({{kanban_image('partner.image', 'image', record.id.raw_value)}});"/>
+                                                    <div t-attf-class="o_image_overlay" t-att-title="record.name.value"/>
+                                                    <div class="o_website_sale_image_card_title" t-att-title="record.name.value">
+                                                        <field name="name"/>
+                                                    </div>
+                                                </div>
+
+                                                <t t-set="size" t-value="[record.image.value][0]"/>
+                                                <t t-set="size_status" t-value="'normal'" t-if="size.indexOf('Bytes') !== -1 or ( size.indexOf('Kb') !== -1 and size[2]=='.')"/>
+                                                <t t-set="size_status" t-value="'warning'" t-elif="( size.indexOf('Kb') !== -1 and size[3]=='.')"/>
+                                                <t t-set="size_status" t-value="'danger'"  t-else=""/>
+                                                <t t-set="message" t-value="'Acceptable file size'" t-if="size_status == 'normal'"></t>
+                                                <t t-set="message" t-value="'Huge file size. The image should be optimized/reduced.'" t-elif="size_status == 'warning'"></t>
+                                                <t t-set="message" t-value="'Optimization required! Reduce the image size or increase your compression settings.'" t-else=""></t>
+
+                                                <span t-attf-class="o_website_sale_image_card_size badge badge-#{size_status}" t-att-title="message">
+                                                    <t t-esc="record.image.value"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
                         </page>
                         <page name="membership" string="Membership" attrs="{'invisible': [('customer', '=', False)]}">
                             <group>
@@ -536,6 +572,27 @@
                 </xpath>
 
             </data>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_partner_image_form">
+        <field name="name">partner.image.form</field>
+        <field name="model">partner.image</field>
+        <field name="arch" type="xml">
+            <form string="Partner Images">
+                <div class="row o_website_sale_image_modal">
+                    <div class="col-md-6 col-xl-5">
+                        <div class="oe_title">
+                            <label class="small text-muted" for="name" string="Image Name"/>
+                            <h2><field name="name" placeholder="Image Name" required="True"/></h2>
+                            <field name="partner_id" invisible="1"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-7 text-center o_website_sale_image_modal_container">
+                        <field name="image" widget="image"/>
+                    </div>
+                </div>
+            </form>
         </field>
     </record>
 </data>
