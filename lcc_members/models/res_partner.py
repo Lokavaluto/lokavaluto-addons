@@ -34,7 +34,7 @@ class res_partner(models.Model):
         required=False,
         translate=False,
         readonly=False
-    )
+    )    
     member_type_id = fields.Many2one(
         'member_type',
         string=_("Member's type"),
@@ -139,12 +139,11 @@ class res_partner(models.Model):
             self.firstname = self.firstname.capitalize()
             
     def _membership_state(self):
-        """This Function return Membership State For Given Partner. """
         res = super(res_partner, self)._membership_state()
         today = fields.Date.today()
         s = 4
         for partner in self:
-           s = 4
+            s = 4
             if partner.member_lines:
                 for mline in partner.member_lines.sorted(key=lambda r: r.id):
                     if (mline.date_to or date.min) >= today and (mline.date_from or date.min) <= today:
