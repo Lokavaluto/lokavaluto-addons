@@ -13,4 +13,6 @@ class Invoice(models.Model):
 
     @api.onchange('state')
     def _check_membership(self):
-       self.partner_id._cron_update_membership()
+        for invoice in self:
+            self.partner_id._recompute_todo(invoice.partner_id._fields['membership_state'])
+        invoice.partner_id.recompute()

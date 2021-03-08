@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-11 15:54+0000\n"
-"PO-Revision-Date: 2020-03-11 15:54+0000\n"
+"POT-Creation-Date: 2021-03-02 07:47+0000\n"
+"PO-Revision-Date: 2021-03-02 07:47+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "<b>Adresse de la société:</b>"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "<i class=\"fa fa-ban\" style=\"color: red;\" role=\"img\" title=\"This email is blacklisted for mass mailing\" aria-label=\"Blacklisted\" attrs=\"{'invisible': [('is_blacklisted', '=', False)]}\" groups=\"base.group_user\"/>"
-msgstr "<i class=\"fa fa-ban\" style=\"color: red;\" role=\"img\" title=\"Ce courriel est blacklisté pour le publipostage\" aria-label=\"Blacklisté\" attrs=\"{'invisible': [('is_blacklisted', '=', False)]}\" groups=\"base.group_user\"/>"
+msgstr "<i class=\"fa fa-ban\" style=\"color: red;\" role=\"img\" title=\"Cet email est blacklist pour les envois de mail en masse\" aria-label=\"Blacklisted\" attrs=\"{'invisible': [('is_blacklisted', '=', False)]}\" groups=\"base.group_user\"/>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -45,22 +45,31 @@ msgstr "<span class=\"o_stat_text\">Facturé</span>"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "<span class=\"oe_inline\">( On</span>"
-msgstr "<span class=\"oe_inline\">( On</span>"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "<span>: Lat :</span>"
-msgstr "<span>: Lat :</span>"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "<span>;  Long:</span>"
-msgstr "<span>;  Long:</span>"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_kanban_view
 msgid "<span>Local group:</span>"
 msgstr "<span>Groupe local:</span>"
+
+#. module: lcc_members
+#: code:addons/lcc_members/models/res_users.py:30
+#, python-format
+msgid "A user cannot have both Tax B2B and Tax B2C.\n"
+"You should go in General Settings, and choose to display Product Prices\n"
+"either in 'Tax-Included' or in 'Tax-Excluded' mode\n"
+"(or switch twice the mode if you are already in the desired one)."
+msgstr "Un utilisateur ne peut pas avoir Taxe B2B et taxe B2C en mm temps."
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -89,8 +98,8 @@ msgstr "Tous les non-membres"
 
 #. module: lcc_members
 #: model:ir.actions.act_window,name:lcc_members.action_membres_analysis_form_view
-msgid "Member analysis"
-msgstr "Analyse des membres"
+msgid "Analyse des membres"
+msgstr ""
 
 #. module: lcc_members
 #: model:ir.ui.menu,name:lcc_members.menu_action_analysis_form_menu
@@ -115,7 +124,7 @@ msgstr "Membre associé"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Avatar"
-msgstr "Avatar"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -123,19 +132,15 @@ msgid "Bank Accounts"
 msgstr "Comptes bancaires"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Local group"
-msgstr "Groupe local"
+#: model:ir.actions.act_window,name:lcc_members.action_carte_vierge_form_view
+#: model:ir.ui.menu,name:lcc_members.menu_action_cartes_vierges_form_menu
+msgid "Blank card"
+msgstr "Carte vierge"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Buy Membership"
 msgstr "Payer une cotisation"
-
-#. module: lcc_members
-#: model:ir.ui.menu,name:lcc_members.menu_action_cartes_vierges_form_menu
-msgid "Blank card"
-msgstr "Cartes vierges"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -153,14 +158,19 @@ msgid "Classification (to find easily pro. in the directory)"
 msgstr "Classification (pour trouver facilement un pro. dans l'annuaire)"
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
+msgid "Commercial Name"
+msgstr "Nom commercial"
+
+#. module: lcc_members
 #: model:ir.ui.menu,name:lcc_members.menu_action_configuration
 msgid "Configuration"
-msgstr "Configuration"
+msgstr ""
 
 #. module: lcc_members
 #: model:ir.model,name:lcc_members.model_res_partner
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -180,10 +190,11 @@ msgstr "Contacts & Adresses"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Convention"
-msgstr "Convention"
+msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:109
+#: code:addons/lcc_members/models/res_partner.py:112
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_specific_agreement
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_specific_agreement
 #, python-format
@@ -196,22 +207,30 @@ msgid "Country"
 msgstr "Pays"
 
 #. module: lcc_members
-#: model:ir.model.fields,field_description:lcc_members.field_member_type__create_uid
-msgid "Created by"
-msgstr "Créé par"
-
-#. module: lcc_members
-#: model:ir.model.fields,field_description:lcc_members.field_member_type__create_date
-msgid "Created on"
-msgstr "Créé le"
-
-#. module: lcc_members
 #: model_terms:ir.actions.act_window,help:lcc_members.action_adherents_form_view
 msgid "Create new document"
 msgstr "Créer un nouveau document"
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_member_type__create_uid
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_member_type__create_date
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: lcc_members
+#: model_terms:ir.actions.act_window,help:lcc_members.action_article_adhesion_form_view
+msgid "Créer un nouveau article"
+msgstr ""
+
+#. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:115
+#: code:addons/lcc_members/models/res_partner.py:118
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__currency_exchange_office
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__currency_exchange_office
 #, python-format
@@ -230,6 +249,7 @@ msgstr "Livraison"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:91
+#: code:addons/lcc_members/models/res_partner.py:94
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__detailed_activity
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__detailed_activity
 #, python-format
@@ -247,7 +267,14 @@ msgid "Directory"
 msgstr "Annuaire"
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__discount
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__discount
+msgid "Discount"
+msgstr "Réductions"
+
+#. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__display_name
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
 
@@ -265,6 +292,11 @@ msgstr "Date de fin d'adhésion"
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Events"
 msgstr "Évènements"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
+msgid "Extra Images"
+msgstr "Images supplémentaires"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -293,18 +325,37 @@ msgstr "Regrouper par"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__id
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__image
+msgid "Image"
+msgstr ""
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.view_partner_image_form
+msgid "Image Name"
+msgstr "Nom de l'image"
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__partner_image_ids
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__partner_image_ids
+msgid "Images"
+msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:18
+#: code:addons/lcc_members/models/res_partner.py:21
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__instagram
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__instagram
 #, python-format
 msgid "Instagram"
-msgstr "Instagram"
+msgstr ""
 
 #. module: lcc_members
+#: model:ir.model,name:lcc_members.model_account_invoice
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Invoice"
 msgstr "Facture"
@@ -321,6 +372,7 @@ msgstr "Facturation"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:97
+#: code:addons/lcc_members/models/res_partner.py:100
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_volunteer
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__is_volunteer
 #, python-format
@@ -329,6 +381,7 @@ msgstr "Est bénévole"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:85
+#: code:addons/lcc_members/models/res_partner.py:88
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__itinerant
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__itinerant
 #, python-format
@@ -338,10 +391,11 @@ msgstr "Itinérant"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Langue"
-msgstr "Langue"
+msgstr ""
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type____last_update
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
 
@@ -352,13 +406,20 @@ msgstr "Nom"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__write_uid
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__write_uid
 msgid "Last Updated by"
 msgstr "Dernière mise à jour par"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__write_date
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
+msgid "Legal name or street"
+msgstr "Rue ou Raison sociale"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -367,18 +428,19 @@ msgstr "Numéro de compagnie liée"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
+#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Local group"
 msgstr "Groupe local"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Location completion"
-msgstr "Completion d'adresse"
+msgstr "Saisie auto. de la localisation"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Logo"
-msgstr "Logo"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -391,12 +453,18 @@ msgid "Meetings"
 msgstr "Rendez-vous"
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
+msgid "Member ID"
+msgstr "N° Adhérent"
+
+#. module: lcc_members
 #: model:ir.ui.menu,name:lcc_members.action_type_adherent_form_view_menu
 msgid "Member Type"
 msgstr "Type d'adhérents"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:30
+#: code:addons/lcc_members/models/res_partner.py:33
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_comment
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__member_comment
 #, python-format
@@ -405,6 +473,7 @@ msgstr "Commentaire"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:37
+#: code:addons/lcc_members/models/res_partner.py:40
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_type_id
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__member_type_id
 #, python-format
@@ -450,11 +519,6 @@ msgid "Memberships"
 msgstr "Adhésions"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "My local group"
-msgstr "Mes groupes locaux"
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Misc"
 msgstr "Divers"
@@ -470,20 +534,17 @@ msgid "My Contacts"
 msgstr "Mes Contacts"
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
+msgid "My local group"
+msgstr "Mes groupes locaux"
+
+#. module: lcc_members
 #: code:addons/lcc_members/models/member_type.py:12
+#: model:ir.model.fields,field_description:lcc_members.field_member_type__name
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__name
 #, python-format
 msgid "Name"
-msgstr "nom"
-
-#. module: lcc_members
-#: model:ir.model.fields,field_description:lcc_members.field_member_type__name
-msgid "Nom"
 msgstr "Nom"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
-msgid "Commercial Name"
-msgstr "Nom commercial"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -492,26 +553,17 @@ msgstr "Aucune/Annulée/Ancienne/En attente"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
-msgid "Private Note"
-msgstr "Note privé"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Note..."
-msgstr "Note..."
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Notes"
-msgstr "Notes"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Member ID"
-msgstr "N° Adhérent"
+msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:79
+#: code:addons/lcc_members/models/res_partner.py:82
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__opening_time
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__opening_time
 #, python-format
@@ -534,9 +586,15 @@ msgid "Others activities"
 msgstr "Activités secondaires"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Person"
-msgstr "Particuliers"
+#: model:ir.model,name:lcc_members.model_partner_image
+msgid "Partner Image"
+msgstr "Photo sur les Partenaires"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
+#: model_terms:ir.ui.view,arch_db:lcc_members.view_partner_image_form
+msgid "Partner Images"
+msgstr "Photos Supplémentaires"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -549,6 +607,11 @@ msgid "Payment Terms"
 msgstr "Conditions de paiement"
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
+msgid "Person"
+msgstr "Particuliers"
+
+#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Phone:"
 msgstr "Téléphone :"
@@ -559,7 +622,13 @@ msgid "Pricelists are managed on"
 msgstr "Les listes de prix sont gérées sur"
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
+msgid "Private Note"
+msgstr "Note privé"
+
+#. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:103
+#: code:addons/lcc_members/models/res_partner.py:106
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__private_comment
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__private_comment
 #, python-format
@@ -568,6 +637,7 @@ msgstr "Commentaire privé"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:24
+#: code:addons/lcc_members/models/res_partner.py:27
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__phone_pro
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__phone_pro
 #, python-format
@@ -585,24 +655,19 @@ msgid "Purchase"
 msgstr "Achats"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Legal name or street"
-msgstr "Rue ou Raison sociale"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
-msgid "Rue ou nom légal..."
-msgstr "Rue ou Raison sociale"
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Referent"
 msgstr "Référent"
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_partner_image__partner_id
+msgid "Related Partner"
+msgstr "Partenaire associé"
+
+#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Sale contacts"
-msgstr "Contat de vente"
+msgstr "ContaCt de vente"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -632,7 +697,12 @@ msgstr "Envoyer le SMS"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Show the sale contracts for this partner"
-msgstr "Montrer les contrats de vente de ce partenaire"
+msgstr "Afficher les contrats de vente de ce partenaire"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
+msgid "Socials networks"
+msgstr "Réseaux Sociaux"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -653,6 +723,11 @@ msgstr "État"
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Street 2..."
 msgstr "Rue 2..."
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
+msgid "Street or legal name"
+msgstr "Rue"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -682,7 +757,7 @@ msgstr "Raison de l'adhésion"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "Subscription status"
-msgstr "Status de l'adhésion"
+msgstr "Statut de l'adhésion"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -711,6 +786,7 @@ msgstr "Titre"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:49
+#: code:addons/lcc_members/models/res_partner.py:52
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__to_renew
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__to_renew
 #, python-format
@@ -719,14 +795,16 @@ msgstr "À renouveler"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:73
+#: code:addons/lcc_members/models/res_partner.py:76
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__twitter_url
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__twitter_url
 #, python-format
 msgid "Twitter"
-msgstr "Twitter"
+msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:61
+#: code:addons/lcc_members/models/res_partner.py:64
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__facebook_url
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__facebook_url
 #, python-format
@@ -755,6 +833,7 @@ msgstr "Avertissement sur les commandes de vente"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:12
+#: code:addons/lcc_members/models/res_partner.py:15
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__reasons_choosing_mlc
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__reasons_choosing_mlc
 #, python-format
@@ -777,12 +856,8 @@ msgid "ZIP"
 msgstr "Code postal"
 
 #. module: lcc_members
-#: model:ir.actions.act_window,name:lcc_members.action_carte_vierge_form_view
-msgid "Blank card"
-msgstr "Carte vierge"
-
-#. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:43
+#: code:addons/lcc_members/models/res_partner.py:46
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_signature_date
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_signature_date
 #, python-format
@@ -792,7 +867,7 @@ msgstr "Date de signature de la convention"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
 msgid "e.g. BE0477472701"
-msgstr "e.g. BE0477472701"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.main_members_view
@@ -816,6 +891,7 @@ msgstr "note interne..."
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:67
+#: code:addons/lcc_members/models/res_partner.py:70
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__keywords
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__keywords
 #, python-format
@@ -829,6 +905,7 @@ msgstr "Mots clés précisant les activités. Séparés par des ;"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:55
+#: code:addons/lcc_members/models/res_partner.py:58
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__legal_activity_code
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__legal_activity_code
 #, python-format
@@ -838,7 +915,7 @@ msgstr "Code APE"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "member status"
-msgstr "Status d'adhésion"
+msgstr "Statut d'adhésion"
 
 #. module: lcc_members
 #: model:ir.model,name:lcc_members.model_member_type

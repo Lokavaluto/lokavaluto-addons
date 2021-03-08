@@ -125,10 +125,46 @@ class res_partner(models.Model):
         string="Discount",
         translate="True",
     )
+    
+    partner_image_ids = fields.One2many(
+        'partner.image',
+        'partner_id',
+        string='Images')
 
     @api.onchange('firstname', 'lastname')
     def onchange_upper_name(self):
-        if self.lastname != self.lastname.upper():
+        if self.lastname and self.lastname != self.lastname.upper():
             self.lastname = self.lastname.upper()
-        if self.firstname != self.firstname.capitalize():
+        if self.firstname and self.firstname != self.firstname.capitalize():
             self.firstname = self.firstname.capitalize()
+            
+    def _membership_state(self):
+        """This Function return Membership State For Given Partner. """
+        res = super(res_partner, self)._membership_state()
+        today = fields.Date.today()
+        s = 4
+        for partner in self:
+           s = 4
+            if partner.member_lines:
+                for mline in partner.member_lines.sorted(key=lambda r: r.id):
+                    if (mline.date_to or date.min) >= today and (mline.date_from or date.min) <= today:
+                        if mline.account_invoice_line.invoice_id.partner_id == partner:
+                            mstate = mline.account_invoice_line.invoice_id.state
+                            if mstate == 'paid':
+                                inv = mline.account_invoice_line.invoice_id
+                                if not inv.payment_move_line_ids:
+                                    partner.free_member = 1
+
+            if partner.free_member and s != 0:
+                res[partner.id] = 'free'
+                
+        return res
+
+
+class PartnerImage(models.Model):
+    _name = 'partner.image'
+    _description = 'Partner Image'
+
+    name = fields.Char('Name')
+    image = fields.Binary('Image', attachment=True)
+    partner_id = fields.Many2one('res.partner', 'Related Partner', copy=True)
