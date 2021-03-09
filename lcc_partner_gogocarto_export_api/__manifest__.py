@@ -1,7 +1,7 @@
 {
     'name': "lcc_partner_gogocarto_export_api",
     'summary': """ HTTP JSON api to send data for Gogocarto import """,
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
     'description': """
 ================================
 lcc_partner_gogocarto_export_api
