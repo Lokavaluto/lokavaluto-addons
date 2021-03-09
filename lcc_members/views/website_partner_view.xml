@@ -1,0 +1,178 @@
+<odoo>
+<data>
+<record id="lcc_partner_detail" model="ir.ui.view">
+        <field name="name">Lcc Partner details</field>
+        <field name="inherit_id" ref="website_partner.partner_detail"/>
+        <field name="arch" type="xml">
+
+  <xpath expr="//t[@name='Partner Details']" position="replace">
+    <t name="Partner Details" t-name="website_partner.partner_detail">
+      <div id="wrap" class="oe_structure oe_empty">
+      <section class="s_cover parallax s_parallax_is_fixed s_parallax_no_overflow_hidden pb0 pt24 bg-black-50" data-scroll-background-ratio="1" style="background-image: none;">
+        <span class="s_parallax_bg oe_img_bg oe_custom_bg" style="background-image: url(&quot;/web/image/656254/Philippe%20Turpin%20NM%2017%2002%20041.JPG&quot;); background-position: 54% 100%;"/>
+        <div class="container">
+          <div class="row s_nb_column_fixed">
+            <div class="col-lg-12 s_title" data-name="Title">
+                <h1 class="s_title_thin" style="font-size: 62px; text-align: center; font-weight : 400;" t-field="partner.display_name">
+                  <br/>
+                </h1>
+              </div>
+              <div class="col-lg-12 s_text pt16 pb16" data-name="Text">
+                <p class="lead" style="text-align: center; font-size: 20px; font-weight : 400;" t-field="partner.detailed_activity">
+                  <br/>
+                </p>
+              </div>  
+              <div class="s_text pt16 pb16 offset-lg-9 col-lg-3" data-name="Text">
+                 <i><p class="lead" style="text-align: center; font-size: 18px;" t-field="partner.industry_id"><br/></p>
+                 <p class="lead" style="text-align: center; font-size: 18px;" t-field="partner.secondary_industry_ids"><br/></p></i>
+                 
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="s_text_block pt32 bg-white oe_custom_bg pb0" style="">
+          <div class="container">
+            <div class="row">
+              <div class="pt0 pb0 col-lg-4 border rounded bg-100">
+                <div class="s_card card bg-white w-100">
+                  <div class="card-body">
+                    <p t-field="partner.image" t-options="{&quot;widget&quot;: &quot;image&quot;, &quot;class&quot;: &quot;d-block mx-auto mb16&quot;, &quot;max_width&quot;: 124, &quot;avoid_if_small&quot;: True}">
+                      <br/>
+                    </p>
+                  </div>
+                </div>
+                <div class="s_card card w-100 bg-white" style="">
+                  <h4 class="card-header">
+                    <span class="fa fa-question-circle s_alert_icon text-beta" style="" data-original-title="" title="" aria-describedby="tooltip657732"/>
+                    <font style="font-size: 18px;">Pourquoi la MLC ?</font>
+                    <br/>
+                  </h4>
+                  <div class="card-body">
+                    <p class="card-text" t-field="partner.reasons_choosing_mlc"/>
+                  </div>
+                </div>
+                <div t-if="partner.discount != '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'" class="s_card card bg-white w-100">
+                  <h4 class="card-header">
+                    <span class="fa fa-money s_alert_icon text-alpha" style="" data-original-title="" title="" aria-describedby="tooltip657732"/>
+                    <font style="font-size: 18px;">Réductions</font>
+                    <br/>
+                  </h4>
+                  <div class="card-body">
+                    <p class="card-text" t-field="partner.discount"/>
+                  </div>
+                </div>
+                <div t-if="partner.opening_time" class="s_card card bg-white w-100">
+                  <h4 class="card-header">
+                    <span class="fa fa-calendar s_alert_icon text-beta" style="" data-original-title="" title="" aria-describedby="tooltip657732"/>
+                    <font style="font-size: 18px;">Horaires d'ouverture</font>
+                    <br/>
+                  </h4>
+                  <div class="card-body">
+                    <p class="card-text" t-field="partner.opening_time">
+                      <br/>
+                    </p>
+                  </div>
+                </div>
+                <div class="s_card card bg-white w-100">
+                  <h4 class="card-header">
+                    <span class="fa fa-vcard s_alert_icon text-alpha" style="background-color: rgb(255, 255, 255);" data-original-title="" title="" aria-describedby="tooltip657732"/>
+                    <font style="font-size: 18px;">Informations de contact</font>
+                    <br/>
+                  </h4>
+                  <div class="card-body">
+                    <p class="card-text" t-field="partner.self" t-options="{                  &quot;widget&quot;: &quot;contact&quot;,                  &quot;fields&quot;: [&quot;address&quot;, &quot;phone&quot;, &quot;email&quot;, &quot;website&quot;]              }">
+                      <br/>
+                    </p>
+                  </div>
+                </div>
+                
+                <div class="s_card card bg-white w-100">
+                  <h4 class="card-header">
+                    <span class="fa fa-list-alt s_alert_icon text-beta" style="background-color: rgb(255, 255, 255);" data-original-title="" title="" aria-describedby="tooltip657732"/>
+                    <font style="font-size: 18px;">Autres informations</font>
+                    <br/>
+                  </h4>
+                  <div class="card-body">
+                    <p class="card-text" t-if="partner.currency_exchange_office"><b>Comptoir de change</b></p>
+                    <p class="card-text" t-if="partner.itinerant"><b>Itinérant</b></p>
+                    <p class="card-text" t-if="partner.team_id"><b>Groupe Local:</b> <t t-field="partner.team_id"/></p>
+                      
+                  </div>
+                </div>
+                
+              </div>
+              
+              <div class="pt32 col-lg-8 pb40 bg-white">
+                   <t t-if="partner">
+            <div t-field="partner.website_description"/>
+            <t groups="website.group_website_publisher">
+                <h2 class="css_non_editable_mode_hidden o_not_editable">Short Description for List View</h2>
+                <div class="css_non_editable_mode_hidden" t-field="partner.website_short_description"/>
+            </t>
+        </t>
+                  
+               <div class="s_hr text-left pt32 pb32">
+                  <hr class="border-alpha s_hr_1px w-100 mx-auto s_hr_dashed"/>
+                </div> 
+              
+                <div class="s_share">
+                  <h4 class="s_share_title o_default_snippet_text">
+                    <font style="font-size: 18px;">Partager</font>
+                  </h4>
+                  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgestion.laroue.org%2Fpartners%2Felabore-33619%3Fdebug%3Dtrue%23" class="s_share_facebook" target="_blank">
+                    <i class="fa fa-1x fa-facebook rounded shadow-sm" style="font-size: 18px;"/>
+                  </a>
+                  <a href="https://twitter.com/intent/tweet?text=elabore%20%7C%20Gestion%20La%20Roue&amp;url=https%3A%2F%2Fgestion.laroue.org%2Fpartners%2Felabore-33619%3Fdebug%3Dtrue%23" class="s_share_twitter" target="_blank">
+                    <i class="fa fa-1x fa-twitter rounded shadow-sm" style="font-size: 18px;"/>
+                  </a>
+                  <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fgestion.laroue.org%2Fpartners%2Felabore-33619%3Fdebug%3Dtrue%23&amp;title=elabore%20%7C%20Gestion%20La%20Roue&amp;" class="s_share_linkedin" target="_blank">
+                    <i class="fa fa-1x fa-linkedin rounded shadow-sm" style="font-size: 18px;"/>
+                  </a>
+                  <a href="https://plus.google.com/share?url=https%3A%2F%2Fgestion.laroue.org%2Fpartners%2Felabore-33619%3Fdebug%3Dtrue%23" class="s_share_google" target="_blank">
+                    <i class="fa fa-1x fa-google-plus rounded shadow-sm" style="font-size: 18px;"/>
+                  </a>
+                  <a href="mailto:?body=https%3A%2F%2Fgestion.laroue.org%2Fpartners%2Felabore-33619%3Fdebug%3Dtrue%23&amp;subject=elabore%20%7C%20Gestion%20La%20Roue" class="s_share_email">
+                    <i class="fa fa-1x fa-envelope rounded shadow-sm" style="font-size: 18px;"/>
+                  </a>
+                </div>  
+              </div>
+              
+            </div>
+          </div>
+        </section>
+        <br/>
+        <section id="demos">
+        <div class="container">
+        
+         <div class="owl-carousel owl-theme owl-loaded owl-drag">
+                <t t-foreach="partner.partner_image_ids" t-as="image">
+                  <div class="item">
+                    <img t-att-src="website.image_url(image,'image')" class="img-fluid" style="height:230px" alt=""/>
+                  </div>
+                </t>
+              </div>
+              </div>
+           
+              </section>
+              
+       <script type="text/javascript">
+  $('.owl-carousel').owlCarousel({
+    loop:true,
+    items : 4,
+    itemsDesktop : [1199,3],
+    itemsDesktopSmall : [979,3],
+    dots:true,
+    autoplay:true,
+    autoplayTimeout:3000,
+    autoplayHoverPause:true,
+})
+</script>
+      </div>
+
+    </t>
+  </xpath>
+  
+        </field>
+    </record>
+</data>
+</odoo>

@@ -3,7 +3,7 @@
 
 {
     'name': 'lcc_members',
-    'version': '12.0.1.0.11',
+    'version': '12.0.2.0.3',
     'author': 'Lokavaluto',
     'maintainer': 'False',
     'website': 'False',
@@ -100,6 +100,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
         'views/res_partner_view.xml',
         'views/member_type_view.xml',
         'views/ir_ui_menus.xml',
@@ -107,6 +108,8 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'views/product_template_menus.xml',
         'views/member_type_menus.xml',
         'views/res_partner_menus.xml',
+        'views/website_partner_view.xml',
+        'views/assets.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

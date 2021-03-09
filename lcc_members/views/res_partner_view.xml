@@ -114,7 +114,8 @@
                             <field name="ref" string="Subcription number"/>
                             <field name="membership_state" string="Subscription status"/>
                             <field name="member_type_id" string="Subscription type" attrs="{'invisible': [('is_company', '=', False)]}"/>
-                            <field name="is_volunteer"/>
+                            <field name="currency_exchange_office" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                            <field name="is_volunteer" attrs="{'invisible': [('is_company','=', True)]}"/>
                         </group>
                         <group>
                             <field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': [('is_company','=', True)]}"/>
@@ -141,7 +142,6 @@
                                 <field name="email" widget="email"/>
                             </div>
                             <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
-                            <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="0" colspan="1"/>
                             <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Tags..."/>
                         </group>
                     </group>
@@ -159,6 +159,7 @@
                             <group name="presentation" string="website presentation">
                                 <field name="opening_time" placeholder="Opening hours(ex. every day from 9am to 18pm or opening hours day by day)" attrs="{'invisible': [('is_company', '=', False)]}"/>
                                 <field name="reasons_choosing_mlc" string="Subscription reason" placeholder="Why the pro. subscribe to LCC? allow to involve customers"/>
+                                <field name="discount"/>
                             </group>
                             <group colspan="2" col="2">
                                 <separator string="Geolocation" colspan="2"/>
@@ -173,6 +174,42 @@
                                     <span>)</span>
                                 </div>
                             </group>
+                            <group name="extra_images" string="Extra Images">
+                        <field name="partner_image_ids" class="o_website_sale_image_list" attrs="{'invisible': [('is_company', '=', False)]}" context="{'default_name': name, 'default_partner_id': active_id}" nolabel="1">
+                            <kanban string="Partner Images" class="o_attachments_previews">
+                                <field name="id"/>
+                                <field name="name"/>
+                                <field name="image"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="o_attachment oe_kanban_global_click o_website_sale_image_card">
+                                            <div class="o_attachment_wrap">
+                                                <div class="o_image_box">
+                                                    <div class="o_attachment_image" t-attf-style="background-image:url({{kanban_image('partner.image', 'image', record.id.raw_value)}});"/>
+                                                    <div t-attf-class="o_image_overlay" t-att-title="record.name.value"/>
+                                                    <div class="o_website_sale_image_card_title" t-att-title="record.name.value">
+                                                        <field name="name"/>
+                                                    </div>
+                                                </div>
+
+                                                <t t-set="size" t-value="[record.image.value][0]"/>
+                                                <t t-set="size_status" t-value="'normal'" t-if="size.indexOf('Bytes') !== -1 or ( size.indexOf('Kb') !== -1 and size[2]=='.')"/>
+                                                <t t-set="size_status" t-value="'warning'" t-elif="( size.indexOf('Kb') !== -1 and size[3]=='.')"/>
+                                                <t t-set="size_status" t-value="'danger'"  t-else=""/>
+                                                <t t-set="message" t-value="'Acceptable file size'" t-if="size_status == 'normal'"></t>
+                                                <t t-set="message" t-value="'Huge file size. The image should be optimized/reduced.'" t-elif="size_status == 'warning'"></t>
+                                                <t t-set="message" t-value="'Optimization required! Reduce the image size or increase your compression settings.'" t-else=""></t>
+
+                                                <span t-attf-class="o_website_sale_image_card_size badge badge-#{size_status}" t-att-title="message">
+                                                    <t t-esc="record.image.value"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </group>
                         </page>
                         <page name="membership" string="Membership" attrs="{'invisible': [('customer', '=', False)]}">
                             <group>
@@ -221,6 +258,11 @@
                                 </form>
                             </field>
 
+                        </page>
+                        <page string="Socials networks" name="social">
+                            <group>
+                                <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="0" colspan="1"/>
+                            </group>                        
                         </page>
                         <page string="Contacts &amp; Addresses" autofocus="autofocus">
                             <field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier, 'default_customer': customer, 'default_lang': lang, 'default_user_id': user_id}">
@@ -333,7 +375,6 @@
                                                 <field name="email"/>
                                                 <field name="phone" widget="phone"/>
                                                 <field name="mobile" widget="phone"/>
-                                                <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="0" colspan="1"/>
                                                 <field name="comment" placeholder="internal note..."/>
                                             </group>
                                         </group>
@@ -485,6 +526,17 @@
             </field>
         </field>
     </record>
+    <record id="partner_list_view" model="ir.ui.view">
+        <field name="name">Partner List View</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="attributes">
+                <attribute name="widget">many2many_tags</attribute>
+            </field>
+        </field>
+    </record>
+
     <record id="members_kanban_view" model="ir.ui.view">
         <field name="name">Members kanban View</field>
         <field name="model">res.partner</field>
@@ -520,6 +572,27 @@
                 </xpath>
 
             </data>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_partner_image_form">
+        <field name="name">partner.image.form</field>
+        <field name="model">partner.image</field>
+        <field name="arch" type="xml">
+            <form string="Partner Images">
+                <div class="row o_website_sale_image_modal">
+                    <div class="col-md-6 col-xl-5">
+                        <div class="oe_title">
+                            <label class="small text-muted" for="name" string="Image Name"/>
+                            <h2><field name="name" placeholder="Image Name" required="True"/></h2>
+                            <field name="partner_id" invisible="1"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-7 text-center o_website_sale_image_modal_container">
+                        <field name="image" widget="image"/>
+                    </div>
+                </div>
+            </form>
         </field>
     </record>
 </data>
