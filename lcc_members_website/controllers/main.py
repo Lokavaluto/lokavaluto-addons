@@ -212,8 +212,8 @@ class WebsiteMembership(http.Controller):
         if not values.get("country_id"):
             values["country_id"] = "75"
         if not values.get("team_id"):
-            _logger.debug("TEAM2: %s" % request.env['crm.team'].search([], limit=1).id)
-            values["team_id"] = request.env['crm.team'].search([], limit=1).id or ''
+            _logger.debug("TEAM2: %s" % request.env['crm.team'].sudo().search([], limit=1).id)
+            values["team_id"] = request.env['crm.team'].sudo().search([], limit=1).id or ''
         if not values.get("activities_country_id"):
             values["activities_country_id"] = "75"
         if not values.get("lang"):
