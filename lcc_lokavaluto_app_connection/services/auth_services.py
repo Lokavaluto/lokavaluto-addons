@@ -34,6 +34,10 @@ class AuthService(Component):
                     None
                 )
                 current_key = api_key_model.search([('user_id', '=', uid)], limit=1)
+                current_user = self.env['res.users'].sudo().search([('id', '=', uid)])
+                _logger.debug('USER: %s' % current_user)
+                if current_user:
+                    response['partner_id'] = current_user.partner_id.id
                 if not current_key:
                     current_key = api_key_model.create({
                         'user_id': uid,
@@ -54,7 +58,8 @@ class AuthService(Component):
         }
 
     def _validator_return_authenticate(self):
-        return {"response": {"type": "dict", "schema": {"uid": {"type": "integer",},
+        return {"response": {"type": "dict", "schema": {"uid": {"type": "integer"},
+                                                        "partner_id": {"type": "integer"},
                                                         "status": {"type": "string", "required": True},
                                                         "error": {"type": "string"},
                                                         "api_token": {"type": "string",}}}}

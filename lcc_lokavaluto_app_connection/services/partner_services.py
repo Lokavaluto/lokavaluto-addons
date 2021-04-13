@@ -88,6 +88,7 @@ class PartnerService(Component):
         res = self._validator_create()
         _logger.debug("res: %s" % res)
         res.update({"id": {"type": "integer", "required": True, "empty": False}})
+
         return res
 
     def _validator_search(self):
@@ -111,6 +112,8 @@ class PartnerService(Component):
             "zip": {"type": "string", "nullable": True, "empty": True},
             "city": {"type": "string", "nullable": True, "empty": True},
             "phone": {"type": "string", "nullable": True, "empty": True},
+            "mobile": {"type": "string", "nullable": True, "empty": True},
+            "email": {"type": "string", "nullable": True, "empty": True},
             "state": {
                 "type": "dict",
                 "schema": {
@@ -158,6 +161,8 @@ class PartnerService(Component):
             'street2',
             'zip',
             'city',
+            'mobile',
+            'email',
             'phone',
             ('country_id', ['id', 'name']),
             #('state', ['id','name'])
