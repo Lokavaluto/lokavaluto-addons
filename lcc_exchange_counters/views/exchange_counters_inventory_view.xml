@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="exchangecounters_inventory_tree" model="ir.ui.view">
+        <field name="name">exchangecounters.inventory.tree</field>
+        <field name="model">exchangecounters.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="counter_id" string="Counter ID"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
