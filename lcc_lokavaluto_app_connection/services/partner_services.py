@@ -46,6 +46,7 @@ class PartnerService(Component):
         partner = self.env["res.partner"].create(self._prepare_params(params))
         parser = self._get_partner_parser()
         return partner.jsonify(parser)
+        
     def update(self, _id, **params):
         """
         Update partner informations
