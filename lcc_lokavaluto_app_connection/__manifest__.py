@@ -1,6 +1,5 @@
 {
-    'name': "lcc_lokavaluto_app_connection",
-
+    'name': "stephan_lokavaluto_app_connection",
     'summary': """
         REST Odoo Backend for Lokavaluto mobile application
         """,
