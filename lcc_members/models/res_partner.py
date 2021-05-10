@@ -141,7 +141,6 @@ class res_partner(models.Model):
     def _membership_state(self):
         res = super(res_partner, self)._membership_state()
         today = fields.Date.today()
-        s = 4
         for partner in self:
             s = 4
             if partner.member_lines:
@@ -153,6 +152,8 @@ class res_partner(models.Model):
                                 inv = mline.account_invoice_line.invoice_id
                                 if not inv.payment_move_line_ids:
                                     partner.free_member = 1
+                                else:
+                                    partner.free_member = 0
 
             if partner.free_member and s != 0:
                 res[partner.id] = 'free'
