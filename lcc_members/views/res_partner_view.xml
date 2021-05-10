@@ -487,6 +487,7 @@
                 <field name="membership_state" string="member status"/>
 
                 <filter name="filter_my_partners" help="My Contacts" domain="[('user_id','=',uid)]"/>
+                <filter string="My Favorites" name="my_partners" domain="[('favorite_user_ids', 'in', uid)]"/>
                 <separator/>
                 <filter string="My local group" name="Local group" domain="[('team_id.member_ids', 'in', uid)]"/>
                 <separator/>

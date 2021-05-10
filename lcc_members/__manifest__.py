@@ -90,9 +90,10 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'l10n_fr_siret',
         'sales_team',
         'l10n_fr',
-	    'account',
-	    'sale',
+        'account',
+        'sale',
         'project',
+        'partner_favorite',
     ],
     'external_dependencies': {
         'python': [],
