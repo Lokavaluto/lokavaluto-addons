@@ -26,7 +26,7 @@ class PartnerService(Component):
 
     def search(self, name):
         """
-        Searh partner by name
+        Search partner by name
         """
         partners = self.env["res.partner"].name_search(name)
         partners = self.env["res.partner"].browse([i[0] for i in partners])
@@ -38,6 +38,20 @@ class PartnerService(Component):
         _logger.debug('rows: %s' % rows)
         return res
 
+    def favorite(self):
+        """
+        Get my favorite partner
+        """
+        partners = self.env["res.partner"].search(
+            [('favorite_user_ids', 'in',
+              self.env.context.get('uid'))])
+        rows = []
+        res = {"count": len(partners), "rows": rows}
+        parser = self._get_partner_parser()
+        rows = partners.jsonify(parser)
+        res = {"count": len(partners), "rows": rows}
+        return res
+
     # pylint:disable=method-required-super
     def create(self, **params):
         """
@@ -46,7 +60,7 @@ class PartnerService(Component):
         partner = self.env["res.partner"].create(self._prepare_params(params))
         parser = self._get_partner_parser()
         return partner.jsonify(parser)
-        
+
     def update(self, _id, **params):
         """
         Update partner informations
@@ -96,6 +110,16 @@ class PartnerService(Component):
         return {"name": {"type": "string", "nullable": False, "required": True}}
 
     def _validator_return_search(self):
+        return {
+            "count": {"type": "integer", "required": True},
+            "rows": {
+                "type": "list",
+                "required": True,
+                "schema": {"type": "dict", "schema": self._validator_return_get()},
+            },
+        }
+
+    def _validator_return_favorite(self):
         return {
             "count": {"type": "integer", "required": True},
             "rows": {

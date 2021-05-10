@@ -8,6 +8,7 @@ from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
+
 class AuthService(Component):
     _inherit = "base.rest.service"
     _name = "auth.service"
