@@ -15,11 +15,12 @@ class PartnerMapService(Component):
         Access to the ping services is allowed to everyone
     """
 
-    def search_in_area(self, **params):
+    def search_in_area(self, bounding_box):
         """
         Searh partner in a area defined by latitude and longitude
         """
-        partners = _get_mobile_app_pro_domain(params)
+        all_partner = request.env['res.partner'].sudo()
+        partners = all_partner._get_mobile_app_pro_domain(bounding_box)
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
@@ -33,92 +34,60 @@ class PartnerMapService(Component):
     # The following method are 'private' and should be never never NEVER call
     # from the controller.
 
-    def _get(self, _id):
-        return self.env["res.partner"].browse(_id)
-
-    def _prepare_params(self, params):
-        for key in ["country", "state"]:
-            if key in params:
-                val = params.pop(key)
-                if val.get("id"):
-                    params["%s_id" % key] = val["id"]
-        return params
-
     # Validator
-    def _validator_return_get(self):
-        res = self._validator_create()
-        _logger.debug("res: %s" % res)
-        res.update({"id": {"type": "integer", "required": True, "empty": False}})
+    def _validator_search_in_area(self):
+        return {"bounding_box": {
+                    "type": "dict",
+                    "schema": {
+                        "minLat": {"type": "string", "required": True},
+                        "maxLat": {"type": "string", "required": True},
+                        "minLon": {"type": "string", "required": True},
+                        "maxLon": {"type": "string", "required": True},
+                    },
+                    "required": True,
+                }}
 
-        return res
 
-    def _validator_search(self):
-        return {"name": {"type": "string", "nullable": False, "required": True}}
-
-    def _validator_return_search(self):
-        return {
+    def _validator_return_search_in_area(self):
+        res = {
             "count": {"type": "integer", "required": True},
             "rows": {
                 "type": "list",
                 "required": True,
-                "schema": {"type": "dict", "schema": self._validator_return_get()},
+                "schema": {"type": "dict", "schema": self._return_partner_in_area()},
             },
-        }
-
-    def _validator_create(self):
-        res = {
-            "name": {"type": "string", "required": True, "empty": False},
-            "partner_latitude": {"type": "string", "required": True, "empty": False},
-            "partner_longiture": {"type": "string", "required": True, "empty": False},
-            "industry_id" : {"type": "string", "required": True, "empty": False},
-            "opening_time" : {"type": "string", "required": False, "empty": False},
-            #"street": {"type": "string", "nullable": True, "empty": True},
-            #"street2": {"type": "string", "nullable": True},
-            #"zip": {"type": "string", "nullable": True, "empty": True},
-            #"city": {"type": "string", "nullable": True, "empty": True},
-            #"phone": {"type": "string", "nullable": True, "empty": True},
-            #"mobile": {"type": "string", "nullable": True, "empty": True},
-            #"email": {"type": "string", "nullable": True, "empty": True},
-            #"state": {
-            #    "type": "dict",
-            #    "schema": {
-            #        "id": {"type": "integer", "coerce": to_int, "nullable": True},
-            #        "name": {"type": "string"},
-            #    },
-            #},
-            #"country": {
-            #    "type": "dict",
-            #    "schema": {
-            #           "id": {
-            #            "type": "integer",
-            #            "coerce": to_int,
-            #            "required": True,
-            #            "nullable": False,
-            #        },
-            #        "name": {"type": "string"},
-            #    },
-            #},
-            #"is_company": {"coerce": to_bool, "type": "boolean"},
         }
         return res
 
+    def _return_partner_in_area(self):
+        res = {
+            "id": {"type": "integer", "required": True, "empty": False},
+            "name": {"type": "string", "required": True, "empty": False},
+            "partner_latitude": {"type": "string", "required": True, "empty": False},
+            "partner_longitude": {"type": "string", "required": True, "empty": False},
+            "industry_id": {
+                "type": "dict",
+                "schema": {
+                    "id": {
+                        "type": "integer",
+                        "coerce": to_int,
+                        "required": True,
+                        "nullable": False,
+                    },
+                    "name": {"type": "string"},
+                },
+            },
+            "opening_time" : {"type": "string", "required": False, "empty": False},
+        }
+        return res
 
     def _get_partner_parser(self):
         parser = [
             'id',
             'name',
             'partner_latitude',
-            'partner_longiture',
-            'industry_id',
-            'opening_time'
-            #'street',
-            #'street2',
-            #'zip',
-            #'city',
-            #'mobile',
-            #'email',
-            #'phone',
-            #('country_id', ['id', 'name']),
-            #('state', ['id','name'])
+            'partner_longitude',
+            ('industry_id', ['id', 'name']),
+            'opening_time',
         ]
         return parser
