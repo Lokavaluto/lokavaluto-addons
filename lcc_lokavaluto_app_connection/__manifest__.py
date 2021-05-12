@@ -1,5 +1,5 @@
 {
-    'name': "stephan_lokavaluto_app_connection",
+    'name': "lcc_lokavaluto_app_connection",
     'summary': """
         REST Odoo Backend for Lokavaluto mobile application
         """,
@@ -10,7 +10,7 @@
    :alt: License: AGPL-3
 
 =============================
-lcc_lokavaluto_app_connection
+stephan_lokavaluto_app_connection
 =============================
 
 Lokavaluto mobile application connection module, to communicate the Odoo
