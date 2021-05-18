@@ -25,8 +25,8 @@ class PartnerMapService(Component):
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
         rows = partners.jsonify(parser)
+        _logger.debug('#################### rows: %s' % rows)
         res = {"count": len(partners), "rows": rows}
-        _logger.debug('rows: %s' % rows)
         return res
 
     
@@ -61,23 +61,25 @@ class PartnerMapService(Component):
 
     def _return_partner_in_area(self):
         res = {
-            "id": {"type": "integer", "required": True, "empty": False},
-            "name": {"type": "string", "required": True, "empty": False},
-            "partner_latitude": {"type": "string", "required": True, "empty": False},
-            "partner_longitude": {"type": "string", "required": True, "empty": False},
+            "id": {"type": "integer", "required": True, "nullable": False},
+            "name": {"type": "string", "required": True, "empty": True},
+            "partner_latitude": {"type": "float", "required": True, "empty": True},
+            "partner_longitude": {"type": "float", "required": True, "empty": True},
             "industry_id": {
                 "type": "dict",
                 "schema": {
                     "id": {
                         "type": "integer",
                         "coerce": to_int,
-                        "required": True,
                         "nullable": False,
+                        "empty": True
                     },
-                    "name": {"type": "string"},
+                    "name": {"type": "string", "empty": True},
                 },
+                "empty": True,
+                "required": False
             },
-            "opening_time" : {"type": "string", "required": False, "empty": False},
+            "opening_time": {"type": "string", "required": False, "empty": True},
         }
         return res
 
