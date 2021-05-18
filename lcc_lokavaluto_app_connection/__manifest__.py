@@ -81,6 +81,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'base_rest_datamodel',
         'base_jsonify',
         'partner_favorite',
+        'lcc_members',
         ],
 
     # always loaded
