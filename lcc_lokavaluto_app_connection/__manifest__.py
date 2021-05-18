@@ -71,7 +71,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
     'category': 'Website',
-    'version': '12.0.1.0.3',
+    'version': '12.0.1.0.4',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -80,6 +80,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'auth_api_key',
         'base_rest_datamodel',
         'base_jsonify',
+        'partner_favorite',
         ],
 
     # always loaded
