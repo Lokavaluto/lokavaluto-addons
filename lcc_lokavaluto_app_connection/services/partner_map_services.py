@@ -77,7 +77,8 @@ class PartnerMapService(Component):
                     "name": {"type": "string", "empty": True},
                 },
                 "empty": True,
-                "required": False
+                "required": False,
+                "nullable": True,
             },
             "opening_time": {"type": "string", "required": False, "empty": True},
         }
