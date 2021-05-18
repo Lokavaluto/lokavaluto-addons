@@ -8,7 +8,7 @@ class ResPartner(models.Model):
     """ Inherits partner and adds Tasks information in the partner form """
     _inherit = 'res.partner'
 
-    in_mobile_app = fields.Boolean('In the mobile map', default=True)
+    in_mobile_app = fields.Boolean('In the mobile map', default=False)
 
     app_exported_fields = []
 
