@@ -52,6 +52,22 @@ class PartnerService(Component):
         res = {"count": len(partners), "rows": rows}
         return res
 
+    def toggle_favorite(self, _id):
+        """
+        Toggle favorite partner
+        """
+        partner = self._get(_id)
+        parser = self._get_partner_parser()
+        partner.write({
+           'is_favorite': True,
+        })
+        return partner.jsonify(parser)[0]
+
+    def _validator_return_toggle_favorite(self):
+        res = self._validator_create()
+        res.update({"id": {"type": "integer", "required": True, "empty": False}})
+        return res
+
     # pylint:disable=method-required-super
     def create(self, **params):
         """
@@ -159,6 +175,7 @@ class PartnerService(Component):
                 },
             },
             "is_company": {"coerce": to_bool, "type": "boolean"},
+            "is_favorite": {"coerce": to_bool, "type": "boolean"},
         }
         return res
 
@@ -189,6 +206,8 @@ class PartnerService(Component):
             'mobile',
             'email',
             'phone',
+            'is_favorite',
+            'is_company',
             ('country_id', ['id', 'name']),
             #('state', ['id','name'])
         ]

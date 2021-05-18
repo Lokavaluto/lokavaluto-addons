@@ -13,14 +13,15 @@ class ResPartner(models.Model):
     app_exported_fields = []
 
     def _get_mobile_app_pro_domain(self, bounding_box):
+        _logger.debug('############ %s' % bounding_box)
         return [('in_mobile_app', '=', True),
                 ('is_company', '=', True),
                 ('partner_longitude', '!=', float()),
                 ('partner_latitude', '!=', float()),
-                ('partner_longitude', '>', bounding_box.minLon),
-                ('partner_longitude', '<', bounding_box.maxLon),
-                ('partner_latitude', '>', bounding_box.minLat),
-                ('partner_latitude', '<', bounding_box.maxLat)]
+                ('partner_longitude', '>', float(bounding_box.get('minLon', ''))),
+                ('partner_longitude', '<', float(bounding_box.get('maxLon', ''))),
+                ('partner_latitude', '>', float(bounding_box.get('minLat', ''))),
+                ('partner_latitude', '<', float(bounding_box.get('maxLat', '')))]
 
     def in_mobile_app_button(self):
         """ Inverse the value of the field ``in_mobile_app``
