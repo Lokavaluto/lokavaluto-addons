@@ -80,7 +80,7 @@ class PartnerMapService(Component):
                 "required": False,
                 "nullable": True,
             },
-            "opening_time": {"type": "string", "required": False, "empty": True},
+            "opening_time": {"type": "string", "required": False, "empty": True, "nullable": True},
         }
         return res
 
