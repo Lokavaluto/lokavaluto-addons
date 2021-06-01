@@ -94,6 +94,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'sale',
         'project',
         'partner_favorite',
+        'partner_gogocarto_export_api',
     ],
     'external_dependencies': {
         'python': [],
