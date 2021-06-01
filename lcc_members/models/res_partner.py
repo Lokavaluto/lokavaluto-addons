@@ -145,7 +145,7 @@ class res_partner(models.Model):
             s = 4
             if partner.member_lines:
                 for mline in partner.member_lines.sorted(key=lambda r: r.id):
-                    if (mline.date_to or date.min) >= today and (mline.date_from or date.min) <= today:
+                    if (mline.date_to) >= today and (mline.date_from) <= today:
                         if mline.account_invoice_line.invoice_id.partner_id == partner:
                             mstate = mline.account_invoice_line.invoice_id.state
                             if mstate == 'paid':
