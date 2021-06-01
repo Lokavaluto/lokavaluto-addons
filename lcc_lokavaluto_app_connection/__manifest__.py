@@ -1,6 +1,5 @@
 {
     'name': "lcc_lokavaluto_app_connection",
-
     'summary': """
         REST Odoo Backend for Lokavaluto mobile application
         """,
@@ -11,7 +10,7 @@
    :alt: License: AGPL-3
 
 =============================
-lcc_lokavaluto_app_connection
+stephan_lokavaluto_app_connection
 =============================
 
 Lokavaluto mobile application connection module, to communicate the Odoo
@@ -72,7 +71,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
     'category': 'Website',
-    'version': '12.0.1.0.3',
+    'version': '12.0.1.0.4',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -81,6 +80,8 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'auth_api_key',
         'base_rest_datamodel',
         'base_jsonify',
+        'partner_favorite',
+        'lcc_members',
         ],
 
     # always loaded
