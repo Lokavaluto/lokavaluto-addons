@@ -10,7 +10,7 @@
    :alt: License: AGPL-3
 
 =============================
-stephan_lokavaluto_app_connection
+lcc_lokavaluto_app_connection
 =============================
 
 Lokavaluto mobile application connection module, to communicate the Odoo
