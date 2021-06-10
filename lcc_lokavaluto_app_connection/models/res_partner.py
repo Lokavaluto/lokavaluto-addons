@@ -12,12 +12,12 @@ class ResPartner(models.Model):
 
     app_exported_fields = []
 
-    def _get_mobile_app_pro_domain(self, bounding_box, category):
+    def _get_mobile_app_pro_domain(self, bounding_box, categories):
         _logger.debug('############ %s' % bounding_box)
-        if (category != ''):
+        if (len(categories) > 0):
             return [('in_mobile_app', '=', True),
                     ('is_company', '=', True),
-                    ('industry_id', '=', category),
+                    ('industry_id', 'in', categories),
                     ('partner_longitude', '!=', float()),
                     ('partner_latitude', '!=', float()),
                     ('partner_longitude', '>', float(bounding_box.get('minLon', ''))),
