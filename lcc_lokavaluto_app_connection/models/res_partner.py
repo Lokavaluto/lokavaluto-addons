@@ -12,16 +12,28 @@ class ResPartner(models.Model):
 
     app_exported_fields = []
 
-    def _get_mobile_app_pro_domain(self, bounding_box):
+    def _get_mobile_app_pro_domain(self, bounding_box, category):
         _logger.debug('############ %s' % bounding_box)
-        return [('in_mobile_app', '=', True),
-                ('is_company', '=', True),
-                ('partner_longitude', '!=', float()),
-                ('partner_latitude', '!=', float()),
-                ('partner_longitude', '>', float(bounding_box.get('minLon', ''))),
-                ('partner_longitude', '<', float(bounding_box.get('maxLon', ''))),
-                ('partner_latitude', '>', float(bounding_box.get('minLat', ''))),
-                ('partner_latitude', '<', float(bounding_box.get('maxLat', '')))]
+        if (category != ''):
+            return [('in_mobile_app', '=', True),
+                    ('is_company', '=', True),
+                    ('industry_id', '=', category),
+                    ('partner_longitude', '!=', float()),
+                    ('partner_latitude', '!=', float()),
+                    ('partner_longitude', '>', float(bounding_box.get('minLon', ''))),
+                    ('partner_longitude', '<', float(bounding_box.get('maxLon', ''))),
+                    ('partner_latitude', '>', float(bounding_box.get('minLat', ''))),
+                    ('partner_latitude', '<', float(bounding_box.get('maxLat', '')))]
+        else:
+            return [('in_mobile_app', '=', True),
+                    ('is_company', '=', True),
+                    ('partner_longitude', '!=', float()),
+                    ('partner_latitude', '!=', float()),
+                    ('partner_longitude', '>', float(bounding_box.get('minLon', ''))),
+                    ('partner_longitude', '<', float(bounding_box.get('maxLon', ''))),
+                    ('partner_latitude', '>', float(bounding_box.get('minLat', ''))),
+                    ('partner_latitude', '<', float(bounding_box.get('maxLat', '')))]
+
 
     def in_mobile_app_button(self):
         """ Inverse the value of the field ``in_mobile_app``
