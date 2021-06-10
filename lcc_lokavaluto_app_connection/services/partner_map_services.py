@@ -15,12 +15,12 @@ class PartnerMapService(Component):
         Access to the ping services is allowed to everyone
     """
 
-    def search_in_area(self, bounding_box, category):
+    def search_in_area(self, bounding_box, categories):
         """
         Searh partner in a area defined by latitude and longitude
         """
         all_partner = self.env['res.partner'].sudo()
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(bounding_box, category))
+        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(bounding_box, categories))
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
@@ -44,9 +44,15 @@ class PartnerMapService(Component):
                         "minLon": {"type": "string", "required": True},
                         "maxLon": {"type": "string", "required": True},
                     },
-                    "required": True},
-                "category" : {"type": "string", "required": False, "nullable": True},
-                }
+                    "required": True
+                },
+                "categories" : {
+                    "type": "list", 
+                    "schema": {"type": "string"},
+                    "required": False,
+                    "nullable": True
+                },
+               }
 
 
     def _validator_return_search_in_area(self):
