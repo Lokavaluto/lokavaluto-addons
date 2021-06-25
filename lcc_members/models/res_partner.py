@@ -11,6 +11,13 @@ _logger = logging.getLogger(__name__)
 class res_partner(models.Model):
     _inherit = "res.partner"
 
+    def compute_has_user_account(self):
+        self.ensure_one()
+        self.has_user_account = False
+        current_user = self.env['res.users'].sudo().search([('partner_id', '=', self.id)], limit=1)
+        if current_user:
+            self.has_user_account = True
+
     reasons_choosing_mlc = fields.Text(
         string=_("Why did I choose local currency"),
         required=False,
@@ -130,6 +137,8 @@ class res_partner(models.Model):
         'partner.image',
         'partner_id',
         string='Images')
+    
+    has_user_account = fields.Boolean(string='has user account ?', compute=compute_has_user_account, store=False)
 
     @api.onchange('firstname', 'lastname')
     def onchange_upper_name(self):
