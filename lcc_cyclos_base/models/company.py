@@ -14,7 +14,7 @@ class Company(models.Model):
     cyclos_server_login = fields.Char(
         string='Login for cyclos server'
     )
-    
+
     cyclos_server_password = fields.Char(
         string='Password for cyclos server'
     )
