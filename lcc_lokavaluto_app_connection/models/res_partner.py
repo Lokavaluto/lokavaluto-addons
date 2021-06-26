@@ -40,11 +40,16 @@ class ResPartner(models.Model):
         self.in_mobile_app = not self.in_mobile_app
 
     def _update_auth_data(self, password):
-        return {}
+        return []
     
     def _validator_return_authenticate(self):
-        return {"response": {"type": "dict", "schema": {"uid": {"type": "integer"},
-                                                        "partner_id": {"type": "integer"},
-                                                        "status": {"type": "string", "required": True},
-                                                        "error": {"type": "string"},
-                                                        "api_token": {"type": "string",}}}}
+        return {"response": {"type": "dict", "schema": {
+                                "uid": {"type": "integer"},
+                                "partner_id": {"type": "integer"},
+                                "status": {"type": "string", "required": True},
+                                "error": {"type": "string"},
+                                "monujo_accounts": {"type": "list"},
+                                "api_token": {"type": "string",}
+                                }
+                             }
+                }
