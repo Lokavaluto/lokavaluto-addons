@@ -44,35 +44,41 @@ class ResPartner(models.Model):
                             entrypoint)
         if method == 'POST':
             return requests.post(api_url,
-                             auth=HTTPBasicAuth(api_login, api_password),
-                             verify=False,
-                             data=json.dumps(data),
-                             headers=headers)
+                                 auth=HTTPBasicAuth(api_login, api_password),
+                                 verify=False,
+                                 data=json.dumps(data),
+                                 headers=headers)
         if method == 'GET':
             return requests.get(api_url,
-                             auth=HTTPBasicAuth(api_login, api_password),
-                             verify=False,
-                             data=json.dumps(data),
-                             headers=headers)
+                                auth=HTTPBasicAuth(api_login, api_password),
+                                verify=False,
+                                data=json.dumps(data),
+                                headers=headers)
         if method == 'DELETE':
             return requests.delete(api_url,
-                             auth=HTTPBasicAuth(api_login, api_password),
-                             verify=False,
-                             data=json.dumps(data),
-                             headers=headers)
-    
+                                   auth=HTTPBasicAuth(api_login, api_password),
+                                   verify=False,
+                                   data=json.dumps(data),
+                                   headers=headers)
+
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
         # Update cyclos password with odoo one from authenticate session
         self.forceCyclosPassword(password)
         new_token = self.createCyclosUserToken(self.id, password)
+        _logger.debug('NEW TOKEN: %s' % new_token)
+        _logger.debug('NEW TOKEN: data %s' % data)
         if new_token:
             cyclos_data = {
+                'type': 'cyclos',
                 'cyclos_id': self.cyclos_id,
-                'cyclos_token': new_token, 
+                'cyclos_token': new_token,
             }
-            return cyclos_data
+            _logger.debug('NEW TOKEN: cyclos_data %s' % cyclos_data)
+            data.append(cyclos_data)
+            _logger.debug('NEW TOKEN: data %s' % data)
+            return data
         return {}
 
     @api.multi
@@ -136,11 +142,11 @@ class ResPartner(models.Model):
             record.cyclos_create_response = res.text
             data = json.loads(res.text)
             if data.get('status', False) and data.get('status') == "active":
-                 record.write({
+                record.write({
                     'cyclos_active': True,
                     'cyclos_status': data.get('status', ''),
                 })
-                 
+
     def forceCyclosPassword(self, password):
         for record in self:
             # TODO: need to stock password type id from cyclos API and replace -4307382460900696903
@@ -167,7 +173,7 @@ class ResPartner(models.Model):
             _logger.debug("res TOKEN: %s" % res.text)
             data = json.loads(res.text)
             return data.get('sessionToken', False)
-            
+
     @api.multi
     def removeCyclosUserToken(self, api_login, api_password):
         for record in self:
@@ -177,7 +183,7 @@ class ResPartner(models.Model):
                 api_login=api_login,
                 api_password=api_password)
             _logger.debug("res: %s" % res.text)
-            
+
     def _validator_return_authenticate(self):
         validator = super(ResPartner, self)._validator_return_authenticate()
         validator['response']['schema'].update({
