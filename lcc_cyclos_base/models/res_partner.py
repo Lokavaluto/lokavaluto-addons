@@ -72,7 +72,7 @@ class ResPartner(models.Model):
         if new_token:
             cyclos_data = {
                 'type': 'cyclos',
-                'id': self.cyclos_id,
+                'owner_id': self.cyclos_id,
                 'token': new_token,
             }
             _logger.debug('NEW TOKEN: cyclos_data %s' % cyclos_data)
