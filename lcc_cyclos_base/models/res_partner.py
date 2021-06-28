@@ -72,8 +72,8 @@ class ResPartner(models.Model):
         if new_token:
             cyclos_data = {
                 'type': 'cyclos',
-                'cyclos_id': self.cyclos_id,
-                'cyclos_token': new_token,
+                'id': self.cyclos_id,
+                'token': new_token,
             }
             _logger.debug('NEW TOKEN: cyclos_data %s' % cyclos_data)
             data.append(cyclos_data)
@@ -184,11 +184,3 @@ class ResPartner(models.Model):
                 api_password=api_password)
             _logger.debug("res: %s" % res.text)
 
-    def _validator_return_authenticate(self):
-        validator = super(ResPartner, self)._validator_return_authenticate()
-        validator['response']['schema'].update({
-            "cyclos_token": {"type": "string",},
-            "cyclos_id": {"type": "string",}
-        })
-        _logger.debug("Cyclos validator: %s" % validator)
-        return validator
