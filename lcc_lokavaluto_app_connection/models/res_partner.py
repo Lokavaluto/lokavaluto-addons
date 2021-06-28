@@ -48,7 +48,7 @@ class ResPartner(models.Model):
                                 "partner_id": {"type": "integer"},
                                 "status": {"type": "string", "required": True},
                                 "error": {"type": "string"},
-                                "monujo_accounts": {"type": "list"},
+                                "monujo_backends": {"type": "list"},
                                 "api_token": {"type": "string",}
                                 }
                              }

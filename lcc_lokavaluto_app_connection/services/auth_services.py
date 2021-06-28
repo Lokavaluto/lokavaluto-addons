@@ -40,7 +40,7 @@ class AuthService(Component):
                 if current_user:
                     to_add = current_user.partner_id._update_auth_data(request.httprequest.authorization.password)
                     if to_add:
-                        response['monujo_accounts'] = to_add
+                        response['monujo_backends'] = to_add
                     _logger.debug("AUTH UPDATE to_add: %s" % to_add)
                     _logger.debug("AUTH UPDATE response: %s" % response)
                     response['partner_id'] = current_user.partner_id.id
