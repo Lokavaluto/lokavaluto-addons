@@ -24,19 +24,18 @@ class PartnerService(Component):
         partner = self._get(_id)
         return partner.jsonify(parser)[0]
 
-    def search(self, name):
+    def search(self, value):
         """
-        Search partner by name
+        Search partner by name, email or phone
         """
-        partners = self.env["res.partner"].name_search(name)
+        partners = self.env["res.partner"].name_search(value)
         partners = self.env["res.partner"].browse([i[0] for i in partners])
-        rows = []
-        res = {"count": len(partners), "rows": rows}
-        parser = self._get_partner_parser()
-        rows = partners.jsonify(parser)
-        res = {"count": len(partners), "rows": rows}
-        _logger.debug('rows: %s' % rows)
-        return res
+        if not partners:
+            partners = self.env["res.partner"].search([('active', '=', True),
+                                                        '|', ('email', '=', value),
+                                                            '|', ('phone', '=', value),('mobile', '=', value)])    
+        return self._get_formatted_partners(partners)
+
 
     def favorite(self):
         """
@@ -45,12 +44,7 @@ class PartnerService(Component):
         partners = self.env["res.partner"].search(
             [('favorite_user_ids', 'in',
               self.env.context.get('uid'))])
-        rows = []
-        res = {"count": len(partners), "rows": rows}
-        parser = self._get_partner_parser()
-        rows = partners.jsonify(parser)
-        res = {"count": len(partners), "rows": rows}
-        return res
+        return self._get_formatted_partners(partners)
 
     def toggle_favorite(self, _id):
         """
@@ -106,6 +100,14 @@ class PartnerService(Component):
     def _get(self, _id):
         return self.env["res.partner"].browse(_id)
 
+    def _get_formatted_partners(self, partners):
+        rows = []
+        res = {"count": len(partners), "rows": rows}
+        parser = self._get_partner_parser()
+        rows = partners.jsonify(parser)
+        res = {"count": len(partners), "rows": rows}
+        return res
+
     def _prepare_params(self, params):
         for key in ["country", "state"]:
             if key in params:
@@ -122,28 +124,24 @@ class PartnerService(Component):
 
         return res
 
+    def _validator_return_partners(self):
+        return {
+            "count": {"type": "integer", "required": True},
+            "rows": {
+                "type": "list",
+                "required": True,
+                "schema": {"type": "dict", "schema": self._validator_return_get()},
+            },
+        } 
+
     def _validator_search(self):
-        return {"name": {"type": "string", "nullable": False, "required": True}}
+        return {"value": {"type": "string", "nullable": False, "required": True}}
 
     def _validator_return_search(self):
-        return {
-            "count": {"type": "integer", "required": True},
-            "rows": {
-                "type": "list",
-                "required": True,
-                "schema": {"type": "dict", "schema": self._validator_return_get()},
-            },
-        }
+        return self._validator_return_partners()
 
     def _validator_return_favorite(self):
-        return {
-            "count": {"type": "integer", "required": True},
-            "rows": {
-                "type": "list",
-                "required": True,
-                "schema": {"type": "dict", "schema": self._validator_return_get()},
-            },
-        }
+        return self._validator_return_partners()
 
     def _validator_create(self):
         res = {
