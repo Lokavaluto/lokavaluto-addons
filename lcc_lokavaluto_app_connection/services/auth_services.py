@@ -38,6 +38,11 @@ class AuthService(Component):
                 current_user = self.env['res.users'].sudo().search([('id', '=', uid)])
                 _logger.debug('USER: %s' % current_user)
                 if current_user:
+                    to_add = current_user.partner_id._update_auth_data(request.httprequest.authorization.password)
+                    if to_add:
+                        response['monujo_accounts'] = to_add
+                    _logger.debug("AUTH UPDATE to_add: %s" % to_add)
+                    _logger.debug("AUTH UPDATE response: %s" % response)
                     response['partner_id'] = current_user.partner_id.id
                 if not current_key:
                     current_key = api_key_model.create({
@@ -59,8 +64,4 @@ class AuthService(Component):
         }
 
     def _validator_return_authenticate(self):
-        return {"response": {"type": "dict", "schema": {"uid": {"type": "integer"},
-                                                        "partner_id": {"type": "integer"},
-                                                        "status": {"type": "string", "required": True},
-                                                        "error": {"type": "string"},
-                                                        "api_token": {"type": "string",}}}}
+        return self.env['res.partner']._validator_return_authenticate()

@@ -34,8 +34,22 @@ class ResPartner(models.Model):
                     ('partner_latitude', '>', float(bounding_box.get('minLat', ''))),
                     ('partner_latitude', '<', float(bounding_box.get('maxLat', '')))]
 
-
     def in_mobile_app_button(self):
         """ Inverse the value of the field ``in_mobile_app``
             for the current instance. """
         self.in_mobile_app = not self.in_mobile_app
+
+    def _update_auth_data(self, password):
+        return []
+    
+    def _validator_return_authenticate(self):
+        return {"response": {"type": "dict", "schema": {
+                                "uid": {"type": "integer"},
+                                "partner_id": {"type": "integer"},
+                                "status": {"type": "string", "required": True},
+                                "error": {"type": "string"},
+                                "monujo_accounts": {"type": "list"},
+                                "api_token": {"type": "string",}
+                                }
+                             }
+                }
