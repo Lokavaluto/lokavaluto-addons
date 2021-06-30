@@ -50,10 +50,11 @@ class AuthService(Component):
                     })
                 response['uid'] = uid
                 response['api_token'] = "%s" % current_key.key
+                response['api_version'] = 1
             except Exception as e:
                 response['error'] = "%s" % e
                 response['status'] = "Error"
-        return {"response": response}
+        return response
 
 
     # Validator

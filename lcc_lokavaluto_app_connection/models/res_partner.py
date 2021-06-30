@@ -43,13 +43,12 @@ class ResPartner(models.Model):
         return []
     
     def _validator_return_authenticate(self):
-        return {"response": {"type": "dict", "schema": {
-                                "uid": {"type": "integer"},
-                                "partner_id": {"type": "integer"},
-                                "status": {"type": "string", "required": True},
-                                "error": {"type": "string"},
-                                "monujo_backends": {"type": "list"},
-                                "api_token": {"type": "string",}
-                                }
-                             }
+        return {
+                "uid": {"type": "integer"},
+                "partner_id": {"type": "integer"},
+                "status": {"type": "string", "required": True},
+                "error": {"type": "string"},
+                "monujo_backends": {"type": "list"},
+                "api_token": {"type": "string"},
+                "api_version": {"type": "integer"}
                 }
