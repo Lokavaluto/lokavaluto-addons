@@ -1,6 +1,4 @@
-import requests
 import json
-from requests.auth import HTTPBasicAuth
 from odoo import models, fields, api
 import logging
 _logger = logging.getLogger(__name__)
@@ -43,7 +41,7 @@ class ResPartner(models.Model):
             comchain_data = {
                 'type': 'comchain',
                 'address': self.comchain_id,
-                'wallet': '%s' % json.loads(self.comchain_wallet),
+                'wallet': json.loads(self.comchain_wallet),
             }
             _logger.debug('NEW TOKEN: comchain_data %s' % comchain_data)
             data.append(comchain_data)
