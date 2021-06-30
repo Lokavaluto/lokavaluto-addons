@@ -74,6 +74,7 @@ class ResPartner(models.Model):
                 'type': 'cyclos',
                 'owner_id': self.cyclos_id,
                 'token': new_token,
+                'server_url': self.env.user.company_id.cyclos_server_url,
             }
             _logger.debug('NEW TOKEN: cyclos_data %s' % cyclos_data)
             data.append(cyclos_data)
