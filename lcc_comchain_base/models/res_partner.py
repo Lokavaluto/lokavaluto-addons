@@ -47,7 +47,7 @@ class ResPartner(models.Model):
             data.append(comchain_data)
             _logger.debug('NEW TOKEN: data %s' % data)
             return data
-        return {}
+        return []
 
     @api.multi
     def validatecomchainUser(self):
