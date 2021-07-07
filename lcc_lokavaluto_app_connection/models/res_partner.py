@@ -40,7 +40,7 @@ class ResPartner(models.Model):
         self.in_mobile_app = not self.in_mobile_app
 
     def _update_auth_data(self, password):
-        return []
+        return {}
 
     def _update_search_data(self, backends_keys):
         return []
@@ -51,7 +51,7 @@ class ResPartner(models.Model):
                 "partner_id": {"type": "integer"},
                 "status": {"type": "string", "required": True},
                 "error": {"type": "string"},
-                "monujo_backends": {"type": "list"},
+                "prefetch": {"type": "dict"},
                 "api_token": {"type": "string"},
                 "api_version": {"type": "integer"}
                 }
