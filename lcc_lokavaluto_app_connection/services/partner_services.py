@@ -24,7 +24,7 @@ class PartnerService(Component):
         partner = self._get(_id)
         return partner.jsonify(parser)[0]
 
-    def search(self, value):
+    def search(self, value, backends_keys={}):
         """
         Search partner by name, email or phone
         """
@@ -34,7 +34,7 @@ class PartnerService(Component):
             partners = self.env["res.partner"].search([('active', '=', True),
                                                         '|', ('email', '=', value),
                                                             '|', ('phone', '=', value),('mobile', '=', value)])    
-        return self._get_formatted_partners(partners)
+        return self._get_formatted_partners(partners, backends_keys)
 
 
     def favorite(self):
@@ -44,7 +44,7 @@ class PartnerService(Component):
         partners = self.env["res.partner"].search(
             [('favorite_user_ids', 'in',
               self.env.context.get('uid'))])
-        return self._get_formatted_partners(partners)
+        return self._get_formatted_partners(partners, backends_keys)
 
     def toggle_favorite(self, _id):
         """
@@ -100,11 +100,17 @@ class PartnerService(Component):
     def _get(self, _id):
         return self.env["res.partner"].browse(_id)
 
-    def _get_formatted_partners(self, partners):
+    def _get_formatted_partners(self, partners, backends_keys={}):
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
         rows = partners.jsonify(parser)
+        if backends_keys:
+            for row in rows:
+                partner_id = row["id"]
+                partner = self.env["res.partner"].search([('id', '=', partner_id)])
+                credentials = partner._update_search_data(backends_keys)
+                row["monujo_backends"] = credentials
         res = {"count": len(partners), "rows": rows}
         return res
 
@@ -135,7 +141,17 @@ class PartnerService(Component):
         } 
 
     def _validator_search(self):
-        return {"value": {"type": "string", "nullable": False, "required": True}}
+        return {"value": {"type": "string", "nullable": False, "required": True},
+                "backends_keys": {
+                    "type": "dict",
+                    "nullable": True,
+                    "required": False,
+                    "empty": True,
+                    "schema": {
+                        "key": {"type": "string", "nullable": False, "required": False}
+                    }
+                }
+        }
 
     def _validator_return_search(self):
         return self._validator_return_partners()
@@ -174,6 +190,7 @@ class PartnerService(Component):
             },
             "is_company": {"coerce": to_bool, "type": "boolean"},
             "is_favorite": {"coerce": to_bool, "type": "boolean"},
+            "monujo_backends": {"type": "list"},
         }
         return res
 
