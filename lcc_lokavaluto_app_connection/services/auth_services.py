@@ -43,13 +43,12 @@ class AuthService(Component):
                     to_add = current_user.partner_id._update_auth_data(request.httprequest.authorization.password)
                     response['prefetch'] = {
                         'backend_credentials': to_add,
-                        'partner': partner.jsonify(parser)
+                        'partner': partner.jsonify(parser)[0]
                     }
                     if to_add:
                         response['monujo_backends'] = to_add
                     _logger.debug("AUTH UPDATE to_add: %s" % to_add)
                     _logger.debug("AUTH UPDATE response: %s" % response)
-                    response['partner_id'] = partner.id
                 if not current_key:
                     current_key = api_key_model.create({
                         'user_id': uid,
