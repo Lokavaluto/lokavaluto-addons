@@ -81,8 +81,23 @@ class ResPartner(models.Model):
                 ]        
             }
             data['cyclos:%s' % parsed_uri.netloc] = cyclos_data
-            return data
-        return []
+        return data
+
+    def _get_backend_credentials(self):
+        self.ensure_one()
+        data = super(ResPartner, self)._get_backend_credentials()
+        cyclos_data = {}
+        parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
+        if self.cyclos_id and parsed_uri:
+            cyclos_data['cyclos:%s' % parsed_uri.netloc] = {
+                'type': 'cyclos',
+                'user_accounts': [{
+                    'url': self.env.user.company_id.cyclos_server_url,
+                    'owner_id': self.cyclos_id,
+                }]
+            }
+        data.append(cyclos_data)
+        return data
 
     def _update_search_data(self, backends_keys):
         self.ensure_one()

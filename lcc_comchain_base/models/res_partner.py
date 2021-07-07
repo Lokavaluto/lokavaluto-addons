@@ -40,10 +40,7 @@ class ResPartner(models.Model):
         if self.comchain_id:
             comchain_data = {
                 'type': 'comchain',
-                'bank_accounts': [{
-                    'address': self.comchain_id,
-                    'wallet': json.loads(self.comchain_wallet),
-                }]
+                'bank_accounts': [json.loads(self.comchain_wallet),]
             }
             _logger.debug('NEW TOKEN: comchain_data %s' % comchain_data)
             data['comchain'] = comchain_data
@@ -61,6 +58,17 @@ class ResPartner(models.Model):
                 comchain_data[backend_key] = [self.comchain_id]
         data.append(comchain_data)
         _logger.debug('SEARCH: data %s' % data)
+        return data
+    
+    def _get_backend_credentials(self):
+        self.ensure_one()
+        data = super(ResPartner, self)._get_backend_credentials()
+        if self.comchain_id:
+            comchain_data = {
+                'type': 'comchain',
+                'bank_accounts': [json.loads(self.comchain_wallet),]
+            }
+        data.append(comchain_data)
         return data
 
     @api.multi
