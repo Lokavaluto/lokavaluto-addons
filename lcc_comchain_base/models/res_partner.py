@@ -59,7 +59,7 @@ class ResPartner(models.Model):
         data.append(comchain_data)
         _logger.debug('SEARCH: data %s' % data)
         return data
-    
+
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
