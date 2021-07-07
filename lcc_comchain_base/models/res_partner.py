@@ -49,6 +49,18 @@ class ResPartner(models.Model):
             return data
         return []
 
+    def _update_search_data(self, backends_keys):
+        self.ensure_one()
+        _logger.debug('SEARCH: backends_keys = %s' % backends_keys)
+        data = super(ResPartner, self)._update_search_data(backends_keys)
+        comchain_data = {}
+        for backend_key in backends_keys:
+            if "comchain" in backend_key:
+                comchain_data[backend_key] = [self.comchain_id]
+        data.append(comchain_data)
+        _logger.debug('SEARCH: data %s' % data)
+        return data
+
     @api.multi
     def validatecomchainUser(self):
         for record in self:

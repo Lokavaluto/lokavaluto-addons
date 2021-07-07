@@ -88,7 +88,8 @@ class ResPartner(models.Model):
         data = super(ResPartner, self)._update_search_data(backends_keys)
         cyclos_data = {}
         for backend_key in backends_keys:
-            cyclos_data[backend_key] = [self.cyclos_id]
+            if "cyclos" in backend_key:
+                cyclos_data[backend_key] = [self.cyclos_id]
         data.append(cyclos_data)
         _logger.debug('SEARCH: data %s' % data)
         return data
