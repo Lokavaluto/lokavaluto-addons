@@ -46,7 +46,7 @@ class ResPartner(models.Model):
         return []
 
     def _update_search_data(self, backends_keys):
-        return []
+        return {}
 
     def _validator_return_authenticate(self):
         return {
