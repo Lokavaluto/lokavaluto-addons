@@ -1,4 +1,5 @@
 import logging
+from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
 
@@ -24,16 +25,32 @@ class PartnerService(Component):
         partner = self._get(_id)
         return partner.jsonify(parser)[0]
 
-    def search(self, value, backends_keys=[]):
+    def search(self, **params):
         """
         Search partner by name, email or phone
         """
+        value = params.get('value', False)
+        backends_keys = params.get('backends_keys', [])
         partners = self.env["res.partner"].name_search(value)
         partners = self.env["res.partner"].browse([i[0] for i in partners])
         if not partners:
             partners = self.env["res.partner"].search([('active', '=', True),
                                                         '|', ('email', '=', value),
-                                                            '|', ('phone', '=', value),('mobile', '=', value)])    
+                                                        '|', ('phone', '=', value),('mobile', '=', value)])    
+        return self._get_formatted_partners(partners, backends_keys)
+    
+    def partner_search(self, **params):
+        """
+        Search partner by name, email or phone
+        """
+        value = params.get('value', False)
+        backends_keys = params.get('backends_keys', [])
+        partners = self.env["res.partner"].name_search(value)
+        partners = self.env["res.partner"].browse([i[0] for i in partners])
+        if not partners:
+            partners = self.env["res.partner"].search([('active', '=', True),
+                                                        '|', ('email', '=', value),
+                                                        '|', ('phone', '=', value),('mobile', '=', value)])    
         return self._get_formatted_partners(partners, backends_keys)
 
     def favorite(self):
@@ -117,6 +134,7 @@ class PartnerService(Component):
                 partner_id = row["id"]
                 partner = self.env["res.partner"].search([('id', '=', partner_id)])
                 credentials = partner._update_search_data(backends_keys)
+                _logger.debug('CREDENTIALS: %s' % credentials)
                 row["monujo_backends"] = credentials
         res = {"count": len(partners), "rows": rows}
         return res
@@ -148,6 +166,17 @@ class PartnerService(Component):
         } 
 
     def _validator_search(self):
+        return {"value": {"type": "string", "nullable": False, "required": True},
+                "backends_keys": {
+                    "type": "list",
+                    "nullable": True,
+                    "required": False,
+                    "empty": True,
+                    "schema": {"type": "string"} #, "nullable": False, "required": False}
+                }
+        }
+   
+    def _validator_partner_search(self):
         return {"value": {"type": "string", "nullable": False, "required": True},
                 "backends_keys": {
                     "type": "list",
@@ -195,7 +224,7 @@ class PartnerService(Component):
             },
             "is_company": {"coerce": to_bool, "type": "boolean"},
             "is_favorite": {"coerce": to_bool, "type": "boolean"},
-            "monujo_backends": {"type": "list"},
+            "monujo_backends": {"type": "dict"},
         }
         return res
 
