@@ -42,9 +42,12 @@ class ResPartner(models.Model):
     def _update_auth_data(self, password):
         return {}
 
+    def _get_backend_credentials(self):
+        return []
+
     def _update_search_data(self, backends_keys):
         return []
-    
+
     def _validator_return_authenticate(self):
         return {
                 "uid": {"type": "integer"},

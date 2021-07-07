@@ -36,7 +36,6 @@ class PartnerService(Component):
                                                             '|', ('phone', '=', value),('mobile', '=', value)])    
         return self._get_formatted_partners(partners, backends_keys)
 
-
     def favorite(self):
         """
         Get my favorite partner
@@ -70,6 +69,14 @@ class PartnerService(Component):
         partner = self.env["res.partner"].create(self._prepare_params(params))
         parser = self._get_partner_parser()
         return partner.jsonify(parser)
+
+    def backend_credentials(self):
+        """
+        This method is used to authenticate and get the token for the user on mobile app.
+        """
+        partner = self.env.user.partner_id
+        response = partner._get_backend_credentials()
+        return response
 
     def update(self, _id, **params):
         """
