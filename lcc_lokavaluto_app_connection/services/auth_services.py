@@ -38,12 +38,18 @@ class AuthService(Component):
                 current_user = self.env['res.users'].sudo().search([('id', '=', uid)])
                 _logger.debug('USER: %s' % current_user)
                 if current_user:
+                    parser = self._get_partner_parser()
+                    partner = current_user.partner_id
                     to_add = current_user.partner_id._update_auth_data(request.httprequest.authorization.password)
+                    response['prefetch'] = {
+                        'backend_credentials': to_add,
+                        'partner': partner.jsonify(parser)
+                    }
                     if to_add:
                         response['monujo_backends'] = to_add
                     _logger.debug("AUTH UPDATE to_add: %s" % to_add)
                     _logger.debug("AUTH UPDATE response: %s" % response)
-                    response['partner_id'] = current_user.partner_id.id
+                    response['partner_id'] = partner.id
                 if not current_key:
                     current_key = api_key_model.create({
                         'user_id': uid,
@@ -56,7 +62,6 @@ class AuthService(Component):
                 response['status'] = "Error"
         return response
 
-
     # Validator
     def _validator_authenticate(self):
         return {
@@ -66,3 +71,21 @@ class AuthService(Component):
 
     def _validator_return_authenticate(self):
         return self.env['res.partner']._validator_return_authenticate()
+
+    def _get_partner_parser(self):
+        parser = [
+            'id',
+            'name',
+            'street',
+            'street2',
+            'zip',
+            'city',
+            'mobile',
+            'email',
+            'phone',
+            'is_favorite',
+            'is_company',
+            ('country_id', ['id', 'name']),
+            #('state', ['id','name'])
+        ]
+        return parser
