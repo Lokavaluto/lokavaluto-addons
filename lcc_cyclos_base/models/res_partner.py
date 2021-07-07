@@ -1,5 +1,6 @@
 import requests
 import json
+from urllib.parse import urlparse
 from requests.auth import HTTPBasicAuth
 from odoo import models, fields, api
 import logging
@@ -67,18 +68,19 @@ class ResPartner(models.Model):
         # Update cyclos password with odoo one from authenticate session
         self.forceCyclosPassword(password)
         new_token = self.createCyclosUserToken(self.id, password)
-        _logger.debug('NEW TOKEN: %s' % new_token)
-        _logger.debug('NEW TOKEN: data %s' % data)
         if new_token:
+            parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
             cyclos_data = {
                 'type': 'cyclos',
-                'owner_id': self.cyclos_id,
-                'token': new_token,
-                'server_url': self.env.user.company_id.cyclos_server_url,
+                'user_accounts': [
+                    {
+                        'owner_id': self.cyclos_id,
+                        'token': new_token,
+                        'server_url': self.env.user.company_id.cyclos_server_url,
+                    }
+                ]        
             }
-            _logger.debug('NEW TOKEN: cyclos_data %s' % cyclos_data)
-            data.append(cyclos_data)
-            _logger.debug('NEW TOKEN: data %s' % data)
+            data['cyclos:%s' % parsed_uri.netloc] = cyclos_data
             return data
         return []
 
