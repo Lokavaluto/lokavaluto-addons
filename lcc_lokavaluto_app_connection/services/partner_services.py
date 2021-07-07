@@ -24,7 +24,7 @@ class PartnerService(Component):
         partner = self._get(_id)
         return partner.jsonify(parser)[0]
 
-    def search(self, value, backends_keys={}):
+    def search(self, value, backends_keys=[]):
         """
         Search partner by name, email or phone
         """
@@ -100,7 +100,7 @@ class PartnerService(Component):
     def _get(self, _id):
         return self.env["res.partner"].browse(_id)
 
-    def _get_formatted_partners(self, partners, backends_keys={}):
+    def _get_formatted_partners(self, partners, backends_keys):
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
@@ -143,13 +143,11 @@ class PartnerService(Component):
     def _validator_search(self):
         return {"value": {"type": "string", "nullable": False, "required": True},
                 "backends_keys": {
-                    "type": "dict",
+                    "type": "list",
                     "nullable": True,
                     "required": False,
                     "empty": True,
-                    "schema": {
-                        "key": {"type": "string", "nullable": False, "required": False}
-                    }
+                    "schema": {"type": "string"} #, "nullable": False, "required": False}
                 }
         }
 
