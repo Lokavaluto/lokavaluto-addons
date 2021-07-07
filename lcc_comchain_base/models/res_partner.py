@@ -52,11 +52,9 @@ class ResPartner(models.Model):
         self.ensure_one()
         _logger.debug('SEARCH: backends_keys = %s' % backends_keys)
         data = super(ResPartner, self)._update_search_data(backends_keys)
-        comchain_data = {}
         for backend_key in backends_keys:
-            if "comchain" in backend_key:
-                comchain_data[backend_key] = [self.comchain_id]
-        data.append(comchain_data)
+            if "comchain" in backend_key and self.comchain_id:
+                data[backend_key] = [self.comchain_id]
         _logger.debug('SEARCH: data %s' % data)
         return data
 
