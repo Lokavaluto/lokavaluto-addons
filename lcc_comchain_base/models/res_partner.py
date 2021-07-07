@@ -40,11 +40,13 @@ class ResPartner(models.Model):
         if self.comchain_id:
             comchain_data = {
                 'type': 'comchain',
-                'address': self.comchain_id,
-                'wallet': json.loads(self.comchain_wallet),
+                'bank_accounts': [{
+                    'address': self.comchain_id,
+                    'wallet': json.loads(self.comchain_wallet),
+                }]
             }
             _logger.debug('NEW TOKEN: comchain_data %s' % comchain_data)
-            data.append(comchain_data)
+            data['comchain'] = comchain_data
             _logger.debug('NEW TOKEN: data %s' % data)
             return data
         return []
