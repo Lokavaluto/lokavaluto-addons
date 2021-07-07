@@ -82,6 +82,17 @@ class ResPartner(models.Model):
             return data
         return []
 
+    def _update_search_data(self, backends_keys):
+        self.ensure_one()
+        data = super(ResPartner, self)._update_search_data(backends_keys)
+        for backend_key in backends_keys:
+            cyclos_data = {
+                backend_key : self.cyclos_id,
+            }
+            data.append(cyclos_data)
+        _logger.debug('SEARCH: data %s' % data)
+        return data
+
     @api.multi
     def addCyclosUser(self):
         for record in self:
