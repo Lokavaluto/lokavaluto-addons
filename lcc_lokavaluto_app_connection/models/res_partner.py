@@ -40,7 +40,7 @@ class ResPartner(models.Model):
         self.in_mobile_app = not self.in_mobile_app
 
     def _update_auth_data(self, password):
-        return {}
+        return []
 
     def _get_backend_credentials(self):
         return []
@@ -51,7 +51,6 @@ class ResPartner(models.Model):
     def _validator_return_authenticate(self):
         return {
                 "uid": {"type": "integer"},
-                "partner_id": {"type": "integer"},
                 "status": {"type": "string", "required": True},
                 "error": {"type": "string"},
                 "prefetch": {"type": "dict"},
