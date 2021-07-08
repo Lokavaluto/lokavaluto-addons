@@ -45,7 +45,7 @@ class ResPartner(models.Model):
     def _get_backend_credentials(self):
         return []
 
-    def _update_search_data(self, backends_keys):
+    def _update_search_data(self, backend_keys):
         return {}
 
     def _validator_return_authenticate(self):
