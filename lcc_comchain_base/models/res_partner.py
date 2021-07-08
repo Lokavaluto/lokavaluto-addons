@@ -42,9 +42,7 @@ class ResPartner(models.Model):
                 'type': 'comchain',
                 'bank_accounts': [json.loads(self.comchain_wallet),]
             }
-            _logger.debug('NEW TOKEN: comchain_data %s' % comchain_data)
-            data['comchain'] = comchain_data
-            _logger.debug('NEW TOKEN: data %s' % data)
+            data.append(comchain_data)
             return data
         return []
 
