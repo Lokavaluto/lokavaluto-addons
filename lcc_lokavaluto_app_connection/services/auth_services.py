@@ -55,7 +55,7 @@ class AuthService(Component):
                     })
                 response['uid'] = uid
                 response['api_token'] = "%s" % current_key.key
-                response['api_version'] = 1
+                response['api_version'] = 2
             except Exception as e:
                 response['error'] = "%s" % e
                 response['status'] = "Error"

@@ -69,27 +69,25 @@ class ResPartner(models.Model):
         self.forceCyclosPassword(password)
         new_token = self.createCyclosUserToken(self.id, password)
         if new_token:
-            parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
             cyclos_data = {
                 'type': 'cyclos',
                 'user_accounts': [
                     {
                         'owner_id': self.cyclos_id,
                         'token': new_token,
-                        'server_url': self.env.user.company_id.cyclos_server_url,
+                        'url': self.env.user.company_id.cyclos_server_url,
                     }
                 ]        
             }
-            data['cyclos:%s' % parsed_uri.netloc] = cyclos_data
+            data.append(cyclos_data)
         return data
 
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        cyclos_data = {}
         parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
         if self.cyclos_id and parsed_uri:
-            cyclos_data['cyclos:%s' % parsed_uri.netloc] = {
+            cyclos_data = {
                 'type': 'cyclos',
                 'user_accounts': [{
                     'url': self.env.user.company_id.cyclos_server_url,
