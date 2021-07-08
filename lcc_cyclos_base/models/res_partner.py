@@ -97,11 +97,11 @@ class ResPartner(models.Model):
         data.append(cyclos_data)
         return data
 
-    def _update_search_data(self, backends_keys):
+    def _update_search_data(self, backend_keys):
         self.ensure_one()
-        _logger.debug('SEARCH: backends_keys = %s' % backends_keys)
-        data = super(ResPartner, self)._update_search_data(backends_keys)
-        for backend_key in backends_keys:
+        _logger.debug('SEARCH: backend_keys = %s' % backend_keys)
+        data = super(ResPartner, self)._update_search_data(backend_keys)
+        for backend_key in backend_keys:
             if "cyclos" in backend_key and self.cyclos_id:
                 data[backend_key] = [self.cyclos_id]
         _logger.debug('SEARCH: data %s' % data)
