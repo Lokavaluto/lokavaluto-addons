@@ -19,10 +19,14 @@ class PartnerService(Component):
 
     def get(self, _id):
         """
-        Get partner's informations
+        Get partner's informations. If id == 0 return 'me'
         """
         parser = self._get_partner_parser()
-        partner = self._get(_id)
+        if _id == 0:
+            id = self.env.user.partner_id.id
+        else:
+            id = _id
+        partner = self._get(id)
         return partner.jsonify(parser)[0]
 
     def search(self, **params):
