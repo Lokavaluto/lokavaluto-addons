@@ -203,6 +203,7 @@ class ResPartner(models.Model):
             res = record._cyclos_rest_call(
                 'POST',
                 '/auth/session',
+                data={'timeoutInSeconds': 90000},
                 api_login=api_login,
                 api_password=api_password)
             _logger.debug("res TOKEN: %s" % res.text)
