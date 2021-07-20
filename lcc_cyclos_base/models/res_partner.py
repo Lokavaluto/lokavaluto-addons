@@ -107,6 +107,15 @@ class ResPartner(models.Model):
         _logger.debug('SEARCH: data %s' % data)
         return data
 
+    def _has_backend_account_activated(self, backend_keys):
+        self.ensure_one()
+        response = super(ResPartner, self)._has_backend_account_activated(backend_keys)
+        for backend_key in backend_keys:
+            if "cyclos" in backend_key and self.cyclos_id:
+                if self.env.user.company_id.cyclos_server_url in backend_key:
+                    response = True
+        return response
+
     @api.multi
     def addCyclosUser(self):
         for record in self:

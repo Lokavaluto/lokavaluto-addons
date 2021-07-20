@@ -9,9 +9,9 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===============
+=================
 lcc_comchain_base
-===============
+=================
 
 Base models and logics using comchain as transaction provider for numeric local complementary currency
 It's part of Lokavaluto Project (https://lokavaluto.fr)
