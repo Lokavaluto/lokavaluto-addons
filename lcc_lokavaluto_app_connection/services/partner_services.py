@@ -50,7 +50,14 @@ class PartnerService(Component):
         if not partners:
             partners = self.env["res.partner"].search([('active', '=', True),
                                                         '|', ('email', '=', value),
-                                                        '|', ('phone', '=', value),('mobile', '=', value)])    
+                                                        '|', ('phone', '=', value),('mobile', '=', value)])   
+        partners = partners - self.env.user.partner_id
+        #partners_to_remove = set()
+        #for partner in partners:
+        #    if not partner._has_backend_account_activated(backend_keys):
+        #        partners_to_remove.add(partner)
+        partners.filtered(lambda r : r._has_backend_account_activated(backend_keys))
+        #partners = partners - partners_to_remove
         return self._get_formatted_partners(partners, backend_keys)
 
     def favorite(self):
