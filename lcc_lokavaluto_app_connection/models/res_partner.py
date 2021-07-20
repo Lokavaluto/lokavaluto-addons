@@ -48,6 +48,9 @@ class ResPartner(models.Model):
     def _update_search_data(self, backend_keys):
         return {}
 
+    def _has_backend_account_activated(self, backend_keys):
+        return False
+
     def _validator_return_authenticate(self):
         return {
                 "uid": {"type": "integer"},
