@@ -43,24 +43,14 @@ class ResPartner(models.Model):
             api_password = self.env.user.company_id.cyclos_server_password
         api_url = '%s%s' % (self.env.user.company_id.cyclos_server_url,
                             entrypoint)
-        if method == 'POST':
-            return requests.post(api_url,
-                                 auth=HTTPBasicAuth(api_login, api_password),
-                                 verify=False,
-                                 data=json.dumps(data),
-                                 headers=headers)
-        if method == 'GET':
-            return requests.get(api_url,
-                                auth=HTTPBasicAuth(api_login, api_password),
-                                verify=False,
-                                data=json.dumps(data),
-                                headers=headers)
-        if method == 'DELETE':
-            return requests.delete(api_url,
-                                   auth=HTTPBasicAuth(api_login, api_password),
-                                   verify=False,
-                                   data=json.dumps(data),
-                                   headers=headers)
+        res = requests.request(method.lower(),
+                               api_url,
+                               auth=HTTPBasicAuth(api_login, api_password),
+                               verify=False,
+                               data=json.dumps(data),
+                               headers=headers)
+        res.raise_for_status()
+        return res
 
     def _update_auth_data(self, password):
         self.ensure_one()
@@ -155,7 +145,18 @@ class ResPartner(models.Model):
                     }
                 ],
             }
-            res = record._cyclos_rest_call('POST', '/users', data=data)
+            try:
+                res = record._cyclos_rest_call('POST', '/users', data=data)
+            except requests.exceptions.HTTPError as e:
+                if e.response.status_code == 422:
+                    json_error = e.response.json()
+                    if json_error.get('code') == 'validation':
+                        msg = ["  - %s: %s" % (k, ", ".join(v))
+                               for k, v in json_error.get('propertyErrors').items()]
+                        raise ValueError("Cyclos serveur complained about:\n%s"
+                                         % "\n".join(msg))
+                raise
+
             record.cyclos_create_response = res.text
             data = json.loads(res.text)
             if data:
