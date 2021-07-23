@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class ResConfigSettings(models.TransientModel):
@@ -14,13 +14,13 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string='Client token auth for cyclos server'
     )
-    
+
     cyclos_server_login = fields.Char(
         related='company_id.cyclos_server_login',
         readonly=False,
         string='Login for cyclos server'
     )
-    
+
     cyclos_server_password = fields.Char(
         related='company_id.cyclos_server_password',
         readonly=False,
