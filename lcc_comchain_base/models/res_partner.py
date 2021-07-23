@@ -67,13 +67,13 @@ class ResPartner(models.Model):
         data.append(comchain_data)
         return data
 
-    def _has_backend_account_activated(self, backend_keys):
+    def backends(self):
         self.ensure_one()
-        response = super(ResPartner, self)._has_backend_account_activated(backend_keys)
-        for backend_key in backend_keys:
-            if "comchain" in backend_key and self.comchain_id:
-                response = True
-        return response
+        backends = super(ResPartner, self).backends()
+        if self.comchain_id:
+            return backends | {"comchain"}
+        else:
+            return backends
 
     @api.multi
     def validatecomchainUser(self):

@@ -100,22 +100,25 @@ class ResPartner(models.Model):
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
-        _logger.debug('SEARCH: backend_keys = %s' % backend_keys)
+        #_logger.debug('SEARCH: backend_keys = %s' % backend_keys)
         data = super(ResPartner, self)._update_search_data(backend_keys)
         for backend_key in backend_keys:
             if "cyclos" in backend_key and self.cyclos_id:
                 data[backend_key] = [self.cyclos_id]
-        _logger.debug('SEARCH: data %s' % data)
+        #_logger.debug('SEARCH: data %s' % data)
         return data
 
-    def _has_backend_account_activated(self, backend_keys):
+    def backends(self):
         self.ensure_one()
-        response = super(ResPartner, self)._has_backend_account_activated(backend_keys)
-        for backend_key in backend_keys:
-            if "cyclos" in backend_key and self.cyclos_id:
-                if self.env.user.company_id.cyclos_server_url in backend_key:
-                    response = True
-        return response
+        backends = super(ResPartner, self).backends()
+        if self.cyclos_id:
+            cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
+            remove = ['https://','http://','/api']
+            for value in remove:
+                cyclos_serveur_url = cyclos_serveur_url.replace(value, '')
+            return backends | {"%s:%s" % ("cyclos", cyclos_serveur_url)}
+        else:
+            return backends
 
     @api.multi
     def addCyclosUser(self):
