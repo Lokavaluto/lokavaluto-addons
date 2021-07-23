@@ -49,7 +49,18 @@ class ResPartner(models.Model):
                                verify=False,
                                data=json.dumps(data),
                                headers=headers)
-        res.raise_for_status()
+        try:
+            res.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            _logger.debug(e.response.json())
+            if e.response.status_code == 422:
+                json_error = e.response.json()
+                if json_error.get('code') == 'validation':
+                    msg = ["  - %s: %s" % (k, ", ".join(v))
+                            for k, v in json_error.get('propertyErrors').items()]
+                    raise ValueError("Cyclos serveur complained about:\n%s"
+                                        % "\n".join(msg), e.response)
+            raise
         return res
 
     def _update_auth_data(self, password):
@@ -192,11 +203,18 @@ class ResPartner(models.Model):
                     "newPasswordConfirmation": password,
                     "forceChange": False
                     }
-            res = record._cyclos_rest_call(
-                'POST',
-                '/%s/passwords/%s/change' % (record.cyclos_id, '-4307382460900696903'),
-                data=data)
-            _logger.debug("forceCyclosPassword res: %s" % res.text)
+            try:
+                record._cyclos_rest_call(
+                    'POST',
+                    '/%s/passwords/%s/change' % (record.cyclos_id, '-4307382460900696903'),
+                    data=data)
+            except ValueError as e:
+                if (len(e.args) > 1 and
+                    e.args[1].status_code == 422 and
+                    'newPassword' in e.args[1].json().get('properties', [])):
+                    _logger.debug("Ignoring Cyclos NewPassword Error !")
+                else:
+                    raise
 
     def createCyclosUserToken(self, api_login, api_password):
         self.ensure_one()
@@ -220,4 +238,3 @@ class ResPartner(models.Model):
                 api_login=api_login,
                 api_password=api_password)
             _logger.debug("res: %s" % res.text)
-
