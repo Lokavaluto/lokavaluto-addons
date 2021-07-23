@@ -72,7 +72,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
     'category': 'Website',
-    'version': '12.0.1.0.4',
+    'version': '12.0.1.0.6',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -83,9 +83,10 @@ mission is to support the collaborative development of Odoo features and ecosyst
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir_rule.xml',
         'views/res_config_settings_view.xml',
         'views/res_partner_view.xml',
+        'data/cyclos_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [],
