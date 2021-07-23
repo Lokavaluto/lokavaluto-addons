@@ -1,5 +1,6 @@
 import logging
 from odoo.addons.base_rest import restapi
+from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
 
@@ -42,7 +43,7 @@ class PartnerService(Component):
                                                         '|', ('email', '=', value),
                                                         '|', ('phone', '=', value),('mobile', '=', value)])    
         return self._get_formatted_partners(partners, backend_keys)
-    
+
     def partner_search(self, **params):
         """
         Search partner by name, email or phone
@@ -64,6 +65,45 @@ class PartnerService(Component):
         #partners = partners - partners_to_remove
         return self._get_formatted_partners(partners, backend_keys)
 
+    @restapi.method(
+        [(["/<int:id>/favorite/set"], "PUT")],
+    )
+    def set_favorite(self, _id):
+        """
+        Set partner as favorite
+        """
+        partner = self._get(_id)
+        partner.write({
+            'is_favorite': True,
+        })
+        return {}
+
+    @restapi.method(
+        [(["/<int:id>/favorite/unset"], "PUT")],
+    )
+    def unset_favorite(self, _id):
+        """
+        Unset partner as favorite
+        """
+        partner = self._get(_id)
+        partner.write({
+            'is_favorite': False,
+        })
+        return {}
+
+    @restapi.method(
+        [(["/<int:id>/favorite/toggle"], "PUT")],
+    )
+    def new_toggle_favorite(self, _id):
+        """
+        Toggle partner as favorite/not favorite
+        """
+        partner = self._get(_id)
+        if partner.is_favorite:
+            return self.unset_favorite(_id)
+        else:
+            return self.set_favorite(_id)
+
     def favorite(self):
         """
         Get my favorite partner
@@ -71,7 +111,7 @@ class PartnerService(Component):
         partners = self.env["res.partner"].search(
             [('favorite_user_ids', 'in',
               self.env.context.get('uid'))])
-        return self._get_formatted_partners(partners, backend_keys)
+        return self._get_formatted_partners(partners, [])
 
     def toggle_favorite(self, _id):
         """
