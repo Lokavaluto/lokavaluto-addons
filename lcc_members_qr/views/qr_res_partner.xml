@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <record id="partner_qr_form" model="ir.ui.view">
+            <field name="name">res.partner.qr.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='toggle_active']" position="before">
+                    <button name="generate_qr" type="object" class="btn-box" icon="fa-qrcode">
+                        Generate QR
+                    </button>
+                </xpath>
+                <notebook position="inside">
+                    <page string="QR code">
+                        <field name="qr"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+</odoo>
