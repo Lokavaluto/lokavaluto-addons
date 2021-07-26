@@ -18,6 +18,7 @@ class Partners(models.Model):
     _inherit = 'res.partner'
 
     qr = fields.Binary(string="Member QR code")
+    qr_url = fields.Char(string="Member QR code URL")
 
     #@api.depends('qr')
     @api.multi
@@ -38,6 +39,7 @@ class Partners(models.Model):
             img.save(temp, format="PNG")
             qr_image = base64.b64encode(temp.getvalue())
             self.write({'qr': qr_image})
+            self.qr_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/web/content/res.partner/" + str(self.id) +"/qr"
             return self.env.ref('lcc_members_qr.print_qr').report_action(self, data={'data': self.id, 'type': 'cust'})
         else:
             raise UserError(_('Necessary requirements are not satisfied - Need qrcode and base64 Python libraries'))
