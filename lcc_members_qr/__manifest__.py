@@ -82,9 +82,9 @@ mission is to support the collaborative development of Odoo features and ecosyst
         ],
 
     # always loaded
-    'data': [
-        'report/report.xml',
+    'data': [        
         'report/paperformat.xml',
+        'report/report.xml',
         'views/qr_res_partner.xml',
         'report/template.xml',
     ],
