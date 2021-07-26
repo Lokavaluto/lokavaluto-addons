@@ -305,6 +305,7 @@ class PartnerService(Component):
             'is_favorite',
             'is_company',
             ('country_id', ['id', 'name']),
+            'qr_url',
             #('state', ['id','name'])
         ]
         return parser
