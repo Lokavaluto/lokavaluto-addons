@@ -10,7 +10,6 @@ except ImportError:
     base64 = None
 from io import BytesIO
 
-
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
@@ -18,7 +17,7 @@ from odoo.exceptions import UserError
 class Partners(models.Model):
     _inherit = 'res.partner'
 
-    qr = fields.Binary(string="QR Code")
+    qr = fields.Binary(string="Member QR code")
 
     #@api.depends('qr')
     @api.multi
@@ -30,7 +29,7 @@ class Partners(models.Model):
                 box_size=10,
                 border=4,
             )
-            partner_website_url = self.website_url
+            partner_website_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + self.website_url
             qr.add_data(partner_website_url)
             qr.make(fit=True)
 
