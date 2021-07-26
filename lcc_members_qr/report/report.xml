@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <report id="lcc_members_qr.print_qr"
+            model="res.partner"
+            name="lcc_members_qr.member_qr_template"
+            file="lcc_members_qr.member_qr_template"
+            string="Member Badge"
+            report_type="qweb-pdf"
+            menu="False"
+        />
+
+        <record id="lcc_members_qr.print_qr" model="ir.actions.report">
+            <field name="paperformat_id" ref="lcc_members_qr.member_badge_paperformat"/>
+        </record>
+    </data>
+</odoo>
