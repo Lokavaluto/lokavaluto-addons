@@ -72,13 +72,14 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
     'category': 'Website',
-    'version': '12.0.1.0.6',
+    'version': '12.0.1.0.7',
 
     # any module necessary for this one to work correctly
     'depends': [
         'base',
         'lcc_lokavaluto_app_connection',
         'lcc_members',
+        'onchange_helper',
         ],
 
     # always loaded
