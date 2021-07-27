@@ -98,7 +98,7 @@ root.dispatch = CORSMiddleware(root.dispatch)
 
 def __init__(self, httprequest):
     super(HttpRestRequest, self).__init__(httprequest)
-    if self.httprequest.mimetype == "application/json":
+    if self.httprequest.method != "GET":
         data = self.httprequest.get_data().decode(self.httprequest.charset)
         _logger.debug('data: %s' % data)
         if not data:
