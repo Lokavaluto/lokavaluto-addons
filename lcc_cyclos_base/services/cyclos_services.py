@@ -1,8 +1,13 @@
+import logging
+from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest.components.service import to_int
+from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
+_logger = logging.getLogger(__name__)
 
-class PingService(Component):
+
+class CyclosService(Component):
     _inherit = "base.rest.service"
     _name = "cyclos.service"
     _usage = "cyclos"
@@ -12,72 +17,23 @@ class PingService(Component):
         Access to the ping services is allowed to everyone
     """
 
-    # The following method are 'public' and can be called from the controller.
-    def get(self, _id, message):
+    @restapi.method(
+        [(["/credit"], "POST")],
+        input_param=Datamodel("cyclos.credit.info"),
+        output_param=Datamodel("cyclos.credit.response"),
+    )
+    def credit(self, params):
         """
-        This method is used to get the information of the object specified
-        by Id.
+        Credite user account with amount, a generate accounting entry
         """
-        return {"message": message, "id": _id}
-
-    def search(self, **params):
-        """
-        A search method to illustrate how you can define a complex request.
-        In the case of the methods 'get' and 'search' the parameters are
-        passed to the server as the query part of the service URL.
-        """
-        return {"response": "Search called search with params %s" % params}
-
-    def update(self, _id, message):
-        """
-        Update method description ...
-        """
-        return {"response": "PUT called with message " + message}
-
-    # pylint:disable=method-required-super
-    def create(self, **params):
-        """
-        Create method description ...
-        """
-        return {"response": "POST called with message " + params["message"]}
-
-    def delete(self, _id):
-        """
-        Delete method description ...
-        """
-        return {"response": "DELETE called with id %s " % _id}
-
-    # Validator
-    def _validator_search(self):
-        return {
-            "param_string": {"type": "string"},
-            "param_required": {"type": "string", "required": True},
-            "limit": {"type": "integer", "default": 50, "coerce": to_int},
-            "offset": {"type": "integer", "default": 0, "coerce": to_int},
-            "params": {"type": "list", "schema": {"type": "string"}},
-        }
-
-    def _validator_return_search(self):
-        return {"response": {"type": "string"}}
-
-    # Validator
-    def _validator_get(self):
-        return {"message": {"type": "string"}}
-
-    def _validator_return_get(self):
-        return {"message": {"type": "string"}, "id": {"type": "integer"}}
-
-    def _validator_update(self):
-        return {"message": {"type": "string"}}
-
-    def _validator_return_update(self):
-        return {"response": {"type": "string"}}
-
-    def _validator_create(self):
-        return {"message": {"type": "string"}}
-
-    def _validator_return_create(self):
-        return {"response": {"type": "string"}}
-
-    def _validator_return_delete(self):
-        return {"response": {"type": "string"}}
+        partner = self.env.user.partner_id
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        _logger.debug("PARTNER ?: %s(%s)" % (partner.name, partner.id))
+        owner_id = params.owner_id
+        amount = params.amount
+        CyclosCreditResponse = self.env.datamodels["cyclos.credit.response"]
+        cyclos_response = CyclosCreditResponse(partial=True)
+        if owner_id and amount:
+            new_order = partner.cyclosCreateOrder(owner_id, amount)
+            cyclos_response.order_url = base_url + new_order.get_portal_url()
+        return cyclos_response

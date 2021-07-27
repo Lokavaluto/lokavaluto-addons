@@ -121,6 +121,37 @@ class ResPartner(models.Model):
             return backends
 
     @api.multi
+    def cyclosCreateOrder(self, owner_id, amount):
+        order = self.env['sale.order']
+        line = self.env['sale.order.line']
+        cyclos_product = self.env.ref('lcc_cyclos_base.product_product_cyclos')
+        _logger.debug('PARTNER IN SELF?: %s(%s)' % (self.name, self.id))
+        for partner in self:
+            # TODO: case with contact of a company ?
+            order_vals = {
+                'partner_id': partner.id,
+                }
+            order_vals = order.play_onchanges(order_vals, ['partner_id'])
+            _logger.debug("CYCLOS ORDER: %s" % order_vals)
+            order_id = order.create(order_vals)
+            line_vals = {
+                'order_id': order_id.id,
+                'product_id': cyclos_product.id,
+            }
+            line_vals = line.play_onchanges(line_vals, ['product_id'])
+            line_vals.update(
+                {
+                    'product_uom_qty': 1,
+                    'price_unit': amount,
+                    # TODO: Taxes ?  
+                }
+            )
+            _logger.debug("CYCLOS ORDER LINE: %s" % line_vals)
+            line.create(line_vals)
+        return order_id
+
+
+    @api.multi
     def addCyclosUser(self):
         for record in self:
             group = 'particuliers' if record.company_type == 'person' else 'professionnels'
