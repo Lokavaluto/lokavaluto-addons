@@ -3,6 +3,7 @@ from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -86,6 +87,21 @@ class PartnerService(Component):
         if backend_keys:
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
         return self._get_formatted_partners(partners, backend_keys)
+
+    @restapi.method(
+        [(["/partner_url_search"], "GET")],
+        input_param=Datamodel("partner.url.search.info"),
+    )
+    def get_partner_url_search(self, partner_url_search_info):
+        """
+        Search a partner with a website_url
+        """
+        _logger.debug('PARAMS: %s' % partner_url_search_info)
+        url = partner_url_search_info.url
+        partners = self.env["res.partner"].search([('active', '=', True)])
+        partners = partners.filtered(lambda r : r.website_url == url)
+        _logger.debug('PARTNERS: %s' % partners)
+        return self._get_formatted_partners(partners, partner_url_search_info.backend_keys)
 
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
@@ -207,7 +223,6 @@ class PartnerService(Component):
                 partner_id = row["id"]
                 partner = self.env["res.partner"].search([('id', '=', partner_id)])
                 credentials = partner._update_search_data(backend_keys)
-                #_logger.debug('CREDENTIALS: %s' % credentials)
                 row["monujo_backends"] = credentials
         res = {"count": len(partners), "rows": rows}
         return res
