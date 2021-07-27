@@ -60,6 +60,32 @@ class PartnerService(Component):
         if backend_keys:
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
         return self._get_formatted_partners(partners, backend_keys)
+    
+    @restapi.method(
+        [(["/partner_search"], "GET")],
+        input_param=Datamodel("partner.search.info"),
+    )
+    def get_partner_search(self, partner_search_info):
+        """
+        Search partner by name, email or phone
+        """
+        _logger.debug('PARAMS: %s' % partner_search_info)
+        value = partner_search_info.value
+        backend_keys = partner_search_info.backend_keys
+        is_favorite = partner_search_info.is_favorite
+        domain = [('active', '=', True)]
+        if is_favorite:
+            domain.extend([('favorite_user_ids', 'in',
+                self.env.context.get('uid'))])
+        domain.extend(['|',
+                       '|', ('email', '=', value), ('display_name', '=', value),
+                       '|', ('phone', '=', value), ('mobile', '=', value)])
+        _logger.debug("DOMAIN: %s" % domain)
+        partners = self.env["res.partner"].search(domain)   
+        partners = partners - self.env.user.partner_id
+        if backend_keys:
+            partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
+        return self._get_formatted_partners(partners, backend_keys)
 
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
