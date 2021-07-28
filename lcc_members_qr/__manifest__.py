@@ -26,6 +26,12 @@ Configuration
 
 No configuration needed on this addon.
 
+Usage
+=====
+
+To generate the QR code of a partner, go on the form view of the partner, anc click on the button "Generate QR". 
+You will be able to download a pdf page containing the QR code, and you will find the PNG image in the "QR code" notebook page.
+
 Known issues / Roadmap
 ======================
 
