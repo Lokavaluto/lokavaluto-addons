@@ -94,7 +94,7 @@ class PartnerService(Component):
     )
     def get_partner_url_search(self, partner_url_search_info):
         """
-        Search a partner with a website_url
+        Search a partner with a website_url "/partners/..."
         """
         _logger.debug('PARAMS: %s' % partner_url_search_info)
         url = partner_url_search_info.url
