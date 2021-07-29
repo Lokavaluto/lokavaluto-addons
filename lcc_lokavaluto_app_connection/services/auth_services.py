@@ -84,6 +84,7 @@ class AuthService(Component):
             'phone',
             'is_favorite',
             'is_company',
+            'qr_url',
             ('country_id', ['id', 'name']),
             #('state', ['id','name'])
         ]
