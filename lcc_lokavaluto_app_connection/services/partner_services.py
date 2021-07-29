@@ -312,6 +312,7 @@ class PartnerService(Component):
             },
             "is_company": {"coerce": to_bool, "type": "boolean"},
             "is_favorite": {"coerce": to_bool, "type": "boolean"},
+            "qr_url": {"type": "string", "nullable": True, "empty": True},
             "monujo_backends": {"type": "dict"},
         }
         return res
