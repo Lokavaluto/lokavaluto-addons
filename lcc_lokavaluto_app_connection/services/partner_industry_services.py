@@ -1,4 +1,6 @@
 import logging
+from odoo.addons.base_rest import restapi
+from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
 
@@ -15,37 +17,24 @@ class PartnerIndustryService(Component):
         Access to the Partner Industry services is allowed to everyone
     """
 
-    def get(self, ids=[]):
-         """
-         Get the complete list of partner indutries
-         """
-         all_industries = self.env['res.partner.industry'].sudo()
-         if ids:
-             industries = all_industries.search([('active', '=', True),('id', 'in', ids)])
-         else:
-             industries = all_industries.search([('active', '=', True)])
-         rows = []
-         res = {"count": len(industries), "rows": rows}
-         parser = self._get_partner_industry_parser()
-         rows = industries.jsonify(parser)
-         _logger.debug('#################### rows: %s' % rows)
-         res = {"count": len(industries), "rows": rows}
-         return res
-    
-
-    # The following method are 'private' and should be never never NEVER call
-    # from the controller.
-
-    # Validator
-    def _validator_get(self):
-        return {"ids" : {
-                    "type": "list", 
-                    "schema": {"type": "integer"},
-                    "required": False,
-                    "nullable": True
-                },
-               }
-
+    @restapi.method(
+        [(["/get"], "GET")],
+        input_param=Datamodel("partner.industry.info"),
+    )
+    def get_industry_info(self, partner_industry_info):
+        """
+        Get the complete list of partner indutries
+        """
+        ids = partner_industry_info.ids
+        all_industries = self.env['res.partner.industry'].sudo()
+        if ids:
+            industries = all_industries.search([('active', '=', True),('id', 'in', ids)])
+        else:
+            industries = all_industries.search([('active', '=', True)])
+        parser = self._get_partner_industry_parser()
+        rows = industries.jsonify(parser)
+        res = {"count": len(industries), "rows": rows}
+        return res
 
     def _validator_return_get(self):
         res = {
