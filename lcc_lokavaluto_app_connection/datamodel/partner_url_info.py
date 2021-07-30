@@ -4,8 +4,8 @@ from odoo.addons.datamodel.core import Datamodel
 from odoo.addons.datamodel.fields import NestedModel
 
 
-class PartnerUrlSearchInfo(Datamodel):
-    _name = "partner.url.search.info"
+class PartnerUrlGetInfo(Datamodel):
+    _name = "partner.url.get.info"
 
     url = fields.String(required=True, allow_none=False)
     backend_keys = fields.List(fields.String())
