@@ -19,6 +19,31 @@ class PartnerService(Component):
         If you are not authenticated go to <a href='/web/login'>Login</a>
     """
 
+    def create(self, **params):
+        """
+        Create a new partner
+        """
+        partner = self.env["res.partner"].create(self._prepare_params(params))
+        parser = self._get_partner_parser()
+        return partner.jsonify(parser)
+
+    def update(self, _id, **params):
+        """
+        Update partner informations
+        """
+        partner = self._get(_id)
+        parser = self._get_partner_parser()
+        partner.write(self._prepare_params(params))
+        return partner.jsonify(parser)
+
+    def backend_credentials(self):
+        """
+        This method is used to authenticate and get the token for the user on mobile app.
+        """
+        partner = self.env.user.partner_id
+        response = partner._get_backend_credentials()
+        return response
+
     def get(self, _id):
         """
         Get partner's informations. If id == 0 return 'me'
@@ -45,6 +70,9 @@ class PartnerService(Component):
                                                         '|', ('phone', '=', value),('mobile', '=', value)])    
         return self._get_formatted_partners(partners, backend_keys)
 
+    ##########################################################
+    # TO CLEAN LATER
+    ##########################################################
     def partner_search(self, **params):
         """
         Search partner by name, email or phone
@@ -61,7 +89,10 @@ class PartnerService(Component):
         if backend_keys:
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
         return self._get_formatted_partners(partners, backend_keys)
-    
+    ##########################################################
+    ##########################################################
+
+
     @restapi.method(
         [(["/partner_search"], "GET")],
         input_param=Datamodel("partner.search.info"),
@@ -142,6 +173,10 @@ class PartnerService(Component):
         else:
             return self.set_favorite(_id)
 
+
+    ##########################################################
+    # TO CLEAN LATER
+    ##########################################################
     def favorite(self):
         """
         Get my favorite partner
@@ -161,52 +196,12 @@ class PartnerService(Component):
            'is_favorite': True,
         })
         return partner.jsonify(parser)[0]
+    ##########################################################
+    ##########################################################
 
-    def _validator_return_toggle_favorite(self):
-        res = self._validator_create()
-        res.update({"id": {"type": "integer", "required": True, "empty": False}})
-        return res
-
-    # pylint:disable=method-required-super
-    def create(self, **params):
-        """
-        Create a new partner
-        """
-        partner = self.env["res.partner"].create(self._prepare_params(params))
-        parser = self._get_partner_parser()
-        return partner.jsonify(parser)
-
-    def backend_credentials(self):
-        """
-        This method is used to authenticate and get the token for the user on mobile app.
-        """
-        partner = self.env.user.partner_id
-        response = partner._get_backend_credentials()
-        return response
-
-    def update(self, _id, **params):
-        """
-        Update partner informations
-        """
-        partner = self._get(_id)
-        parser = self._get_partner_parser()
-        partner.write(self._prepare_params(params))
-        return partner.jsonify(parser)
-
-    def archive(self, _id, **params):
-        """
-        Archive the given partner. This method is an empty method, IOW it
-        don't update the partner. This method is part of the demo data to
-        illustrate that historically it's not mandatory to defined a schema
-        describing the content of the response returned by a method.
-        This kind of definition is DEPRECATED and will no more supported in
-        the future.
-        :param _id:
-        :param params:
-        :return:
-        """
-        return {"response": "Method archive called with id %s" % _id}
-
+    ##########################################################
+    # Private methods
+    ##########################################################
     # The following method are 'private' and should be never never NEVER call
     # from the controller.
 
@@ -235,52 +230,28 @@ class PartnerService(Component):
                     params["%s_id" % key] = val["id"]
         return params
 
-    # Validator
-    def _validator_return_get(self):
-        res = self._validator_create()
-        _logger.debug("res: %s" % res)
-        res.update({"id": {"type": "integer", "required": True, "empty": False}})
+    def _get_partner_parser(self):
+        parser = [
+            'id',
+            'name',
+            'street',
+            'street2',
+            'zip',
+            'city',
+            'mobile',
+            'email',
+            'phone',
+            'is_favorite',
+            'is_company',
+            ('country_id', ['id', 'name']),
+            'qr_url',
+            #('state', ['id','name'])
+        ]
+        return parser
 
-        return res
-
-    def _validator_return_partners(self):
-        return {
-            "count": {"type": "integer", "required": True},
-            "rows": {
-                "type": "list",
-                "required": True,
-                "schema": {"type": "dict", "schema": self._validator_return_get()},
-            },
-        } 
-
-    def _validator_search(self):
-        return {"value": {"type": "string", "nullable": False, "required": True},
-                "backend_keys": {
-                    "type": "list",
-                    "nullable": True,
-                    "required": False,
-                    "empty": True,
-                    "schema": {"type": "string"} #, "nullable": False, "required": False}
-                }
-        }
-   
-    def _validator_partner_search(self):
-        return {"value": {"type": "string", "nullable": False, "required": True},
-                "backend_keys": {
-                    "type": "list",
-                    "nullable": True,
-                    "required": False,
-                    "empty": True,
-                    "schema": {"type": "string"} #, "nullable": False, "required": False}
-                }
-        }
-
-    def _validator_return_search(self):
-        return self._validator_return_partners()
-
-    def _validator_return_favorite(self):
-        return self._validator_return_partners()
-
+    ##########################################################
+    # Request Validators
+    ##########################################################
     def _validator_create(self):
         res = {
             "name": {"type": "string", "required": True, "empty": False},
@@ -317,9 +288,6 @@ class PartnerService(Component):
         }
         return res
 
-    def _validator_return_create(self):
-        return self._validator_return_get()
-
     def _validator_update(self):
         res = self._validator_create()
         for key in res:
@@ -327,27 +295,62 @@ class PartnerService(Component):
                 del res[key]["required"]
         return res
 
+    def _validator_search(self):
+        return {"value": {"type": "string", "nullable": False, "required": True},
+                "backend_keys": {
+                    "type": "list",
+                    "nullable": True,
+                    "required": False,
+                    "empty": True,
+                    "schema": {"type": "string"} #, "nullable": False, "required": False}
+                }
+        }
+
+    ##########################################################
+    # TO CLEAN LATER
+    ##########################################################
+    def _validator_partner_search(self):
+        return {"value": {"type": "string", "nullable": False, "required": True},
+                "backend_keys": {
+                    "type": "list",
+                    "nullable": True,
+                    "required": False,
+                    "empty": True,
+                    "schema": {"type": "string"} #, "nullable": False, "required": False}
+                }
+        }
+    ##########################################################
+    ##########################################################
+
+    def _validator_return_create(self):
+        return self._validator_return_get()
+
     def _validator_return_update(self):
         return self._validator_return_get()
 
-    def _validator_archive(self):
-        return {}
+    def _validator_return_search(self):
+        return self._validator_return_partners()
 
-    def _get_partner_parser(self):
-        parser = [
-            'id',
-            'name',
-            'street',
-            'street2',
-            'zip',
-            'city',
-            'mobile',
-            'email',
-            'phone',
-            'is_favorite',
-            'is_company',
-            ('country_id', ['id', 'name']),
-            'qr_url',
-            #('state', ['id','name'])
-        ]
-        return parser
+    def _validator_return_get(self):
+        res = self._validator_create()
+        _logger.debug("res: %s" % res)
+        res.update({"id": {"type": "integer", "required": True, "empty": False}})
+        return res
+
+    def _validator_return_partners(self):
+        return {
+            "count": {"type": "integer", "required": True},
+            "rows": {
+                "type": "list",
+                "required": True,
+                "schema": {"type": "dict", "schema": self._validator_return_get()},
+            },
+        }
+
+    def _validator_return_favorite(self):
+        return self._validator_return_partners()
+
+    def _validator_return_toggle_favorite(self):
+        res = self._validator_create()
+        res.update({"id": {"type": "integer", "required": True, "empty": False}})
+        return res
