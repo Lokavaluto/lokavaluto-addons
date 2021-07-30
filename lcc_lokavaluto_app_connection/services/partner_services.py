@@ -4,6 +4,13 @@ from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
 from odoo.http import request
+from odoo.exceptions import (
+    AccessDenied,
+    AccessError,
+    MissingError,
+    UserError,
+    ValidationError,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -119,20 +126,29 @@ class PartnerService(Component):
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
         return self._get_formatted_partners(partners, backend_keys)
 
+
     @restapi.method(
-        [(["/partner_url_search"], "GET")],
-        input_param=Datamodel("partner.url.search.info"),
+        [(["/get_by_url"], "GET")],
+        input_param=Datamodel("partner.url.get.info"),
     )
-    def get_partner_url_search(self, partner_url_search_info):
+    def get_by_url(self, partner_url_get_info):
         """
-        Search a partner with a website_url "/partners/..."
+        Get a partner with a website_url "/partners/..."
         """
-        _logger.debug('PARAMS: %s' % partner_url_search_info)
-        url = partner_url_search_info.url
+        _logger.debug('PARAMS: %s' % partner_url_get_info)
+        url = partner_url_get_info.url
         partners = self.env["res.partner"].search([('active', '=', True)])
         partners = partners.filtered(lambda r : r.website_url == url)
-        _logger.debug('PARTNERS: %s' % partners)
-        return self._get_formatted_partners(partners, partner_url_search_info.backend_keys)
+
+        if len(partners) > 0:
+            parser = self._get_partner_parser()
+            res = partners.jsonify(parser)[0]
+            backend_keys = partner_url_get_info.backend_keys
+            if backend_keys:
+                res["monujo_backends"] = list(partners)[0]._update_search_data(backend_keys)
+            return res
+        else:
+            raise MissingError("No partner found - please check your url")
 
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
