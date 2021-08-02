@@ -95,7 +95,7 @@ class ResPartner(models.Model):
                     'owner_id': self.cyclos_id,
                 }]
             }
-        data.append(cyclos_data)
+            data.append(cyclos_data)
         return data
 
     def _update_search_data(self, backend_keys):
