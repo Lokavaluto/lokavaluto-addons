@@ -43,8 +43,7 @@ class ResPartner(models.Model):
                 'bank_accounts': [json.loads(self.comchain_wallet),]
             }
             data.append(comchain_data)
-            return data
-        return []
+        return data
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
@@ -64,7 +63,7 @@ class ResPartner(models.Model):
                 'type': 'comchain',
                 'bank_accounts': [json.loads(self.comchain_wallet),]
             }
-        data.append(comchain_data)
+            data.append(comchain_data)
         return data
 
     def backends(self):
