@@ -18,9 +18,9 @@ class Partners(models.Model):
     _inherit = 'res.partner'
 
     qr = fields.Binary(string="Member QR code")
+    qr_content = fields.Char(string="QR code content")
     qr_url = fields.Char(string="Member QR code URL")
 
-    #@api.depends('qr')
     @api.multi
     def generate_qr(self):
         if qrcode and base64:
@@ -30,8 +30,8 @@ class Partners(models.Model):
                 box_size=10,
                 border=4,
             )
-            partner_website_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + self.website_url
-            qr.add_data(partner_website_url)
+            self.qr_content = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + self.website_url
+            qr.add_data(self.qr_content)
             qr.make(fit=True)
 
             img = qr.make_image()
