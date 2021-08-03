@@ -261,6 +261,7 @@ class PartnerService(Component):
             'is_company',
             ('country_id', ['id', 'name']),
             'qr_url',
+            'qr_content',
             #('state', ['id','name'])
         ]
         return parser
@@ -300,6 +301,7 @@ class PartnerService(Component):
             "is_company": {"coerce": to_bool, "type": "boolean"},
             "is_favorite": {"coerce": to_bool, "type": "boolean"},
             "qr_url": {"type": "string", "nullable": True, "empty": True},
+            "qr_content": {"type": "string", "nullable": True, "empty": True},
             "monujo_backends": {"type": "dict"},
         }
         return res
