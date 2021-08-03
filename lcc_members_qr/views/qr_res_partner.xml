@@ -12,8 +12,14 @@
             </xpath>
             <notebook position="inside">
                 <page string="QR code">
-                    <label for="qr"/>
-                    <field name="qr"/>
+                    <div>
+                        <label for="qr"/>
+                        <field name="qr"/>
+                    </div>
+                    <div>
+                        <label for="qr_content"/>
+                        <field name="qr_content"/>
+                    </div>
                 </page>
             </notebook>
         </field>
