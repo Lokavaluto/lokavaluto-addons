@@ -5,4 +5,4 @@ from . import partner_map_services
 from . import partner_services
 from . import auth_services
 
-__api_version__ = 4
+__api_version__ = 5
