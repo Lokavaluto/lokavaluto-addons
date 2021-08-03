@@ -118,4 +118,21 @@ def __init__(self, httprequest):
     self._determine_context_lang()
 
 
+def dispatch(self):
+    try:
+        return super(HttpRestRequest, self).dispatch()
+    except Exception as exc:
+        return self._handle_exception(exc)
+
+
+class FakeWebSite(object):
+    def website_domain(self):
+        return []
+
+    def is_publisher(self):
+        return False
+
+
 HttpRestRequest.__init__ = __init__
+HttpRestRequest.dispatch = dispatch
+HttpRestRequest.website = FakeWebSite()
