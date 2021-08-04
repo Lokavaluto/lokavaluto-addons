@@ -4,7 +4,7 @@ from odoo.addons.datamodel.core import Datamodel
 from odoo.addons.datamodel.fields import NestedModel
 
 
-class BoundingBoxInfo(DataModel):
+class BoundingBoxInfo(Datamodel):
     _name = "bounding.box.info"
 
     minLat = fields.String(required=True, allow_none=False)
