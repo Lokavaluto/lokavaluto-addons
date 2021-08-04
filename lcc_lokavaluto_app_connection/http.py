@@ -3,7 +3,7 @@ import logging
 import traceback
 
 
-from odoo.http import root
+from odoo.http import root, request
 from odoo.addons.base_rest.http import HttpRestRequest
 from werkzeug.wrappers import Response
 from werkzeug.exceptions import BadRequest
@@ -125,14 +125,31 @@ def dispatch(self):
         return self._handle_exception(exc)
 
 
-class FakeWebSite(object):
-    def website_domain(self):
-        return []
-
-    def is_publisher(self):
-        return False
-
-
 HttpRestRequest.__init__ = __init__
 HttpRestRequest.dispatch = dispatch
-HttpRestRequest.website = FakeWebSite()
+
+from odoo.addons.website.models.ir_http import Http
+
+
+## Patching ``Http``, as both ``_serve_page`` or ``_serve_redirect`` assume
+## that ``request.website`` exists and that is not the case.
+@classmethod
+def _serve_fallback(cls, exception):
+    # serve attachment before
+    parent = super(Http, cls)._serve_fallback(exception)
+    if parent:  # attachment
+        return parent
+
+    if getattr(request, "website", False):
+        website_page = cls._serve_page()
+        if website_page:
+            return website_page
+
+        redirect = cls._serve_redirect()
+        if redirect:
+            return request.redirect(_build_url_w_params(redirect.url_to, request.params), code=redirect.type)
+
+    return False
+
+
+Http._serve_fallback = _serve_fallback
