@@ -22,7 +22,7 @@ class PartnerMapService(Component):
     ##########################################################
     def search_in_area(self, bounding_box, categories):
         """
-        Searh partner in a area defined by latitude and longitude
+        Searh partner in a area defined by latitude and longitude - SERVICE TO BE DELETED
         """
         all_partner = self.env['res.partner'].sudo()
         partners = all_partner.search(all_partner._get_mobile_app_pro_domain_old(bounding_box, categories))
