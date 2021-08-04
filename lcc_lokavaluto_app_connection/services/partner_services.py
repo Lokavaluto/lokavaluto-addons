@@ -51,17 +51,39 @@ class PartnerService(Component):
         response = partner._get_backend_credentials()
         return response
 
-    def get(self, _id):
+    @restapi.method(
+        [(["/", "/get" ], "GET")],
+        input_param=Datamodel("partner.info.get.param"),
+    )
+    def get(self, partner_info_get_param):
         """
         Get partner's informations. If id == 0 return 'me'
         """
-        parser = self._get_partner_parser()
-        if _id == 0:
-            id = self.env.user.partner_id.id
+        id = partner_info_get_param.id
+        website_url = partner_info_get_param.website_url
+        domain = [('active', '=', True)]
+        if id:
+            if id == 0:
+                id = self.env.user.partner_id.id
+            domain.extend([('id', '=', id)])
+        if website_url:
+            partner_id = website_url.split('-')[-1]
+            try:
+                partner_id = int(partner_id)
+                domain.extend([('id', '=', partner_id)])
+            except ValueError:
+                raise MissingError('Url not valid.')
+        partners = self.env["res.partner"].search(domain)
+
+        if len(partners) == 1:
+            parser = self._get_partner_parser()
+            res = partners.jsonify(parser)[0]
+            backend_keys = partner_info_get_param.backend_keys
+            if backend_keys:
+                res["monujo_backends"] = list(partners)[0]._update_search_data(backend_keys)
+            return res
         else:
-            id = _id
-        partner = self._get(id)
-        return partner.jsonify(parser)[0]
+            raise MissingError("No partner found - please check your request")
 
     ##########################################################
     # TO CLEAN LATER
@@ -124,7 +146,9 @@ class PartnerService(Component):
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
         return self._get_formatted_partners(partners, backend_keys)
 
-
+    ##########################################################
+    # TO CLEAN LATER
+    ##########################################################
     @restapi.method(
         [(["/get_by_url"], "GET")],
         input_param=Datamodel("partner.url.get.info"),
@@ -147,6 +171,8 @@ class PartnerService(Component):
             return res
         else:
             raise MissingError("No partner found - please check your url")
+    ##########################################################
+    ##########################################################
 
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
