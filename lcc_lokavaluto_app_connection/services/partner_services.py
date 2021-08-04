@@ -63,20 +63,6 @@ class PartnerService(Component):
         partner = self._get(id)
         return partner.jsonify(parser)[0]
 
-    def search(self, **params):
-        """
-        Search partner by name, email or phone
-        """
-        value = params.get('value', False)
-        backend_keys = params.get('backend_keys', [])
-        partners = self.env["res.partner"].name_search(value)
-        partners = self.env["res.partner"].browse([i[0] for i in partners])
-        if not partners:
-            partners = self.env["res.partner"].search([('active', '=', True),
-                                                        '|', ('email', '=', value),
-                                                        '|', ('phone', '=', value),('mobile', '=', value)])    
-        return self._get_formatted_partners(partners, backend_keys)
-
     ##########################################################
     # TO CLEAN LATER
     ##########################################################
@@ -101,7 +87,7 @@ class PartnerService(Component):
 
 
     @restapi.method(
-        [(["/partner_search"], "GET")],
+        [(["/partner_search", "/search"], "GET")],
         input_param=Datamodel("partner.search.info"),
     )
     def get_partner_search(self, partner_search_info):
@@ -113,15 +99,27 @@ class PartnerService(Component):
         backend_keys = partner_search_info.backend_keys
         is_favorite = partner_search_info.is_favorite
         domain = [('active', '=', True)]
+        offset = partner_search_info.offset if partner_search_info.offset else 0
+        limit = partner_search_info.limit if partner_search_info.limit else 0
+        website_url = partner_search_info.website_url
         if is_favorite:
             domain.extend([('favorite_user_ids', 'in',
                 self.env.context.get('uid'))])
-        domain.extend(['|',
-                       '|', ('email', '=', value), ('display_name', '=', value),
-                       '|', ('phone', '=', value), ('mobile', '=', value)])
+        if value:
+            domain.extend(['|',
+                           '|', ('email', '=', value), ('display_name', 'ilike', value),
+                           '|', ('phone', '=', value), ('mobile', '=', value)])
+        if website_url:
+            partner_id = website_url.split('-')[-1]
+            try:
+                partner_id = int(partner_id)
+                domain.extend([('id', '=', partner_id)])
+            except ValueError:
+                raise MissingError('Url not valid.')
         _logger.debug("DOMAIN: %s" % domain)
-        partners = self.env["res.partner"].search(domain)   
+        partners = self.env["res.partner"].search(domain, limit=limit, offset=offset)
         partners = partners - self.env.user.partner_id
+        _logger.debug("partners: %s" % partners)
         if backend_keys:
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
         return self._get_formatted_partners(partners, backend_keys)
