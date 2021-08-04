@@ -13,6 +13,30 @@ class ResPartner(models.Model):
     app_exported_fields = []
 
     def _get_mobile_app_pro_domain(self, bounding_box, categories):
+        if categories:
+            return [('in_mobile_app', '=', True),
+                    ('is_company', '=', True),
+                    ('industry_id', 'in', categories),
+                    ('partner_longitude', '!=', float()),
+                    ('partner_latitude', '!=', float()),
+                    ('partner_longitude', '>', float(bounding_box.minLon)),
+                    ('partner_longitude', '<', float(bounding_box.maxLon)),
+                    ('partner_latitude', '>', float(bounding_box.minLat)),
+                    ('partner_latitude', '<', float(bounding_box.maxLat))]
+        else:
+            return [('in_mobile_app', '=', True),
+                    ('is_company', '=', True),
+                    ('partner_longitude', '!=', float()),
+                    ('partner_latitude', '!=', float()),
+                    ('partner_longitude', '>', float(bounding_box.minLon)),
+                    ('partner_longitude', '<', float(bounding_box.maxLon)),
+                    ('partner_latitude', '>', float(bounding_box.minLat)),
+                    ('partner_latitude', '<', float(bounding_box.maxLat))]
+
+    ##########################################################
+    # TO CLEAN LATER
+    ##########################################################
+    def _get_mobile_app_pro_domain_old(self, bounding_box, categories):
         _logger.debug('############ %s' % bounding_box)
         if (len(categories) > 0):
             return [('in_mobile_app', '=', True),
@@ -33,6 +57,8 @@ class ResPartner(models.Model):
                     ('partner_longitude', '<', float(bounding_box.get('maxLon', ''))),
                     ('partner_latitude', '>', float(bounding_box.get('minLat', ''))),
                     ('partner_latitude', '<', float(bounding_box.get('maxLat', '')))]
+    ##########################################################
+    ##########################################################
 
     def in_mobile_app_button(self):
         """ Inverse the value of the field ``in_mobile_app``

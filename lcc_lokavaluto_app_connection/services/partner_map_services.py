@@ -25,7 +25,7 @@ class PartnerMapService(Component):
         Searh partner in a area defined by latitude and longitude
         """
         all_partner = self.env['res.partner'].sudo()
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(bounding_box, categories))
+        partners = all_partner.search(all_partner._get_mobile_app_pro_domain_old(bounding_box, categories))
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
@@ -42,13 +42,10 @@ class PartnerMapService(Component):
     )
     def search(self, partners_map_search_param):
         """
-        Searh partner in a area defined by latitude and longitude
+        Searh partner in an area defined by latitude and longitude
         """
-        _logger.debug('#### PARAM SEARCH : %s' % partners_map_search_param)
-        bounding_box = partners_map_search_param.bounding_box
-        categories = partners_map_search_param.categories
         all_partner = self.env['res.partner'].sudo()
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(bounding_box, categories))
+        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(partners_map_search_param.bounding_box, partners_map_search_param.categories))
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
