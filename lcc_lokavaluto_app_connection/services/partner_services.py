@@ -120,9 +120,9 @@ class PartnerService(Component):
         _logger.debug("DOMAIN: %s" % domain)
         partners = self.env["res.partner"].search(domain, limit=limit, offset=offset, order=order)
         partners = partners - self.env.user.partner_id
-        if 'is_favorite desc' in order.lower():
+        if order and 'is_favorite desc' in order.lower():
             partners = partners.sorted(key=lambda r: not r.is_favorite)
-        if 'is_favorite asc' in order.lower():
+        if order and 'is_favorite asc' in order.lower():
             partners = partners.sorted(key=lambda r: r.is_favorite)
         _logger.debug("partners: %s" % partners)
         if backend_keys:
