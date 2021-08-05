@@ -127,7 +127,7 @@ class PartnerService(Component):
         order= partner_search_info.order
         if is_favorite:
             domain.extend([('favorite_user_ids', 'in',
-                self.env.context.get('uid'))])
+                            self.env.uid)])
         if value:
             domain.extend(['|',
                            '|', ('email', '=', value), ('display_name', 'ilike', value),
