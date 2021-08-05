@@ -62,7 +62,7 @@ class PartnerService(Component):
         id = partner_info_get_param.id
         website_url = partner_info_get_param.website_url
         domain = [('active', '=', True)]
-        if id:
+        if id is not None:
             if id == 0:
                 id = self.env.user.partner_id.id
             domain.extend([('id', '=', id)])
