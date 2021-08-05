@@ -228,6 +228,57 @@ class ResPartner(models.Model):
                     'cyclos_status': data.get('status', ''),
                 })
 
+    @api.multi
+    def activeCyclosUser(self):
+        for record in self:
+            data = {
+                'status': 'active',
+                'comment': 'Disable by Odoo'
+            }
+            res = record._cyclos_rest_call(
+                'POST',
+                '/%s/status' % record.cyclos_id,
+                data=data)
+            record.write({
+                'cyclos_active': True,
+                'cyclos_status': 'active',
+            })
+            _logger.debug("res: %s" % res)
+
+    @api.multi
+    def blockCyclosUser(self):
+        for record in self:
+            data = {
+                'status': 'blocked',
+                'comment': 'Blocked by Odoo'
+            }
+            res = record._cyclos_rest_call(
+                'POST',
+                '/%s/status' % record.cyclos_id,
+                data=data)
+            record.write({
+                'cyclos_active': False,
+                'cyclos_status': 'Blocked',
+            })
+            _logger.debug("res: %s" % res)
+
+    @api.multi
+    def disableCyclosUser(self):
+        for record in self:
+            data = {
+                'status': 'disabled',
+                'comment': 'Disable by Odoo'
+            }
+            res = record._cyclos_rest_call(
+                'POST',
+                '/%s/status' % record.cyclos_id,
+                data=data)
+            record.write({
+                'cyclos_active': False,
+                'cyclos_status': 'disabled',
+            })
+            _logger.debug("res: %s" % res)
+
     def forceCyclosPassword(self, password):
         for record in self:
             # TODO: need to stock password type id from cyclos API and replace -4307382460900696903
