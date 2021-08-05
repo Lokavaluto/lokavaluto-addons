@@ -17,25 +17,6 @@ class PartnerMapService(Component):
         Access to the ping services is allowed to everyone
     """
 
-    ##########################################################
-    # TO CLEAN LATER
-    ##########################################################
-    def search_in_area(self, bounding_box, categories):
-        """
-        Searh partner in a area defined by latitude and longitude - SERVICE TO BE DELETED
-        """
-        all_partner = self.env['res.partner'].sudo()
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain_old(bounding_box, categories))
-        rows = []
-        res = {"count": len(partners), "rows": rows}
-        parser = self._get_partner_parser()
-        rows = partners.jsonify(parser)
-        _logger.debug('#################### rows: %s' % rows)
-        res = {"count": len(partners), "rows": rows}
-        return res
-    ##########################################################
-    ##########################################################
-
     @restapi.method(
         [(["/search"], "GET")],
         input_param=Datamodel("partners.map.search.param"),
@@ -59,33 +40,7 @@ class PartnerMapService(Component):
     # The following method are 'private' and should be never never NEVER call
     # from the controller.
 
-    # Validator
-
-    ##########################################################
-    # TO CLEAN LATER
-    ##########################################################
-    def _validator_search_in_area(self):
-        return {"bounding_box": {
-                    "type": "dict",
-                    "schema": {
-                        "minLat": {"type": "string", "required": True},
-                        "maxLat": {"type": "string", "required": True},
-                        "minLon": {"type": "string", "required": True},
-                        "maxLon": {"type": "string", "required": True},
-                    },
-                    "required": True
-                },
-                "categories" : {
-                    "type": "list", 
-                    "schema": {"type": "string"},
-                    "required": False,
-                    "nullable": True
-                },
-               }
-    ##########################################################
-    ##########################################################
-
-
+    # Validators
     def _validator_return_search_in_area(self):
         res = {
             "count": {"type": "integer", "required": True},
