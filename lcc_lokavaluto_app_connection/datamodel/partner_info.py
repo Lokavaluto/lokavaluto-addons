@@ -18,6 +18,7 @@ class PartnerSearchInfo(Datamodel):
     value = fields.String(required=False, allow_none=True)
     backend_keys = fields.List(fields.String())
     is_favorite = fields.Boolean(required=False, allow_none=True)
+    is_company = fields.Boolean(required=False, allow_none=True)
     offset = fields.Integer(required=False, allow_none=True)
     limit = fields.Integer(required=False, allow_none=True)
     website_url = fields.String(required=False, allow_none=True)
