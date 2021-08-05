@@ -115,11 +115,18 @@ class PartnerService(Component):
     def get_partner_search(self, partner_search_info):
         """
         Search partner by name, email or phone
+        is_favorite: if True return only favorite partner, else all
+        is_company: if True search in company else in personal partner
+        website_url: we can search we url of the web site if needed
+        note: 
+           - when search personal partner we need complete et exact match with value.
+           - personl partner only search on mobile, phone and email
         """
         _logger.debug('PARAMS: %s' % partner_search_info)
         value = partner_search_info.value
         backend_keys = partner_search_info.backend_keys
         is_favorite = partner_search_info.is_favorite
+        is_company = partner_search_info.is_company
         domain = [('id', '!=', self.env.user.partner_id.id),('active', '=', True)]
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
@@ -128,16 +135,15 @@ class PartnerService(Component):
         if is_favorite:
             domain.extend([('favorite_user_ids', 'in',
                             self.env.uid)])
-        elif is_favorite is not None:
-            domain.extend([('favorite_user_ids', 'not in', self.env.uid)])
-        if value:
-            domain.extend(['|','|',
-                           '&', ('display_name', 'ilike', value), ('is_company', '=', 1),
-                           '&', ('display_name', '=', value), ('is_company', '=', 0),
-                           '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
-        else:
-            domain.extend([('favorite_user_ids', 'in',
-                            self.env.uid)])
+        if is_company:
+            if value:
+                domain.extend(['|',
+                               '&', ('display_name', 'ilike', value), ('is_company', '=', 1),
+                               '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
+            else:
+                domain.extend([('is_company', '=', 1)])
+        elif value:
+            domain.extend(['|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
         if website_url:
             partner_id = website_url.split('-')[-1]
             try:
