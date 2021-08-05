@@ -13,3 +13,4 @@ class PartnerSearchInfo(Datamodel):
     offset = fields.Integer(required=False, allow_none=True)
     limit = fields.Integer(required=False, allow_none=True)
     website_url = fields.String(required=False, allow_none=True)
+    order = fields.String(required=False, allow_nano=True)
