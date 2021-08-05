@@ -131,8 +131,9 @@ class PartnerService(Component):
         elif is_favorite is not None:
             domain.extend([('favorite_user_ids', 'not in', self.env.uid)])
         if value:
-            domain.extend(['|',
+            domain.extend(['|','|',
                            '&', ('display_name', 'ilike', value), ('is_company', '=', 1),
+                           '&', ('display_name', '=', value), ('is_company', '=', 0),
                            '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
         else:
             domain.extend([('favorite_user_ids', 'in',
