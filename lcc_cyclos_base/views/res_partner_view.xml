@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <button name="toggle_active" position="before">
                 <button type="object" class="oe_stat_button" icon="fa-bank" name="addCyclosUser">
-                     <field name="cyclos_active" widget="boolean_button" options="{&quot;terminology&quot;: {'string_true': 'Cyclos OK', 'hover_true': 'Desactive', 'string_false': 'No Cyclos', 'hover_false': 'Active Cyclos'}}"/>
+                     <field name="cyclos_active" widget="boolean_button" options="{&quot;terminology&quot;: {'string_true': 'Cyclos OK', 'hover_true': 'Desactive', 'string_false': 'Cyclos disabled', 'hover_false': 'Active Cyclos'}}"/>
                 </button>
             </button>
             <page name="accounting" position="after">
@@ -19,10 +19,28 @@
                             <button name="addCyclosUser" type="object" string="Create one" class="oe_link"/>
                         </p>
                     </div>
-                    <div attrs="{'invisible': [('cyclos_active', '=', True)]}" class="bg-info">
+                    <div attrs="{'invisible': ['|',('cyclos_status', '!=', 'active'), ('cyclos_id', '!=', False)]}" class="bg-info">
                         <p>
                             This Numeric LCC account is not validated please
                             <button name="validateCyclosUser" type="object" string="Approve it" class="oe_link"/>
+                        </p>
+                    </div>
+		    <div attrs="{'invisible': [ ('cyclos_status', 'not in', ['disabled', 'blocked'])]}" class="bg-info">
+                        <p>
+                            This Numeric LCC account is not active please
+                            <button name="activeCyclosUser" type="object" string="Active it" class="oe_link"/>
+                        </p>
+                    </div>
+		    <div attrs="{'invisible': [('cyclos_active', '=', False)]}" class="bg-warning">
+                        <p>
+                            To block this Numeric LCC account please
+                            <button name="blockCyclosUser" type="object" string="Click" class="oe_link"/>
+                        </p>
+                    </div>
+		    <div attrs="{'invisible': [('cyclos_active', '=', False)]}" class="bg-danger">
+                        <p>
+                            To disable this Numeric LCC account please
+                            <button name="disableCyclosUser" type="object" string="Click here" class="oe_link"/>
                         </p>
                     </div>
                     <group attrs="{'invisible': [('cyclos_id', '=', False)]}">
