@@ -102,7 +102,7 @@ class PartnerService(Component):
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
         website_url = partner_search_info.website_url
-        order= partner_search_info.order
+
         if is_favorite:
             domain.extend([('favorite_user_ids', 'in',
                 self.env.context.get('uid'))])
@@ -118,12 +118,10 @@ class PartnerService(Component):
             except ValueError:
                 raise MissingError('Url not valid.')
         _logger.debug("DOMAIN: %s" % domain)
-        partners = self.env["res.partner"].search(domain, limit=limit, offset=offset, order=order)
+        partners = self.env["res.partner"].search(domain, limit=limit, offset=offset,
+                                                  order="name")
         partners = partners - self.env.user.partner_id
-        if 'is_favorite desc' in order.lower():
-            partners = partners.sorted(key=lambda r: not r.is_favorite)
-        if 'is_favorite asc' in order.lower():
-            partners = partners.sorted(key=lambda r: r.is_favorite)
+        partners = partners.sorted(key=lambda r: not r.is_favorite)
         _logger.debug("partners: %s" % partners)
         if backend_keys:
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
