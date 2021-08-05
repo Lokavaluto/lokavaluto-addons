@@ -120,7 +120,7 @@ class PartnerService(Component):
         value = partner_search_info.value
         backend_keys = partner_search_info.backend_keys
         is_favorite = partner_search_info.is_favorite
-        domain = [('active', '=', True)]
+        domain = [('id', '!=', self.env.user.partner_id.id),('active', '=', True)]
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
         website_url = partner_search_info.website_url
@@ -128,10 +128,15 @@ class PartnerService(Component):
         if is_favorite:
             domain.extend([('favorite_user_ids', 'in',
                             self.env.uid)])
+        elif is_favorite is not None:
+            domain.extend([('favorite_user_ids', 'not in', self.env.uid)])
         if value:
             domain.extend(['|',
-                           '|', ('email', '=', value), ('display_name', 'ilike', value),
-                           '|', ('phone', '=', value), ('mobile', '=', value)])
+                           '&', ('display_name', 'ilike', value), ('is_company', '=', 1),
+                           '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
+        else:
+            domain.extend([('favorite_user_ids', 'in',
+                            self.env.uid)])
         if website_url:
             partner_id = website_url.split('-')[-1]
             try:
@@ -141,11 +146,6 @@ class PartnerService(Component):
                 raise MissingError('Url not valid.')
         _logger.debug("DOMAIN: %s" % domain)
         partners = self.env["res.partner"].search(domain, limit=limit, offset=offset, order=order)
-        partners = partners - self.env.user.partner_id
-        if order and 'is_favorite desc' in order.lower():
-            partners = partners.sorted(key=lambda r: not r.is_favorite)
-        if order and 'is_favorite asc' in order.lower():
-            partners = partners.sorted(key=lambda r: r.is_favorite)
         _logger.debug("partners: %s" % partners)
         if backend_keys:
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
