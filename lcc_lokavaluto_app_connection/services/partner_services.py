@@ -115,12 +115,19 @@ class PartnerService(Component):
     def get_partner_search(self, partner_search_info):
         """
         Search partner by name, email or phone
+        is_favorite: if True return only favorite partner, else all
+        is_company: if True search in company else in personal partner
+        website_url: we can search we url of the web site if needed
+        note: 
+           - when search personal partner we need complete et exact match with value.
+           - personl partner only search on mobile, phone and email
         """
         _logger.debug('PARAMS: %s' % partner_search_info)
         value = partner_search_info.value
         backend_keys = partner_search_info.backend_keys
         is_favorite = partner_search_info.is_favorite
-        domain = [('active', '=', True)]
+        is_company = partner_search_info.is_company
+        domain = [('id', '!=', self.env.user.partner_id.id),('active', '=', True)]
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
         website_url = partner_search_info.website_url
@@ -128,10 +135,15 @@ class PartnerService(Component):
         if is_favorite:
             domain.extend([('favorite_user_ids', 'in',
                             self.env.uid)])
-        if value:
-            domain.extend(['|',
-                           '|', ('email', '=', value), ('display_name', 'ilike', value),
-                           '|', ('phone', '=', value), ('mobile', '=', value)])
+        if is_company:
+            if value:
+                domain.extend(['|',
+                               '&', ('display_name', 'ilike', value), ('is_company', '=', 1),
+                               '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
+            else:
+                domain.extend([('is_company', '=', 1)])
+        elif value:
+            domain.extend(['|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
         if website_url:
             partner_id = website_url.split('-')[-1]
             try:
@@ -141,11 +153,6 @@ class PartnerService(Component):
                 raise MissingError('Url not valid.')
         _logger.debug("DOMAIN: %s" % domain)
         partners = self.env["res.partner"].search(domain, limit=limit, offset=offset, order=order)
-        partners = partners - self.env.user.partner_id
-        if order and 'is_favorite desc' in order.lower():
-            partners = partners.sorted(key=lambda r: not r.is_favorite)
-        if order and 'is_favorite asc' in order.lower():
-            partners = partners.sorted(key=lambda r: r.is_favorite)
         _logger.debug("partners: %s" % partners)
         if backend_keys:
             partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
