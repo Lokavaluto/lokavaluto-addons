@@ -222,7 +222,6 @@
                                 <group>
                                     <field name="free_member"/>
                                     <field name="to_renew" />
-                                    <field name="has_user_account"/>
                                     <label for="membership_state"/>
                                     <div>
                                         <field name="membership_state"/>

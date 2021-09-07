@@ -10,7 +10,7 @@
    :alt: License: AGPL-3
 
 =============================
-lcc_lokavaluto_app_connection
+stephan_lokavaluto_app_connection
 =============================
 
 Lokavaluto mobile application connection module, to communicate the Odoo
@@ -71,7 +71,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
     'category': 'Website',
-    'version': '12.0.1.0.7',
+    'version': '12.0.1.0.4',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -82,14 +82,12 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'base_jsonify',
         'partner_favorite',
         'lcc_members',
-        'lcc_members_qr',
         ],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/lcc_app_connection_partner.xml',
-        'data/numeric_data.xml',
+        # 'security/ir.model.access.csv',
+        'views/lcc_app_connection_partner.xml'
     ],
     # only loaded in demonstration mode
     'demo': [],
