@@ -143,6 +143,9 @@ class PartnerService(Component):
                 domain.extend([('is_company', '=', 1)])
         elif value:
             domain.extend([('is_company', '=', 0), '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
+        else:
+            domain.extend([('is_company', '=', 0),
+                           ('favorite_user_ids', 'in', self.env.uid)])
         if website_url:
             partner_id = website_url.split('-')[-1]
             try:
