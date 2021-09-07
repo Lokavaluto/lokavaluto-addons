@@ -1,7 +1,7 @@
 {
-    'name': "lcc_lokavaluto_app_connection",
+    'name': "lcc_members_qr",
     'summary': """
-        REST Odoo Backend for Lokavaluto mobile application
+        Generation of a QR code for LCC members
         """,
 
     'description': """
@@ -9,19 +9,28 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-=============================
-lcc_lokavaluto_app_connection
-=============================
+==============
+lcc_members_qr
+==============
 
-Lokavaluto mobile application connection module, to communicate the Odoo
-database data needed for the Local Currency mobile app
+Module to generate a QR code containing the partner's website_url
 It's part of Lokavaluto Project (https://lokavaluto.fr)
 
 Installation
 ============
 
-Just install lcc_lokavaluto_app_connection, all dependencies
-will be installed by default.
+Just install lcc_members_qr, all dependencies will be installed by default.
+
+Configuration
+=============
+
+No configuration needed on this addon.
+
+Usage
+=====
+
+To generate the QR code of a partner, go on the form view of the partner, anc click on the button "Generate QR". 
+You will be able to download a pdf page containing the QR code, and you will find the PNG image in the "QR code" notebook page.
 
 Known issues / Roadmap
 ======================
@@ -71,25 +80,19 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
     'category': 'Website',
-    'version': '12.0.1.0.7',
+    'version': '12.0.1.0.6',
 
     # any module necessary for this one to work correctly
     'depends': [
         'base',
-        'base_rest',
-        'auth_api_key',
-        'base_rest_datamodel',
-        'base_jsonify',
-        'partner_favorite',
-        'lcc_members',
-        'lcc_members_qr',
         ],
 
     # always loaded
-    'data': [
-        'security/ir.model.access.csv',
-        'views/lcc_app_connection_partner.xml',
-        'data/numeric_data.xml',
+    'data': [        
+        'report/paperformat.xml',
+        'report/report.xml',
+        'views/qr_res_partner.xml',
+        'report/template.xml',
     ],
     # only loaded in demonstration mode
     'demo': [],

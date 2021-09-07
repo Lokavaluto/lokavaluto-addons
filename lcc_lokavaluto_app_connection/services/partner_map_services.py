@@ -1,4 +1,6 @@
 import logging
+from odoo.addons.base_rest import restapi
+from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
 
@@ -15,12 +17,16 @@ class PartnerMapService(Component):
         Access to the ping services is allowed to everyone
     """
 
-    def search_in_area(self, bounding_box):
+    @restapi.method(
+        [(["/search"], "GET")],
+        input_param=Datamodel("partners.map.search.param"),
+    )
+    def search(self, partners_map_search_param):
         """
-        Searh partner in a area defined by latitude and longitude
+        Searh partner in an area defined by latitude and longitude
         """
         all_partner = self.env['res.partner'].sudo()
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(bounding_box))
+        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(partners_map_search_param.bounding_box, partners_map_search_param.categories))
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
@@ -34,20 +40,7 @@ class PartnerMapService(Component):
     # The following method are 'private' and should be never never NEVER call
     # from the controller.
 
-    # Validator
-    def _validator_search_in_area(self):
-        return {"bounding_box": {
-                    "type": "dict",
-                    "schema": {
-                        "minLat": {"type": "string", "required": True},
-                        "maxLat": {"type": "string", "required": True},
-                        "minLon": {"type": "string", "required": True},
-                        "maxLon": {"type": "string", "required": True},
-                    },
-                    "required": True,
-                }}
-
-
+    # Validators
     def _validator_return_search_in_area(self):
         res = {
             "count": {"type": "integer", "required": True},

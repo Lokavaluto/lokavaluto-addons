@@ -1,7 +1,7 @@
 {
-    'name': "lcc_lokavaluto_app_connection",
+    'name': "lcc_comchain_base",
     'summary': """
-        REST Odoo Backend for Lokavaluto mobile application
+        comchain models and api for comchain transaction backend
         """,
 
     'description': """
@@ -9,19 +9,20 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-=============================
-lcc_lokavaluto_app_connection
-=============================
+=================
+lcc_comchain_base
+=================
 
-Lokavaluto mobile application connection module, to communicate the Odoo
-database data needed for the Local Currency mobile app
+Base models and logics using comchain as transaction provider for numeric local complementary currency
 It's part of Lokavaluto Project (https://lokavaluto.fr)
 
 Installation
 ============
 
-Just install lcc_lokavaluto_app_connection, all dependencies
+Just install lcc_comchain_base, all dependencies
 will be installed by default.
+
+TODO: Configuration -> ...
 
 Known issues / Roadmap
 ======================
@@ -71,25 +72,20 @@ mission is to support the collaborative development of Odoo features and ecosyst
     'author': "Lokavaluto",
     'website': "https://lokavaluto.fr",
     'category': 'Website',
-    'version': '12.0.1.0.7',
+    'version': '12.0.1.0.4',
 
     # any module necessary for this one to work correctly
     'depends': [
         'base',
-        'base_rest',
-        'auth_api_key',
-        'base_rest_datamodel',
-        'base_jsonify',
-        'partner_favorite',
+        'lcc_lokavaluto_app_connection',
         'lcc_members',
-        'lcc_members_qr',
         ],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/lcc_app_connection_partner.xml',
-        'data/numeric_data.xml',
+        # 'security/ir.model.access.csv',
+        'views/res_config_settings_view.xml',
+        'views/res_partner_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [],
