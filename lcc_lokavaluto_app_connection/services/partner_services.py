@@ -137,13 +137,12 @@ class PartnerService(Component):
                             self.env.uid)])
         if is_company:
             if value:
-                domain.extend(['|',
-                               '&', ('display_name', 'ilike', value), ('is_company', '=', 1),
-                               '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
+                domain.extend([('is_company', '=', 1),
+                               '|','|', '|', ('display_name', 'ilike', value), ('email', 'ilike', value), ('phone', 'ilike', value), ('mobile', 'ilike', value)])
             else:
                 domain.extend([('is_company', '=', 1)])
         elif value:
-            domain.extend(['|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
+            domain.extend([('is_company', '=', 0), '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
         if website_url:
             partner_id = website_url.split('-')[-1]
             try:
