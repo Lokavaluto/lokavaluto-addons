@@ -150,7 +150,7 @@ class ResPartner(models.Model):
             line.create(line_vals)
             order_id.write(
                 {'state': 'sent',
-                 'require_signature': True,
+                 'require_signature': False,
                  'require_payment': True}
             )
         return order_id
