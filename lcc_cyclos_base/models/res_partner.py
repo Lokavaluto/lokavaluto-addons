@@ -148,7 +148,27 @@ class ResPartner(models.Model):
             )
             _logger.debug("CYCLOS ORDER LINE: %s" % line_vals)
             line.create(line_vals)
+            order_id.write(
+                {'state': 'sent',
+                 'require_signature': True,
+                 'require_payment': True}
+            )
         return order_id
+
+    @api.multi
+    def action_credit_cyclos_account(self, amount):
+        for record in self:
+            data = {
+                'amount': amount,
+                'description': 'Credited by %s' % record.company_id.name,
+                'subject': record.cyclos_id if record.cyclos_active else record.parent_id.cyclos_id,
+            }
+            _logger.debug("data: %s" % data)
+            res = record._cyclos_rest_call(
+                'POST',
+                '/system/payments',
+                data=data)
+            _logger.debug("res: %s" % res)
 
 
     @api.multi
