@@ -131,21 +131,20 @@ class PartnerService(Component):
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
         website_url = partner_search_info.website_url
-        order= partner_search_info.order
-        if is_favorite:
-            domain.extend([('favorite_user_ids', 'in',
-                            self.env.uid)])
-        if is_company:
-            if value:
-                domain.extend([('is_company', '=', 1),
-                               '|','|', '|', ('display_name', 'ilike', value), ('email', 'ilike', value), ('phone', 'ilike', value), ('mobile', 'ilike', value)])
+        order = partner_search_info.order
+        if is_favorite or not value:
+            domain.extend([('favorite_user_ids', 'in', self.env.uid)])
+        domain.extend([('is_company', '=', 1 if is_company else 0)])
+        if value:
+            if is_company:
+                domain.extend(['|','|', '|', ('display_name', 'ilike', value),
+                               ('email', 'ilike', value),
+                               ('phone', 'ilike', value),
+                               ('mobile', 'ilike', value)])
             else:
-                domain.extend([('is_company', '=', 1)])
-        elif value:
-            domain.extend([('is_company', '=', 0), '|', '|', ('email', '=', value), ('phone', '=', value), ('mobile', '=', value)])
-        else:
-            domain.extend([('is_company', '=', 0),
-                           ('favorite_user_ids', 'in', self.env.uid)])
+                domain.extend(['|', '|', ('email', '=', value),
+                                         ('phone', '=', value),
+                                         ('mobile', '=', value)])
         if website_url:
             partner_id = website_url.split('-')[-1]
             try:
