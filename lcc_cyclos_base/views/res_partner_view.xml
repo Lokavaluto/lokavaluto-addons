@@ -19,13 +19,13 @@
               <button name="addCyclosUser" type="object" string="Create one" class="oe_link"/>
             </p>
           </div>
-          <div attrs="{'invisible': ['|',('cyclos_status', '!=', 'active'), ('cyclos_id', '!=', False)]}" class="bg-info">
+          <div attrs="{'invisible': [('cyclos_status', '!=', 'emailValidation')]}" class="bg-info">
             <p>
               This Numeric LCC account is not validated please
               <button name="validateCyclosUser" type="object" string="Approve it" class="oe_link"/>
             </p>
           </div>
-		  <div attrs="{'invisible': [ ('cyclos_status', 'not in', ['disabled', 'blocked'])]}" class="bg-info">
+		  <div attrs="{'invisible': [ ('cyclos_status', 'not in', ['disabled', 'blocked', 'inactive'])]}" class="bg-info">
             <p>
               This Numeric LCC account is not active please
               <button name="activeCyclosUser" type="object" string="Active it" class="oe_link"/>
