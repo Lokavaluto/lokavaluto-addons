@@ -52,20 +52,20 @@ class PartnerService(Component):
         return response
 
     @restapi.method(
-        [(["/", "/get" ], "GET")],
-        input_param=Datamodel("partner.info.get.param"),
+        [(["/<int:id>/get", "/<int:id>"], "GET")],
+        input_param=Datamodel("partner.info.get.param")
     )
-    def get(self, partner_info_get_param):
+    def get(self, _id, partner_info_get_param):
         """
         Get partner's informations. If id == 0 return 'me'
         """
-        id = partner_info_get_param.id
         website_url = partner_info_get_param.website_url
         domain = [('active', '=', True)]
-        if id is not None:
-            if id == 0:
-                id = self.env.user.partner_id.id
-            domain.extend([('id', '=', id)])
+        if _id is None:
+            _id = 0
+        if _id == 0:
+            _id = self.env.user.partner_id.id
+        domain.extend([('id', '=', _id)])
         if website_url:
             partner_id = website_url.split('-')[-1]
             try:
