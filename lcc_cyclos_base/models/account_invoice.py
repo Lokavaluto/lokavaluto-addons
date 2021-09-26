@@ -25,7 +25,7 @@ class AccountInvoice(models.Model):
         categ = self.env.ref('lcc_cyclos_base.product_category_cyclos')
         for invoice in self:
             if invoice.state == 'paid' and invoice.has_numeric_lcc_products:
-                amount = sum(self.invoice_line_ids.filtered(lambda line: line.product_id.categ_id == categ).mapped('price_total'))
+                amount = sum(self.invoice_line_ids.filtered(lambda line: line.product_id.categ_id == categ).mapped('quantity'))
                 invoice.partner_id.action_credit_cyclos_account(amount)
                 invoice.write({
                     'cyclos_amount_credited': amount,
