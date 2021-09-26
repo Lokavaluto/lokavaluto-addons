@@ -141,8 +141,8 @@ class ResPartner(models.Model):
             line_vals = line.play_onchanges(line_vals, ['product_id'])
             line_vals.update(
                 {
-                    'product_uom_qty': 1,
-                    'price_unit': amount,
+                    'product_uom_qty': amount,
+                    'price_unit': 1,
                     # TODO: Taxes ?  
                 }
             )
@@ -162,6 +162,7 @@ class ResPartner(models.Model):
                 'amount': amount,
                 'description': 'Credited by %s' % record.company_id.name,
                 'subject': record.cyclos_id if record.cyclos_active else record.parent_id.cyclos_id,
+                'type': 'debit.toPro' if record.is_company else 'debit.toUser',
             }
             _logger.debug("data: %s" % data)
             res = record._cyclos_rest_call(
