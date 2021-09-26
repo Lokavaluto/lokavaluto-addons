@@ -162,6 +162,7 @@ class ResPartner(models.Model):
                 'amount': amount,
                 'description': 'Credited by %s' % record.company_id.name,
                 'subject': record.cyclos_id if record.cyclos_active else record.parent_id.cyclos_id,
+                'type': 'debit.toPro' if record.is_company else 'debit.toUser',
             }
             _logger.debug("data: %s" % data)
             res = record._cyclos_rest_call(
