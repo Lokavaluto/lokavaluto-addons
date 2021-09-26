@@ -141,8 +141,8 @@ class ResPartner(models.Model):
             line_vals = line.play_onchanges(line_vals, ['product_id'])
             line_vals.update(
                 {
-                    'product_uom_qty': 1,
-                    'price_unit': amount,
+                    'product_uom_qty': amount,
+                    'price_unit': 1,
                     # TODO: Taxes ?  
                 }
             )
