@@ -76,6 +76,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     # any module necessary for this one to work correctly
     'depends': [
         'base',
+        'sale',
         'base_rest',
         'auth_api_key',
         'base_rest_datamodel',
