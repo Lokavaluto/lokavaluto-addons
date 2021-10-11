@@ -1,2 +1,2 @@
-#from . import main
+from . import portal
 from . import rest_api
