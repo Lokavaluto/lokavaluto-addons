@@ -131,11 +131,11 @@ class res_partner(models.Model):
         'partner_id',
         string='Images')
 
-    @api.onchange('firstname', 'lastname')
+    @api.onchange('firstname', 'lastname', 'is_company')
     def onchange_upper_name(self):
-        if self.lastname and self.lastname != self.lastname.upper():
+        if (not self.is_company) and self.lastname and self.lastname != self.lastname.upper():
             self.lastname = self.lastname.upper()
-        if self.firstname and self.firstname != self.firstname.capitalize():
+        if (not self.is_company) and self.firstname and self.firstname != self.firstname.capitalize():
             self.firstname = self.firstname.capitalize()
             
     def _membership_state(self):
