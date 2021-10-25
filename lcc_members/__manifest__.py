@@ -86,7 +86,6 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "calendar",
         "crm",
         "website_partner",
-        "l10n_fr_siret",
         "sales_team",
         "l10n_fr",
         "account",
@@ -101,22 +100,15 @@ mission is to support the collaborative development of Odoo features and ecosyst
     # always loaded
     "data": [
         "security/ir.model.access.csv",
+        "views/blank_card_menus.xml",
+        "views/configuration_menus.xml",
         "views/res_partner_view.xml",
         "views/member_type_view.xml",
-        "views/ir_ui_menus.xml",
-        "views/report_membership_menus.xml",
-        "views/product_template_menus.xml",
-        "views/member_type_menus.xml",
-        "views/res_partner_menus.xml",
         "views/website_partner_view.xml",
         "views/assets.xml",
     ],
     # only loaded in demonstration mode
-    "demo": [
-        "data/member_type_demo.xml",
-        "data/res_partner_demo.xml",
-        "data/res_users_demo.xml",
-    ],
+    "demo": [],
     "js": [],
     "css": [],
     "qweb": [],
