@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+    <record id="action_carte_vierge_form_view" model="ir.actions.act_window">
+      <field name="name">Blank card</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">res.partner</field>
+      <field name="domain">[('category_id', 'ilike', 'Carte vierge')]</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html"><p><br/></p></field>
+    </record>
+
+    <menuitem action="action_carte_vierge_form_view"
+              name="Blank card"
+              id="menu_action_cartes_vierges_form_menu"
+              parent="membership.menu_association"
+              sequence="5"
+              />
+  </data>
+</odoo>

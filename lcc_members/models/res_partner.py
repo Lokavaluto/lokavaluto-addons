@@ -17,12 +17,12 @@ class res_partner(models.Model):
         translate=True,
         readonly=False
     )
-    instagram = fields.Char(
-        string=_("Instagram"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
+    # instagram = fields.Char(
+    #     string=_("Instagram"),
+    #     required=False,
+    #     translate=False,
+    #     readonly=False
+    # )
     phone_pro = fields.Char(
         string=_("Professional phone"),
         required=False,
@@ -60,24 +60,24 @@ class res_partner(models.Model):
         translate=False,
         readonly=False
     )
-    facebook_url = fields.Char(
-        string=_("URl Facebook"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
+    # facebook_url = fields.Char(
+    #     string=_("URl Facebook"),
+    #     required=False,
+    #     translate=False,
+    #     readonly=False
+    # )
     keywords = fields.Text(
         string=_("keywords"),
         required=False,
         translate=True,
         readonly=False
     )
-    twitter_url = fields.Char(
-        string=_("Twitter"),
-        required=False,
-        translate=False,
-        readonly=False
-    )
+    # twitter_url = fields.Char(
+    #     string=_("Twitter"),
+    #     required=False,
+    #     translate=False,
+    #     readonly=False
+    # )
     opening_time = fields.Text(
         string=_("Opening Time"),
         required=False,

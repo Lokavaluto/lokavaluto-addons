@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+    <record id="action_type_adherent_form_view" model="ir.actions.act_window">
+      <field name="name">Membership Type</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">member_type</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html"><p><br/></p>
+      </field>
+    </record>
+
+    <menuitem name="Configuration" 
+              id="membership.menu_marketing_config_association"
+              parent="membership.menu_association" 
+              sequence="100"/>
+
+    <menuitem name="Membership Products" 
+              id="menu_action_membership_product_form_menu"
+              parent="membership.menu_marketing_config_association" 
+              sequence="0" 
+              action="membership.action_membership_products"/>
+
+    <menuitem name="Member Types"
+              id="action_membership_type_tree_view_menu"
+              parent="membership.menu_marketing_config_association"              
+              sequence="2"
+              action="action_type_adherent_form_view"
+                />
+  </data>
+</odoo>
