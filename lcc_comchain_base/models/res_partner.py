@@ -19,6 +19,7 @@ class ResPartner(models.Model):
     ], string='Type')
     comchain_credit_min = fields.Float(string="Min Credit limit")
     comchain_credit_max = fields.Float(string="Max Credit limit")
+    comchain_message_key = fields.Char(string="Uncrypted string keys")
 
     @api.multi
     def open_commercial_member_entity(self):
@@ -40,7 +41,10 @@ class ResPartner(models.Model):
         if self.comchain_id:
             comchain_data = {
                 'type': 'comchain',
-                'bank_accounts': [json.loads(self.comchain_wallet),]
+                'bank_accounts': [{
+                    'wallet': json.loads(self.comchain_wallet),
+                    'message_key': self.comchain_message_key}
+                    ],
             }
             data.append(comchain_data)
         return data
@@ -61,7 +65,10 @@ class ResPartner(models.Model):
         if self.comchain_id:
             comchain_data = {
                 'type': 'comchain',
-                'bank_accounts': [json.loads(self.comchain_wallet),]
+                'bank_accounts': [{
+                    'wallet': json.loads(self.comchain_wallet),
+                    'message_key': self.comchain_message_key}
+                ]
             }
             data.append(comchain_data)
         return data

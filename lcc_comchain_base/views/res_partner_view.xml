@@ -23,6 +23,7 @@
                         <group>
                             <field name="comchain_id"/>
                             <field name="comchain_wallet"/>
+                            <field name="comchain_message_key"/>
                             <field name="comchain_status" readonly="1"/>
                         </group>
                         <group>
