@@ -19,7 +19,7 @@ class ResPartner(models.Model):
     ], string='Type')
     comchain_credit_min = fields.Float(string="Min Credit limit")
     comchain_credit_max = fields.Float(string="Max Credit limit")
-    comchain_message_key = fields.Char(string="Uncrypted string keys")
+    comchain_message_key = fields.Char(string="Message keys")
 
     @api.multi
     def open_commercial_member_entity(self):
