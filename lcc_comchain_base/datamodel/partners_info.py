@@ -15,3 +15,11 @@ class ComchainPartnersInfo(Datamodel):
     _name = "comchain.partners.info"
 
     addresses = fields.List(fields.String(), required=True)
+
+
+class ComchainRegisterInfo(Datamodel):
+    _name = "comchain.register.info"
+
+    address = fields.String(required=True)
+    wallet = fields.String(required=True)
+    message_key = fields.String(required=True)

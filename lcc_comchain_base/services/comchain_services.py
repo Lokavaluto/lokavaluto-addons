@@ -35,3 +35,21 @@ class ComchainService(Component):
                     'display_name': partner.display_name
                 }
         return res
+
+    @restapi.method(
+        [(["/register"], "POST")],
+        input_param=Datamodel("comchain.register.info"),
+    )
+    def register(self, params):
+        """
+        Return display name for partner matching comchain addresses
+        """
+        partner = self.env.user.partner_id
+        res = partner.write({
+            'comchain_id': params.address,
+            'comchain_wallet': params.wallet,
+            'comchain_message_key': params.message_key
+            }
+        )
+
+        return res
