@@ -1,83 +1,37 @@
+import logging
+
+from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest.components.service import to_int
+from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
+_logger = logging.getLogger(__name__)
 
-class PingService(Component):
+
+class ComchainService(Component):
     _inherit = "base.rest.service"
     _name = "comchain.service"
     _usage = "comchain"
     _collection = "lokavaluto.private.services"
     _description = """
-        Ping Services
-        Access to the ping services is allowed to everyone
+        Comchain Services
+        Access to the Comchain services is allowed to everyone connected
     """
 
-    # The following method are 'public' and can be called from the controller.
-    def get(self, _id, message):
+    @restapi.method(
+        [(["/partners"], "POST")],
+        input_param=Datamodel("comchain.partners.info"),
+    )
+    def partners(self, params):
         """
-        This method is used to get the information of the object specified
-        by Id.
+        Return display name for partner matching comchain addresses
         """
-        return {"message": message, "id": _id}
-
-    def search(self, **params):
-        """
-        A search method to illustrate how you can define a complex request.
-        In the case of the methods 'get' and 'search' the parameters are
-        passed to the server as the query part of the service URL.
-        """
-        return {"response": "Search called search with params %s" % params}
-
-    def update(self, _id, message):
-        """
-        Update method description ...
-        """
-        return {"response": "PUT called with message " + message}
-
-    # pylint:disable=method-required-super
-    def create(self, **params):
-        """
-        Create method description ...
-        """
-        return {"response": "POST called with message " + params["message"]}
-
-    def delete(self, _id):
-        """
-        Delete method description ...
-        """
-        return {"response": "DELETE called with id %s " % _id}
-
-    # Validator
-    def _validator_search(self):
-        return {
-            "param_string": {"type": "string"},
-            "param_required": {"type": "string", "required": True},
-            "limit": {"type": "integer", "default": 50, "coerce": to_int},
-            "offset": {"type": "integer", "default": 0, "coerce": to_int},
-            "params": {"type": "list", "schema": {"type": "string"}},
-        }
-
-    def _validator_return_search(self):
-        return {"response": {"type": "string"}}
-
-    # Validator
-    def _validator_get(self):
-        return {"message": {"type": "string"}}
-
-    def _validator_return_get(self):
-        return {"message": {"type": "string"}, "id": {"type": "integer"}}
-
-    def _validator_update(self):
-        return {"message": {"type": "string"}}
-
-    def _validator_return_update(self):
-        return {"response": {"type": "string"}}
-
-    def _validator_create(self):
-        return {"message": {"type": "string"}}
-
-    def _validator_return_create(self):
-        return {"response": {"type": "string"}}
-
-    def _validator_return_delete(self):
-        return {"response": {"type": "string"}}
+        partner = self.env.user.partner_id
+        partner_ids = partner.search([('comchain_id', 'in', params.addresses)])
+        res = {}
+        for partner in partner_ids:
+            res[partner.comchain_id] = {
+                    'partner_id': partner.id,
+                    'display_name': partner.display_name
+                }
+        return res
