@@ -74,6 +74,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "base",
         "partner_firstname",
         "partner_industry_secondary",
+        "partner_contact_in_several_companies",
         "membership",
         "complementary_contact_data",
         "base_address_city",
