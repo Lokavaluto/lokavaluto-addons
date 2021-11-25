@@ -68,10 +68,10 @@ class ResPartner(models.Model):
         domain = self.env.user.company_id.cyclos_server_url.split('/')[2]
         data = {
             'type': 'cyclos:%s' % domain,
-            'user_accounts': []
+            'accounts': []
         }
         if self.cyclos_active and self.cyclos_id:
-            data['user_accounts'].append({
+            data['accounts'].append({
                     'owner_id': self.cyclos_id,
                     'url': self.env.user.company_id.cyclos_server_url,
             })
@@ -89,7 +89,7 @@ class ResPartner(models.Model):
                 self.forceCyclosPassword(password)
                 new_token = self.createCyclosUserToken(self.id, password)
                 if new_token:
-                    for ua in backend_data["user_accounts"]:
+                    for ua in backend_data["accounts"]:
                         ua["token"] = new_token
             data.append(backend_data)
         return data

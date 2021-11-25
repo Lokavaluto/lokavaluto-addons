@@ -49,10 +49,10 @@ class ResPartner(models.Model):
 
         data = {
             'type': 'comchain:%s' % currency_name,
-            'bank_accounts': []
+            'accounts': []
         }
         if wallet:
-            data['bank_accounts'].append({
+            data['accounts'].append({
                 'wallet': wallet,
                 'message_key': self.comchain_message_key
             })
