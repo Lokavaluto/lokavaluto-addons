@@ -89,6 +89,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "l10n_fr",
         "sale",
         "partner_favorite",
+        "portal",
     ],
     "external_dependencies": {
         "python": [],
