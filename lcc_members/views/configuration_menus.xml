@@ -27,5 +27,18 @@
               sequence="2"
               action="action_type_adherent_form_view"
                 />
+
+    <menuitem name="Contact Tags"
+              id="action_membership_category_form"
+              parent="membership.menu_marketing_config_association"
+              sequence="3"
+              action="base.action_partner_category_form"/>
+
+    <menuitem name="Sectors of Activity"
+              id="action_membership_industry_menu"
+              parent="membership.menu_marketing_config_association"
+              sequence="4"
+              action="base.res_partner_industry_action"/>
+
   </data>
 </odoo>
