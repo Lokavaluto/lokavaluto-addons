@@ -102,7 +102,7 @@ class res_partner(models.Model):
         translate=False,
         readonly=False
     )
-    private_comment = fields.Text(
+    private_comment = fields.Text( ## TODO v4 : TO BE DELETED
         string=_("Private comment"),
         required=False,
         translate=False,
