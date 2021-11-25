@@ -131,6 +131,12 @@ class res_partner(models.Model):
         'partner_id',
         string='Images')
 
+    accept_coupons = fields.Boolean(
+        string = "Accept coupons")
+
+    accept_digital_currency = fields.Boolean(
+        string = "Accept digital currency")
+
     @api.onchange('firstname', 'lastname', 'is_company')
     def onchange_upper_name(self):
         if (not self.is_company) and self.lastname and self.lastname != self.lastname.upper():
