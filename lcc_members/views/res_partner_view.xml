@@ -42,19 +42,13 @@
                 <field name="team_id" string="Local group" options="{'limit': 16, 'create': false, 'create_edit': false}"/>
                 <field name="user_id" string="Referent" />
                 <field name="ref" string="Subcription number"/>
-                <field name="vat" placeholder="e.g. BE0477472701" attrs="{'invisible': [('is_company', '=', False)]}" widget="field_partner_autocomplete"/>
-
             </xpath>
+
             <xpath expr="//field[@name='phone']" position="replace">
                 <label for="phone"/>
                 <div class="o_row">
                     <field name="phone" widget="phone"/>
                     <button type="action" name="137" class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS" title="Send SMS" attrs="{'invisible':[('phone', '=', False)]}" context="{'field_name': 'phone'}"/>
-                </div>
-                <label for="phone_pro"/>
-                <div class="o_row">
-                    <field name="phone_pro" widget="phone"/>
-                    <button type="action" name="137" class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS" title="Send SMS" attrs="{'invisible':[('phone_pro', '=', False)]}" context="{'field_name': 'phone_pro'}"/>
                 </div>
             </xpath>
             <xpath expr="//field[@name='mobile']" position="replace">
@@ -86,14 +80,8 @@
                     <field name="convention_signature_date" attrs="{'invisible': [('is_company', '=', False)]}"/>
                     <field name="convention_specific_agreement" attrs="{'invisible': [('is_company', '=', False)]}"/>
                 </group>
-                <field name="member_comment" placeholder="Subscription private note"/>
                 <separator string="Subscription history" attrs="{'invisible': [('is_company', '=', False)]}"/>
             </xpath>    
-
-            <!-- page Internal Note --> 
-            <xpath expr="//page[@name='internal_notes']/field[@name='comment']" position="after">
-                <field name="private_comment" placeholder="Private Note"/>
-            </xpath>
 
             <!-- page Other Positions -->
             <xpath expr="//page[@name='other_position']/field[@name='other_contact_ids']/kanban" position="attributes">
@@ -112,18 +100,22 @@
                 <!-- page Membership -->
                 <page name="annuaire" string="Directory" attrs="{'invisible': [('is_company','=',False)]}" autofocus="autofocus">
                     <group name="classification" string="Classification (to find easily pro. in the directory)">
-                        <field name="legal_activity_code" attrs="{'invisible': [('is_company', '=', False)]}"/>
                         <field name="industry_id" string="Main activity" attrs="{'invisible': [('is_company', '=', False)]}"/>
                         <field name="secondary_industry_ids" widget="many2many_tags" string="Others activities" attrs="{'invisible': [('is_company', '=', False)]}"/>
                         <field name="detailed_activity" placeholder="Detailled activy (Ex.  lavender honey)" attrs="{'invisible': [('is_company', '=', False)]}"/>
                         <field name="keywords" placeholder="keywords giving more information on activities. splite keyword using ;" attrs="{'invisible': [('is_company', '=', False)]}"/>
                         <field name="itinerant" attrs="{'invisible': [('is_company', '=', False)]}"/>
                     </group>
-                    <group name="presentation" string="website presentation">
                     <group name="lcc_type" string="LCC type">
                         <field name="accept_coupons"/>
                         <field name="accept_digital_currency"/>
                     </group>
+                    <group name="additional_info" string="Additional informations">
+                        <label for="phone_pro"/>
+                        <div class="o_row">
+                            <field name="phone_pro" widget="phone" string="Phone displayed on the map"/>
+                            <button type="action" name="137" class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS" title="Send SMS" attrs="{'invisible':[('phone_pro', '=', False)]}" context="{'field_name': 'phone_pro'}"/>
+                        </div>
                         <field name="opening_time" placeholder="Opening hours(ex. every day from 9am to 18pm or opening hours day by day)" attrs="{'invisible': [('is_company', '=', False)]}"/>
                         <field name="reasons_choosing_mlc" string="Subscription reason" placeholder="Why the pro. subscribe to LCC? allow to involve customers"/>
                         <field name="discount"/>
