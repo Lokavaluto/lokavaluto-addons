@@ -7,3 +7,7 @@ class Company(models.Model):
     comchain_server_url = fields.Char(
         string='Url for comchain server'
     )
+
+    comchain_currency_name = fields.Char(
+        string='Currency name'
+    )
