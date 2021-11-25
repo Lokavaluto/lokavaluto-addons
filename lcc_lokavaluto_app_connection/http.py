@@ -70,7 +70,7 @@ class CORSMiddleware(object):
         def add_cors_headers(status, headers):
             headers = Headers(headers)
             headers.set("Access-Control-Allow-Origin", self.origin)
-            headers.add("Access-Control-Allow-Headers", 
+            headers.add("Access-Control-Allow-Headers",
                     "Origin, Content-Type, accept, *, Cache-Control, Authorization")
             headers.add("Access-Control-Allow-Credentials", "true")
             if not headers.get('Access-Control-Allow-Methods'):

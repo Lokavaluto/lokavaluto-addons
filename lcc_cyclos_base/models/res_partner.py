@@ -63,39 +63,44 @@ class ResPartner(models.Model):
             raise
         return res
 
+    def _cyclos_backend_data(self):
+        """Prepare backend data to be sent by credentials requests"""
+        domain = self.env.user.company_id.cyclos_server_url.split('/')[2]
+        data = {
+            'type': 'cyclos:%s' % domain,
+            'user_accounts': []
+        }
+        if self.cyclos_active and self.cyclos_id:
+            data['user_accounts'].append({
+                    'owner_id': self.cyclos_id,
+                    'url': self.env.user.company_id.cyclos_server_url,
+            })
+        return data
+
+
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
         # Update cyclos password with odoo one from authenticate session
-        self.forceCyclosPassword(password)
-        new_token = self.createCyclosUserToken(self.id, password)
-        if new_token:
-            cyclos_data = {
-                'type': 'cyclos',
-                'user_accounts': [
-                    {
-                        'owner_id': self.cyclos_id,
-                        'token': new_token,
-                        'url': self.env.user.company_id.cyclos_server_url,
-                    }
-                ]        
-            }
-            data.append(cyclos_data)
+        parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
+        if parsed_uri:  ## is backend available and configured on odoo
+            backend_data = self._cyclos_backend_data()
+            if self.cyclos_active:
+                self.forceCyclosPassword(password)
+                new_token = self.createCyclosUserToken(self.id, password)
+                if new_token:
+                    for ua in backend_data["user_accounts"]:
+                        ua["token"] = new_token
+            data.append(backend_data)
         return data
 
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
         parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
-        if self.cyclos_id and parsed_uri:
-            cyclos_data = {
-                'type': 'cyclos',
-                'user_accounts': [{
-                    'url': self.env.user.company_id.cyclos_server_url,
-                    'owner_id': self.cyclos_id,
-                }]
-            }
-            data.append(cyclos_data)
+        if parsed_uri:
+            backend_data = self._cyclos_backend_data()
+            data.append(backend_data)
         return data
 
     def _update_search_data(self, backend_keys):
@@ -103,7 +108,7 @@ class ResPartner(models.Model):
         #_logger.debug('SEARCH: backend_keys = %s' % backend_keys)
         data = super(ResPartner, self)._update_search_data(backend_keys)
         for backend_key in backend_keys:
-            if "cyclos" in backend_key and self.cyclos_id:
+            if backend_key.startswith("cyclos:") and self.cyclos_id:
                 data[backend_key] = [self.cyclos_id]
         #_logger.debug('SEARCH: data %s' % data)
         return data
