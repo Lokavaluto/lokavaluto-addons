@@ -120,6 +120,10 @@
                         <field name="itinerant" attrs="{'invisible': [('is_company', '=', False)]}"/>
                     </group>
                     <group name="presentation" string="website presentation">
+                    <group name="lcc_type" string="LCC type">
+                        <field name="accept_coupons"/>
+                        <field name="accept_digital_currency"/>
+                    </group>
                         <field name="opening_time" placeholder="Opening hours(ex. every day from 9am to 18pm or opening hours day by day)" attrs="{'invisible': [('is_company', '=', False)]}"/>
                         <field name="reasons_choosing_mlc" string="Subscription reason" placeholder="Why the pro. subscribe to LCC? allow to involve customers"/>
                         <field name="discount"/>
