@@ -100,6 +100,11 @@
                 <attribute name="create">true</attribute>
             </xpath>
 
+            <!-- page Contacts & Adresses-->
+            <xpath expr="//field[@name='child_ids']/.." position="attributes">
+                <attribute name="attrs">{'invisible': [('contact_type','=','standalone')]}</attribute>
+            </xpath>
+
             <!-- ################## -->
             <!-- NOTEBOOK NEW PAGES -->
             <!-- ################## -->
