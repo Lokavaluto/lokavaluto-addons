@@ -4,7 +4,7 @@
     <!-- TODO: put here a reminder on what to do at the first edition -->
     <record id="member_type_view_tree" model="ir.ui.view">
         <field name="name">Member type tree view</field>
-        <field name="model">member_type</field>
+        <field name="model">member.type</field>
         <field name="inherit_id" ref=""/>
         <field name="arch" type="xml">
           <tree editable="bottom">

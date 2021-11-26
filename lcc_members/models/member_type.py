@@ -6,7 +6,7 @@ from odoo.tools.translate import _
 
 
 class member_type(models.Model):
-    _name = "member_type"
+    _name = "member.type"
 
     name = fields.Char(
         string=_("Name"),

@@ -36,7 +36,7 @@ class res_partner(models.Model):
         readonly=False
     )    
     member_type_id = fields.Many2one(
-        'member_type',
+        'member.type',
         string=_("Member's type"),
         required=False,
         translate=False,
