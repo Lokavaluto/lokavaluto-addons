@@ -81,7 +81,6 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "base_geolocalize",
         "base_location",
         "contract",
-        "l10n_fr_siret",
         "event",
         "website",
         "crm",
