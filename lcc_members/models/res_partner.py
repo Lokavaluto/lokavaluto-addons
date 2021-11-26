@@ -17,12 +17,6 @@ class res_partner(models.Model):
         translate=True,
         readonly=False
     )
-    # instagram = fields.Char(
-    #     string=_("Instagram"),
-    #     required=False,
-    #     translate=False,
-    #     readonly=False
-    # )
     phone_pro = fields.Char(
         string=_("Professional phone"),
         required=False,
@@ -60,24 +54,12 @@ class res_partner(models.Model):
         translate=False,
         readonly=False
     )
-    # facebook_url = fields.Char(
-    #     string=_("URl Facebook"),
-    #     required=False,
-    #     translate=False,
-    #     readonly=False
-    # )
     keywords = fields.Text(
         string=_("keywords"),
         required=False,
         translate=True,
         readonly=False
     )
-    # twitter_url = fields.Char(
-    #     string=_("Twitter"),
-    #     required=False,
-    #     translate=False,
-    #     readonly=False
-    # )
     opening_time = fields.Text(
         string=_("Opening Time"),
         required=False,
@@ -120,22 +102,21 @@ class res_partner(models.Model):
         translate=False,
         readonly=False
     )
-    
     discount = fields.Html(
         string="Discount",
         translate="True",
     )
-    
     partner_image_ids = fields.One2many(
         'partner.image',
         'partner_id',
-        string='Images')
-
+        string='Images'
+    )
     accept_coupons = fields.Boolean(
-        string = "Accept coupons")
-
+        string = "Accept coupons"
+    )
     accept_digital_currency = fields.Boolean(
-        string = "Accept digital currency")
+        string = "Accept digital currency"
+    )
 
     @api.onchange('firstname', 'lastname', 'is_company')
     def onchange_upper_name(self):
