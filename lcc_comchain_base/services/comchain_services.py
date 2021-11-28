@@ -50,6 +50,23 @@ class ComchainService(Component):
             'comchain_wallet': params.wallet,
             'comchain_message_key': params.message_key
             }
+
+    @restapi.method(
+        [(["/activate"], "POST")],
+        input_param=Datamodel("comchain.activate.list"),
+    )
+    def activate(self, params):
+        """
+        Activate comchain account on partners
+        """
+        partner = self.env['res.partner']
+        for account in params.accounts:
+            partner_id = partner.search(
+                [('id', '=', account.partner_id)],
+                limit=1
+            )
+            partner_id.activateComchainUser(account)
+
         )
 
         return res
