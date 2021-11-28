@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class ResConfigSettings(models.TransientModel):
@@ -10,7 +10,7 @@ class ResConfigSettings(models.TransientModel):
         string='Url for comchain serveur'
     )
 
-    ## Temporary way to handle only one comchain currency per odoo
+    # Temporary way to handle only one comchain currency per odoo
     currency_name = fields.Char(
         related='company_id.comchain_currency_name',
         readonly=False,

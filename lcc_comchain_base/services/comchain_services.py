@@ -1,7 +1,6 @@
 import logging
 
 from odoo.addons.base_rest import restapi
-from odoo.addons.base_rest.components.service import to_int
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
@@ -42,14 +41,22 @@ class ComchainService(Component):
     )
     def register(self, params):
         """
-        Return display name for partner matching comchain addresses
+        Add comchain account details on partner
         """
         partner = self.env.user.partner_id
-        res = partner.write({
-            'comchain_id': params.address,
-            'comchain_wallet': params.wallet,
-            'comchain_message_key': params.message_key
+        if not partner.comchain_wallet:
+            res = partner.write({
+                'comchain_id': params.address,
+                'comchain_wallet': params.wallet,
+                'comchain_message_key': params.message_key
+                }
+            )
+        else:
+            res = {
+                'error': "account already exist",
+                'status': "Error",
             }
+        return res
 
     @restapi.method(
         [(["/activate"], "POST")],
