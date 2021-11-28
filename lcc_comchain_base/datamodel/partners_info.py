@@ -23,3 +23,19 @@ class ComchainRegisterInfo(Datamodel):
     address = fields.String(required=True)
     wallet = fields.String(required=True)
     message_key = fields.String(required=True)
+
+
+class ComchainActivateInfo(Datamodel):
+    _name = "comchain.activate.info"
+
+    partner_id = fields.Integer(required=True)
+    type = fields.Integer(required=True)
+    credit_min = fields.Float(required=True)
+    credit_max = fields.Float(required=True)
+
+
+class ComchainActivateList(Datamodel):
+    _name = "comchain.activate.list"
+
+    accounts = fields.List(NestedModel('comchain.activate.info'), required=True)
+
