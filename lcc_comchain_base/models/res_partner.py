@@ -5,7 +5,9 @@ _logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):
-    ''' Inherits partner, adds comchain fields in the partner form, and functions'''
+    ''' Inherits partner:
+        - add comchain fields in the partner form
+        - add functions'''
     _inherit = 'res.partner'
 
     comchain_active = fields.Boolean(string='comchain OK')
@@ -16,14 +18,17 @@ class ResPartner(models.Model):
         ('0', 'Personal'),
         ('1', 'Company'),
         ('2', 'Admin')
-    ], string='Type')
-    comchain_credit_min = fields.Float(string="Min Credit limit")
-    comchain_credit_max = fields.Float(string="Max Credit limit")
+    ], string='Type', groups="lcc_comchain_base.group_comchain_manager")
+    comchain_credit_min = fields.Float(string="Min Credit limit",
+                                       groups="lcc_comchain_base.group_comchain_manager")
+    comchain_credit_max = fields.Float(string="Max Credit limit",
+                                       groups="lcc_comchain_base.group_comchain_manager")
     comchain_message_key = fields.Char(string="Message keys")
 
     @api.multi
     def open_commercial_member_entity(self):
-        """ Utility method used to add an "Open Company" button in partner views """
+        """ Utility method:
+            - add an "Open Company" button in partner views """
         self.ensure_one()
         company_form_id = self.env.ref('lcc_members.main_members_view').id
         return {'type': 'ir.actions.act_window',
@@ -57,7 +62,6 @@ class ResPartner(models.Model):
                 'message_key': self.comchain_message_key
             })
         return data
-
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()

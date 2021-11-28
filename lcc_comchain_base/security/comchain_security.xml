@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="group_comchain_user" model="res.groups">
+            <field name="name">Comchain User</field>
+        </record>
+
+        <record id="group_comchain_manager" model="res.groups">
+            <field name="name">Comchain Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_comchain_user'))]"/>
+        </record>
+</data>
+</odoo>
