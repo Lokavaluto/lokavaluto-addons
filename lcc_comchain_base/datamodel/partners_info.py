@@ -3,7 +3,6 @@ from marshmallow import fields
 from odoo.addons.datamodel.core import Datamodel
 from odoo.addons.datamodel.fields import NestedModel
 
-
 class AddressesInfo(Datamodel):
     _name = "comchain.addresses.info"
 
@@ -39,3 +38,10 @@ class ComchainActivateList(Datamodel):
 
     accounts = fields.List(NestedModel('comchain.activate.info'), required=True)
 
+
+class ComchainAccountInfo(Datamodel):
+    _name = "comchain.account"
+
+    partner_id = fields.Integer(required=True)
+    name = fields.String(required=True)
+    comchain_address = fields.String(required=True)

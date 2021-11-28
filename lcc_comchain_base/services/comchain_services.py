@@ -67,6 +67,27 @@ class ComchainService(Component):
             )
             partner_id.activateComchainUser(account)
 
+        return True
+
+    @restapi.method(
+        [(["/inactive_accounts"], "GET")],
+        output_param=Datamodel("comchain.account",
+                               is_list=True),
+    )
+    def getInactiveAccounts(self):
+        """
+        List inactive accounts
+        """
+        partners = self.env['res.partner'].search(
+            [('comchain_active', '=', False),
+             ('comchain_id', '!=', False)]
         )
+        res = []
+        AccountResponse = self.env.datamodels["comchain.account"]
+        _logger.debug('partners: %s' % partners)
+        for partner in partners:
+            res.append(AccountResponse(partner_id=partner.id,
+                                       name=partner.display_name,
+                                       comchain_address=partner.comchain_id))
 
         return res
