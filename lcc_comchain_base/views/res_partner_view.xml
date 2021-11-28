@@ -4,7 +4,7 @@
         <field name="name">lcc_comchain_partner_form</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="lcc_members.main_members_view"/>
-        <field eval="17" name="priority"/>
+        <field eval="99" name="priority"/>
         <field name="arch" type="xml">
             <button name="toggle_active" position="before">
                 <button type="object" class="oe_stat_button" icon="fa-bank" name="addcomchainUser">
@@ -13,23 +13,17 @@
             </button>
             <page name="accounting" position="after">
                 <page name="comchain" string="Comchain" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}">
-                   <div attrs="{'invisible': [('comchain_active', '=', True)]}" class="bg-info">
-                        <p>
-                            This Numeric LCC account is not validated please
-                            <button name="validatecomchainUser" type="object" string="Approve it" class="oe_link"/>
-                        </p>
-                    </div>
                     <group>
                         <group>
-                            <field name="comchain_id"/>
-                            <field name="comchain_wallet"/>
-                            <field name="comchain_message_key"/>
+                            <field name="comchain_id" readonly="1"/>
+                            <field name="comchain_wallet" readonly="1"/>
+                            <field name="comchain_message_key" readonly="1"/>
                             <field name="comchain_status" readonly="1"/>
                         </group>
                         <group>
-                            <field name="comchain_type"/>
-                            <field name="comchain_credit_min"/>
-                            <field name="comchain_credit_max"/>
+                            <field name="comchain_type" readonly="1"/>
+                            <field name="comchain_credit_min" readonly="1"/>
+                            <field name="comchain_credit_max" readonly="1"/>
                         </group>
                     </group>
                 </page>
