@@ -89,9 +89,12 @@ class ResPartner(models.Model):
             return backends
 
     @api.multi
-    def validatecomchainUser(self):
-        for record in self:
-            record.write({
+    def activateComchainUser(self, params):
+        self.ensure_one()
+        self.write({
                 'comchain_active': True,
                 'comchain_status': "actif",
+                'comchain_type': '%s' % params.type,
+                'comchain_credit_min': params.credit_min,
+                'comchain_credit_max': params.credit_max,
             })
