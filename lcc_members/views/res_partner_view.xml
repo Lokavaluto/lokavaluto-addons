@@ -173,8 +173,12 @@
                         </field>
                     </group>
                 </page>
+                <!-- page Description -->
+                <page name="description" string="Description" attrs="{'invisible': [('is_company','=',False)]}">
+                    <field name="website_description" placeholder="Webpage description of the partner"/>
+                </page>
                 <!-- page Social Networks -->
-                <page string="Social networks" name="social">
+                <page name="social" string="Social networks" >
                     <group>
                         <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="0" colspan="1"/>
                     </group>                        
