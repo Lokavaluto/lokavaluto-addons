@@ -110,7 +110,7 @@ class res_partner(models.Model):
         string="Discount",
         translate="True",
     )
-    partner_image_ids = fields.One2many(
+    partner_image_ids = fields.One2many( ## TODO v4 : TO BE DELETED
         'partner.image',
         'partner_id',
         string='Images'
