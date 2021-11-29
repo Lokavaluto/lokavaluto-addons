@@ -4,6 +4,7 @@ import traceback
 
 
 from odoo.http import root, request
+from odoo.exceptions import AccessDenied
 from odoo.addons.base_rest.http import HttpRestRequest
 from werkzeug.wrappers import Response
 from werkzeug.exceptions import BadRequest
@@ -87,7 +88,11 @@ class CORSMiddleware(object):
                 raise
             return result
 
-        return self.app(environ, add_cors_headers)
+        try:
+            return self.app(environ, add_cors_headers)
+        except AccessDenied as e:
+            response = Response(status=401, headers={})
+            return response(environ, add_cors_headers)
 
 root.dispatch = CORSMiddleware(root.dispatch)
 
