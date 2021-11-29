@@ -78,7 +78,7 @@
             <xpath expr="//field[@name='associate_member']/.." position="after">
                 <group name="convention" string="Convention" attrs="{'invisible': [('is_company', '=', False)]}">
                     <field name="convention_signature_date" attrs="{'invisible': [('is_company', '=', False)]}"/>
-                    <field name="convention_specific_agreement" attrs="{'invisible': [('is_company', '=', False)]}"/>
+                    <field name="convention_agreement" attrs="{'invisible': [('is_company', '=', False)]}"/>
                 </group>
                 <separator string="Subscription history" attrs="{'invisible': [('is_company', '=', False)]}"/>
             </xpath>    

@@ -90,11 +90,15 @@ class res_partner(models.Model):
         translate=False,
         readonly=False
     )
-    convention_specific_agreement = fields.Text(
+    convention_specific_agreement = fields.Text( ## TODO v4 : TO BE DELETED
         string=_("Convention specific agreement"),
         required=False,
         translate=False,
         readonly=False
+    )
+    convention_agreement = fields.Binary(
+        string=_('Convention agreement'),
+        required=False,
     )
     currency_exchange_office = fields.Boolean(
         string=_("Currency exchange office"),
