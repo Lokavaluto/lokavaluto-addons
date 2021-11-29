@@ -116,11 +116,25 @@ class res_partner(models.Model):
         string='Images'
     )
     accept_coupons = fields.Boolean(
-        string = "Accept coupons"
+        string=_("Accept coupons"),
+        required=False,
+        translate=False,
+        readonly=False
     )
     accept_digital_currency = fields.Boolean(
-        string = "Accept digital currency"
+        string=_("Accept digital currency"),
+        required=False,
+        translate=False,
+        readonly=False
     )
+    partner_profile = fields.Many2one(
+        'partner.profile',
+        string=_("Partner profile"),
+        required=False,
+        translate=False,
+        readonly=False,
+    )
+
 
     @api.onchange('firstname', 'lastname', 'is_company')
     def onchange_upper_name(self):
