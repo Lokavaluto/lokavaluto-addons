@@ -134,6 +134,7 @@
                         </div>
                     </group> -->
                     <group name="extra_images" string="Extra Images">
+                        <!-- TODO v4 : delete this group once all lcc informed -->
                         <div class="alert alert-warning">
                             <span><b>Attention:</b> Odoo ne compresse pas les images. la somme totale de vos images ne doit pas dépasser 4mo. Pour compresser vos images vous pouvez par exemple utiliser ce site : <a href="https://compressjpeg.com/fr/" target="_blank">https://compressjpeg.com/fr/</a></span>
                         </div>
