@@ -65,6 +65,9 @@ class ResPartner(models.Model):
 
     def _cyclos_backend_data(self):
         """Prepare backend data to be sent by credentials requests"""
+        parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
+        if not parsed_uri:  ## is backend available and configured on odoo
+            return []
         domain = self.env.user.company_id.cyclos_server_url.split('/')[2]
         data = {
             'type': 'cyclos:%s' % domain,
@@ -76,32 +79,27 @@ class ResPartner(models.Model):
                 'url': self.env.user.company_id.cyclos_server_url,
                 'active': self.cyclos_active,
             })
-        return data
+        return [data]
 
 
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
         # Update cyclos password with odoo one from authenticate session
-        parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
-        if parsed_uri:  ## is backend available and configured on odoo
-            backend_data = self._cyclos_backend_data()
-            if self.cyclos_active:
-                self.forceCyclosPassword(password)
-                new_token = self.createCyclosUserToken(self.id, password)
-                if new_token:
-                    for ua in backend_data["accounts"]:
-                        ua["token"] = new_token
-            data.append(backend_data)
+        backend_data = self._cyclos_backend_data()
+        if backend_data and self.cyclos_active:
+            self.forceCyclosPassword(password)
+            new_token = self.createCyclosUserToken(self.id, password)
+            if new_token:
+                for ua in backend_data[0]["accounts"]:
+                    ua["token"] = new_token
+        data.extend(backend_data)
         return data
 
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
-        if parsed_uri:
-            backend_data = self._cyclos_backend_data()
-            data.append(backend_data)
+        data.extend(self._cyclos_backend_data())
         return data
 
     def _update_search_data(self, backend_keys):
