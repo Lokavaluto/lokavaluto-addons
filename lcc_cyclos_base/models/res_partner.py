@@ -68,12 +68,13 @@ class ResPartner(models.Model):
         domain = self.env.user.company_id.cyclos_server_url.split('/')[2]
         data = {
             'type': 'cyclos:%s' % domain,
-            'accounts': []
+            'accounts': [],
         }
-        if self.cyclos_active and self.cyclos_id:
+        if self.cyclos_id:
             data['accounts'].append({
-                    'owner_id': self.cyclos_id,
-                    'url': self.env.user.company_id.cyclos_server_url,
+                'owner_id': self.cyclos_id,
+                'url': self.env.user.company_id.cyclos_server_url,
+                'active': self.cyclos_active,
             })
         return data
 
