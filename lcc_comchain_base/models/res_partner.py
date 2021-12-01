@@ -61,7 +61,8 @@ class ResPartner(models.Model):
         if wallet:
             data['accounts'].append({
                 'wallet': wallet,
-                'message_key': self.comchain_message_key
+                'message_key': self.comchain_message_key,
+                'active': self.comchain_active,
             })
         return [data]
 
