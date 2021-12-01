@@ -42,8 +42,7 @@ class ResPartner(models.Model):
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
-        if self.comchain_id:
-            data.append(self._comchain_backend_data())
+        data.extend(self._comchain_backend_data())
         return data
 
     def _comchain_backend_data(self):
@@ -51,6 +50,9 @@ class ResPartner(models.Model):
         wallet = json.loads(self.comchain_wallet) if self.comchain_wallet else {}
         currency_name = wallet.get("server", {}).get("name", {}) or \
             self.env.user.company_id.comchain_currency_name
+        if not currency_name:
+            ## not present in wallet and not configured in general settings
+            return []
 
         data = {
             'type': 'comchain:%s' % currency_name,
@@ -61,7 +63,7 @@ class ResPartner(models.Model):
                 'wallet': wallet,
                 'message_key': self.comchain_message_key
             })
-        return data
+        return [data]
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
@@ -76,8 +78,7 @@ class ResPartner(models.Model):
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        if self.comchain_id:
-            data.append(self._comchain_backend_data())
+        data.extend(self._comchain_backend_data())
         return data
 
     def backends(self):
