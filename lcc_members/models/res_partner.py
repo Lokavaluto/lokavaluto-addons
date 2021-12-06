@@ -135,6 +135,15 @@ class res_partner(models.Model):
         readonly=False,
     )
 
+    @api.model
+    def create(self, vals):
+        """ When creating, if partner_profile is not defined by a previous process, the defaut value is Main"""
+        modified_self = self._basecontact_check_context('create')
+        if not vals.get('partner_profile') and not vals.get('contact_id'):
+            profile = self.env.ref('lcc_members.parter_profile_main').read()[0]
+            vals['partner_profile'] = profile['id']
+        return super(res_partner, modified_self).create(vals)
+
 
     @api.onchange('firstname', 'lastname', 'is_company')
     def onchange_upper_name(self):
