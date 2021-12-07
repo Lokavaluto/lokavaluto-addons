@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_layout" name="Portal layout: profile menu entries" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'profile' or profile" t-attf-class="breadcrumb-item #{'active ' if not profile else ''}">
+                <a t-if="profile" t-attf-href="/my/profiles?{{ keep_query() }}">Profiles</a>
+                <t t-else="">Profiles</t>
+            </li>
+            <li t-if="profile" class="breadcrumb-item active">
+                <t t-esc="profile.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home" name="Portal My Home: profile entries" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="profile_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Profiles</t>
+                <t t-set="url" t-value="'/my/profiles'"/>
+                <t t-set="count" t-value="profile_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_profiles" name="My Profiles">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Profiles</t>
+            </t>
+            <t t-if="not profiles">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no profiles.
+                </div>
+            </t>
+            <t t-if="profiles" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>
+                            <span class='d-none d-md-inline'>Profile name</span>
+                        </th>
+                        <th class="text-right">Profile type</th>
+                        <th class="text-right">Position</th>
+                        <th class="text-right">Company</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="profiles" t-as="profile">
+                        <td>
+                            <a t-attf-href="/my/profile/#{profile.id}?{{ keep_query() }}"><span t-field="profile.name"/></a>
+                        </td>
+                        <td class="text-right"><span t-field="profile.partner_profile"/></td>
+                        <td class="text-right"><span t-field="profile.function"/></td>
+                        <td class="text-right"><span t-field="profile.parent_id"/></td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_my_profile" name="My Profile">
+        <t t-call="portal.portal_layout">
+            <t t-set="o_portal_fullwidth_alert" groups="profile.group_profile_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#return_label=Website&amp;model=res.partner&amp;id=%s&amp;view_type=form' % (profile.id)"/>
+                </t>
+            </t>
+
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <h5 class="mb-0">
+                        <small class="text-muted">Profile - </small><span t-field="profile.name"/>
+                    </h5>
+                </t>
+                <t t-set="card_body">
+                    <div class="row mb-4">
+                        <ul class="col-12 col-md-6 pb-2">
+                            <li><strong>Profile type: </strong><span t-field="profile.partner_profile"/></li>
+                            <li><strong>Function: </strong><span t-field="profile.function"/></li>
+                            <li><strong>Company: </strong><span t-field="profile.parent_id"/></li>
+                        </ul>
+                        <ul class="col-12 col-md-6 pb-2">
+                            <li><strong>Phone: </strong><span t-field="profile.phone"/></li>
+                            <li><strong>Email: </strong><span t-field="profile.email"/></li>
+                            <li><strong>Website: </strong><span t-field="profile.website"/></li>
+                        </ul>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
