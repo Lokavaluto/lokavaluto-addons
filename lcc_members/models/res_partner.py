@@ -151,6 +151,14 @@ class res_partner(models.Model):
             self.lastname = self.lastname.upper()
         if (not self.is_company) and self.firstname and self.firstname != self.firstname.capitalize():
             self.firstname = self.firstname.capitalize()
+
+    @api.model
+    def search_position_partners(self, profile):
+        if profile:
+            position_partners = self.env['res.partner'].search([('contact_id', '=', self.id),('partner_profile', '=', profile)])
+        else:
+            position_partners = self.env['res.partner'].search([('contact_id', '=', self.id)])
+        return position_partners
             
     def _membership_state(self):
         res = super(res_partner, self)._membership_state()
