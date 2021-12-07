@@ -104,6 +104,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         'views/member_type_view.xml',
         'views/website_partner_view.xml',
         'views/assets.xml',
+        'views/profile_portal_templates.xml',
         'data/partner_profile_data.xml',
     ],
     # only loaded in demonstration mode
