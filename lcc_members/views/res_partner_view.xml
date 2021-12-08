@@ -95,7 +95,7 @@
 
             <!-- page Contacts & Adresses -->
             <xpath expr="//field[@name='child_ids']/.." position="attributes">
-                <attribute name="attrs">{'invisible': [('contact_type','=','standalone')]}</attribute>
+                <attribute name="attrs">{'invisible': [('contact_type','=','standalone'),('is_company','=', False)]}</attribute>
             </xpath>
 
             <!-- page Other Positions -->
