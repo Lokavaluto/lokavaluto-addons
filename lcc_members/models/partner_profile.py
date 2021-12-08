@@ -7,11 +7,9 @@ from odoo.tools.translate import _
 
 class PartnerProfile(models.Model):
     _name = "partner.profile"
-    _description ="Partner profile to differentiate the attached partner entries"
+    _description = "Partner profile to differentiate the attached partner entries"
 
-    name = fields.Char(
-        string=_("Name"),
-        required=True,
-        translate=False,
-        readonly=False
-    )
+    name = fields.Char(string=_("Name"), required=True, translate=True, readonly=False)
+    ref = fields.Char(string=_("Ref"), required=True, translate=False, readonly=False)
+
+    # TODO: block unlink method.
