@@ -70,17 +70,13 @@
             <t t-call="portal.portal_record_layout">
                 <t t-set="card_header">
                     <h5 class="mb-0">
-                        <div>
-                            <strong><span t-field="profile.name"/></strong>
-                            <small class="text-muted"> - <span t-field="profile.partner_profile"/></small>
-                        </div>
-                        <div t-if="profile.partner_profile and (profile.partner_profile.name == 'Position')"> <!-- TODO: change partner_profile.name by partner_profile.ref when code available -->>
-                            <span t-field="profile.function"/>
-                            <small class="text-muted"> in </small>
-                            <span t-field="profile.parent_id"/>
-                        </div>
+                        <strong><span t-field="profile.name"/></strong>
+                        <small class="text-muted"> - <span t-field="profile.partner_profile"/></small>
                     </h5>
                     <div t-if="profile.partner_profile and (profile.partner_profile.name == 'Position')"> <!-- TODO: change partner_profile.name by partner_profile.ref when code available -->
+                        <h5 class="mb-0">
+                            <span t-field="profile.parent_id"/>
+                        </h5>
                         <br/>
                         <ul class="col-12 col-md-6 pb-2" style= "list-style-type:none">
                             <li><span t-field="profile.street"/></li>
@@ -93,60 +89,164 @@
                 <t t-set="card_body">
                     <!-- Body for Position partner profiles-->
                     <div t-if="profile.partner_profile and (profile.partner_profile.name == 'Position')"> <!-- TODO: change partner_profile.name by partner_profile.ref when code available -->
-                        <!-- Editable data -->
-                        <div class="row mb-4">
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Job Position: </strong><span t-field="profile.function"/></li>
-                                <li><strong>Phone: </strong><span t-field="profile.phone"/></li>
-                                <li><strong>Mobile: </strong><span t-field="profile.mobile"/></li>
-                                <li><strong>Email: </strong><span t-field="profile.email"/></li>
-                                <li><strong>Website: </strong><span t-field="profile.website"/></li>
-                            </ul>
-                        </div>
+                        <form action="/my/account" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="row o_portal_details">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-12">
+                                        <div t-if="error_message" class="alert alert-danger" role="alert">
+                                            <t t-foreach="error_message" t-as="err"><t t-esc="err"/><br/></t>
+                                        </div>
+                                    </div>
+                                    <h3><br/>Job position</h3>
+                                    <div class="row">
+                                        <div t-attf-class="form-group col-xl-12">
+                                            <input type="text" name="function" t-attf-class="form-control" t-att-value="function or profile.function"/>
+                                        </div>
+                                    </div>
+                                    <h3><br/>Contact information</h3>
+                                    <div class="row">
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="phone">Phone</label>
+                                            <input type="tel" name="phone" t-attf-class="form-control" t-att-value="phone or profile.phone"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="mobile">Mobile</label>
+                                            <input type="tel" name="mobile" t-attf-class="form-control" t-att-value="mobile or profile.mobile"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="email">Email</label>
+                                            <input type="email" name="email" t-attf-class="form-control" t-att-value="email or profile.email"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="email">Website</label>
+                                            <input type="text" name="website" t-attf-class="form-control" t-att-value="website or profile.website"/>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                                    <div class="clearfix">
+                                        <button type="submit" class="btn btn-primary float-right mb32 ">
+                                            Save
+                                            <span class="fa fa-long-arrow-right"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <!-- Body for Position ppartner profiles-->
+                    <!-- Body for Public partner profiles-->
                     <div t-if="profile.partner_profile and (profile.partner_profile.name == 'Public profile')"> <!-- TODO: change partner_profile.name by partner_profile.ref when code available -->
-                        <!-- Editable data -->
-                        <div class="row mb-4">
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Description: </strong><span t-field="profile.website_description"/></li>
-                            </ul>
-                        </div>
-                        <div class="row mb-4">
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Street: </strong><span t-field="profile.street"/></li>
-                                <li><strong>ZIP: </strong><span t-field="profile.zip"/></li>
-                                <li><strong>City: </strong><span t-field="profile.city"/></li>
-                                <li><strong>Country: </strong><span t-field="profile.country_id"/></li>
-                            </ul>
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Phone: </strong><span t-field="profile.phone"/></li>
-                                <li><strong>Mobile: </strong><span t-field="profile.mobile"/></li>
-                                <li><strong>Email: </strong><span t-field="profile.email"/></li>
-                                <li><strong>Website: </strong><span t-field="profile.website"/></li>
-                            </ul>
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Local group: </strong><span t-field="profile.team_id"/></li>
-                                <li><strong>Subscription number: </strong><span t-field="profile.ref"/></li>
-                                <li><strong>Is volunteer: </strong><span t-field="profile.is_volunteer"/></li>
-                                <li><strong>Subscription reason: </strong><span t-field="profile.reasons_choosing_mlc"/></li>
-                            </ul>
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Main activity: </strong><span t-field="profile.industry_id"/></li>
-                                <li><strong>Other activities: </strong><span t-field="profile.secondary_industry_ids"/></li>
-                                <li><strong>Detailed activity: </strong><span t-field="profile.detailed_activity"/></li>
-                                <li><strong>Itinerant: </strong><span t-field="profile.itinerant"/></li>
-                            </ul>
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Accept coupons: </strong><span t-field="profile.accept_coupons"/></li>
-                                <li><strong>Accept digital currency: </strong><span t-field="profile.accept_digital_currency"/></li>
-                            </ul>
-                            <ul class="col-12 col-md-6 pb-2">
-                                <li><strong>Professional phone: </strong><span t-field="profile.phone_pro"/></li>
-                                <li><strong>Opening time: </strong><span t-field="profile.opening_time"/></li>
-                                <li><strong>Discount: </strong><span t-field="profile.discount"/></li>
-                            </ul>
-                        </div>
+                        <form action="/my/account" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="row o_portal_details">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-12">
+                                        <div t-if="error_message" class="alert alert-danger" role="alert">
+                                            <t t-foreach="error_message" t-as="err"><t t-esc="err"/><br/></t>
+                                        </div>
+                                    </div>
+                                    <h3><br/>Description</h3>
+                                    <div class="row">
+                                        <div t-attf-class="form-group col-xl-12">
+                                            <textarea rows="4" name="description" t-attf-class="form-control" t-att-value="website_description or profile.website_description"/>
+                                        </div>
+                                    </div>
+                                    <h3><br/>Contact information</h3>
+                                    <div class="row">
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="street">Street</label>
+                                            <input type="text" name="street" t-attf-class="form-control" t-att-value="street or profile.street"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="street2">Street 2</label>
+                                            <input type="text" name="street2" t-attf-class="form-control" t-att-value="street2 or profile.street2"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="zip">Zip / Postal Code</label>
+                                            <input type="text" name="zip" t-attf-class="form-control" t-att-value="zip or profile.zip"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="city">City</label>
+                                            <input type="text" name="city" t-attf-class="form-control" t-att-value="city or profile.city"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="country_id">Country</label>
+                                            <select name="country_id" t-attf-class="form-control">
+                                                <option value="">Country...</option>
+                                                <t t-foreach="countries or []" t-as="country">
+                                                    <option t-att-value="country.id" t-att-selected="country.id == int(country_id) if country_id else country.id == profile.country_id.id">
+                                                        <t t-esc="country.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="phone">Phone</label>
+                                            <input type="tel" name="phone" t-attf-class="form-control" t-att-value="phone or profile.phone"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="mobile">Mobile</label>
+                                            <input type="tel" name="mobile" t-attf-class="form-control" t-att-value="mobile or profile.mobile"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="email">Email</label>
+                                            <input type="email" name="email" t-attf-class="form-control" t-att-value="email or profile.email"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="email">Website</label>
+                                            <input type="text" name="website" t-attf-class="form-control" t-att-value="website or profile.website"/>
+                                        </div>
+                                    </div>
+                                    <h3><br/>Activity information</h3>
+                                    <div class="row">
+                                        <!-- TODO: add field profile.industry_id -->
+                                        <!-- TODO: add field secondary_industry_ids -->
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="detailed_activity">Detailed activity</label>
+                                            <input type="text" name="detailed_activity" t-attf-class="form-control" t-att-value="detailed_activity or profile.detailed_activity"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="reasons_choosing_mlc">Subscription reason</label>
+                                            <input type="text" name="reasons_choosing_mlc" t-attf-class="form-control" t-att-value="reasons_choosing_mlc or profile.reasons_choosing_mlc"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <input type="checkbox" name="itinerant" t-att-value="itinerant or profile.itinerant"/>
+                                            <label class="col-form-label" for="itinerant">Itinerant</label>
+                                        </div>
+                                        <div>
+                                            <div t-attf-class="form-group col-xl-12">
+                                                <input type="checkbox" name="accept_coupons" t-att-value="accept_coupons or profile.accept_coupons"/>
+                                                <label class="col-form-label" for="accept_coupons">Accept coupons</label>
+                                                <br/>
+                                                <input type="checkbox" name="accept_digital_currency" t-att-value="accept_digital_currency or profile.accept_digital_currency"/>
+                                                <label class="col-form-label" for="accept_digital_currency">Accept digital currency</label>
+                                            </div>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="phone_pro">Professional Phone</label>
+                                            <input type="tel" name="phone_pro" t-attf-class="form-control" t-att-value="phone_pro or profile.phone_pro"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="opening_time">Opening time</label>
+                                            <input type="text" name="opening_time" t-attf-class="form-control" t-att-value="opening_time or profile.opening_time"/>
+                                        </div>
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="discount">Discount</label>
+                                            <input type="text" name="discount" t-attf-class="form-control" t-att-value="discount or profile.discount"/>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                                    <div class="clearfix">
+                                        <button type="submit" class="btn btn-primary float-right mb32 ">
+                                            Save
+                                            <span class="fa fa-long-arrow-right"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </t>
             </t>
