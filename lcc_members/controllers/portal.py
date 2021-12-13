@@ -9,6 +9,7 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 
 class CustomerPortal(CustomerPortal):
     PROFILE_FIELDS = [
+        "nickname",
         "function",
         "phone",
         "mobile",
@@ -50,9 +51,22 @@ class CustomerPortal(CustomerPortal):
             profile, access_token, values, "my_profiles_history", False, **kwargs
         )
 
-    def _details_profile_form_validate(self, data):
+    def _details_profile_form_validate(self, data, profile_id):
         error = dict()
         error_message = []
+
+        # nickname uniqueness
+        if data.get("nickname") and request.env["res.partner"].search(
+            [
+                ("name", "=", data.get("nickname")),
+                ("partner_profile.ref", "=", "parter_profile_public"),
+                ("id", "!=", profile_id),
+            ]
+        ):
+            error["name"] = "error"
+            error_message.append(
+                _("This nickname is already used, please find an other idea.")
+            )
 
         # email validation
         if data.get("email") and not tools.single_email_re.match(data.get("email")):
@@ -150,11 +164,12 @@ class CustomerPortal(CustomerPortal):
 
         if kw and request.httprequest.method == "POST":
             # the user has clicked in the Save button to save new data
-            error, error_message = self._details_profile_form_validate(kw)
+            error, error_message = self._details_profile_form_validate(kw, profile_id)
             values.update({"error": error, "error_message": error_message})
             values.update(kw)
             if not error:
                 values = {key: kw[key] for key in self.PROFILE_FIELDS if key in kw}
+                values.update({"lastname": values.pop("nickname", "")})
                 values.update({"zip": values.pop("zipcode", "")})
                 values.update({"website": values.pop("website_url", "")})
                 profile = request.env["res.partner"].browse(profile_id)
