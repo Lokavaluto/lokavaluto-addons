@@ -89,7 +89,7 @@
                 <t t-set="card_body">
                     <!-- Body for Position partner profiles-->
                     <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'parter_profile_position')">
-                        <form action="/my/account" method="post">
+                        <form action="/my/profile/save" method="post">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <div class="row o_portal_details">
                                 <div class="col-lg-12">
@@ -119,10 +119,11 @@
                                             <input type="email" name="email" t-attf-class="form-control" t-att-value="email or profile.email"/>
                                         </div>
                                         <div t-attf-class="form-group col-xl-6">
-                                            <label class="col-form-label" for="email">Website</label>
-                                            <input type="text" name="website" t-attf-class="form-control" t-att-value="website or profile.website"/>
+                                            <label class="col-form-label" for="website_url">Website</label>
+                                            <input type="text" name="website_url" t-attf-class="form-control" t-att-value="website_url or profile.website"/>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="profile_id" t-att-value="profile_id"/>
                                     <input type="hidden" name="redirect" t-att-value="redirect"/>
                                     <div class="clearfix">
                                         <button type="submit" class="btn btn-primary float-right mb32 ">
@@ -136,7 +137,7 @@
                     </div>
                     <!-- Body for Public partner profiles-->
                     <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'parter_profile_public')">
-                        <form action="/my/account" method="post">
+                        <form action="/my/profile/save" method="post">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <div class="row o_portal_details">
                                 <div class="col-lg-12">
@@ -148,7 +149,7 @@
                                     <h3><br/>Description</h3>
                                     <div class="row">
                                         <div t-attf-class="form-group col-xl-12">
-                                            <textarea rows="4" name="description" t-attf-class="form-control" t-att-value="website_description or profile.website_description"/>
+                                            <textarea rows="4" name="website_description" t-attf-class="form-control" t-att-value="website_description or profile.website_description"/>
                                         </div>
                                     </div>
                                     <h3><br/>Contact information</h3>
@@ -162,8 +163,8 @@
                                             <input type="text" name="street2" t-attf-class="form-control" t-att-value="street2 or profile.street2"/>
                                         </div>
                                         <div t-attf-class="form-group col-xl-6">
-                                            <label class="col-form-label" for="zip">Zip / Postal Code</label>
-                                            <input type="text" name="zip" t-attf-class="form-control" t-att-value="zip or profile.zip"/>
+                                            <label class="col-form-label" for="zipcode">Zip / Postal Code</label>
+                                            <input type="text" name="zipcode" t-attf-class="form-control" t-att-value="zipcode or profile.zip"/>
                                         </div>
                                         <div t-attf-class="form-group col-xl-6">
                                             <label class="col-form-label" for="city">City</label>
@@ -195,8 +196,8 @@
                                             <input type="email" name="email" t-attf-class="form-control" t-att-value="email or profile.email"/>
                                         </div>
                                         <div t-attf-class="form-group col-xl-6">
-                                            <label class="col-form-label" for="email">Website</label>
-                                            <input type="text" name="website" t-attf-class="form-control" t-att-value="website or profile.website"/>
+                                            <label class="col-form-label" for="website_url">Website</label>
+                                            <input type="text" name="website_url" t-attf-class="form-control" t-att-value="website_url or profile.website"/>
                                         </div>
                                     </div>
                                     <h3><br/>Activity information</h3>
@@ -249,6 +250,7 @@
                                             <input type="text" name="discount" t-attf-class="form-control" t-att-value="discount or profile.discount"/>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="profile_id" t-att-value="profile_id"/>
                                     <input type="hidden" name="redirect" t-att-value="redirect"/>
                                     <div class="clearfix">
                                         <button type="submit" class="btn btn-primary float-right mb32 ">
