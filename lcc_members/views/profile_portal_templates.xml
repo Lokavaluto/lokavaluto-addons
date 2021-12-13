@@ -201,7 +201,17 @@
                                     </div>
                                     <h3><br/>Activity information</h3>
                                     <div class="row">
-                                        <!-- TODO: add field profile.industry_id -->
+                                        <div t-attf-class="form-group col-xl-6">
+                                            <label class="col-form-label" for="industry_id">Main activity</label>
+                                            <select name="industry_id" t-attf-class="form-control">
+                                                <option value="">Activity...</option>
+                                                <t t-foreach="industries or []" t-as="industry">
+                                                    <option t-att-value="industry.id" t-att-selected="industry.id == int(industry_id) if industry_id else industry.id == profile.industry_id.id">
+                                                        <t t-esc="industry.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
                                         <!-- TODO: add field secondary_industry_ids -->
                                         <div t-attf-class="form-group col-xl-6">
                                             <label class="col-form-label" for="detailed_activity">Detailed activity</label>
@@ -211,6 +221,8 @@
                                             <label class="col-form-label" for="reasons_choosing_mlc">Subscription reason</label>
                                             <input type="text" name="reasons_choosing_mlc" t-attf-class="form-control" t-att-value="reasons_choosing_mlc or profile.reasons_choosing_mlc"/>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div t-attf-class="form-group col-xl-6">
                                             <input type="checkbox" name="itinerant" t-att-value="itinerant or profile.itinerant"/>
                                             <label class="col-form-label" for="itinerant">Itinerant</label>
