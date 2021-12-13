@@ -63,7 +63,7 @@ class CustomerPortal(CustomerPortal):
                 ("id", "!=", profile_id),
             ]
         ):
-            error["name"] = "error"
+            error["nickname"] = "error"
             error_message.append(
                 _("This nickname is already used, please find an other idea.")
             )
@@ -177,16 +177,16 @@ class CustomerPortal(CustomerPortal):
                 if redirect:
                     return request.redirect(redirect)
                 return request.redirect("/my/profiles")
-        else:
-            # This is just the form page opening. We send all the data needed for the form fields
-            countries = request.env["res.country"].sudo().search([])
-            industries = request.env["res.partner.industry"].sudo().search([])
-            values.update(
-                {
-                    "profile_id": profile_id,  # Sent in order to retrieve it at submit time
-                    "countries": countries,
-                    "industries": industries,
-                    "redirect": redirect,
-                }
-            )
-            return request.render("lcc_members.portal_my_profile", values)
+
+        # This is just the form page opening. We send all the data needed for the form fields
+        countries = request.env["res.country"].sudo().search([])
+        industries = request.env["res.partner.industry"].sudo().search([])
+        values.update(
+            {
+                "profile_id": profile_id,  # Sent in order to retrieve it at submit time
+                "countries": countries,
+                "industries": industries,
+                "redirect": redirect,
+            }
+        )
+        return request.render("lcc_members.portal_my_profile", values)
