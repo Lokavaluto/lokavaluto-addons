@@ -73,7 +73,7 @@
                         <strong><span t-field="profile.name"/></strong>
                         <small class="text-muted"> - <span t-field="profile.partner_profile"/></small>
                     </h5>
-                    <div t-if="profile.partner_profile and (profile.partner_profile.name == 'Position')"> <!-- TODO: change partner_profile.name by partner_profile.ref when code available -->
+                    <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'parter_profile_position')">
                         <h5 class="mb-0">
                             <span t-field="profile.parent_id"/>
                         </h5>
@@ -88,7 +88,7 @@
                 </t>
                 <t t-set="card_body">
                     <!-- Body for Position partner profiles-->
-                    <div t-if="profile.partner_profile and (profile.partner_profile.name == 'Position')"> <!-- TODO: change partner_profile.name by partner_profile.ref when code available -->
+                    <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'parter_profile_position')">
                         <form action="/my/account" method="post">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <div class="row o_portal_details">
@@ -135,7 +135,7 @@
                         </form>
                     </div>
                     <!-- Body for Public partner profiles-->
-                    <div t-if="profile.partner_profile and (profile.partner_profile.name == 'Public profile')"> <!-- TODO: change partner_profile.name by partner_profile.ref when code available -->
+                    <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'parter_profile_public')">
                         <form action="/my/account" method="post">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <div class="row o_portal_details">
