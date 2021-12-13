@@ -82,3 +82,14 @@ class CustomerPortal(CustomerPortal):
 
         values = self._profile_get_page_view_values(profile_sudo, access_token, **kw)
         return request.render("lcc_members.portal_my_profile", values)
+        countries = request.env["res.country"].sudo().search([])
+        industries = request.env["res.partner.industry"].sudo().search([])
+
+        values.update(
+            {
+                "countries": countries,
+                "industries": industries,
+            }
+        )
+
+        return request.render("lcc_members.portal_my_profile", values)
