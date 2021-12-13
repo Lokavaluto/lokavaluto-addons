@@ -146,9 +146,15 @@
                                             <t t-foreach="error_message" t-as="err"><t t-esc="err"/><br/></t>
                                         </div>
                                     </div>
-                                    <h3><br/>Description</h3>
                                     <div class="row">
                                         <div t-attf-class="form-group col-xl-12">
+                                            <label class="col-form-label" for="nickname">Nickname</label>
+                                            <input type="text" name="nickname" t-attf-class="form-control" t-att-value="nickname or profile.lastname"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div t-attf-class="form-group col-xl-12">
+                                            <label class="col-form-label" for="website_description">Description</label>
                                             <textarea rows="4" name="website_description" t-attf-class="form-control" t-att-value="website_description or profile.website_description"/>
                                         </div>
                                     </div>
