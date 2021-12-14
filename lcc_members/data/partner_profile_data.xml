@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <record id="parter_profile_main" model="partner.profile">
+        <record id="partner_profile_main" model="partner.profile">
             <field name="name">Main</field>
-            <field name="ref">parter_profile_main</field>
+            <field name="ref">partner_profile_main</field>
         </record>
 
-        <record id="parter_profile_public" model="partner.profile">
+        <record id="partner_profile_public" model="partner.profile">
             <field name="name">Public profile</field>
-            <field name="ref">parter_profile_public</field>
+            <field name="ref">partner_profile_public</field>
         </record>
 
-        <record id="parter_profile_position" model="partner.profile">
+        <record id="partner_profile_position" model="partner.profile">
             <field name="name">Position</field>
-            <field name="ref">parter_profile_position</field>
+            <field name="ref">partner_profile_position</field>
         </record>
     </data>
 </odoo>
