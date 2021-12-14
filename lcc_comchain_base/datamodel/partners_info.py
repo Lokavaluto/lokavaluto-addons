@@ -27,7 +27,7 @@ class ComchainRegisterInfo(Datamodel):
 class ComchainActivateInfo(Datamodel):
     _name = "comchain.activate.info"
 
-    partner_id = fields.Integer(required=True)
+    address = fields.String(required=True)
     type = fields.Integer(required=True)
     credit_min = fields.Float(required=True)
     credit_max = fields.Float(required=True)
