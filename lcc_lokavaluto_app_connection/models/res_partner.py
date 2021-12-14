@@ -47,6 +47,9 @@ class ResPartner(models.Model):
     def _update_search_data(self, backend_keys):
         return {}
 
+    def domains_is_unvalidated_currency_backend(self):
+        return {}
+
     def backends(self):
      return set()
 
