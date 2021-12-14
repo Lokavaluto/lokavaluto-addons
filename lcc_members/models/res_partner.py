@@ -20,7 +20,7 @@ class res_partner(models.Model):
     phone_pro = fields.Char(
         string=_("Professional phone"), required=False, translate=False, readonly=False
     )
-    member_comment = fields.Text(
+    member_comment = fields.Text(  ## TODO v4 : TO BE DELETED
         string=_("Member comment"), required=False, translate=False, readonly=False
     )
     member_type_id = fields.Many2one(
@@ -39,7 +39,7 @@ class res_partner(models.Model):
     to_renew = fields.Boolean(
         string=_("To renew"), required=False, translate=False, readonly=False
     )
-    legal_activity_code = fields.Char(
+    legal_activity_code = fields.Char(  ## TODO v4 : TO BE DELETED
         string=_("legal activity code (ex. APE in France)"),
         required=False,
         translate=False,
