@@ -103,6 +103,17 @@ class res_partner(models.Model):
         translate=False,
         readonly=False,
     )
+    is_main_profile = fields.Boolean(compute="_compute_profile_booleans")
+    is_public_profile = fields.Boolean(compute="_compute_profile_booleans")
+    is_position_profile = fields.Boolean(compute="_compute_profile_booleans")
+
+    @api.onchange("partner_profile")
+    def _compute_profile_booleans(self):
+        self.is_main_profile = self.partner_profile.ref == "partner_profile_main"
+        self.is_public_profile = self.partner_profile.ref == "partner_profile_public"
+        self.is_position_profile = (
+            self.partner_profile.ref == "partner_profile_position"
+        )
 
     @api.model
     def create(self, vals):
