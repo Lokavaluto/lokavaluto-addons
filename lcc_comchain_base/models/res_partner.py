@@ -45,19 +45,33 @@ class ResPartner(models.Model):
         data.extend(self._comchain_backend_data())
         return data
 
-    def _comchain_backend_data(self):
-        """Prepare backend data to be sent by credentials requests"""
-        wallet = json.loads(self.comchain_wallet) if self.comchain_wallet else {}
+    @property
+    def _comchain_wallet(self):
+        return json.loads(self.comchain_wallet) if self.comchain_wallet else {}
+
+    @property
+    def _comchain_backend_id(self):
+        wallet = self._comchain_wallet
         currency_name = wallet.get("server", {}).get("name", {}) or \
             self.env.user.company_id.comchain_currency_name
         if not currency_name:
             ## not present in wallet and not configured in general settings
+            return False
+        return 'comchain:%s' % currency_name
+
+
+    def _comchain_backend_data(self):
+        """Prepare backend data to be sent by credentials requests"""
+        backend_id = self._comchain_backend_id
+        if not backend_id:
+            ## not present in wallet and not configured in general settings
             return []
 
         data = {
-            'type': 'comchain:%s' % currency_name,
+            'type': backend_id,
             'accounts': []
         }
+        wallet = self._comchain_wallet
         if wallet:
             data['accounts'].append({
                 'wallet': wallet,
@@ -82,11 +96,23 @@ class ResPartner(models.Model):
         data.extend(self._comchain_backend_data())
         return data
 
+    def domains_is_unvalidated_currency_backend(self):
+        parent_domains = super(ResPartner, self).domains_is_unvalidated_currency_backend()
+        parent_domains[self._comchain_backend_id] = \
+            ['&', ('comchain_active', '=', False), ('comchain_id', '!=', False)]
+        return parent_domains
+
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
         if self.comchain_id:
-            return backends | {"comchain"}
+            wallet = json.loads(self.comchain_wallet) if self.comchain_wallet else {}
+            currency_name = wallet.get("server", {}).get("name", {}) or \
+                self.env.user.company_id.comchain_currency_name
+            if not currency_name:
+                ## not present in wallet and not configured in general settings
+                return backends
+            return backends | {"comchain:%s" % currency_name}
         else:
             return backends
 
