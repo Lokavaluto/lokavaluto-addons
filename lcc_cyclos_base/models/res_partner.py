@@ -63,14 +63,21 @@ class ResPartner(models.Model):
             raise
         return res
 
-    def _cyclos_backend_data(self):
-        """Prepare backend data to be sent by credentials requests"""
+    @property
+    def _cyclos_backend_id(self):
         parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
         if not parsed_uri:  ## is backend available and configured on odoo
-            return []
+            return False
         domain = self.env.user.company_id.cyclos_server_url.split('/')[2]
+        return 'cyclos:%s' % domain
+
+    def _cyclos_backend_data(self):
+        """Prepare backend data to be sent by credentials requests"""
+        backend_id = self._cyclos_backend_id
+        if not backend_id:  ## is backend available and configured on odoo
+            return []
         data = {
-            'type': 'cyclos:%s' % domain,
+            'type': backend_id,
             'accounts': [],
         }
         if self.cyclos_id:
@@ -111,6 +118,12 @@ class ResPartner(models.Model):
                 data[backend_key] = [self.cyclos_id]
         #_logger.debug('SEARCH: data %s' % data)
         return data
+
+    def domains_is_unvalidated_currency_backend(self):
+        parent_domains = super(ResPartner, self).domains_is_unvalidated_currency_backend()
+        parent_domains[self._cyclos_backend_id] = \
+            ['&', ('cyclos_active', '=', False), ('cyclos_id', '!=', False)]
+        return parent_domains
 
     def backends(self):
         self.ensure_one()
