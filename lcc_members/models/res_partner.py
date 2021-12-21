@@ -108,10 +108,10 @@ class res_partner(models.Model):
     is_position_profile = fields.Boolean(compute="_compute_profile_booleans")
 
     edit_structure_main_profile = fields.Boolean(
-        string="Can edit the structure's main profile"
+        string=_("Can edit the structure's main profile")
     )
     edit_structure_public_profile = fields.Boolean(
-        string="Can edit the structure's public profile"
+        string=_("Can edit the structure's public profile")
     )
 
     @api.onchange("partner_profile")
