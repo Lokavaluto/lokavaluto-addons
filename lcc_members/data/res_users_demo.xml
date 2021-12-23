@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 
+            Internal user - Volunteers 
+        -->
+        <record id="base.user_demo" model="res.users">
+            <!-- Marc Demo -->
+            <field name="login">marc.demo</field>
+            <field name="password">loka</field>
+        </record>
+        <record id="user_demo_1" model="res.users">
+            <!--Willie Burke -->
+            <field name="partner_id" ref="base.res_partner_address_1" />
+            <field name="login">willie.burke</field>
+            <field name="password">loka</field>
+        </record>
+
+
+        <!-- 
+            Portal user - LCC Members 
+        -->
+        <record id="base.demo_user0" model="res.users">
+            <!-- Joel Willis -->
+            <field name="login">joel.willis</field>
+            <field name="password">loka</field>
+        </record>
+        <record id="user_demo_2" model="res.users">
+            <!-- Ron Gibson -->
+            <field name="partner_id" ref="base.res_partner_address_2" />
+            <field name="login">ron.gibson</field>
+            <field name="password">loka</field>
+        </record>
+        <record id="user_demo_5" model="res.users">
+            <!-- Edwin Hansen -->
+            <field name="partner_id" ref="base.res_partner_address_5" />
+            <field name="login">edwin.hansen</field>
+            <field name="password">loka</field>
+        </record>
+        <record id="user_demo_7" model="res.users">
+            <!-- Billy Fox -->
+            <field name="partner_id" ref="base.res_partner_address_7" />
+            <field name="login">billy.fox</field>
+            <field name="password">loka</field>
+        </record>
+
+        <!-- Add the portal users to the portal (and therefore to the portal member group) -->
+        <!-- <record id="base.group_portal" model="res.groups">
+            <field name="users" eval="[(4,ref('base.demo_user0')),(4,ref('user_demo_2')),(4,ref('user_demo_5')),(4,ref('user_demo_7'))]" />
+        </record> -->
+    </data>
+</odoo>
