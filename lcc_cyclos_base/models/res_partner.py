@@ -65,10 +65,13 @@ class ResPartner(models.Model):
 
     @property
     def _cyclos_backend_id(self):
-        parsed_uri = urlparse(self.env.user.company_id.cyclos_server_url)
-        if not parsed_uri:  ## is backend available and configured on odoo
+        url = self.env.user.company_id.cyclos_server_url
+        if not url:
             return False
-        domain = self.env.user.company_id.cyclos_server_url.split('/')[2]
+        parsed_uri = urlparse(url)
+        if not parsed_uri or not parsed_uri.netloc:  ## is backend available and configured on odoo
+            return False
+        domain = parsed_uri.netloc
         return 'cyclos:%s' % domain
 
     def _cyclos_backend_data(self):
@@ -94,7 +97,7 @@ class ResPartner(models.Model):
         data = super(ResPartner, self)._update_auth_data(password)
         # Update cyclos password with odoo one from authenticate session
         backend_data = self._cyclos_backend_data()
-        if backend_data and self.cyclos_active:
+        if self._cyclos_backend_id and backend_data and self.cyclos_active:
             self.forceCyclosPassword(password)
             new_token = self.createCyclosUserToken(self.id, password)
             if new_token:
