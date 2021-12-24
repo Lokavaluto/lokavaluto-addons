@@ -45,6 +45,8 @@
         </record>
 
         <!-- Add the portal users to the portal (and therefore to the portal member group) -->
+        <!-- TODO: add the users user_demo_2, user_demo_5 and user_demo_7 to portal group. Currently commented because this block doesn't work.              -->
+        <!-- Not mandatory now (dec.2021) as we don't need specificaly portal users for Monujo testing. Today all the users above are internal users, and that is fine. -->
         <!-- <record id="base.group_portal" model="res.groups">
             <field name="users" eval="[(4,ref('base.demo_user0')),(4,ref('user_demo_2')),(4,ref('user_demo_5')),(4,ref('user_demo_7'))]" />
         </record> -->
