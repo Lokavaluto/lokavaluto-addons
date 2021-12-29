@@ -32,7 +32,7 @@
                     <field name="partner_profile" string="Partner profile" readonly="1"/>
                      - 
                     <label for="contact_id" string="Main contact:"/>
-                    <field name="contact_id" widget="res_partner_many2one" string="Main Profile" readonly="1" attrs="{'invisible': ['|',('partner_profile', '=', 'parter_profile_main'),('is_company', '=', True)]}"/>
+                    <field name="contact_id" widget="res_partner_many2one" string="Main Profile" readonly="1" attrs="{'invisible': ['|',('partner_profile', '=', 'partner_profile_main'),('is_company', '=', True)]}"/>
                 </div>
             </xpath>
             <xpath expr="//field[@name='parent_id']" position="replace">
