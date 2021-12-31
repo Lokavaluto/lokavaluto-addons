@@ -169,7 +169,7 @@ class CustomerPortal(CustomerPortal):
             values.update(kw)
             if not error:
                 values = {key: kw[key] for key in self.PROFILE_FIELDS if key in kw}
-                values.update({"lastname": values.pop("nickname", "")})
+                values.update({"name": values.pop("nickname", "")})
                 values.update({"zip": values.pop("zipcode", "")})
                 values.update({"website": values.pop("website_url", "")})
                 profile = request.env["res.partner"].browse(profile_id)
