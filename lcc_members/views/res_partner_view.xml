@@ -73,14 +73,6 @@
                         <button type="action" name="137" class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS" title="Send SMS" attrs="{'invisible':[('mobile', '=', False)]}" context="{'field_name': 'mobile'}" />
                     </div>
                 </xpath>
-                <xpath expr="//field[@name='email']" position="replace">
-                    <field name="is_blacklisted" invisible="1" />
-                    <label for="email" class="oe_inline" />
-                    <div class="o_row o_row_readonly">
-                        <i class="fa fa-ban" style="color: red;" role="img" title="This email is blacklisted for mass mailing" aria-label="Blacklisted" attrs="{'invisible': [('is_blacklisted', '=', False)]}" groups="base.group_user" />
-                        <field name="email" widget="email" />
-                    </div>
-                </xpath>
                 <xpath expr="//field[@name='extra_contact_ids']" position="replace" />
 
                 <!-- ################ -->
@@ -213,6 +205,7 @@
                                                     </span>
                                                 </div>
                                             </div>
+                                        </div>
                                         </t>
                                     </templates>
                                 </kanban>
