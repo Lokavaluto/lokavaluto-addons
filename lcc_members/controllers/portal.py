@@ -33,7 +33,7 @@ class CustomerPortal(CustomerPortal):
     ]
 
     def _get_domain_my_profiles(self, user):
-        return [("contact_id", "=", user.partner_id.id), ("active", "=", True)]
+        return [("contact_id", "=", user.partner_id.id)]
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
