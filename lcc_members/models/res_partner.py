@@ -7,6 +7,32 @@ from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
+PROFILE_FIELDS = [
+    "name",
+    "lastname",
+    "firstname",
+    "function",
+    "phone",
+    "mobile",
+    "email",
+    "website_url",
+    "street",
+    "street2",
+    "city",
+    "country_id",
+    "zip",
+    "website_description",
+    "industry_id",
+    "detailed_activity",
+    "reasons_choosing_mlc",
+    "itinerant",
+    "accept_coupons",
+    "accept_digital_currency",
+    "phone_pro",
+    "opening_time",
+    "discount",
+]
+
 
 class res_partner(models.Model):
     _inherit = "res.partner"
@@ -106,6 +132,9 @@ class res_partner(models.Model):
     is_main_profile = fields.Boolean(compute="_compute_profile_booleans")
     is_public_profile = fields.Boolean(compute="_compute_profile_booleans")
     is_position_profile = fields.Boolean(compute="_compute_profile_booleans")
+    public_profile_id = fields.Many2one(
+        "res.partner", compute="_compute_public_profile_id", string="Public profile"
+    )
     odoo_user_id = fields.Many2one(
         "res.users", compute="_compute_odoo_user_id", string="Associated Odoo user"
     )
@@ -132,6 +161,17 @@ class res_partner(models.Model):
             self.partner_profile.ref == "partner_profile_position"
         )
 
+    @api.onchange("partner_profile")
+    def _compute_public_profile_id(self):
+        for partner in self:
+            partner.public_profile_id = self.env["res.partner"].search(
+                [
+                    ("contact_id", "=", partner.id),
+                    ("partner_profile.ref", "=", "partner_profile_public"),
+                ],
+                limit=1,
+            )
+
     @api.onchange("user_ids")
     def _compute_odoo_user_id(self):
         for partner in self:
@@ -146,7 +186,13 @@ class res_partner(models.Model):
         if not vals.get("partner_profile") and not vals.get("contact_id"):
             profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
             vals["partner_profile"] = profile["id"]
-        return super(res_partner, modified_self).create(vals)
+        res = super(res_partner, modified_self).create(vals)
+        if (
+            res.partner_profile.ref == "partner_profile_main"
+            and not res.public_profile_id
+        ):
+            res.create_public_profile()
+        return res
 
     @api.onchange("firstname", "lastname", "is_company")
     def onchange_upper_name(self):
@@ -196,6 +242,40 @@ class res_partner(models.Model):
                 res[partner.id] = "free"
 
         return res
+
+    def create_public_profile(self):
+        self.ensure_one()
+        profile = self.env.ref("lcc_members.partner_profile_public").read()[0]
+        values = {
+            "type": "other",
+            "contact_id": self.id,
+            "partner_profile": profile["id"],
+            "name": self.name,
+            "lastname": self.lastname,
+            "firstname": self.firstname,
+            "function": self.function,
+            "phone": self.phone,
+            "mobile": self.mobile,
+            "email": self.email,
+            "website_url": self.website_url,
+            "street": self.street,
+            "street2": self.street2,
+            "city": self.city,
+            "country_id": self.country_id.id,
+            "zip": self.zip,
+            "website_description": self.website_description,
+            "industry_id": self.industry_id.id,
+            "detailed_activity": self.detailed_activity,
+            "reasons_choosing_mlc": self.reasons_choosing_mlc,
+            "itinerant": self.itinerant,
+            "accept_coupons": self.accept_coupons,
+            "accept_digital_currency": self.accept_digital_currency,
+            "phone_pro": self.phone_pro,
+            "opening_time": self.opening_time,
+            "discount": self.discount,
+            "is_company": 1,
+        }
+        self.create(values)
 
 
 class PartnerImage(models.Model):
