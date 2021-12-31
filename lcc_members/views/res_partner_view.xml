@@ -45,8 +45,8 @@
                         <field name="parent_id" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}" />
                     </div>
                     <div attrs="{'invisible': ['|',('is_main_profile','=',False),('is_company', '=', True)]}">
-                        <label for="user_id" string="User:" />
-                        <field name="user_ids" readonly="1" />
+                        <label for="odoo_user_id" string="Associated User:" />
+                        <field name="odoo_user_id" readonly="1" />
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">

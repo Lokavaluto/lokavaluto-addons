@@ -106,6 +106,9 @@ class res_partner(models.Model):
     is_main_profile = fields.Boolean(compute="_compute_profile_booleans")
     is_public_profile = fields.Boolean(compute="_compute_profile_booleans")
     is_position_profile = fields.Boolean(compute="_compute_profile_booleans")
+    odoo_user_id = fields.Many2one(
+        "res.users", compute="_compute_odoo_user_id", string="Associated Odoo user"
+    )
 
     edit_structure_main_profile = fields.Boolean(
         string=_("Can edit the structure's main profile")
@@ -128,6 +131,13 @@ class res_partner(models.Model):
         self.is_position_profile = (
             self.partner_profile.ref == "partner_profile_position"
         )
+
+    @api.onchange("user_ids")
+    def _compute_odoo_user_id(self):
+        for partner in self:
+            partner.odoo_user_id = self.env["res.users"].search(
+                [("partner_id", "=", partner.id)], limit=1
+            )
 
     @api.model
     def create(self, vals):
