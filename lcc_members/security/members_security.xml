@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.rule" id="res_partner_portal_members_rule">
+        <field name="name">res_partner: portal: read/write access on my profiles</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[('contact_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>
