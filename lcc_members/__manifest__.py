@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_members",
-    "version": "12.0.2.0.3",
+    "version": "12.0.2.0.4",
     "author": "Lokavaluto",
     "maintainer": "False",
     "website": "False",
@@ -95,6 +95,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     },
     # always loaded
     "data": [
+        "security/members_security.xml",
         "security/ir.model.access.csv",
         "views/blank_card_menus.xml",
         "views/configuration_menus.xml",
