@@ -244,38 +244,38 @@ class res_partner(models.Model):
         return res
 
     def create_public_profile(self):
-        self.ensure_one()
         profile = self.env.ref("lcc_members.partner_profile_public").read()[0]
-        values = {
-            "type": "other",
-            "contact_id": self.id,
-            "partner_profile": profile["id"],
-            "name": self.name,
-            "lastname": self.lastname,
-            "firstname": self.firstname,
-            "function": self.function,
-            "phone": self.phone,
-            "mobile": self.mobile,
-            "email": self.email,
-            "website_url": self.website_url,
-            "street": self.street,
-            "street2": self.street2,
-            "city": self.city,
-            "country_id": self.country_id.id,
-            "zip": self.zip,
-            "website_description": self.website_description,
-            "industry_id": self.industry_id.id,
-            "detailed_activity": self.detailed_activity,
-            "reasons_choosing_mlc": self.reasons_choosing_mlc,
-            "itinerant": self.itinerant,
-            "accept_coupons": self.accept_coupons,
-            "accept_digital_currency": self.accept_digital_currency,
-            "phone_pro": self.phone_pro,
-            "opening_time": self.opening_time,
-            "discount": self.discount,
-            "is_company": 1,
-        }
-        self.create(values)
+        for partner in self:
+            values = {
+                "type": "other",
+                "contact_id": partner.id,
+                "partner_profile": profile["id"],
+                "name": partner.name,
+                "lastname": partner.lastname,
+                "firstname": partner.firstname,
+                "function": partner.function,
+                "phone": partner.phone,
+                "mobile": partner.mobile,
+                "email": partner.email,
+                "website_url": partner.website_url,
+                "street": partner.street,
+                "street2": partner.street2,
+                "city": partner.city,
+                "country_id": partner.country_id.id,
+                "zip": partner.zip,
+                "website_description": partner.website_description,
+                "industry_id": partner.industry_id.id,
+                "detailed_activity": partner.detailed_activity,
+                "reasons_choosing_mlc": partner.reasons_choosing_mlc,
+                "itinerant": partner.itinerant,
+                "accept_coupons": partner.accept_coupons,
+                "accept_digital_currency": partner.accept_digital_currency,
+                "phone_pro": partner.phone_pro,
+                "opening_time": partner.opening_time,
+                "discount": partner.discount,
+                "is_company": 1,
+            }
+            partner.create(values)
 
 
 class PartnerImage(models.Model):
