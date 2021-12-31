@@ -136,7 +136,7 @@
                         </form>
                     </div>
                     <!-- Body for Public partner profiles-->
-                    <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'partner_profile_public')">
+                    <div t-if="profile.partner_profile and (profile.partner_profile.ref in ['partner_profile_public','partner_profile_main'])">
                         <form action="/my/profile/save" method="post">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <div class="row o_portal_details">
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="row">
                                         <div t-attf-class="form-group #{error.get('nickname') and 'o_has_error' or ''} col-xl-12">
-                                            <label class="col-form-label" for="nickname">Nickname</label>
+                                            <label class="col-form-label" for="nickname">Name / Nickname</label>
                                             <input type="text" name="nickname" t-attf-class="form-control #{error.get('nickname') and 'is-invalid' or ''}" t-att-value="nickname or profile.lastname"/>
                                         </div>
                                     </div>
@@ -206,8 +206,8 @@
                                             <input type="text" name="website_url" t-attf-class="form-control #{error.get('website_url') and 'is-invalid' or ''}" t-att-value="website_url or profile.website"/>
                                         </div>
                                     </div>
-                                    <h3><br/>Activity information</h3>
-                                    <div class="row">
+                                    <h3 t-if="profile.is_public_profile and  profile.is_company"><br/>Activity information</h3>
+                                    <div class="row" t-if="profile.is_public_profile and profile.is_company">
                                         <div t-attf-class="form-group #{error.get('industry_id') and 'o_has_error' or ''} col-xl-6">
                                             <label class="col-form-label" for="industry_id">Main activity</label>
                                             <select name="industry_id" t-attf-class="form-control">
@@ -229,7 +229,7 @@
                                             <input type="text" name="reasons_choosing_mlc" t-attf-class="form-control #{error.get('reasons_choosing_mlc') and 'is-invalid' or ''}" t-att-value="reasons_choosing_mlc or profile.reasons_choosing_mlc"/>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" t-if="profile.is_public_profile and profile.is_company">
                                         <div t-attf-class="form-group #{error.get('itinerant') and 'o_has_error' or ''} col-xl-6">
                                             <input type="checkbox" name="itinerant" t-att-value="itinerant or profile.itinerant"/>
                                             <label class="col-form-label" for="itinerant">Itinerant</label>
