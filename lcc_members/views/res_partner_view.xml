@@ -218,9 +218,7 @@
                     </page>
                     <!-- page Social Networks -->
                     <page name="social" string="Social networks">
-                        <group>
-                            <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="0" colspan="1" />
-                        </group>
+                            <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="True" colspan="1" />
                     </page>
                     <!-- page Structure access rights -->
                     <page name="structureAccessRights" string="Structure Access Rights" attrs="{'invisible': [('is_position_profile','=',False)]}">
