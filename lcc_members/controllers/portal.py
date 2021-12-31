@@ -33,7 +33,22 @@ class CustomerPortal(CustomerPortal):
     ]
 
     def _get_domain_my_profiles(self, user):
-        return [("contact_id", "=", user.partner_id.id)]
+        if user.partner_id.other_contact_ids:
+            main_profile_ids = user.partner_id.other_contact_ids.filtered(
+                "edit_structure_main_profile"
+            ).mapped("parent_id")
+            public_profile_ids = user.partner_id.other_contact_ids.filtered(
+                "edit_structure_public_profile"
+            ).mapped("parent_id.public_profile_id")
+            return [
+                "|",
+                "|",
+                ("contact_id", "=", user.partner_id.id),
+                ("id", "in", main_profile_ids.ids),
+                ("id", "in", public_profile_ids.ids),
+            ]
+        else:
+            return [("contact_id", "=", user.partner_id.id)]
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
@@ -54,14 +69,17 @@ class CustomerPortal(CustomerPortal):
     def _details_profile_form_validate(self, data, profile_id):
         error = dict()
         error_message = []
-
         # nickname uniqueness
-        if data.get("nickname") and request.env["res.partner"].search(
-            [
-                ("name", "=", data.get("nickname")),
-                ("partner_profile.ref", "=", "partner_profile_public"),
-                ("id", "!=", profile_id),
-            ]
+        if (
+            data.get("nickname")
+            and request.env["res.partner"].browse([9]).is_public_profile
+            and request.env["res.partner"].search(
+                [
+                    ("name", "=", data.get("nickname")),
+                    ("partner_profile.ref", "=", "partner_profile_public"),
+                    ("id", "!=", profile_id),
+                ]
+            )
         ):
             error["nickname"] = "error"
             error_message.append(
@@ -115,7 +133,10 @@ class CustomerPortal(CustomerPortal):
 
         # content according to pager and archive selected
         profiles = profile.search(
-            domain, order=order, limit=self._items_per_page, offset=pager["offset"]
+            domain,
+            order=order,
+            limit=self._items_per_page,
+            offset=pager["offset"],
         )
         request.session["my_profiles_history"] = profiles.ids[:100]
 

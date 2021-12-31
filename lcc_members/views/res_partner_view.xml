@@ -49,7 +49,7 @@
                     </div>
                     <div attrs="{'invisible': ['|',('is_main_profile','=',False)]}">
                         <label for="public_profile_id" string="Public Profile:" />
-                        <field name="public_profile_id" readonly="1" context="{'form_view_ref': 'lcc_members.res_partner_profile_view_form'}"/>
+                        <field name="public_profile_id" readonly="1" context="{'form_view_ref': 'lcc_members.res_partner_profile_view_form'}" />
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">
@@ -120,8 +120,11 @@
                     <attribute name="create">true</attribute>
                 </xpath>
                 <xpath expr="//field[@name='other_contact_ids']/form/sheet/group/group/field[@name='name']" position="after">
+                    <field name="is_position_profile" readonly="1" invisible="1" />
                     <field name="partner_profile" string="Partner profile" />
                     <field name="parent_id" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}" />
+                    <field name="edit_structure_main_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
+                    <field name="edit_structure_public_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
                 </xpath>
 
                 <!-- page Sales & Purchases -->
@@ -227,7 +230,7 @@
                     </page>
                     <!-- page Social Networks -->
                     <page name="social" string="Social networks">
-                            <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="True" colspan="1" />
+                        <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="True" colspan="1" />
                     </page>
                     <!-- page Structure access rights -->
                     <page name="structureAccessRights" string="Structure Access Rights" attrs="{'invisible': [('is_position_profile','=',False)]}">
