@@ -132,6 +132,7 @@ class res_partner(models.Model):
     is_main_profile = fields.Boolean(compute="_compute_profile_booleans")
     is_public_profile = fields.Boolean(compute="_compute_profile_booleans")
     is_position_profile = fields.Boolean(compute="_compute_profile_booleans")
+
     public_profile_id = fields.Many2one(
         "res.partner", compute="_compute_public_profile_id", string="Public profile"
     )
@@ -145,23 +146,41 @@ class res_partner(models.Model):
     edit_structure_public_profile = fields.Boolean(
         string=_("Can edit the structure's public profile")
     )
-
+    can_edit_main_profile_ids = fields.Many2many(
+        "res.partner", compute="_compute_can_edit", string="Can edit main profile"
+    )
+    can_edit_public_profile_ids = fields.Many2many(
+        "res.partner", compute="_compute_can_edit", string="Can edit public profile"
+    )
     want_newsletter_subscription = fields.Boolean(
         string=_("Want Newsletters Subscription")
     )
-    accept_policy = fields.Boolean(
-        string=_("Accept LCC Policy")
-    )
+    accept_policy = fields.Boolean(string=_("Accept LCC Policy"))
 
-    @api.onchange("partner_profile")
+    @api.depends("other_contact_ids")
+    def _compute_can_edit(self):
+        for partner in self:
+            partner.can_edit_main_profile_ids = partner.child_ids.filtered(
+                "edit_structure_main_profile"
+            ).mapped("contact_id")
+            partner.can_edit_public_profile_ids = partner.child_ids.filtered(
+                "edit_structure_public_profile"
+            ).mapped("contact_id")
+
+    @api.depends("partner_profile")
     def _compute_profile_booleans(self):
-        self.is_main_profile = self.partner_profile.ref == "partner_profile_main"
-        self.is_public_profile = self.partner_profile.ref == "partner_profile_public"
-        self.is_position_profile = (
-            self.partner_profile.ref == "partner_profile_position"
-        )
+        for partner in self:
+            partner.is_main_profile = (
+                partner.partner_profile.ref == "partner_profile_main"
+            )
+            partner.is_public_profile = (
+                partner.partner_profile.ref == "partner_profile_public"
+            )
+            partner.is_position_profile = (
+                partner.partner_profile.ref == "partner_profile_position"
+            )
 
-    @api.onchange("partner_profile")
+    @api.depends("partner_profile")
     def _compute_public_profile_id(self):
         for partner in self:
             partner.public_profile_id = self.env["res.partner"].search(
@@ -172,7 +191,7 @@ class res_partner(models.Model):
                 limit=1,
             )
 
-    @api.onchange("user_ids")
+    @api.depends("user_ids")
     def _compute_odoo_user_id(self):
         for partner in self:
             partner.odoo_user_id = self.env["res.users"].search(
