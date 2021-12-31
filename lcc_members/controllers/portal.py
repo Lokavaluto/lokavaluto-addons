@@ -168,11 +168,11 @@ class CustomerPortal(CustomerPortal):
             values.update({"error": error, "error_message": error_message})
             values.update(kw)
             if not error:
+                profile = request.env["res.partner"].browse(profile_id)
                 values = {key: kw[key] for key in self.PROFILE_FIELDS if key in kw}
-                values.update({"name": values.pop("nickname", "")})
+                values.update({"name": values.pop("nickname", profile.name)})
                 values.update({"zip": values.pop("zipcode", "")})
                 values.update({"website": values.pop("website_url", "")})
-                profile = request.env["res.partner"].browse(profile_id)
                 profile.sudo().write(values)
                 if redirect:
                     return request.redirect(redirect)
