@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
-        <!-- TODO: put here a reminder on what to do at the first edition -->
         <record id="lcc_members_form_view" model="ir.ui.view">
             <field name="name">LCC Members Form View</field>
             <field name="model">res.partner</field>
@@ -47,6 +46,10 @@
                     <div attrs="{'invisible': ['|',('is_main_profile','=',False),('is_company', '=', True)]}">
                         <label for="odoo_user_id" string="Associated User:" />
                         <field name="odoo_user_id" readonly="1" />
+                    </div>
+                    <div attrs="{'invisible': ['|',('is_main_profile','=',False)]}">
+                        <label for="public_profile_id" string="Public Profile:" />
+                        <field name="public_profile_id" readonly="1" context="{'form_view_ref': 'lcc_members.res_partner_profile_view_form'}"/>
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">
@@ -173,41 +176,45 @@
                             <span>)</span>
                         </div>
                     </group> -->
-                    <group name="extra_images" string="Extra Images">
-                        <!-- TODO v4 : delete this group once all lcc informed -->
-                        <div role="alertdialog" class="alert alert-warning">
-                            <span><b>Attention:</b> Odoo ne compresse pas les images. la somme totale de vos images ne doit pas dépasser 4mo. Pour compresser vos images vous pouvez par exemple utiliser ce site : <a href="https://compressjpeg.com/fr/" target="_blank">https://compressjpeg.com/fr/</a></span>
-                        </div>
-                        <field name="partner_image_ids" class="o_website_sale_image_list" attrs="{'invisible': [('is_company', '=', False)]}" context="{'default_name': name, 'default_partner_id': active_id}" nolabel="1">
-                            <kanban string="Partner Images" class="o_attachments_previews">
-                                <field name="id"/>
-                                <field name="name"/>
-                                <field name="image"/>
-                                <templates>
-                                    <t t-name="kanban-box">
-                                        <div class="o_attachment oe_kanban_global_click o_website_sale_image_card">
-                                            <div class="o_attachment_wrap">
-                                                <div class="o_image_box">
-                                                    <div class="o_attachment_image" t-attf-style="background-image:url({{kanban_image('partner.image', 'image', record.id.raw_value)}});"/>
-                                                    <div t-attf-class="o_image_overlay" t-att-title="record.name.value"/>
-                                                    <div class="o_website_sale_image_card_title" t-att-title="record.name.value">
-                                                        <field name="name"/>
+                        <group name="extra_images" string="Extra Images">
+                            <!-- TODO v4 : delete this group once all lcc informed -->
+                            <div role="alertdialog" class="alert alert-warning">
+                                <span>
+                                    <b>Attention:</b>
+                                    Odoo ne compresse pas les images. la somme totale de vos images ne doit pas dépasser 4mo. Pour compresser vos images vous pouvez par exemple utiliser ce site :
+                                    <a href="https://compressjpeg.com/fr/" target="_blank">https://compressjpeg.com/fr/</a>
+                                </span>
+                            </div>
+                            <field name="partner_image_ids" class="o_website_sale_image_list" attrs="{'invisible': [('is_company', '=', False)]}" context="{'default_name': name, 'default_partner_id': active_id}" nolabel="1">
+                                <kanban string="Partner Images" class="o_attachments_previews">
+                                    <field name="id" />
+                                    <field name="name" />
+                                    <field name="image" />
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="o_attachment oe_kanban_global_click o_website_sale_image_card">
+                                                <div class="o_attachment_wrap">
+                                                    <div class="o_image_box">
+                                                        <div class="o_attachment_image" t-attf-style="background-image:url({{kanban_image('partner.image', 'image', record.id.raw_value)}});" />
+                                                        <div t-attf-class="o_image_overlay" t-att-title="record.name.value" />
+                                                        <div class="o_website_sale_image_card_title" t-att-title="record.name.value">
+                                                            <field name="name" />
+                                                        </div>
+
+                                                        <t t-set="size" t-value="[record.image.value][0]" />
+                                                        <t t-set="size_status" t-value="'normal'" t-if="size.indexOf('Bytes') !== -1 or ( size.indexOf('Kb') !== -1 and size[2]=='.')" />
+                                                        <t t-set="size_status" t-value="'warning'" t-elif="( size.indexOf('Kb') !== -1 and size[3]=='.')" />
+                                                        <t t-set="size_status" t-value="'danger'" t-else="" />
+                                                        <t t-set="message" t-value="'Acceptable file size'" t-if="size_status == 'normal'"></t>
+                                                        <t t-set="message" t-value="'Huge file size. The image should be optimized/reduced.'" t-elif="size_status == 'warning'"></t>
+                                                        <t t-set="message" t-value="'Optimization required! Reduce the image size or increase your compression settings.'" t-else=""></t>
+
+                                                        <span t-attf-class="o_website_sale_image_card_size badge badge-#{size_status}" t-att-title="message">
+                                                            <t t-esc="record.image.value" />
+                                                        </span>
                                                     </div>
-
-                                                    <t t-set="size" t-value="[record.image.value][0]" />
-                                                    <t t-set="size_status" t-value="'normal'" t-if="size.indexOf('Bytes') !== -1 or ( size.indexOf('Kb') !== -1 and size[2]=='.')" />
-                                                    <t t-set="size_status" t-value="'warning'" t-elif="( size.indexOf('Kb') !== -1 and size[3]=='.')" />
-                                                    <t t-set="size_status" t-value="'danger'" t-else="" />
-                                                    <t t-set="message" t-value="'Acceptable file size'" t-if="size_status == 'normal'"></t>
-                                                    <t t-set="message" t-value="'Huge file size. The image should be optimized/reduced.'" t-elif="size_status == 'warning'"></t>
-                                                    <t t-set="message" t-value="'Optimization required! Reduce the image size or increase your compression settings.'" t-else=""></t>
-
-                                                    <span t-attf-class="o_website_sale_image_card_size badge badge-#{size_status}" t-att-title="message">
-                                                        <t t-esc="record.image.value" />
-                                                    </span>
                                                 </div>
                                             </div>
-                                        </div>
                                         </t>
                                     </templates>
                                 </kanban>
@@ -232,7 +239,6 @@
                 </xpath>
             </field>
         </record>
-
 
         <record id="members_search_view" model="ir.ui.view">
             <field name="name">Members search View</field>
