@@ -57,6 +57,8 @@
                     <field name="team_id" string="Local group" options="{'limit': 16, 'create': false, 'create_edit': false}" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="user_id" string="Referent" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="ref" string="Subcription number" attrs="{'invisible': [('contact_type','=','attached')]}" />
+                    <field name="want_newsletter_subscription" readonly="1" />
+                    <field name="accept_policy" readonly="1" />
                 </xpath>
 
                 <xpath expr="//field[@name='phone']" position="replace">
