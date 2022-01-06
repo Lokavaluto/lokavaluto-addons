@@ -114,6 +114,13 @@ class res_partner(models.Model):
         string=_("Can edit the structure's public profile")
     )
 
+    want_newsletter_subscription = fields.Boolean(
+        string=_("Want Newsletters Subscription")
+    )
+    accept_policy = fields.Boolean(
+        string=_("Accept LCC Policy")
+    )
+
     @api.onchange("partner_profile")
     def _compute_profile_booleans(self):
         self.is_main_profile = self.partner_profile.ref == "partner_profile_main"
