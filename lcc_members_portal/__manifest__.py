@@ -72,7 +72,15 @@ mission is to support the collaborative development of Odoo features and ecosyst
 
 """,
     # any module necessary for this one to work correctly
-    "depends": ["base", "lcc_members", "crm", "product", "membership", "website_sale"],
+    "depends": [
+        "base",
+        "lcc_members",
+        "crm",
+        "product",
+        "membership",
+        "website_sale",
+        "crm",
+    ],
     "external_dependencies": {
         "python": [],
     },
@@ -80,6 +88,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     "data": [
         "views/portal_my_home.xml",
         "views/portal_private_registration.xml",
+        "views/portal_oganization_registration.xml",
         "views/product_template_view.xml",
     ],
     # only loaded in demonstration mode
