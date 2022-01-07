@@ -13,7 +13,7 @@
             </div>
             <div>
                 <button class="btn btn-primary mb32 btn-link">
-                    <a t-attf-href="/my/organisation_registration">
+                    <a t-attf-href="/my/organization_registration">
                         Register your organisation
                         <span class="fa fa-long-arrow-right" />
                     </a>
