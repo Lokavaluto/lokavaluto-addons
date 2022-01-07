@@ -113,7 +113,7 @@
                     </div>
                     <div t-if="dynamic_price" t-attf-class="form-group #{error and 'total_membership' in error and 'has-error' or ''} col-xl-6">
                         <label class="col-form-label" for="total_membership">Registration fee amount</label>
-                        <input type="number" step="any" class="form-control" name="total_membership" required="True" t-attf-value="#{total_membership or ''}" />
+                        <input type="measure" step="any" class="form-control" name="total_membership" required="True" t-attf-value="#{total_membership or ''}" />
                     </div>
                 </div>
                 <div class="clearfix">
