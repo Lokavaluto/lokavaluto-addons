@@ -90,6 +90,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "views/portal_private_registration.xml",
         "views/portal_oganization_registration.xml",
         "views/product_template_view.xml",
+        "views/crm_lead_view.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],
