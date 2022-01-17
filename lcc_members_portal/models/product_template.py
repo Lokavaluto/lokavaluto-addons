@@ -8,8 +8,8 @@ class ProductTemplate(models.Model):
     portal_private_registration_product = fields.Boolean(
         "Use for portal private registration",
     )
-    portal_organisation_registration_product = fields.Boolean(
-        "Use for portal organisation registration",
+    portal_organization_registration_product = fields.Boolean(
+        "Use for portal organization registration",
     )
     dynamic_price = fields.Boolean(
         "Use dynamic price ?",
@@ -21,6 +21,7 @@ class ProductTemplate(models.Model):
         product_template = self.env["product.template"].search(
             [
                 ("portal_private_registration_product", "=", True),
+                ("portal_organization_registration_product", "=", False),
                 ("active", "=", True),
                 ("membership_date_from", "<=", today),
                 ("membership_date_to", ">=", today),
@@ -30,11 +31,12 @@ class ProductTemplate(models.Model):
         return product_template
 
     @api.multi
-    def get_organisation_membership_product(self):
+    def get_organization_membership_product(self):
         today = datetime.today()
         product_template = self.env["product.template"].search(
             [
-                ("portal_organisation_registration_product", "=", True),
+                ("portal_private_registration_product", "=", False),
+                ("portal_organization_registration_product", "=", True),
                 ("active", "=", True),
                 ("membership_date_from", "<=", today),
                 ("membership_date_to", ">=", today),
