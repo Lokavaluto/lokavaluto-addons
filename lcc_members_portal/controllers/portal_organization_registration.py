@@ -24,6 +24,8 @@ class PortalOrganizationRegistration(CustomerPortal):
         "reasons_choosing_mlc",
         "opening_time",
         "discount",
+        "function",
+        "phone_pro",
         "message_from_candidate",
     ]
 
