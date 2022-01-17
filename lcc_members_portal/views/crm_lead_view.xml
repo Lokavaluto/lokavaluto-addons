@@ -5,6 +5,10 @@
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_case_form_view_oppor" />
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="lead_type" invisible="1" />
+                <button name="action_validate_organization_application" string="Validate Application" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active','=',False), ('lead_type', '!=', 'membership_web_application')]}" />
+            </xpath>
             <xpath expr="//field[@name='partner_name']" position="after">
                 <field name="company_name" />
                 <field name="commercial_company_name" />
