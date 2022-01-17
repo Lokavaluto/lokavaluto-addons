@@ -21,4 +21,4 @@ class Lead(models.Model):
         string=_("Want Newsletters Subscription")
     )
     accept_policy = fields.Boolean(string=_("Accept LCC Policy"))
-    total_membership = fields.Monetary(string=_("Membership amount"))
+    total_membership = fields.Float(string=_("Membership amount"))

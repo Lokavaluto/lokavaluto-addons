@@ -10,7 +10,7 @@
                     <field name="list_price" position="after">
                         <field name="dynamic_price" />
                         <field name="portal_private_registration_product" />
-                        <field name="portal_organisation_registration_product" />
+                        <field name="portal_organization_registration_product" />
                     </field>
                 </data>
             </field>
