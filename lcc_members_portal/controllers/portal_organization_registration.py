@@ -24,6 +24,7 @@ class PortalOrganizationRegistration(CustomerPortal):
         "reasons_choosing_mlc",
         "opening_time",
         "discount",
+        "message_from_candidate",
     ]
 
     # Variable to update to add other fields in child classes
