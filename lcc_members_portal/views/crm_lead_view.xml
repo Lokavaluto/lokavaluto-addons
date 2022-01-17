@@ -40,6 +40,9 @@
                     <field name="function" />
                     <field name="mobile" invisible="1" />
                 </group>
+                <group name="candidate_message" string="Candidate message">
+                    <field name="message_from_candidate" />
+                </group>
             </xpath>
         </field>
     </record>
