@@ -17,6 +17,8 @@ class Lead(models.Model):
     accept_digital_currency = fields.Boolean(string=_("Accept digital currency"))
     accept_coupons = fields.Boolean(string=_("Accept coupons"))
     itinerant = fields.Boolean(string=_("Itinerant"))
+    function = fields.Char(string=_("Job Position"))
+    phone_pro = fields.Char(string=_("Phone Pro"))
     want_newsletter_subscription = fields.Boolean(
         string=_("Want Newsletters Subscription")
     )

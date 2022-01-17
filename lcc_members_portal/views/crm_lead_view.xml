@@ -38,6 +38,7 @@
                 <group name="organization_contact" string="Organization's Contact">
                     <field name="contact_name" />
                     <field name="function" />
+                    <field name="phone_pro" widget="phone" />
                     <field name="mobile" invisible="1" />
                 </group>
                 <group name="candidate_message" string="Candidate message">
