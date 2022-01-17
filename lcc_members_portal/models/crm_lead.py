@@ -22,3 +22,4 @@ class Lead(models.Model):
     )
     accept_policy = fields.Boolean(string=_("Accept LCC Policy"))
     total_membership = fields.Float(string=_("Membership amount"))
+    message_from_candidate = fields.Text(string=_("Message from the candidate"))
