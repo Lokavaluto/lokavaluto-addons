@@ -37,7 +37,7 @@ class PortalPrivateRegistration(CustomerPortal):
             **kwargs
         )
 
-    def get_membership_product(self):
+    def get_private_membership_product(self):
         product_obj = request.env["product.template"]
         product = product_obj.sudo().get_private_membership_product()
         return product
@@ -61,7 +61,7 @@ class PortalPrivateRegistration(CustomerPortal):
     def portal_private_registration(self, access_token=None, redirect=None, **kw):
         partner = request.env.user.partner_id
         values = self._membership_get_page_view_values(partner, access_token, **kw)
-        product = self.get_membership_product()
+        product = self.get_private_membership_product()
         titles = request.env["res.partner.title"].sudo().search([])
         countries = request.env["res.country"].sudo().search([])
         teams = request.env["crm.team"].sudo().search([])
@@ -112,11 +112,13 @@ class PortalPrivateRegistration(CustomerPortal):
         # Create sale order to finalize the registration process
         sale_order = request.website.sale_get_order(force_create=True)
         values = {}
-        values["member_product_id"] = self.get_membership_product().id
+        values["member_product_id"] = self.get_private_membership_product().id
         if float(kwargs.get("total_membership", False)):
             values["total_membership"] = float(kwargs.get("total_membership"))
         else:
-            values["total_membership"] = self.get_membership_product().list_price
+            values[
+                "total_membership"
+            ] = self.get_private_membership_product().list_price
         values["order_id"] = sale_order.id
         sale_order.sudo().create_membership(values)
         return request.redirect("/shop/cart")

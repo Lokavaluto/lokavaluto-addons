@@ -24,7 +24,6 @@ class PortalOrganizationRegistration(CustomerPortal):
         "reasons_choosing_mlc",
         "opening_time",
         "discount",
-        "total_membership",
     ]
 
     # Variable to update to add other fields in child classes
@@ -44,9 +43,9 @@ class PortalOrganizationRegistration(CustomerPortal):
             **kwargs
         )
 
-    def get_membership_product(self):
+    def get_organization_membership_product(self):
         product_obj = request.env["product.template"]
-        product = product_obj.sudo().get_organisation_membership_product()
+        product = product_obj.sudo().get_organization_membership_product()
         return product
 
     def get_selected_team_id(self, kwargs):
@@ -69,7 +68,7 @@ class PortalOrganizationRegistration(CustomerPortal):
         partner = request.env.user.partner_id
 
         values = self._organization_get_page_view_values(partner, access_token, **kw)
-        product = self.get_membership_product()
+        product = self.get_organization_membership_product()
         titles = request.env["res.partner.title"].sudo().search([])
         countries = request.env["res.country"].sudo().search([])
         teams = request.env["crm.team"].sudo().search([])
@@ -123,6 +122,12 @@ class PortalOrganizationRegistration(CustomerPortal):
             kwargs.get("want_newsletter_subscription", "off") == "on"
         )
         values["accept_policy"] = kwargs.get("accept_policy", "off") == "on"
+        if float(kwargs.get("total_membership", False)):
+            values["total_membership"] = float(kwargs.get("total_membership"))
+        else:
+            values[
+                "total_membership"
+            ] = self.get_organization_membership_product().list_price
 
         lead = request.env["crm.lead"].sudo().create(values)
         lead.team_id = kwargs.pop(
