@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_oppor_view_form_lcc_registration" model="ir.ui.view">
+        <field name="name">crm.oppor.form.lcc.registration</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_form_view_oppor" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_name']" position="after">
+                <field name="company_name" />
+                <field name="commercial_company_name" />
+            </xpath>
+            <xpath expr="//field[@name='partner_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='website']" position="before">
+                <field name="company_email" />
+                <field name="phone" />
+            </xpath>
+            <xpath expr="//field[@name='contact_name']/../.." position="replace">
+                <group name="organization_description" string="Organization Description">
+                    <field name="website_description" />
+                </group>
+                <group name="organization_information" string="Organization Information">
+                    <field name="industry_id" />
+                    <field name="detailed_activity" />
+                    <field name="reasons_choosing_mlc" />
+                    <field name="opening_time" />
+                    <field name="discount" />
+                    <field name="accept_digital_currency" />
+                    <field name="accept_coupons" />
+                    <field name="itinerant" />
+                </group>
+                <group name="membership_information" string="Membership Information">
+                    <field name="total_membership" />
+                    <field name="want_newsletter_subscription" />
+                    <field name="accept_policy" />
+                </group>
+                <group name="organization_contact" string="Organization's Contact">
+                    <field name="contact_name" />
+                    <field name="function" />
+                    <field name="mobile" invisible="1" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
