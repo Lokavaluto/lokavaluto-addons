@@ -114,6 +114,7 @@ class PortalOrganizationRegistration(CustomerPortal):
         values["name"] = "[NEW APPLICATION] " + values["company_name"]
         values["partner_id"] = request.env.user.partner_id.id
         values["type"] = "opportunity"
+        values["lead_type"] = "membership_web_application"
         values.update({"zip": values.pop("zipcode", "")})
         values.update({"website": values.pop("website_url", "")})
         values["accept_coupons"] = kwargs.get("accept_coupons", "off") == "on"
