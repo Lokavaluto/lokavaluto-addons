@@ -5,3 +5,4 @@ from . import partner_profile
 from . import member_type
 from . import res_partner
 from . import account_invoice
+from . import crm_team
