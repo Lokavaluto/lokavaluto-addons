@@ -82,6 +82,7 @@ class Lead(models.Model):
     total_membership = fields.Float(string=_("Membership amount"))
     message_from_candidate = fields.Text(string=_("Message from the candidate"))
 
+    invoice_url = fields.Char(string=_("Invoice link"))
     application_accepted = fields.Boolean(default=False)
 
     def _get_field_value(self, fname):
@@ -97,7 +98,6 @@ class Lead(models.Model):
 
     @api.multi
     def action_validate_organization_application(self):
-
         # Organization's main partner creation
         values = {}
         for field_name in self._MAIN_PROFILE_FIELDS:
@@ -163,6 +163,11 @@ class Lead(models.Model):
         invoice_id = sale_order.sudo().action_invoice_create()[0]
         invoice = self.env["account.invoice"].browse(invoice_id)
         invoice.action_invoice_open()
+        self.invoice_url = (
+            self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+            + "/my/invoices/"
+            + str(invoice_id)
+        )
         self.application_accepted = True
 
         # Redirect to the main profile
