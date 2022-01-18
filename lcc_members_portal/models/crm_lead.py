@@ -146,6 +146,21 @@ class Lead(models.Model):
         values.update({"phone": values.pop("phone_pro", "")})
         self.env["res.partner"].create(values)
 
+        # Create sale order and invoice to finalize the registration process
+        values = {}
+        values["partner_id"] = main_partner.id
+        sale_order = self.env["sale.order"].create(values)
+        values = {}
+        values["member_product_id"] = (
+            self.env["product.template"].sudo().get_organization_membership_product().id
+        )
+        values["total_membership"] = self.total_membership
+        values["order_id"] = sale_order.id
+        sale_order.sudo().create_membership(values)
+        sale_order.sudo().action_confirm()
+        invoice_id = sale_order.sudo().action_invoice_create()[0]
+        invoice = self.env["account.invoice"].browse(invoice_id)
+        invoice.action_invoice_open()
         # Redirect to the main profile
         view = self.env.ref("base.view_partner_form")
         return {
