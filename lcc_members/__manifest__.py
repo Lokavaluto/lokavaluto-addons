@@ -99,6 +99,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "security/ir.model.access.csv",
         "views/blank_card_menus.xml",
         "views/configuration_menus.xml",
+        "views/crm_team_view.xml",
         "views/res_partner_view.xml",
         "views/member_type_view.xml",
         "views/website_partner_view.xml",
