@@ -47,6 +47,7 @@
                     <field name="total_membership" />
                     <field name="want_newsletter_subscription" />
                     <field name="accept_policy" />
+                    <field name="invoice_url" attrs="{'invisible': [('application_accepted', '=', False)]}" widget='url' />
                 </group>
                 <group name="organization_contact" string="Organization's Contact">
                     <field name="contact_name" />
