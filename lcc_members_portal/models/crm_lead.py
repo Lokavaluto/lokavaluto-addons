@@ -84,6 +84,7 @@ class Lead(models.Model):
 
     invoice_url = fields.Char(string=_("Invoice link"))
     application_accepted = fields.Boolean(default=False)
+    application_refused = fields.Boolean(default=False)
 
     def _get_field_value(self, fname):
         field = self._fields[fname]
@@ -182,3 +183,8 @@ class Lead(models.Model):
             "res_id": main_partner.id,
             "context": self.env.context,
         }
+
+    @api.multi
+    def action_refuse_organization_application(self):
+        self.application_refused = True
+        return

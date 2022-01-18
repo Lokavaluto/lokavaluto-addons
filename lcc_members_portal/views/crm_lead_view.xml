@@ -8,12 +8,19 @@
             <xpath expr="//field[@name='stage_id']" position="after">
                 <field name="lead_type" invisible="1" />
                 <field name="application_accepted" invisible="1" />
-                <button name="action_validate_organization_application" string="Validate Application" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'membership_web_application'), ('application_accepted', '=', True)]}" />
+                <field name="application_refused" invisible="1" />
+                <button name="action_validate_organization_application" string="Validate Application" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'membership_web_application'), '|', ('application_accepted', '=', True), ('application_refused', '=', True)]}" />
+                <button name="action_refuse_organization_application" string="Refuse Application" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'membership_web_application'), '|', ('application_refused', '=', True), ('application_accepted', '=', True)]}" />
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <div attrs="{'invisible': [('application_accepted', '=', False )]}" class="bg-success">
                     <p>
                       Application accepted
+                    </p>
+                </div>
+                <div attrs="{'invisible': [('application_refused', '=', False )]}" class="bg-danger">
+                    <p>
+                      Application refused
                     </p>
                 </div>
             </xpath>
