@@ -38,23 +38,3 @@ class SaleOrder(models.Model):
         order_line = SaleOrderLineSudo.create(values)
         order_line._compute_tax_id()
         return {"line_id": order_line.id, "quantity": 1, "option_ids": []}
-
-    # @api.model
-    # def create_comp_membership(self, vals):
-    #     vals["name"] = vals["company_name"]
-    #     if not vals.get("partner_id"):
-    #         cooperator = self.env["res.partner"].get_cooperator_from_crn(
-    #             vals.get("company_register_number")
-    #         )
-    #         if cooperator:
-    #             vals["partner_id"] = cooperator.id
-    #             vals["type"] = "increase"
-    #             vals["already_cooperator"] = True
-    #     subscr_request = super(SubscriptionRequest, self).create(vals)
-
-    #     confirmation_mail_template = subscr_request.get_mail_template_notif(
-    #         True
-    #     )
-    #     confirmation_mail_template.send_mail(subscr_request.id)
-
-    #     return subscr_request
