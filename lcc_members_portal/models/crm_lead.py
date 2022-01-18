@@ -82,6 +82,8 @@ class Lead(models.Model):
     total_membership = fields.Float(string=_("Membership amount"))
     message_from_candidate = fields.Text(string=_("Message from the candidate"))
 
+    application_accepted = fields.Boolean(default=False)
+
     def _get_field_value(self, fname):
         field = self._fields[fname]
         if field.type == "many2one":
@@ -161,6 +163,8 @@ class Lead(models.Model):
         invoice_id = sale_order.sudo().action_invoice_create()[0]
         invoice = self.env["account.invoice"].browse(invoice_id)
         invoice.action_invoice_open()
+        self.application_accepted = True
+
         # Redirect to the main profile
         view = self.env.ref("base.view_partner_form")
         return {

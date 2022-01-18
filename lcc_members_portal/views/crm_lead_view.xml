@@ -7,8 +7,17 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='stage_id']" position="after">
                 <field name="lead_type" invisible="1" />
-                <button name="action_validate_organization_application" string="Validate Application" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active','=',False), ('lead_type', '!=', 'membership_web_application')]}" />
+                <field name="application_accepted" invisible="1" />
+                <button name="action_validate_organization_application" string="Validate Application" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'membership_web_application'), ('application_accepted', '=', True)]}" />
             </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <div attrs="{'invisible': [('application_accepted', '=', False )]}" class="bg-success">
+                    <p>
+                      Application accepted
+                    </p>
+                </div>
+            </xpath>
+
             <xpath expr="//field[@name='partner_name']" position="after">
                 <field name="company_name" />
                 <field name="commercial_company_name" />
