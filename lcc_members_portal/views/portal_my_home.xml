@@ -3,29 +3,30 @@
     <template id="portal_my_home_registration_menu" name="Portal My Home: Registration Menu" inherit_id="portal.portal_my_home" priority="40">
         <xpath expr="//div[@id='oe_structure_portal_my_home_1']" position="inside">
             <h3>Registration options</h3>
+            <br />
             <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled' or user_id.partner_id.membership_state == 'old'">
-                <button class="btn btn-primary mb32 btn-link">
-                    <a t-attf-href="/my/private_registration">
+                <a t-attf-href="/my/private_registration">
+                    <button class="btn btn-primary mb32">
                         Subscribe yourself
-                        <span class="fa fa-long-arrow-right" />
-                    </a>
-                </button>
+                        <span class="fa fa-arrow-right" />
+                    </button>
+                </a>
             </div>
             <div>
-                <button class="btn btn-primary mb32 btn-link">
-                    <a t-attf-href="/my/organization_registration">
+                <a t-attf-href="/my/organization_registration">
+                    <button class="btn btn-primary mb32">
                         Register your organisation
-                        <span class="fa fa-long-arrow-right" />
-                    </a>
-                </button>
+                        <span class="fa fa-arrow-right" />
+                    </button>
+                </a>
             </div>
             <div>
-                <button class="btn btn-primary mb32 btn-link">
-                    <a t-attf-href="/my/affiliation_request">
+                <a t-attf-href="/my/affiliation_request">
+                    <button class="btn btn-primary mb32">
                         Ask for an affiliation
-                        <span class="fa fa-long-arrow-right" />
-                    </a>
-                </button>
+                        <span class="fa fa-arrow-right" />
+                    </button>
+                </a>
             </div>
         </xpath>
     </template>
