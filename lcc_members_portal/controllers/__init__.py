@@ -3,4 +3,5 @@
 
 from . import portal_private_registration
 from . import portal_organization_registration
+from . import portal_affiliation_request
 from . import custom_website_sale
