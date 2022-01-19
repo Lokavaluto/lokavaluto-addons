@@ -38,49 +38,56 @@
                     </p>
                 </div>
             </xpath>
-
-            <xpath expr="//field[@name='partner_name']" position="after">
-                <field name="company_name" />
-                <field name="commercial_company_name" />
-            </xpath>
-            <xpath expr="//field[@name='partner_name']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='website']" position="before">
-                <field name="company_email" />
-                <field name="phone" />
-            </xpath>
-            <xpath expr="//field[@name='contact_name']/../.." position="replace">
-                <group name="organization_description" string="Organization Description">
-                    <field name="website_description" />
-                </group>
-                <group name="organization_information" string="Organization Information">
-                    <field name="industry_id" />
-                    <field name="detailed_activity" />
-                    <field name="reasons_choosing_mlc" />
-                    <field name="opening_time" />
-                    <field name="discount" />
-                    <field name="accept_digital_currency" />
-                    <field name="accept_coupons" />
-                    <field name="itinerant" />
-                </group>
-                <group name="membership_information" string="Membership Information">
-                    <field name="total_membership" />
-                    <field name="want_newsletter_subscription" />
-                    <field name="accept_policy" />
-                    <field name="invoice_url" attrs="{'invisible': [('application_accepted', '=', False)]}" widget='url' />
-                </group>
-                <group name="organization_contact" string="Organization's Contact">
-                    <field name="contact_name" />
-                    <field name="function" />
-                    <field name="phone_pro" widget="phone" />
-                    <field name="mobile" invisible="1" />
-                </group>
-                <group name="registration_candidate_message" string="Candidate message">
-                    <field name="message_from_candidate" />
-                </group>
-            </xpath>
             <xpath expr="//notebook" position="inside">
+                <page name="organisation_registration" string="Organisation Registration" attrs="{'invisible': [('lead_type','!=','membership_web_application')]}">
+                    <group>
+                        <group string="Organization Contact Information">
+                            <field name="company_name" />
+                            <field name="commercial_company_name" />
+                            <label for="street" string="Address" />
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street" />
+                                <field name="street2" placeholder="Street 2..." class="o_address_street" />
+                                <field name="city" placeholder="City" class="o_address_city" />
+                                <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}' />
+                                <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                                <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}' />
+                            </div>
+                            <field name="company_email" />
+                            <field name="phone" />
+                            <field name="website" widget="url" placeholder="e.g. https://www.odoo.com" />
+                        </group>
+                        <group name="organization_description" string="Organization Description">
+                            <field name="website_description" />
+                        </group>
+                        <group name="organization_information" string="Organization Information">
+                            <field name="industry_id" />
+                            <field name="detailed_activity" />
+                            <field name="reasons_choosing_mlc" />
+                            <field name="opening_time" />
+                            <field name="discount" />
+                            <field name="accept_digital_currency" />
+                            <field name="accept_coupons" />
+                            <field name="itinerant" />
+                        </group>
+                        <group name="membership_information" string="Membership Information">
+                            <field name="team_id" string="Local Group" />
+                            <field name="total_membership" />
+                            <field name="want_newsletter_subscription" />
+                            <field name="accept_policy" />
+                            <field name="invoice_url" attrs="{'invisible': [('application_accepted', '=', False)]}" widget='url' />
+                        </group>
+                        <group name="organization_contact" string="Organization's Contact">
+                            <field name="contact_name" />
+                            <field name="function" />
+                            <field name="phone_pro" widget="phone" />
+                            <field name="mobile" invisible="1" />
+                        </group>
+                        <group name="registration_candidate_message" string="Candidate message">
+                            <field name="message_from_candidate" />
+                        </group>
+                    </group>
+                </page>
                 <page name="affiliation_request" string="Affiliation Request" attrs="{'invisible': [('lead_type','!=','affiliation_request')]}">
                     <group name="company_affiliation">
                         <field name="company_name" string="Company requested" />
