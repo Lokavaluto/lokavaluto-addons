@@ -3,7 +3,7 @@
     <template id="portal_my_home_registration_menu" name="Portal My Home: Registration Menu" inherit_id="portal.portal_my_home" priority="40">
         <xpath expr="//div[@id='oe_structure_portal_my_home_1']" position="inside">
             <h3>Registration options</h3>
-            <div>
+            <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled' or user_id.partner_id.membership_state == 'old'">
                 <button class="btn btn-primary mb32 btn-link">
                     <a t-attf-href="/my/private_registration">
                         Subscribe yourself
