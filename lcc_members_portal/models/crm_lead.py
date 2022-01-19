@@ -53,6 +53,7 @@ class Lead(models.Model):
         [
             ("misc", "Miscellenaous"),
             ("membership_web_application", "Membership Web Application"),
+            ("affiliation_request", "Affiliation Request"),
         ],
         string="Lead Type",
         required=True,
@@ -79,12 +80,29 @@ class Lead(models.Model):
         string=_("Want Newsletters Subscription")
     )
     accept_policy = fields.Boolean(string=_("Accept LCC Policy"))
+    edit_structure_main_profile = fields.Boolean(
+        string=_("Manage the structure's main profile")
+    )
+    edit_structure_public_profile = fields.Boolean(
+        string=_("Manage the structure's public profile")
+    )
     total_membership = fields.Float(string=_("Membership amount"))
     message_from_candidate = fields.Text(string=_("Message from the candidate"))
 
     invoice_url = fields.Char(string=_("Invoice link"))
     application_accepted = fields.Boolean(default=False)
     application_refused = fields.Boolean(default=False)
+
+    affiliated_company = fields.Many2one(
+        "res.partner",
+        string="Affiliated company",
+        domain=[
+            ("is_company", "=", True),
+            ("partner_profile.ref", "=", "partner_profile_main"),
+        ],
+    )
+    affiliation_accepted = fields.Boolean(default=False)
+    affiliation_refused = fields.Boolean(default=False)
 
     def _get_field_value(self, fname):
         field = self._fields[fname]
@@ -187,4 +205,45 @@ class Lead(models.Model):
     @api.multi
     def action_refuse_organization_application(self):
         self.application_refused = True
+        return
+
+    @api.multi
+    def action_validate_affiliation_request(self):
+        # Organization's contact's position partner creation
+        values = {}
+        for field_name in self._POSITION_PROFILE_FIELDS:
+            values[field_name] = self._get_field_value(field_name)
+        values["name"] = self.contact_name
+        values["is_company"] = False
+        values["contact_id"] = self.partner_id.id
+        values["parent_id"] = self.affiliated_company.id
+        values["partner_profile"] = (
+            self.env["partner.profile"]
+            .search([("ref", "=", "partner_profile_position")], limit=1)
+            .id
+        )
+        values["type"] = "contact"
+        values["edit_structure_main_profile"] = True
+        values["edit_structure_public_profile"] = True
+        values.update({"phone": values.pop("phone_pro", "")})
+        position_partner = self.env["res.partner"].create(values)
+
+        self.affiliation_accepted = True
+
+        # Redirect to the position partner
+        view = self.env.ref("base.view_partner_form")
+        return {
+            "name": "Partners created",
+            "view_type": "form",
+            "view_mode": "form",
+            "view_id": view.id,
+            "res_model": "res.partner",
+            "type": "ir.actions.act_window",
+            "res_id": position_partner.id,
+            "context": self.env.context,
+        }
+
+    @api.multi
+    def action_refuse_affiliation_request(self):
+        self.affiliation_refused = True
         return
