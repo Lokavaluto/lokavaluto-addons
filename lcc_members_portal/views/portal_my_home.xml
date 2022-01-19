@@ -21,7 +21,7 @@
             </div>
             <div>
                 <button class="btn btn-primary mb32 btn-link">
-                    <a t-attf-href="/my/organisation_affiliation">
+                    <a t-attf-href="/my/affiliation_request">
                         Ask for an affiliation
                         <span class="fa fa-long-arrow-right" />
                     </a>
