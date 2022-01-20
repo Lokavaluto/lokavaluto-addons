@@ -211,6 +211,10 @@ class res_partner(models.Model):
             and not res.public_profile_id
         ):
             res.create_public_profile()
+        if res.partner_profile.ref == "partner_profile_public":
+            # Public profile can't be customer or supplier. Only main or position profiles can
+            res.customer = False
+            res.supplier = False
         return res
 
     @api.onchange("firstname", "lastname", "is_company")
