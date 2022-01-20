@@ -37,6 +37,12 @@
                         <input type="text" name="lastname" t-attf-class="form-control #{error.get('lastname') and 'is-invalid' or ''}" t-att-value="lastname or partner.lastname" required="True" />
                     </div>
                 </div>
+                <div class="row">
+                    <div t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="email">Email</label>
+                        <input type="text" name="email" t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}" t-att-value="email or partner.email" required="True" />
+                    </div>
+                </div>
                 <h4>
                     <br />
                     Contact information
@@ -60,7 +66,7 @@
                     </div>
                     <div t-attf-class="form-group #{error.get('country_id') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="country_id">Country</label>
-                        <select name="country_id" t-attf-class="form-control">
+                        <select name="country_id" t-attf-class="form-control" required="True">
                             <option value="">Country...</option>
                             <t t-foreach="countries or []" t-as="country">
                                 <option t-att-value="country.id" t-att-selected="country.id == int(country_id) if country_id else country.id == partner.country_id.id">
@@ -73,7 +79,7 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="phone">Phone</label>
-                        <input type="tel" name="phone" t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}" t-att-value="phone or partner.phone" />
+                        <input type="tel" name="phone" t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}" t-att-value="phone or partner.phone" required="True"/>
                     </div>
                     <div t-attf-class="form-group #{error.get('mobile') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="mobile">Mobile</label>
