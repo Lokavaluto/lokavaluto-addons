@@ -25,32 +25,20 @@
                 <xpath expr="//field[@name='name']" position="replace">
                     <field name="name" default_focus="1" placeholder="Commercial Name" attrs="{'readonly': [('is_company', '=', False)],'required': [('is_company', '=', True)]}" widget="field_partner_autocomplete" />
                 </xpath>
-                <xpath expr="//field[@name='parent_id']/.." position="before">
-                    <field name="is_main_profile" readonly="1" invisible="1" />
-                    <field name="is_public_profile" readonly="1" invisible="1" />
-                    <field name="is_position_profile" readonly="1" invisible="1" />
-                    <div>
-                        <label for="partner_profile" string="Profile type:" />
-                        <field name="partner_profile" string="Partner profile" readonly="0" />
-                    </div>
-                    <div>
-                        <label for="contact_id" string="Main contact:" attrs="{'invisible': [('is_main_profile','=',True)]}" />
-                        <field name="contact_id" widget="res_partner_many2one" string="Main Profile" readonly="1" attrs="{'invisible': [('is_main_profile','=',True)]}" />
-                    </div>
-                </xpath>
-                <xpath expr="//field[@name='parent_id']" position="replace">
-                    <div class="o_row" attrs="{'invisible': ['|',('is_company', '=', True),'|',('contact_type','=','standalone'),('is_public_profile','=',True)]}">
-                        <label for="parent_id" string="Structure:" />
-                        <field name="parent_id" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}" />
-                    </div>
-                    <div attrs="{'invisible': ['|',('is_main_profile','=',False),('is_company', '=', True)]}">
-                        <label for="odoo_user_id" string="Associated User:" />
-                        <field name="odoo_user_id" readonly="1" />
-                    </div>
-                    <div attrs="{'invisible': ['|',('is_main_profile','=',False)]}">
-                        <label for="public_profile_id" string="Public Profile:" />
-                        <field name="public_profile_id" readonly="1" context="{'form_view_ref': 'lcc_members.res_partner_profile_view_form'}" />
-                    </div>
+                <xpath expr="//field[@name='parent_id']" position="replace" />
+                <xpath expr="//field[@name='is_company']/.." position="after">
+                    <group name="profile_data" class="bg-200">
+                        <field name="is_main_profile" readonly="1" invisible="1" />
+                        <field name="is_public_profile" readonly="1" invisible="1" />
+                        <field name="is_position_profile" readonly="1" invisible="1" />
+                        <group>
+                            <field name="partner_profile" string="Profile Type" readonly="0" />
+                            <field name="odoo_user_id" string="Associated User" readonly="1" attrs="{'invisible': ['|',('is_main_profile','=',False),('is_company', '=', True)]}" />
+                            <field name="contact_id" widget="res_partner_many2one" string="Main Profile" readonly="1" attrs="{'invisible': [('is_main_profile','=',True)]}" />
+                            <field name="parent_id" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}" attrs="{'invisible': ['|',('is_company', '=', True),'|',('contact_type','=','standalone'),('is_public_profile','=',True)]}" />
+                            <field name="public_profile_id" string="Public Profile" readonly="1" attrs="{'invisible': ['|',('is_main_profile','=',False)]}" />
+                        </group>
+                    </group>
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">
                     <field name="membership_state" string="Subscription status" attrs="{'invisible': [('contact_type','=','attached')]}" />
