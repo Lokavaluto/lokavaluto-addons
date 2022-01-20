@@ -158,6 +158,10 @@ class res_partner(models.Model):
     )
     accept_policy = fields.Boolean(string=_("Accept LCC Policy"))
 
+    other_contact_ids = fields.One2many(
+        domain=[("partner_profile.ref", "=", "partner_profile_position")]
+    )
+
     @api.depends("other_contact_ids")
     def _compute_can_edit(self):
         for partner in self:
