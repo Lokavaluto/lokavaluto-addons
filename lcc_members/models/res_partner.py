@@ -142,10 +142,10 @@ class res_partner(models.Model):
     )
 
     edit_structure_main_profile = fields.Boolean(
-        string=_("Can edit the structure's main profile")
+        string=_("Manage structure's main profile")
     )
     edit_structure_public_profile = fields.Boolean(
-        string=_("Can edit the structure's public profile")
+        string=_("Manage structure's public profile")
     )
     can_edit_main_profile_ids = fields.Many2many(
         "res.partner", compute="_compute_can_edit", string="Can edit main profile"
