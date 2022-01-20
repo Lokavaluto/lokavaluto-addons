@@ -21,6 +21,7 @@ PUBLIC_PROFILE_FIELDS = [
     "city",
     "country_id",
     "zip",
+    "team_id",
     "website_description",
     "industry_id",
     "detailed_activity",
