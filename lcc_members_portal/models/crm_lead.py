@@ -17,24 +17,6 @@ class Lead(models.Model):
         "company_email",
         "website",
         "industry_id",
-        "accept_digital_currency",
-        "accept_coupons",
-        "want_newsletter_subscription",
-        "accept_policy",
-    ]
-
-    _PUBLIC_PROFILE_FIELDS = [
-        "website_description",
-        "street",
-        "street2",
-        "city",
-        "zip",
-        "country_id",
-        "team_id",
-        "phone",
-        "company_email",
-        "website",
-        "industry_id",
         "detailed_activity",
         "reasons_choosing_mlc",
         "opening_time",
@@ -42,6 +24,8 @@ class Lead(models.Model):
         "itinerant",
         "accept_digital_currency",
         "accept_coupons",
+        "want_newsletter_subscription",
+        "accept_policy",
     ]
 
     _POSITION_PROFILE_FIELDS = [
@@ -131,22 +115,7 @@ class Lead(models.Model):
         values["type"] = "contact"
         values.update({"email": values.pop("company_email", "")})
         main_partner = self.env["res.partner"].create(values)
-
-        # Organization's public partner creation
-        values = {}
-        for field_name in self._PUBLIC_PROFILE_FIELDS:
-            values[field_name] = self._get_field_value(field_name)
-        values["name"] = self.commercial_company_name
-        values["is_company"] = True
-        values["contact_id"] = main_partner.id
-        values["partner_profile"] = (
-            self.env["partner.profile"]
-            .search([("ref", "=", "partner_profile_public")], limit=1)
-            .id
-        )
-        values["type"] = "contact"
-        values.update({"email": values.pop("company_email", "")})
-        self.env["res.partner"].create(values)
+        # Organization's public profile is automaticcaly created
 
         # Organization's contact's position partner creation
         values = {}
