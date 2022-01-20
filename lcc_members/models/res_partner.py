@@ -291,6 +291,16 @@ class res_partner(models.Model):
                 values[field_name] = partner._get_field_value(field_name)
             partner.create(values)
 
+    @api.model
+    def _cron_generate_missing_public_profiles(self):
+        partners = self.search(
+            [("is_main_profile", "=", True), ("public_profile_id", "=", False)]
+        )
+        for partner in partners:
+            partner._compute_public_profile_id()
+            if not partner.public_profile_id:
+                partner.create_public_profile()
+
 
 class PartnerImage(models.Model):
     _name = "partner.image"
