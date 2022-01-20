@@ -1,7 +1,5 @@
-import logging
-from odoo import fields, models, api
-
-_logger = logging.getLogger(__name__)
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
@@ -9,14 +7,12 @@ class SaleOrder(models.Model):
 
     @api.model
     def create_membership(self, vals):
-        _logger.debug("TEST 1")
         product_context = dict(self.env.context)
         product_context.setdefault("lang", self.sudo().partner_id.lang)
         SaleOrderLineSudo = (
             self.env["sale.order.line"].sudo().with_context(product_context)
         )
         product = False
-        _logger.debug("TEST: %s" % vals)
         if vals.get("member_product_id", False):
             product = self.env["product.product"].search(
                 [("product_tmpl_id", "=", vals.get("member_product_id"))]
@@ -25,7 +21,9 @@ class SaleOrder(models.Model):
         if not product:
             raise UserError(
                 _(
-                    "The given combination does not exist therefore it cannot be added to cart."
+                    """The given combination does not exist therefore it cannot be added to cart. No membership product found !:
+                    Please verify that membership product exist and is checked as 'use in portal'
+                    """
                 )
             )
         product_id = product.id
@@ -39,7 +37,6 @@ class SaleOrder(models.Model):
 
         order_line = SaleOrderLineSudo.create(values)
         order_line._compute_tax_id()
-        _logger.debug("ORDER_line: %s" % order_line.price_unit)
         return {"line_id": order_line.id, "quantity": 1, "option_ids": []}
 
     # @api.model
