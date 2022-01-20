@@ -286,14 +286,16 @@ class res_partner(models.Model):
     def create_public_profile(self):
         profile = self.env.ref("lcc_members.partner_profile_public").read()[0]
         for partner in self:
-            values = {
-                "type": "other",
-                "contact_id": partner.id,
-                "partner_profile": profile["id"],
-            }
-            for field_name in PUBLIC_PROFILE_FIELDS:
-                values[field_name] = partner._get_field_value(field_name)
-            partner.create(values)
+            partner._compute_public_profile_id()
+            if not partner.public_profile_id:
+                values = {
+                    "type": "other",
+                    "contact_id": partner.id,
+                    "partner_profile": profile["id"],
+                }
+                for field_name in PUBLIC_PROFILE_FIELDS:
+                    values[field_name] = partner._get_field_value(field_name)
+                partner.create(values)
 
     @api.model
     def _cron_generate_missing_public_profiles(self):
@@ -301,9 +303,7 @@ class res_partner(models.Model):
             [("is_main_profile", "=", True), ("public_profile_id", "=", False)]
         )
         for partner in partners:
-            partner._compute_public_profile_id()
-            if not partner.public_profile_id:
-                partner.create_public_profile()
+            partner.create_public_profile()
 
 
 class PartnerImage(models.Model):
