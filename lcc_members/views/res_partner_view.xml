@@ -31,7 +31,7 @@
                         <field name="is_main_profile" readonly="1" invisible="1" />
                         <field name="is_public_profile" readonly="1" invisible="1" />
                         <field name="is_position_profile" readonly="1" invisible="1" />
-                        <group>
+                        <group name="profile_status">
                             <field name="partner_profile" string="Profile Type" readonly="1" />
                             <field name="odoo_user_id" string="Associated User" readonly="1" attrs="{'invisible': ['|',('is_main_profile','=',False),('is_company', '=', True)]}" />
                             <field name="contact_id" widget="res_partner_many2one" string="Main Profile" readonly="1" attrs="{'invisible': [('is_main_profile','=',True)]}" />
@@ -41,6 +41,10 @@
                                 <field name="public_profile_id" readonly="1" />
                                 <button type="object" name="create_public_profile" string="Create Public Profile" attrs="{'invisible': [('public_profile_id','!=',False)]}" />
                             </div>
+                        </group>
+                        <group name="structure_access_rights" attrs="{'invisible': ['|', ('is_position_profile','=',False), ('parent_id','=',False)]}">
+                            <field name="edit_structure_main_profile" />
+                            <field name="edit_structure_public_profile" />
                         </group>
                     </group>
                 </xpath>
@@ -226,13 +230,6 @@
                     <!-- page Social Networks -->
                     <page name="social" string="Social networks">
                         <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="True" colspan="1" />
-                    </page>
-                    <!-- page Structure access rights -->
-                    <page name="structureAccessRights" string="Structure Access Rights" attrs="{'invisible': [('is_position_profile','=',False)]}">
-                        <group>
-                            <field name="edit_structure_main_profile" />
-                            <field name="edit_structure_public_profile" />
-                        </group>
                     </page>
                 </xpath>
             </field>
