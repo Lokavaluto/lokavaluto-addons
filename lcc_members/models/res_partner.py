@@ -7,7 +7,7 @@ from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
-PROFILE_FIELDS = [
+PUBLIC_PROFILE_FIELDS = [
     "name",
     "lastname",
     "firstname",
@@ -31,6 +31,7 @@ PROFILE_FIELDS = [
     "phone_pro",
     "opening_time",
     "discount",
+    "is_company",
 ]
 
 
@@ -266,6 +267,17 @@ class res_partner(models.Model):
 
         return res
 
+    def _get_field_value(self, fname):
+        field = self._fields[fname]
+        if field.type == "many2one":
+            return self[fname].id
+        elif field.type == "one2many":
+            return None
+        elif field.type == "many2many":
+            return [(6, 0, self[fname].ids)]
+        else:
+            return self[fname]
+
     @api.multi
     def create_public_profile(self):
         profile = self.env.ref("lcc_members.partner_profile_public").read()[0]
@@ -274,31 +286,9 @@ class res_partner(models.Model):
                 "type": "other",
                 "contact_id": partner.id,
                 "partner_profile": profile["id"],
-                "name": partner.name,
-                "lastname": partner.lastname,
-                "firstname": partner.firstname,
-                "function": partner.function,
-                "phone": partner.phone,
-                "mobile": partner.mobile,
-                "email": partner.email,
-                "website_url": partner.website_url,
-                "street": partner.street,
-                "street2": partner.street2,
-                "city": partner.city,
-                "country_id": partner.country_id.id,
-                "zip": partner.zip,
-                "website_description": partner.website_description,
-                "industry_id": partner.industry_id.id,
-                "detailed_activity": partner.detailed_activity,
-                "reasons_choosing_mlc": partner.reasons_choosing_mlc,
-                "itinerant": partner.itinerant,
-                "accept_coupons": partner.accept_coupons,
-                "accept_digital_currency": partner.accept_digital_currency,
-                "phone_pro": partner.phone_pro,
-                "opening_time": partner.opening_time,
-                "discount": partner.discount,
-                "is_company": partner.is_company,
             }
+            for field_name in PUBLIC_PROFILE_FIELDS:
+                values[field_name] = partner._get_field_value(field_name)
             partner.create(values)
 
 
