@@ -297,7 +297,7 @@ class res_partner(models.Model):
                 "phone_pro": partner.phone_pro,
                 "opening_time": partner.opening_time,
                 "discount": partner.discount,
-                "is_company": 1,
+                "is_company": partner.is_company,
             }
             partner.create(values)
 
