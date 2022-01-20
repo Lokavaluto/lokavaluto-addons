@@ -116,6 +116,9 @@
                 </xpath>
 
                 <!-- page Other Positions -->
+                <xpath expr="//page[@name='other_position']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('contact_id','!=',False)]}</attribute>
+                </xpath>
                 <xpath expr="//page[@name='other_position']/field[@name='other_contact_ids']/kanban" position="attributes">
                     <attribute name="create">true</attribute>
                 </xpath>
