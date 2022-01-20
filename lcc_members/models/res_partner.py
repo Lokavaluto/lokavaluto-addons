@@ -266,6 +266,7 @@ class res_partner(models.Model):
 
         return res
 
+    @api.multi
     def create_public_profile(self):
         profile = self.env.ref("lcc_members.partner_profile_public").read()[0]
         for partner in self:
