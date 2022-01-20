@@ -110,6 +110,14 @@
                 <xpath expr="//field[@name='child_ids']/.." position="attributes">
                     <attribute name="attrs">{'invisible': [('is_company','=', False)]}</attribute>
                 </xpath>
+                <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='name']" position="before">
+                    <field name="is_position_profile" readonly="1" invisible="1" />
+                    <field name="partner_profile" string="Partner profile" />
+                </xpath>
+                <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='comment']" position="before">
+                    <field name="edit_structure_main_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
+                    <field name="edit_structure_public_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
+                </xpath>
 
                 <!-- page Other Positions -->
                 <xpath expr="//page[@name='other_position']" position="attributes">
