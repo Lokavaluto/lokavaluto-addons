@@ -223,6 +223,16 @@ class res_partner(models.Model):
             res.supplier = False
         return res
 
+    @api.onchange("type")
+    def _onchange_type(self):
+        self.contact_type = "standalone"
+        self.partner_profile = False
+        if self.type == "contact" and self.parent_id != False:
+            # A contact with parent_id is partner_profile=Position, and contact_type=attached
+            position_profile = self.env.ref("lcc_members.partner_profile_position")
+            self.contact_type = "attached"
+            self.partner_profile = position_profile.id
+
     @api.onchange("firstname", "lastname", "is_company")
     def onchange_upper_name(self):
         if (
