@@ -126,6 +126,9 @@
                 <xpath expr="//page[@name='other_position']/field[@name='other_contact_ids']/kanban" position="attributes">
                     <attribute name="create">true</attribute>
                 </xpath>
+                <xpath expr="//page[@name='other_position']/field[@name='other_contact_ids']" position="attributes">
+                    <attribute name="context">{'default_partner_profile': 3, 'default_contact_id': active_id, 'default_name': name, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier}</attribute>
+                </xpath>
                 <xpath expr="//field[@name='other_contact_ids']/form/sheet/group/group/field[@name='name']" position="after">
                     <field name="is_position_profile" readonly="1" invisible="1" />
                     <field name="partner_profile" string="Partner profile" />
