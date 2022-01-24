@@ -18,6 +18,7 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('company_name') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="company_name">Organisation Name</label>
+                        <label class="text-danger"> *</label>
                         <input type="text" name="company_name" t-attf-class="form-control #{error.get('company_name') and 'is-invalid' or ''}" t-att-value="company_name" required="True" />
                     </div>
                 </div>
@@ -28,7 +29,8 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('function') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="function">Job position</label>
-                        <input type="text" name="function" t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}" t-att-value="function" />
+                        <label class="text-danger"> *</label>
+                        <input type="text" name="function" t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}" t-att-value="function" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('phone_pro') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="phone_pro">Professional phone</label>
