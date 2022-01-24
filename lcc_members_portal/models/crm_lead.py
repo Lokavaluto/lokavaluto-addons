@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
 
@@ -79,7 +80,7 @@ class Lead(models.Model):
 
     affiliated_company = fields.Many2one(
         "res.partner",
-        string="Affiliated company",
+        string="Affiliated organization",
         domain=[
             ("is_company", "=", True),
             ("partner_profile.ref", "=", "partner_profile_main"),
@@ -178,39 +179,46 @@ class Lead(models.Model):
 
     @api.multi
     def action_validate_affiliation_request(self):
-        # Organization's contact's position partner creation
-        values = {}
-        for field_name in self._POSITION_PROFILE_FIELDS:
-            values[field_name] = self._get_field_value(field_name)
-        values["name"] = self.contact_name
-        values["is_company"] = False
-        values["contact_id"] = self.partner_id.id
-        values["parent_id"] = self.affiliated_company.id
-        values["partner_profile"] = (
-            self.env["partner.profile"]
-            .search([("ref", "=", "partner_profile_position")], limit=1)
-            .id
-        )
-        values["type"] = "contact"
-        values["edit_structure_main_profile"] = True
-        values["edit_structure_public_profile"] = True
-        values.update({"phone": values.pop("phone_pro", "")})
-        position_partner = self.env["res.partner"].create(values)
+        if self.affiliated_company:
+            # Organization's contact's position partner creation
+            values = {}
+            for field_name in self._POSITION_PROFILE_FIELDS:
+                values[field_name] = self._get_field_value(field_name)
+            values["name"] = self.contact_name
+            values["is_company"] = False
+            values["contact_id"] = self.partner_id.id
+            values["parent_id"] = self.affiliated_company.id
+            values["partner_profile"] = (
+                self.env["partner.profile"]
+                .search([("ref", "=", "partner_profile_position")], limit=1)
+                .id
+            )
+            values["type"] = "contact"
+            values["edit_structure_main_profile"] = True
+            values["edit_structure_public_profile"] = True
+            values.update({"phone": values.pop("phone_pro", "")})
+            position_partner = self.env["res.partner"].create(values)
 
-        self.affiliation_accepted = True
+            self.affiliation_accepted = True
 
-        # Redirect to the position partner
-        view = self.env.ref("base.view_partner_form")
-        return {
-            "name": "Partners created",
-            "view_type": "form",
-            "view_mode": "form",
-            "view_id": view.id,
-            "res_model": "res.partner",
-            "type": "ir.actions.act_window",
-            "res_id": position_partner.id,
-            "context": self.env.context,
-        }
+            # Redirect to the position partner
+            view = self.env.ref("base.view_partner_form")
+            return {
+                "name": "Partners created",
+                "view_type": "form",
+                "view_mode": "form",
+                "view_id": view.id,
+                "res_model": "res.partner",
+                "type": "ir.actions.act_window",
+                "res_id": position_partner.id,
+                "context": self.env.context,
+            }
+        else:
+            raise UserError(
+                _(
+                    "You must indicate an Affiliated Organization in order to link it to the user.\n\nIf the organization doesn't exist in Odoo, please refuse the affiliation request\n and ask the user to make its organization apply for membership."
+                )
+            )
 
     @api.multi
     def action_refuse_affiliation_request(self):

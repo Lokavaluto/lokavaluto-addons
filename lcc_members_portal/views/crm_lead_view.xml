@@ -90,8 +90,8 @@
                 </page>
                 <page name="affiliation_request" string="Affiliation Request" attrs="{'invisible': [('lead_type','!=','affiliation_request')]}">
                     <group name="company_affiliation">
-                        <field name="company_name" string="Company requested" />
-                        <field name="affiliated_company" widget="res_partner_many2one" options="{'no_quick_create': True, 'no_create_edit' : True}" attrs="{'required': [('lead_type', '=', 'affiliation_request')]}"/>
+                        <field name="company_name" string="Organization requested" />
+                        <field name="affiliated_company" widget="res_partner_many2one" options="{'no_quick_create': True, 'no_create_edit' : True}" />
                     </group>
                     <group name="affiliation_details">
                         <group name="affiliation_contact" string="Organization's Contact">
