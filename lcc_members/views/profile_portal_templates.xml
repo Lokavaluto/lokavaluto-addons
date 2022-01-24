@@ -29,6 +29,7 @@
             <t t-call="portal.portal_searchbar">
                 <t t-set="title">Profiles</t>
             </t>
+            <div class="oe_structure" id="oe_structure_portal_my_profiles_1" />
             <t t-if="not profiles">
                 <div class="alert alert-warning mt8" role="alert">
                     There are no profiles.
@@ -56,6 +57,7 @@
                     </tr>
                 </tbody>
             </t>
+            <div class="oe_structure" id="oe_structure_portal_my_profiles_2" />
         </t>
     </template>
 
@@ -87,6 +89,7 @@
                     </div>
                 </t>
                 <t t-set="card_body">
+                    <div class="oe_structure" id="oe_structure_portal_my_profile_1" />
                     <!-- Body for Position partner profiles-->
                     <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'partner_profile_position')">
                         <form action="/my/profile/save" method="post">
@@ -268,6 +271,7 @@
                             </div>
                         </form>
                     </div>
+                    <div class="oe_structure" id="oe_structure_portal_my_profile_2" />
                 </t>
             </t>
         </t>
