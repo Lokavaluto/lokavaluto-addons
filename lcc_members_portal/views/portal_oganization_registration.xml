@@ -18,10 +18,12 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('company_name') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="company_name">Legal Name</label>
+                        <label class="text-danger"> *</label>
                         <input type="text" name="company_name" t-attf-class="form-control #{error.get('company_name') and 'is-invalid' or ''}" t-att-value="company_name" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('commercial_company_name') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="commercial_company_name">Commercial Name</label>
+                        <label class="text-danger"> *</label>
                         <input type="text" name="commercial_company_name" t-attf-class="form-control #{error.get('commercial_company_name') and 'is-invalid' or ''}" t-att-value="commercial_company_name" required="True" />
                     </div>
                 </div>
@@ -38,6 +40,7 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('street') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="street">Street</label>
+                        <label class="text-danger"> *</label>
                         <input type="text" name="street" t-attf-class="form-control #{error.get('street') and 'is-invalid' or ''}" t-att-value="street" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('street2') and 'o_has_error' or ''} col-xl-6">
@@ -46,10 +49,12 @@
                     </div>
                     <div t-attf-class="form-group #{error.get('zipcode') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="zipcode">Zip / Postal Code</label>
+                        <label class="text-danger"> *</label>
                         <input type="text" name="zipcode" t-attf-class="form-control #{error.get('zipcode') and 'is-invalid' or ''}" t-att-value="zipcode" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('city') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="city">City</label>
+                        <label class="text-danger"> *</label>
                         <input type="text" name="city" t-attf-class="form-control #{error.get('city') and 'is-invalid' or ''}" t-att-value="city" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('country_id') and 'o_has_error' or ''} col-xl-6">
@@ -68,11 +73,13 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="phone">Phone</label>
-                        <input type="tel" name="phone" t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}" t-att-value="phone" required="True"/>
+                        <label class="text-danger"> *</label>
+                        <input type="tel" name="phone" t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}" t-att-value="phone" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="email">Email</label>
-                        <input type="email" name="email" t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}" t-att-value="email" required="True"/>
+                        <label class="text-danger"> *</label>
+                        <input type="email" name="email" t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}" t-att-value="email" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('website_url') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="website_url">Website</label>
@@ -103,6 +110,7 @@
                     </div>
                     <div t-attf-class="form-group #{error.get('reasons_choosing_mlc') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="reasons_choosing_mlc">Subscription reason</label>
+                        <label class="text-danger"> *</label>
                         <input type="text" name="reasons_choosing_mlc" t-attf-class="form-control #{error.get('reasons_choosing_mlc') and 'is-invalid' or ''}" t-att-value="reasons_choosing_mlc" required="True" />
                     </div>
                 </div>
@@ -136,11 +144,13 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('function') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="function">Job position</label>
-                        <input type="text" name="function" t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}" t-att-value="function" required="True"/>
+                        <label class="text-danger"> *</label>
+                        <input type="text" name="function" t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}" t-att-value="function" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('phone_pro') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="phone_pro">Professional phone</label>
-                        <input type="text" name="phone_pro" t-attf-class="form-control #{error.get('phone_pro') and 'is-invalid' or ''}" t-att-value="phone_pro" required="True"/>
+                        <label class="text-danger"> *</label>
+                        <input type="text" name="phone_pro" t-attf-class="form-control #{error.get('phone_pro') and 'is-invalid' or ''}" t-att-value="phone_pro" required="True" />
                     </div>
                 </div>
                 <h4>
@@ -162,6 +172,7 @@
                     </div>
                     <div t-if="dynamic_price" t-attf-class="form-group #{error and 'total_membership' in error and 'has-error' or ''} col-xl-6">
                         <label class="col-form-label" for="total_membership">Registration fee amount</label>
+                        <label class="text-danger"> *</label>
                         <input type="measure" step="any" class="form-control" name="total_membership" required="True" t-attf-value="#{total_membership or ''}" />
                     </div>
                 </div>
@@ -181,6 +192,7 @@
                         <br />
                         <input type="checkbox" name="accept_policy" t-att-checked="accept_policy" required="True" />
                         <label class="col-form-label" for="accept_policy">Accept Policy</label>
+                        <label class="text-danger"> *</label>
                     </div>
                 </div>
                 <div class="clearfix">
