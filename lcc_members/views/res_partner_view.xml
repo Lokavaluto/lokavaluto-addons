@@ -24,9 +24,9 @@
                 <!-- ################### -->
                 <xpath expr="//field[@name='name']" position="replace">
                     <field name="name" default_focus="1" placeholder="Commercial Name" attrs="{'readonly': [('is_company', '=', False)],'required': [('is_company', '=', True)]}" widget="field_partner_autocomplete" />
-                    <p style="font-size:small; font-style:italic" attrs="{'invisible': [('is_main_profile','=',False)]}">Main Profile</p>
-                    <p style="font-size:small; font-style:italic" attrs="{'invisible': [('is_public_profile','=',False)]}">Public Profile</p>
-                    <p style="font-size:small; font-style:italic" attrs="{'invisible': [('is_position_profile','=',False)]}">Position Profile</p>
+                    <p class="oe_read_only" style="font-size:small; font-style:italic" attrs="{'invisible': [('is_main_profile','=',False)]}">Main Profile</p>
+                    <p class="oe_read_only" style="font-size:small; font-style:italic" attrs="{'invisible': [('is_public_profile','=',False)]}">Public Profile</p>
+                    <p class="oe_read_only" style="font-size:small; font-style:italic" attrs="{'invisible': [('is_position_profile','=',False)]}">Position Profile</p>
                 </xpath>
                 <xpath expr="//field[@name='parent_id']" position="replace" />
                 <xpath expr="//field[@name='is_company']/.." position="after">
