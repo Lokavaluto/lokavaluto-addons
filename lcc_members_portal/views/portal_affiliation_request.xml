@@ -5,6 +5,7 @@
             <!-- <t t-set="breadcrumbs_searchbar" t-value="True" /> -->
             <t t-set="additional_title">Affiliation Request</t>
             <form action="/affiliation/send_request" method="post">
+                <div class="oe_structure" id="oe_structure_portal_affiliation_request_1" />
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                 <h3>
                     <br />
@@ -65,6 +66,7 @@
                         <span class="fa fa-long-arrow-right" />
                     </button>
                 </div>
+                <div class="oe_structure" id="oe_structure_portal_affiliation_request_2" />
             </form>
         </t>
     </template>
