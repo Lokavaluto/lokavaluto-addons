@@ -140,6 +140,7 @@ class Lead(models.Model):
         # Create sale order and invoice to finalize the registration process
         values = {}
         values["partner_id"] = main_partner.id
+        values["team_id"] = self.team_id.id
         sale_order = self.env["sale.order"].create(values)
         values = {}
         values["member_product_id"] = (
