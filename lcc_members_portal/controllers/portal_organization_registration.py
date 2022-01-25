@@ -74,7 +74,13 @@ class PortalOrganizationRegistration(CustomerPortal):
         product = self.get_organization_membership_product()
         titles = request.env["res.partner.title"].sudo().search([])
         countries = request.env["res.country"].sudo().search([])
-        teams = request.env["crm.team"].sudo().search([("local_group", "=", True)])
+        teams = (
+            request.env["crm.team"]
+            .sudo()
+            .search(
+                [("local_group", "=", True), ("company_id", "=", partner.company_id.id)]
+            )
+        )
         industries = request.env["res.partner.industry"].sudo().search([])
         error = dict()
         error_message = []
