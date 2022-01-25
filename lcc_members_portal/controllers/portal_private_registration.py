@@ -117,6 +117,7 @@ class PortalPrivateRegistration(CustomerPortal):
 
         # Create sale order to finalize the registration process
         sale_order = request.website.sale_get_order(force_create=True)
+        sale_order.company_id = main_partner.company_id.id
         sale_order.team_id = values["team_id"]
         values = {}
         values["member_product_id"] = self.get_private_membership_product().id
