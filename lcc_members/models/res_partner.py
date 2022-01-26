@@ -35,6 +35,16 @@ PUBLIC_PROFILE_FIELDS = [
     "is_company",
 ]
 
+POSITION_PROFILE_FIELDS = [
+    "lastname",
+    "firstname",
+    "phone",
+    "email",
+    "function",
+    "team_id",
+    "is_company",
+]
+
 
 class res_partner(models.Model):
     _inherit = "res.partner"
@@ -307,6 +317,7 @@ class res_partner(models.Model):
                 for field_name in PUBLIC_PROFILE_FIELDS:
                     values[field_name] = partner._get_field_value(field_name)
                 partner.create(values)
+                partner._compute_public_profile_id()
 
     @api.model
     def _cron_generate_missing_public_profiles(self):
@@ -315,6 +326,34 @@ class res_partner(models.Model):
         )
         for partner in partners:
             partner.create_public_profile()
+
+    @api.model
+    def _cron_migration_lcc_members_v2_v3_create_positions(self):
+        partners = self.search(
+            [
+                ("is_main_profile", "=", True),
+                ("parent_id", "!=", False),
+                ("is_company", "=", False),
+            ]
+        )
+        for partner in partners:
+            # create Position partner
+            profile = self.env.ref("lcc_members.partner_profile_position").read()[0]
+            values = {
+                "type": "other",
+                "contact_id": partner.id,
+                "parent_id": partner.parent_id.id,
+                "company_id": partner.company_id.id,
+                "partner_profile": profile["id"],
+            }
+            for field_name in POSITION_PROFILE_FIELDS:
+                values[field_name] = partner._get_field_value(field_name)
+            partner.create(values)
+
+            # remove Position data from main profile
+            partner.function = ""
+            partner.phone_pro = ""
+            partner.parent_id = None
 
 
 class PartnerImage(models.Model):
