@@ -152,7 +152,7 @@
                 <xpath expr="//field[@name='other_contact_ids']/form/sheet/group/group/field[@name='name']" position="after">
                     <field name="is_position_profile" readonly="1" invisible="1" />
                     <field name="partner_profile" string="Partner profile" />
-                    <field name="parent_id" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}" />
+                    <field name="parent_id" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True),('partner_profile.ref','=', 'partner_profile_main')]" context="{'default_partner_profile': 1, 'default_is_company': True, 'show_vat': True}" />
                     <field name="edit_structure_main_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
                     <field name="edit_structure_public_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
                 </xpath>
