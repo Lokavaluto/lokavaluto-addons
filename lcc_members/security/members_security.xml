@@ -10,4 +10,11 @@
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
+
+    <record id="account_invoice_rule_portal" model="ir.rule">
+        <field name="name">Portal Personal Account Invoices (profile)</field>
+        <field name="model_id" ref="account.model_account_invoice"/>
+        <field name="domain_force">[('message_partner_ids','child_of',[user.other_contact_ids.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
 </odoo>
