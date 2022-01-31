@@ -328,32 +328,69 @@ class res_partner(models.Model):
             partner.create_public_profile()
 
     @api.model
-    def _cron_migration_lcc_members_v2_v3_create_positions(self):
+    def _cron_migration_lcc_members_v2_v3(self):
+        # Company migration
         partners = self.search(
             [
-                ("is_main_profile", "=", True),
-                ("parent_id", "!=", False),
-                ("is_company", "=", False),
+                ("is_company", "=", True),
+                ("active", "=", True),
             ]
         )
         for partner in partners:
-            # create Position partner
-            profile = self.env.ref("lcc_members.partner_profile_position").read()[0]
-            values = {
-                "type": "other",
-                "contact_id": partner.id,
-                "parent_id": partner.parent_id.id,
-                "company_id": partner.company_id.id,
-                "partner_profile": profile["id"],
-            }
-            for field_name in POSITION_PROFILE_FIELDS:
-                values[field_name] = partner._get_field_value(field_name)
-            partner.create(values)
+            profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
+            partner.partner_profile = profile["id"]
+            partner.create_public_profile()
 
-            # remove Position data from main profile
-            partner.function = ""
-            partner.phone_pro = ""
-            partner.parent_id = None
+        # Person migration
+        partners = self.search(
+            [
+                ("is_company", "=", False),
+                ("active", "=", True),
+            ]
+        )
+        for partner in partners:
+            if partner.parent_id == False:
+                profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
+                partner.partner_profile = profile["id"]
+                partner.create_public_profile()
+            else:
+                existing_main_partner = self.env["res.partner"].search(
+                    [
+                        ("active", "=", True),
+                        ("is_company", "=", False),
+                        ("name", "=", partner.name),
+                        ("partner_profile.ref", "=", "partner_profile_main"),
+                    ],
+                    limit=1,
+                )
+                if len(existing_main_partner) > 0:
+                    partner.contact_id = existing_main_partner[0].id
+                    profile = self.env.ref(
+                        "lcc_members.partner_profile_position"
+                    ).read()[0]
+                    partner.partner_profile = profile["id"]
+                else:
+                    profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
+                    partner.partner_profile = profile["id"]
+                    partner.create_public_profile()
+                    # create Position partner
+                    profile = self.env.ref(
+                        "lcc_members.partner_profile_position"
+                    ).read()[0]
+                    values = {
+                        "type": "other",
+                        "contact_id": partner.id,
+                        "parent_id": partner.parent_id.id,
+                        "company_id": partner.company_id.id,
+                        "partner_profile": profile["id"],
+                    }
+                    for field_name in POSITION_PROFILE_FIELDS:
+                        values[field_name] = partner._get_field_value(field_name)
+                    partner.create(values)
+                    # remove Position data from main profile
+                    partner.function = ""
+                    partner.phone_pro = ""
+                    partner.parent_id = None
 
 
 class PartnerImage(models.Model):
