@@ -3,7 +3,7 @@
   <record id="lcc_cyclos_partner_form" model="ir.ui.view">
     <field name="name">lcc_cyclos_partner_form</field>
     <field name="model">res.partner</field>
-    <field name="inherit_id" ref="lcc_members.main_members_view"/>
+    <field name="inherit_id" ref="base.view_partner_form"/>
     <field eval="17" name="priority"/>
     <field name="arch" type="xml">
       <button name="toggle_active" position="before">
