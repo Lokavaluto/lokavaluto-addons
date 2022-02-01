@@ -1,10 +1,9 @@
 {
-    'name': "lcc_members_qr",
-    'summary': """
+    "name": "lcc_members_qr",
+    "summary": """
         Generation of a QR code for LCC members
         """,
-
-    'description': """
+    "description": """
    ::image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
@@ -76,24 +75,19 @@ LOKAVALUTO, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and ecosystem for local complementary currency organizations.
 
 """,
-
-    'author': "Lokavaluto",
-    'website': "https://lokavaluto.fr",
-    'category': 'Website',
-    'version': '12.0.1.0.6',
-
+    "author": "Lokavaluto",
+    "website": "https://lokavaluto.fr",
+    "category": "Website",
+    "version": "12.0.1.0.6",
     # any module necessary for this one to work correctly
-    'depends': [
-        'base',
-        ],
-
+    "depends": ["base"],
     # always loaded
-    'data': [        
-        'report/paperformat.xml',
-        'report/report.xml',
-        'views/qr_res_partner.xml',
-        'report/template.xml',
+    "data": [
+        "report/paperformat.xml",
+        "report/report.xml",
+        "views/qr_res_partner.xml",
+        "report/template.xml",
     ],
     # only loaded in demonstration mode
-    'demo': [],
+    "demo": [],
 }
