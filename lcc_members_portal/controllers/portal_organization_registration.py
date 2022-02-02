@@ -118,7 +118,9 @@ class PortalOrganizationRegistration(CustomerPortal):
             if kwargs.get(field):
                 values[field] = kwargs.pop(field)
         values["name"] = "[NEW APPLICATION] " + values["company_name"]
-        values["partner_id"] = request.env.user.partner_id.id
+        main_partner = request.env.user.partner_id
+        values["partner_id"] = main_partner.id
+        values["company_id"] = main_partner.company_id.id
         values["type"] = "opportunity"
         values["lead_type"] = "membership_web_application"
         values.update({"zip": values.pop("zipcode", "")})
