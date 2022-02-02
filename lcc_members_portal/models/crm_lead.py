@@ -155,7 +155,9 @@ class Lead(models.Model):
         invoice = self.env["account.invoice"].browse(invoice_id)
         invoice.action_invoice_open()
         self.invoice_url = (
-            self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+            self.env["website"]
+            .search([("company_id", "=", main_partner.company_id.id)], limit=1)
+            .website_domain
             + "/my/invoices/"
             + str(invoice_id)
         )
