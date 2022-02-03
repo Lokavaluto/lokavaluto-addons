@@ -145,7 +145,10 @@ class Lead(models.Model):
         sale_order = self.env["sale.order"].create(values)
         values = {}
         values["member_product_id"] = (
-            self.env["product.template"].sudo().get_organization_membership_product().id
+            self.env["product.template"]
+            .sudo()
+            .get_organization_membership_product(main_partner.company_id.id)
+            .id
         )
         values["total_membership"] = self.total_membership
         values["order_id"] = sale_order.id

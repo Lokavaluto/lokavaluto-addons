@@ -48,7 +48,9 @@ class PortalOrganizationRegistration(CustomerPortal):
 
     def get_organization_membership_product(self):
         product_obj = request.env["product.template"]
-        product = product_obj.sudo().get_organization_membership_product()
+        product = product_obj.sudo().get_organization_membership_product(
+            request.env.user.partner_id.company_id.id
+        )
         return product
 
     def get_selected_team_id(self, kwargs):
