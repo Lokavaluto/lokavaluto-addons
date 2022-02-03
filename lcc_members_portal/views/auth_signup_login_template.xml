@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="auth_signup_lcc_fields" inherit_id="auth_signup.fields" name="Add lcc custom fields to Auth SignUp">
+        <xpath expr="//div[hasclass('form-group','field-login')]" position="before">
+            <div t-if="not specific_user_account and not only_passwords" class="form-group field-company">
+                <label for="company">Your Structure</label>
+                <select name="company_id" t-attf-class="form-control" required="True" t-att-readonly="'readonly' if only_passwords else None" t-att-autofocus="'autofocus' if login and not only_passwords else None">
+                    <option value="">Structure...</option>
+                    <t t-foreach="companies or []" t-as="company">
+                        <option t-att-value="company.id">
+                            <t t-esc="company.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+        </xpath>
         <xpath expr="//div[hasclass('form-group','field-name')]" position="replace">
             <div t-if="not only_passwords" class="form-group field-firstname">
                 <label for="firstname">Your Firstname</label>
