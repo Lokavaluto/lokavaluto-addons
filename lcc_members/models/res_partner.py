@@ -159,10 +159,10 @@ class res_partner(models.Model):
         string=_("Manage structure's public profile")
     )
     can_edit_main_profile_ids = fields.Many2many(
-        "res.partner", compute="_compute_can_edit", string="Can edit main profile"
+        "res.partner", store=True, compute="_compute_can_edit", string="Can edit main profile"
     )
     can_edit_public_profile_ids = fields.Many2many(
-        "res.partner", compute="_compute_can_edit", string="Can edit public profile"
+        "res.partner", store=True, compute="_compute_can_edit", string="Can edit public profile"
     )
     want_newsletter_subscription = fields.Boolean(
         string=_("Want Newsletters Subscription")
@@ -173,7 +173,7 @@ class res_partner(models.Model):
         domain=[("partner_profile.ref", "=", "partner_profile_position")]
     )
 
-    @api.depends("other_contact_ids")
+    @api.depends("other_contact_ids", "other_contact_ids.edit_structure_main_profile", "other_contact_ids.edit_structure_public_profile")
     def _compute_can_edit(self):
         for partner in self:
             partner.can_edit_main_profile_ids = partner.child_ids.filtered(
