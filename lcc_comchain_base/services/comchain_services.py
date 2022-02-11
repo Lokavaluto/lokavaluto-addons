@@ -26,13 +26,13 @@ class ComchainService(Component):
         Return display name for partner matching comchain addresses
         """
         partner = self.env.user.partner_id
-        partner_ids = partner.search([('comchain_id', 'in', params.addresses)])
+        partner_ids = partner.search([("comchain_id", "in", params.addresses)])
         res = {}
         for partner in partner_ids:
             res[partner.comchain_id] = {
-                    'partner_id': partner.id,
-                    'display_name': partner.display_name
-                }
+                "partner_id": partner.id,
+                "display_name": partner.display_name,
+            }
         return res
 
     @restapi.method(
@@ -45,16 +45,17 @@ class ComchainService(Component):
         """
         partner = self.env.user.partner_id
         if not partner.comchain_wallet:
-            res = partner.write({
-                'comchain_id': params.address,
-                'comchain_wallet': params.wallet,
-                'comchain_message_key': params.message_key
+            res = partner.write(
+                {
+                    "comchain_id": params.address,
+                    "comchain_wallet": params.wallet,
+                    "comchain_message_key": params.message_key,
                 }
             )
         else:
             res = {
-                'error': "account already exist",
-                'status': "Error",
+                "error": "account already exist",
+                "status": "Error",
             }
         return res
 
@@ -67,12 +68,9 @@ class ComchainService(Component):
         Activate comchain account on partners
 
         """
-        partner = self.env['res.partner']
+        partner = self.env["res.partner"]
         for account in params.accounts:
-            partners = partner.search(
-                [('comchain_id', '=', account.address)]
-            )
+            partners = partner.search([("comchain_id", "=", account.address)])
             partners.activateComchainUser(account)
 
         return True
-

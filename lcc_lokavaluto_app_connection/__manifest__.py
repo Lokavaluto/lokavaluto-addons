@@ -1,10 +1,9 @@
 {
-    'name': "lcc_lokavaluto_app_connection",
-    'summary': """
+    "name": "lcc_lokavaluto_app_connection",
+    "summary": """
         REST Odoo Backend for Lokavaluto mobile application
         """,
-
-    'description': """
+    "description": """
    ::image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
@@ -67,31 +66,28 @@ LOKAVALUTO, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and ecosystem for local complementary currency organizations.
 
 """,
-
-    'author': "Lokavaluto",
-    'website': "https://lokavaluto.fr",
-    'category': 'Website',
-    'version': '12.0.1.0.7',
-
+    "author": "Lokavaluto",
+    "website": "https://lokavaluto.fr",
+    "category": "Website",
+    "version": "12.0.1.0.7",
     # any module necessary for this one to work correctly
-    'depends': [
-        'base',
-        'sale',
-        'base_rest',
-        'auth_api_key',
-        'base_rest_datamodel',
-        'base_jsonify',
-        'partner_favorite',
-        'lcc_members',
-        'lcc_members_qr',
-        ],
-
+    "depends": [
+        "base",
+        "sale",
+        "base_rest",
+        "auth_api_key",
+        "base_rest_datamodel",
+        "base_jsonify",
+        "partner_favorite",
+        "lcc_members",
+        "lcc_members_qr",
+    ],
     # always loaded
-    'data': [
-        'security/ir.model.access.csv',
-        'views/lcc_app_connection_partner.xml',
-        'data/numeric_data.xml',
+    "data": [
+        "security/ir.model.access.csv",
+        "views/lcc_app_connection_partner.xml",
+        "data/numeric_data.xml",
     ],
     # only loaded in demonstration mode
-    'demo': [],
+    "demo": [],
 }

@@ -62,7 +62,7 @@ _PARTNER_FORM_FIELD = [
 
 _COMPANY_FORM_FIELD = [
     "is_company",
-    #"company_register_number",
+    # "company_register_number",
     "company_name",
     "company_email",
     "confirm_email",
@@ -106,8 +106,8 @@ class WebsiteMembership(http.Controller):
                 values[field] = kwargs.pop(field)
 
         values.update(kwargs=kwargs.items())
-        #TODO add config default amount.
-        values["total_membership"] = '25'
+        # TODO add config default amount.
+        values["total_membership"] = "25"
         return request.render("lcc_members_website.becomemember", values)
 
     @http.route(
@@ -128,12 +128,10 @@ class WebsiteMembership(http.Controller):
             if kwargs.get(field):
                 values[field] = kwargs.pop(field)
         values.update(kwargs=kwargs.items())
-        return request.render(
-            "lcc_members_website.becomecompanymember", values
-        )
+        return request.render("lcc_members_website.becomecompanymember", values)
 
     def preRenderThanks(self, values, kwargs):
-        """ Allow to be overrided """
+        """Allow to be overrided"""
         return {"_values": values, "_kwargs": kwargs}
 
     def get_subscription_response(self, values, kwargs):
@@ -151,21 +149,21 @@ class WebsiteMembership(http.Controller):
             values["logged"] = "on"
             partner = request.env.user.partner_id
 
-            #if partner.member or partner.old_member:
+            # if partner.member or partner.old_member:
             #    values["already_member"] = "on"
             values["address"] = partner.street
             values["zip"] = partner.zip
             values["city"] = partner.city
             values["country_id"] = partner.country_id.id
-            values["team_id"] = partner.team_id.id or ''
-            _logger.debug("TEAM2: %s" %  partner.team_id.id)
+            values["team_id"] = partner.team_id.id or ""
+            _logger.debug("TEAM2: %s" % partner.team_id.id)
 
             if is_company:
                 # company values
-                #values["company_register_number"] = partner.company_register_number
+                # values["company_register_number"] = partner.company_register_number
                 values["company_name"] = partner.name
                 values["company_email"] = partner.email
-                #values["company_type"] = partner.legal_form
+                # values["company_type"] = partner.legal_form
                 # contact person values
                 # representative = partner.get_representative()
                 # values["firstname"] = representative.firstname
@@ -187,7 +185,7 @@ class WebsiteMembership(http.Controller):
     def fill_values(self, values, is_company, logged, load_from_user=False):
         partner_obj = request.env["res.partner"]
         _logger.debug("request.env: %s" % request.env)
-        #member_type_obj = request.env["member_type"]
+        # member_type_obj = request.env["member_type"]
         company = request.website.company_id
         products = self.get_membership_products(is_company)
 
@@ -202,7 +200,7 @@ class WebsiteMembership(http.Controller):
         values["langs"] = self.get_langs()
         values["products"] = products
         fields_desc = partner_obj.sudo().fields_get(["member_type_id", "gender"])
-        #values["member_types"] = [(o.id, o.name) for o in member_type_obj.sudo().search([])]
+        # values["member_types"] = [(o.id, o.name) for o in member_type_obj.sudo().search([])]
         values["genders"] = fields_desc["gender"]["selection"]
         values["company"] = company
 
@@ -212,12 +210,16 @@ class WebsiteMembership(http.Controller):
         if not values.get("country_id"):
             values["country_id"] = "75"
         if not values.get("team_id"):
-            _logger.debug("TEAM2: %s" % request.env['crm.team'].sudo().search([], limit=1).id)
-            values["team_id"] = request.env['crm.team'].sudo().search([], limit=1).id or ''
+            _logger.debug(
+                "TEAM2: %s" % request.env["crm.team"].sudo().search([], limit=1).id
+            )
+            values["team_id"] = (
+                request.env["crm.team"].sudo().search([], limit=1).id or ""
+            )
         if not values.get("activities_country_id"):
             values["activities_country_id"] = "75"
         if not values.get("lang"):
-            values["lang"] = 'fr_FR'
+            values["lang"] = "fr_FR"
 
         comp = request.env["res.company"]._company_default_get()
         #  values.update(
@@ -242,7 +244,7 @@ class WebsiteMembership(http.Controller):
         countries = request.env["res.country"].sudo().search([])
 
         return countries
-    
+
     def get_teams(self):
         teams = request.env["crm.team"].sudo().search([])
         _logger.debug("TEAM2: %s" % teams)
@@ -272,9 +274,11 @@ class WebsiteMembership(http.Controller):
             is_company = True
             redirect = "lcc_members_website.becomecompanymember"
             email = kwargs.get("company_email")
-       
+
         if not logged and email:
-            user = user_obj.sudo().search(["|", ("login", "=", email), ("partner_id.email", "=", email)])
+            user = user_obj.sudo().search(
+                ["|", ("login", "=", email), ("partner_id.email", "=", email)]
+            )
             partner = partner_obj.sudo().search([("email", "=", email)], limit=1)
 
             if user:
@@ -299,7 +303,6 @@ class WebsiteMembership(http.Controller):
 
                     return request.render(redirect, values)
 
-
                 confirm_email = kwargs.get("confirm_email")
                 if email != confirm_email:
                     values = self.fill_values(values, is_company, logged)
@@ -314,17 +317,18 @@ class WebsiteMembership(http.Controller):
         # There's no issue with the email, so we can remember the confirmation email
         values["confirm_email"] = email
         company = request.website.company_id
-        
+
         # LOKAVALUTO TODO check the subscription's amount
-        if kwargs.get("total_membership") and float(kwargs.get("total_membership")) <=0:
+        if (
+            kwargs.get("total_membership")
+            and float(kwargs.get("total_membership")) <= 0
+        ):
             values = self.fill_values(values, is_company, logged)
-            values["error_msg"] = _(
-                "Total amount should be > 0"
-            )
+            values["error_msg"] = _("Total amount should be > 0")
             return request.render(redirect, values)
-        
+
         # total_amount = float(kwargs.get("total_membership"))
-       
+
         return True
 
     @http.route(
@@ -374,11 +378,11 @@ class WebsiteMembership(http.Controller):
         firstname = kwargs.get("firstname").title()
         # IF PUBLIC USER
         if sale_order.partner_id.id == request.website.user_id.sudo().partner_id.id:
-            
+
             for field in _PARTNER_FORM_FIELD:
                 if kwargs.get(field):
                     partner_values[field] = kwargs.pop(field)
-           
+
             partner_values["name"] = firstname + " " + lastname
             partner_values["lastname"] = lastname
             partner_values["first"] = firstname
@@ -388,10 +392,7 @@ class WebsiteMembership(http.Controller):
             sale_order.onchange_partner_id()
             # This is the *only* thing that the front end user will see/edit anyway when choosing billing address
             sale_order.partner_invoice_id = partner_id
-            
 
-        
-       
         for field_name, field_value in kwargs.items():
             if hasattr(field_value, "filename"):
                 post_file.append(field_value)
@@ -399,19 +400,13 @@ class WebsiteMembership(http.Controller):
                 values[field_name] = field_value
             # allow to add some free fields or blacklisted field like ID
             elif field_name not in _TECHNICAL:
-                post_description.append(
-                    "{}: {}".format(field_name, field_value)
-                )
+                post_description.append("{}: {}".format(field_name, field_value))
 
-      
-
-        
-        
         already_member = False
         if logged:
             partner = request.env.user.partner_id
             values["partner_id"] = partner.id
-            already_member = partner.membership_state not in ['none', 'cancelled']
+            already_member = partner.membership_state not in ["none", "cancelled"]
         elif kwargs.get("already_member") == "on":
             already_member = True
 
@@ -436,7 +431,7 @@ class WebsiteMembership(http.Controller):
 
         values["order_id"] = sale_order.id
         if is_company:
-            #if kwargs.get("company_register_number", is_company):
+            # if kwargs.get("company_register_number", is_company):
             #    values["company_register_number"] = re.sub(
             #        "[^0-9a-zA-Z]+", "", kwargs.get("company_register_number")
             #    )
@@ -455,21 +450,21 @@ class WebsiteMembership(http.Controller):
                     "datas_fname": field_value.filename,
                 }
                 attach_obj.sudo().create(attachment_value)
-        
-        
+
         return request.redirect("/shop/cart")
 
+
 class CustomWebsiteSale(WebsiteSale):
-
-
-    @http.route(['/shop/confirm_order'], type='http', auth="public", website=True, sitemap=False)
+    @http.route(
+        ["/shop/confirm_order"], type="http", auth="public", website=True, sitemap=False
+    )
     def confirm_order(self, **post):
         sale_order = request.website.sale_get_order(force_create=True)
-        membership = any(sale_order.order_line.mapped('product_id.membership'))
+        membership = any(sale_order.order_line.mapped("product_id.membership"))
         if not membership:
             res = super(CustomWebsiteSale, self).confirm_order(post)
             return res
-        
+
         order = request.website.sale_get_order()
 
         redirection = self.checkout_redirection(order)
@@ -478,9 +473,9 @@ class CustomWebsiteSale(WebsiteSale):
 
         order.onchange_partner_shipping_id()
         order.order_line._compute_tax_id()
-        request.session['sale_last_order_id'] = order.id
+        request.session["sale_last_order_id"] = order.id
         request.website.sale_get_order(update_pricelist=False)
-        extra_step = request.website.viewref('website_sale.extra_info_option')
+        extra_step = request.website.viewref("website_sale.extra_info_option")
         if extra_step.active:
             return request.redirect("/shop/extra_info")
 

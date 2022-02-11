@@ -7,6 +7,4 @@ from odoo.addons.datamodel.fields import NestedModel
 class PartnerIndustry(Datamodel):
     _name = "partner.industry.info"
 
-    ids = fields.List(fields.Integer())#, required=False, nullable=True)
-
-
+    ids = fields.List(fields.Integer())  # , required=False, nullable=True)

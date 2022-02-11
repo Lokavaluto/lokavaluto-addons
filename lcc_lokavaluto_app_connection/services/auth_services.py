@@ -1,4 +1,3 @@
-
 import logging
 from odoo import exceptions
 from odoo.http import request
@@ -24,42 +23,47 @@ class AuthService(Component):
         """
         This method is used to authenticate and get the token for the user on mobile app.
         """
-        api_key_model = self.env['auth.api.key'].sudo()
-        response = {'status': 'OK'}
+        api_key_model = self.env["auth.api.key"].sudo()
+        response = {"status": "OK"}
         if request.httprequest.authorization and not request.session._login:
             try:
                 uid = request.session.authenticate(
-                    params.get('db'),
+                    params.get("db"),
                     request.httprequest.authorization.username,
                     request.httprequest.authorization.password,
-                    None
+                    None,
                 )
-                current_key = api_key_model.search([('user_id', '=', uid)], limit=1)
-                current_user = self.env['res.users'].sudo().search([('id', '=', uid)])
-                _logger.debug('USER: %s' % current_user)
+                current_key = api_key_model.search([("user_id", "=", uid)], limit=1)
+                current_user = self.env["res.users"].sudo().search([("id", "=", uid)])
+                _logger.debug("USER: %s" % current_user)
                 if current_user:
                     parser = self._get_partner_parser()
                     partner = current_user.partner_id
-                    to_add = current_user.partner_id._update_auth_data(request.httprequest.authorization.password)
-                    response['prefetch'] = {
-                        'backend_credentials': to_add,
-                        'partner': partner.jsonify(parser)[0]
+                    to_add = current_user.partner_id._update_auth_data(
+                        request.httprequest.authorization.password
+                    )
+                    response["prefetch"] = {
+                        "backend_credentials": to_add,
+                        "partner": partner.jsonify(parser)[0],
                     }
                     if to_add:
-                        response['monujo_backends'] = to_add
+                        response["monujo_backends"] = to_add
                     _logger.debug("AUTH UPDATE to_add: %s" % to_add)
                     _logger.debug("AUTH UPDATE response: %s" % response)
                 if not current_key:
-                    current_key = api_key_model.create({
-                        'user_id': uid,
-                    })
-                response['uid'] = uid
-                response['api_token'] = "%s" % current_key.key
+                    current_key = api_key_model.create(
+                        {
+                            "user_id": uid,
+                        }
+                    )
+                response["uid"] = uid
+                response["api_token"] = "%s" % current_key.key
                 from . import __api_version__
-                response['api_version'] = __api_version__
+
+                response["api_version"] = __api_version__
             except Exception as e:
-                response['error'] = "%s" % e
-                response['status'] = "Error"
+                response["error"] = "%s" % e
+                response["status"] = "Error"
         return response
 
     # Validator
@@ -70,23 +74,23 @@ class AuthService(Component):
         }
 
     def _validator_return_authenticate(self):
-        return self.env['res.partner']._validator_return_authenticate()
+        return self.env["res.partner"]._validator_return_authenticate()
 
     def _get_partner_parser(self):
         parser = [
-            'id',
-            'name',
-            'street',
-            'street2',
-            'zip',
-            'city',
-            'mobile',
-            'email',
-            'phone',
-            'is_favorite',
-            'is_company',
-            'qr_url',
-            ('country_id', ['id', 'name']),
-            #('state', ['id','name'])
+            "id",
+            "name",
+            "street",
+            "street2",
+            "zip",
+            "city",
+            "mobile",
+            "email",
+            "phone",
+            "is_favorite",
+            "is_company",
+            "qr_url",
+            ("country_id", ["id", "name"]),
+            # ('state', ['id','name'])
         ]
         return parser

@@ -26,11 +26,13 @@ class PartnerIndustryService(Component):
         Get the complete list of partner indutries
         """
         ids = partner_industry_info.ids
-        all_industries = self.env['res.partner.industry'].sudo()
+        all_industries = self.env["res.partner.industry"].sudo()
         if ids:
-            industries = all_industries.search([('active', '=', True),('id', 'in', ids)])
+            industries = all_industries.search(
+                [("active", "=", True), ("id", "in", ids)]
+            )
         else:
-            industries = all_industries.search([('active', '=', True)])
+            industries = all_industries.search([("active", "=", True)])
         parser = self._get_partner_industry_parser()
         rows = industries.jsonify(parser)
         res = {"count": len(industries), "rows": rows}
@@ -50,13 +52,13 @@ class PartnerIndustryService(Component):
     def _return_partner_industry(self):
         res = {
             "id": {"type": "integer", "required": True, "nullable": False},
-            "name": {"type": "string", "required": True, "empty": True},    
+            "name": {"type": "string", "required": True, "empty": True},
         }
         return res
 
     def _get_partner_industry_parser(self):
         parser = [
-            'id',
-            'name',
+            "id",
+            "name",
         ]
         return parser

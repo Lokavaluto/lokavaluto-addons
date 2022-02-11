@@ -11,8 +11,10 @@ _logger = logging.getLogger(__name__)
 class Invoice(models.Model):
     _inherit = "account.invoice"
 
-    @api.onchange('state')
+    @api.onchange("state")
     def _check_membership(self):
         for invoice in self:
-            self.partner_id._recompute_todo(invoice.partner_id._fields['membership_state'])
+            self.partner_id._recompute_todo(
+                invoice.partner_id._fields["membership_state"]
+            )
         invoice.partner_id.recompute()

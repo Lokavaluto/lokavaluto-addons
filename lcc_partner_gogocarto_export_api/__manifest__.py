@@ -1,8 +1,8 @@
 {
-    'name': "lcc_partner_gogocarto_export_api",
-    'summary': """ HTTP JSON api to send data for Gogocarto import """,
-    'license': 'AGPL-3',
-    'description': """
+    "name": "lcc_partner_gogocarto_export_api",
+    "summary": """ HTTP JSON api to send data for Gogocarto import """,
+    "license": "AGPL-3",
+    "description": """
 ================================
 lcc_partner_gogocarto_export_api
 ================================
@@ -72,24 +72,21 @@ LOKAVALUTO, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and ecosystem for local complementary currency organizations.
 
 """,
-
-    'author': "Lokavaluto",
-    'website': "https://lokavaluto.fr",
-
+    "author": "Lokavaluto",
+    "website": "https://lokavaluto.fr",
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Localization',
-    'version': '12.0.1.0.0',
-
+    "category": "Localization",
+    "version": "12.0.1.0.0",
     # any module necessary for this one to work correctly
-    'depends': ['base',
-                'partner_gogocarto_export_api',
-                'lcc_members',
-            ],
-
+    "depends": [
+        "base",
+        "partner_gogocarto_export_api",
+        "lcc_members",
+    ],
     # always loaded
-    'data': [],
+    "data": [],
     # only loaded in demonstration mode
-    'demo': [],
+    "demo": [],
 }
