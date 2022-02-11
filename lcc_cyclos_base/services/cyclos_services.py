@@ -27,7 +27,7 @@ class CyclosService(Component):
         Credit user account with amount, and generate accounting entry
         """
         partner = self.env.user.partner_id
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         _logger.debug("PARTNER ?: %s(%s)" % (partner.name, partner.id))
         owner_id = params.owner_id
         amount = params.amount

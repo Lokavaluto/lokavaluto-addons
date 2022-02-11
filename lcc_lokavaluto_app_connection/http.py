@@ -43,9 +43,9 @@ def format_last_exception(prefix="  | "):
 
     """
 
-    return '\n'.join(
-        str(prefix + line)
-        for line in traceback.format_exc().strip().split('\n'))
+    return "\n".join(
+        str(prefix + line) for line in traceback.format_exc().strip().split("\n")
+    )
 
 
 ##
@@ -54,9 +54,7 @@ def format_last_exception(prefix="  | "):
 
 
 class CORSMiddleware(object):
-    """Add Cross-origin resource sharing headers to every request.
-
-    """
+    """Add Cross-origin resource sharing headers to every request."""
 
     ## XXXvlab: There are maybe other ways to ensure that OPTIONS Rest requests
     ## are handled, but this was the shortest way to do without diving
@@ -67,16 +65,19 @@ class CORSMiddleware(object):
         self.origin = origin
 
     def __call__(self, environ, start_response):
-
         def add_cors_headers(status, headers):
             headers = Headers(headers)
             headers.set("Access-Control-Allow-Origin", self.origin)
-            headers.add("Access-Control-Allow-Headers",
-                    "Origin, Content-Type, accept, *, Cache-Control, Authorization")
+            headers.add(
+                "Access-Control-Allow-Headers",
+                "Origin, Content-Type, accept, *, Cache-Control, Authorization",
+            )
             headers.add("Access-Control-Allow-Credentials", "true")
-            if not headers.get('Access-Control-Allow-Methods'):
-                headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-            #headers.add("Access-Control-Expose-Headers", "")
+            if not headers.get("Access-Control-Allow-Methods"):
+                headers.add(
+                    "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"
+                )
+            # headers.add("Access-Control-Expose-Headers", "")
             return start_response(status, headers.to_list())
 
         if environ.get("REQUEST_METHOD") == "OPTIONS":
@@ -94,6 +95,7 @@ class CORSMiddleware(object):
             response = Response(status=401, headers={})
             return response(environ, add_cors_headers)
 
+
 root.dispatch = CORSMiddleware(root.dispatch)
 
 
@@ -101,11 +103,12 @@ root.dispatch = CORSMiddleware(root.dispatch)
 ## Monkeypatching of HttpRestRequest
 ##
 
+
 def __init__(self, httprequest):
     super(HttpRestRequest, self).__init__(httprequest)
     if self.httprequest.method != "GET":
         data = self.httprequest.get_data().decode(self.httprequest.charset)
-        _logger.debug('data: %s' % data)
+        _logger.debug("data: %s" % data)
         if not data:
             data = "{}"
         try:
@@ -117,9 +120,7 @@ def __init__(self, httprequest):
     else:
         # We reparse the query_string in order to handle data structure
         # more information on https://github.com/aventurella/pyquerystring
-        self.params = pyquerystring.parse(
-            self.httprequest.query_string.decode("utf-8")
-        )
+        self.params = pyquerystring.parse(self.httprequest.query_string.decode("utf-8"))
     self._determine_context_lang()
 
 
@@ -152,7 +153,9 @@ def _serve_fallback(cls, exception):
 
         redirect = cls._serve_redirect()
         if redirect:
-            return request.redirect(_build_url_w_params(redirect.url_to, request.params), code=redirect.type)
+            return request.redirect(
+                _build_url_w_params(redirect.url_to, request.params), code=redirect.type
+            )
 
     return False
 

@@ -25,17 +25,20 @@ class PartnerMapService(Component):
         """
         Searh partner in an area defined by latitude and longitude
         """
-        all_partner = self.env['res.partner'].sudo()
-        partners = all_partner.search(all_partner._get_mobile_app_pro_domain(partners_map_search_param.bounding_box, partners_map_search_param.categories))
+        all_partner = self.env["res.partner"].sudo()
+        partners = all_partner.search(
+            all_partner._get_mobile_app_pro_domain(
+                partners_map_search_param.bounding_box,
+                partners_map_search_param.categories,
+            )
+        )
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
         rows = partners.jsonify(parser)
-        _logger.debug('#################### rows: %s' % rows)
+        _logger.debug("#################### rows: %s" % rows)
         res = {"count": len(partners), "rows": rows}
         return res
-
-    
 
     # The following method are 'private' and should be never never NEVER call
     # from the controller.
@@ -65,7 +68,7 @@ class PartnerMapService(Component):
                         "type": "integer",
                         "coerce": to_int,
                         "nullable": False,
-                        "empty": True
+                        "empty": True,
                     },
                     "name": {"type": "string", "empty": True},
                 },
@@ -73,17 +76,22 @@ class PartnerMapService(Component):
                 "required": False,
                 "nullable": True,
             },
-            "opening_time": {"type": "string", "required": False, "empty": True, "nullable": True},
+            "opening_time": {
+                "type": "string",
+                "required": False,
+                "empty": True,
+                "nullable": True,
+            },
         }
         return res
 
     def _get_partner_parser(self):
         parser = [
-            'id',
-            'name',
-            'partner_latitude',
-            'partner_longitude',
-            ('industry_id', ['id', 'name']),
-            'opening_time',
+            "id",
+            "name",
+            "partner_latitude",
+            "partner_longitude",
+            ("industry_id", ["id", "name"]),
+            "opening_time",
         ]
         return parser

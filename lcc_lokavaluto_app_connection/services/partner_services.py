@@ -53,26 +53,26 @@ class PartnerService(Component):
 
     @restapi.method(
         [(["/<int:id>/get", "/<int:id>"], "GET")],
-        input_param=Datamodel("partner.info.get.param")
+        input_param=Datamodel("partner.info.get.param"),
     )
     def get(self, _id, partner_info_get_param):
         """
         Get partner's informations. If id == 0 return 'me'
         """
         website_url = partner_info_get_param.website_url
-        domain = [('active', '=', True)]
+        domain = [("active", "=", True)]
         if _id is None:
             _id = 0
         if _id == 0:
             _id = self.env.user.partner_id.id
-        domain.extend([('id', '=', _id)])
+        domain.extend([("id", "=", _id)])
         if website_url:
-            partner_id = website_url.split('-')[-1]
+            partner_id = website_url.split("-")[-1]
             try:
                 partner_id = int(partner_id)
-                domain.extend([('id', '=', partner_id)])
+                domain.extend([("id", "=", partner_id)])
             except ValueError:
-                raise MissingError('Url not valid.')
+                raise MissingError("Url not valid.")
         partners = self.env["res.partner"].search(domain)
 
         if len(partners) == 1:
@@ -80,7 +80,9 @@ class PartnerService(Component):
             res = partners.jsonify(parser)[0]
             backend_keys = partner_info_get_param.backend_keys
             if backend_keys:
-                res["monujo_backends"] = list(partners)[0]._update_search_data(backend_keys)
+                res["monujo_backends"] = list(partners)[0]._update_search_data(
+                    backend_keys
+                )
             return res
         else:
             raise MissingError("No partner found - please check your request")
@@ -92,21 +94,28 @@ class PartnerService(Component):
         """
         Search partner by name, email or phone
         """
-        value = params.get('value', False)
-        backend_keys = params.get('backend_keys', [])
+        value = params.get("value", False)
+        backend_keys = params.get("backend_keys", [])
         partners = self.env["res.partner"].name_search(value)
         partners = self.env["res.partner"].browse([i[0] for i in partners])
         if not partners:
-            partners = self.env["res.partner"].search([('active', '=', True),
-                                                        '|', ('email', '=', value),
-                                                        '|', ('phone', '=', value),('mobile', '=', value)])   
-        partners = partners - self.env.user.partner_id        
+            partners = self.env["res.partner"].search(
+                [
+                    ("active", "=", True),
+                    "|",
+                    ("email", "=", value),
+                    "|",
+                    ("phone", "=", value),
+                    ("mobile", "=", value),
+                ]
+            )
+        partners = partners - self.env.user.partner_id
         if backend_keys:
-            partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
+            partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
         return self._get_formatted_partners(partners, backend_keys)
-    ##########################################################
-    ##########################################################
 
+    ##########################################################
+    ##########################################################
 
     @restapi.method(
         [(["/partner_search", "/search"], "GET")],
@@ -118,63 +127,86 @@ class PartnerService(Component):
         is_favorite: if True return only favorite partner, else all
         is_company: if True search in company else in personal partner
         website_url: we can search we url of the web site if needed
-        note: 
+        note:
            - when search personal partner we need complete et exact match with value.
            - personl partner only search on mobile, phone and email
         """
-        _logger.debug('PARAMS: %s' % partner_search_info)
+        _logger.debug("PARAMS: %s" % partner_search_info)
         value = partner_search_info.value
         backend_keys = partner_search_info.backend_keys
         is_favorite = partner_search_info.is_favorite
         is_company = partner_search_info.is_company
-        domain = [('id', '!=', self.env.user.partner_id.id),('active', '=', True)]
+        domain = [("id", "!=", self.env.user.partner_id.id), ("active", "=", True)]
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
         website_url = partner_search_info.website_url
         order = partner_search_info.order
         if is_favorite or not value:
-            domain.extend([('favorite_user_ids', 'in', self.env.uid)])
-        domain.extend([('is_company', '=', 1 if is_company else 0)])
+            domain.extend([("favorite_user_ids", "in", self.env.uid)])
+        domain.extend([("is_company", "=", 1 if is_company else 0)])
         if value:
             if is_company:
-                domain.extend(['|','|', '|', ('display_name', 'ilike', value),
-                               ('email', 'ilike', value),
-                               ('phone', 'ilike', value),
-                               ('mobile', 'ilike', value)])
+                domain.extend(
+                    [
+                        "|",
+                        "|",
+                        "|",
+                        ("display_name", "ilike", value),
+                        ("email", "ilike", value),
+                        ("phone", "ilike", value),
+                        ("mobile", "ilike", value),
+                    ]
+                )
             else:
-                domain.extend(['|', '|', ('email', '=', value),
-                                         ('phone', '=', value),
-                                         ('mobile', '=', value)])
+                domain.extend(
+                    [
+                        "|",
+                        "|",
+                        ("email", "=", value),
+                        ("phone", "=", value),
+                        ("mobile", "=", value),
+                    ]
+                )
         if website_url:
-            partner_id = website_url.split('-')[-1]
+            partner_id = website_url.split("-")[-1]
             try:
                 partner_id = int(partner_id)
-                domain.extend([('id', '=', partner_id)])
+                domain.extend([("id", "=", partner_id)])
             except ValueError:
-                raise MissingError('Url not valid.')
+                raise MissingError("Url not valid.")
         _logger.debug("DOMAIN: %s" % domain)
-        partners = self.env["res.partner"].search(domain, limit=limit, offset=offset, order=order)
+        partners = self.env["res.partner"].search(
+            domain, limit=limit, offset=offset, order=order
+        )
         _logger.debug("partners: %s" % partners)
         if backend_keys:
-            partners = partners.filtered(lambda r : r.backends() & set(backend_keys))        
+            partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
         return self._get_formatted_partners(partners, backend_keys)
 
-
     @restapi.method(
-        [(["/accounts", ], "GET")],
+        [
+            (
+                [
+                    "/accounts",
+                ],
+                "GET",
+            )
+        ],
         input_param=Datamodel("account.search.info"),
     )
     def search_accounts(self, account_search_info):
-        _logger.debug('PARAMS: %s' % account_search_info)
+        _logger.debug("PARAMS: %s" % account_search_info)
         backend_keys = account_search_info.backend_keys
         domain = [
-            ('active', '=', True),
+            ("active", "=", True),
         ]
         domain_staging = []
 
-        domains_unvalidated = self.env["res.partner"].domains_is_unvalidated_currency_backend()
+        domains_unvalidated = self.env[
+            "res.partner"
+        ].domains_is_unvalidated_currency_backend()
         for backend_id, d in domains_unvalidated.items():
-            domain_staging = ['|'] + d + domain_staging if domain_staging else d
+            domain_staging = ["|"] + d + domain_staging if domain_staging else d
 
         domain += domain_staging
 
@@ -182,9 +214,11 @@ class PartnerService(Component):
         limit = account_search_info.limit if account_search_info.limit else 0
         order = account_search_info.order
         _logger.debug("DOMAIN: %s" % domain)
-        partners = self.env["res.partner"].search(domain, limit=limit, offset=offset, order=order)
+        partners = self.env["res.partner"].search(
+            domain, limit=limit, offset=offset, order=order
+        )
         _logger.debug("partners: %s" % partners)
-        if backend_keys: ## filter out partners not having the queried backends
+        if backend_keys:  ## filter out partners not having the queried backends
             partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
 
         ## Format output
@@ -198,7 +232,8 @@ class PartnerService(Component):
                 row["monujo_backends"] = {}
                 for backend_key in backend_keys:
                     partner = self.env["res.partner"].search(
-                        [('id', '=', partner_id)] + domains_unvalidated[backend_key])
+                        [("id", "=", partner_id)] + domains_unvalidated[backend_key]
+                    )
                     if len(partner) == 0:
                         continue
                     row["monujo_backends"].update(
@@ -209,7 +244,6 @@ class PartnerService(Component):
         return res
 
         return self._get_formatted_partners(partners, backend_keys)
-
 
     ##########################################################
     # TO CLEAN LATER
@@ -222,20 +256,23 @@ class PartnerService(Component):
         """
         Get a partner with a website_url "/partners/..."
         """
-        _logger.debug('PARAMS: %s' % partner_url_get_info)
+        _logger.debug("PARAMS: %s" % partner_url_get_info)
         url = partner_url_get_info.url
-        partners = self.env["res.partner"].search([('active', '=', True)])
-        partners = partners.filtered(lambda r : r.website_url == url)
+        partners = self.env["res.partner"].search([("active", "=", True)])
+        partners = partners.filtered(lambda r: r.website_url == url)
 
         if len(partners) > 0:
             parser = self._get_partner_parser()
             res = partners.jsonify(parser)[0]
             backend_keys = partner_url_get_info.backend_keys
             if backend_keys:
-                res["monujo_backends"] = list(partners)[0]._update_search_data(backend_keys)
+                res["monujo_backends"] = list(partners)[0]._update_search_data(
+                    backend_keys
+                )
             return res
         else:
             raise MissingError("No partner found - please check your url")
+
     ##########################################################
     ##########################################################
 
@@ -247,9 +284,11 @@ class PartnerService(Component):
         Set partner as favorite
         """
         partner = self._get(_id)
-        partner.write({
-            'is_favorite': True,
-        })
+        partner.write(
+            {
+                "is_favorite": True,
+            }
+        )
         return {}
 
     @restapi.method(
@@ -260,9 +299,11 @@ class PartnerService(Component):
         Unset partner as favorite
         """
         partner = self._get(_id)
-        partner.write({
-            'is_favorite': False,
-        })
+        partner.write(
+            {
+                "is_favorite": False,
+            }
+        )
         return {}
 
     @restapi.method(
@@ -278,7 +319,6 @@ class PartnerService(Component):
         else:
             return self.set_favorite(_id)
 
-
     ##########################################################
     # TO CLEAN LATER
     ##########################################################
@@ -287,8 +327,8 @@ class PartnerService(Component):
         Get my favorite partner
         """
         partners = self.env["res.partner"].search(
-            [('favorite_user_ids', 'in',
-              self.env.context.get('uid'))])
+            [("favorite_user_ids", "in", self.env.context.get("uid"))]
+        )
         return self._get_formatted_partners(partners, [])
 
     def toggle_favorite(self, _id):
@@ -297,10 +337,13 @@ class PartnerService(Component):
         """
         partner = self._get(_id)
         parser = self._get_partner_parser()
-        partner.write({
-           'is_favorite': True,
-        })
+        partner.write(
+            {
+                "is_favorite": True,
+            }
+        )
         return partner.jsonify(parser)[0]
+
     ##########################################################
     ##########################################################
 
@@ -321,7 +364,7 @@ class PartnerService(Component):
         if backend_keys:
             for row in rows:
                 partner_id = row["id"]
-                partner = self.env["res.partner"].search([('id', '=', partner_id)])
+                partner = self.env["res.partner"].search([("id", "=", partner_id)])
                 credentials = partner._update_search_data(backend_keys)
                 row["monujo_backends"] = credentials
         res = {"count": len(partners), "rows": rows}
@@ -337,21 +380,21 @@ class PartnerService(Component):
 
     def _get_partner_parser(self):
         parser = [
-            'id',
-            'name',
-            'street',
-            'street2',
-            'zip',
-            'city',
-            'mobile',
-            'email',
-            'phone',
-            'is_favorite',
-            'is_company',
-            ('country_id', ['id', 'name']),
-            'qr_url',
-            'qr_content',
-            #('state', ['id','name'])
+            "id",
+            "name",
+            "street",
+            "street2",
+            "zip",
+            "city",
+            "mobile",
+            "email",
+            "phone",
+            "is_favorite",
+            "is_company",
+            ("country_id", ["id", "name"]),
+            "qr_url",
+            "qr_content",
+            # ('state', ['id','name'])
         ]
         return parser
 
@@ -403,29 +446,32 @@ class PartnerService(Component):
         return res
 
     def _validator_search(self):
-        return {"value": {"type": "string", "nullable": False, "required": True},
-                "backend_keys": {
-                    "type": "list",
-                    "nullable": True,
-                    "required": False,
-                    "empty": True,
-                    "schema": {"type": "string"} #, "nullable": False, "required": False}
-                }
+        return {
+            "value": {"type": "string", "nullable": False, "required": True},
+            "backend_keys": {
+                "type": "list",
+                "nullable": True,
+                "required": False,
+                "empty": True,
+                "schema": {"type": "string"},  # , "nullable": False, "required": False}
+            },
         }
 
     ##########################################################
     # TO CLEAN LATER
     ##########################################################
     def _validator_partner_search(self):
-        return {"value": {"type": "string", "nullable": False, "required": True},
-                "backend_keys": {
-                    "type": "list",
-                    "nullable": True,
-                    "required": False,
-                    "empty": True,
-                    "schema": {"type": "string"} #, "nullable": False, "required": False}
-                }
+        return {
+            "value": {"type": "string", "nullable": False, "required": True},
+            "backend_keys": {
+                "type": "list",
+                "nullable": True,
+                "required": False,
+                "empty": True,
+                "schema": {"type": "string"},  # , "nullable": False, "required": False}
+            },
         }
+
     ##########################################################
     ##########################################################
 

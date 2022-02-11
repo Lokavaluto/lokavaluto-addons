@@ -15,7 +15,7 @@ from odoo.exceptions import UserError
 
 
 class Partners(models.Model):
-    _inherit = 'res.partner'
+    _inherit = "res.partner"
 
     qr = fields.Binary(string="Member QR code")
     qr_content = fields.Char(string="QR code content")
@@ -30,7 +30,10 @@ class Partners(models.Model):
                 box_size=10,
                 border=4,
             )
-            self.qr_content = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + self.website_url
+            self.qr_content = (
+                self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+                + self.website_url
+            )
             qr.add_data(self.qr_content)
             qr.make(fit=True)
 
@@ -38,8 +41,19 @@ class Partners(models.Model):
             temp = BytesIO()
             img.save(temp, format="PNG")
             qr_image = base64.b64encode(temp.getvalue())
-            self.write({'qr': qr_image})
-            self.qr_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/web/content/res.partner/" + str(self.id) +"/qr"
-            return self.env.ref('lcc_members_qr.print_qr').report_action(self, data={'data': self.id, 'type': 'cust'})
+            self.write({"qr": qr_image})
+            self.qr_url = (
+                self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+                + "/web/content/res.partner/"
+                + str(self.id)
+                + "/qr"
+            )
+            return self.env.ref("lcc_members_qr.print_qr").report_action(
+                self, data={"data": self.id, "type": "cust"}
+            )
         else:
-            raise UserError(_('Necessary requirements are not satisfied - Need qrcode and base64 Python libraries'))
+            raise UserError(
+                _(
+                    "Necessary requirements are not satisfied - Need qrcode and base64 Python libraries"
+                )
+            )

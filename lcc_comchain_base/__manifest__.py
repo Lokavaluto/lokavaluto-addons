@@ -1,10 +1,9 @@
 {
-    'name': "lcc_comchain_base",
-    'summary': """
+    "name": "lcc_comchain_base",
+    "summary": """
         comchain models and api for comchain transaction backend
         """,
-
-    'description': """
+    "description": """
    ::image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
@@ -68,26 +67,23 @@ LOKAVALUTO, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and ecosystem for local complementary currency organizations.
 
 """,
-
-    'author': "Lokavaluto",
-    'website': "https://lokavaluto.fr",
-    'category': 'Website',
-    'version': '12.0.1.0.4',
-
+    "author": "Lokavaluto",
+    "website": "https://lokavaluto.fr",
+    "category": "Website",
+    "version": "12.0.1.0.4",
     # any module necessary for this one to work correctly
-    'depends': [
-        'base',
-        'lcc_lokavaluto_app_connection',
-        'lcc_members',
-        ],
-
+    "depends": [
+        "base",
+        "lcc_lokavaluto_app_connection",
+        "lcc_members",
+    ],
     # always loaded
-    'data': [
-        'security/comchain_security.xml',
-        'security/ir_rule.xml',
-        'views/res_config_settings_view.xml',
-        'views/res_partner_view.xml',
+    "data": [
+        "security/comchain_security.xml",
+        "security/ir_rule.xml",
+        "views/res_config_settings_view.xml",
+        "views/res_partner_view.xml",
     ],
     # only loaded in demonstration mode
-    'demo': [],
+    "demo": [],
 }

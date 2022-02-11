@@ -9,8 +9,5 @@ class member_type(models.Model):
     _name = "member.type"
 
     name = fields.Char(
-        string=_("Name"),
-        required=False,
-        translate=False,
-        readonly=False
+        string=_("Name"), required=False, translate=False, readonly=False
     )
