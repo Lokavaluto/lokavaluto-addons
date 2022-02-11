@@ -35,6 +35,23 @@ class PartnerService(Component):
         return response
 
     @restapi.method(
+        [(["/credit-requests"], "GET")],
+        input_param=Datamodel("partner.credit.requests.get.param"),
+        output_param=Datamodel("partner.credit.request", is_list=True),
+    )
+    def credit_requests(self, partner_credit_requests_get_param):
+        backend_keys = partner_credit_requests_get_param.backend_keys
+        return self.env["account.invoice"]._get_credit_requests(backend_keys)
+
+    @restapi.method(
+        [(["/validate-credit-request"], "POST")],
+        input_param=Datamodel("partner.validate.credit.requests.param"),
+    )
+    def validate_credit_requests(self, partner_credit_requests_get_param):
+        invoice_ids = partner_credit_requests_get_param.ids
+        return self.env["account.invoice"]._validate_credit_request(invoice_ids)
+
+    @restapi.method(
         [(["/<int:id>/get", "/<int:id>"], "GET")],
         input_param=Datamodel("partner.info.get.param"),
     )

@@ -1,1 +1,1 @@
-from . import partners_info
+from . import comchain

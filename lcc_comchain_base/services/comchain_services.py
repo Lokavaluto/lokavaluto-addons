@@ -81,3 +81,22 @@ class ComchainService(Component):
             partner_id.activateComchainUser(account)
 
         return True
+
+    @restapi.method(
+        [(["/credit"], "POST")],
+        input_param=Datamodel("comchain.credit.info"),
+        output_param=Datamodel("comchain.credit.response"),
+    )
+    def credit(self, params):
+        """Credit user account with amount and generate accounting entry"""
+        partner = self.env.user.partner_id
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        _logger.debug("PARTNER ?: %s(%s)" % (partner.name, partner.id))
+        comchain_address = params.comchain_address
+        amount = params.amount
+        comchainCreditResponse = self.env.datamodels["comchain.credit.response"]
+        comchain_response = comchainCreditResponse(partial=True)
+        if comchain_address and amount:
+            new_order = partner.comchainCreateOrder(comchain_address, amount)
+            comchain_response.order_url = base_url + new_order.get_portal_url()
+        return comchain_response
