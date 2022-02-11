@@ -9,9 +9,6 @@ class AccountInvoice(models.Model):
         compute="_compute_has_numeric_lcc_products",
         store=True,
     )
-    cyclos_amount_credited = fields.Float(
-        string="Cyclos amount credited", track_visibility="always"
-    )
 
     @api.one
     @api.depends("state", "invoice_line_ids.product_id", "invoice_line_ids.price_total")
@@ -24,6 +21,10 @@ class AccountInvoice(models.Model):
         )
         if lcc_numeric_products:
             self.has_numeric_lcc_products = True
+
+    cyclos_amount_credited = fields.Float(
+        string="Cyclos amount credited", track_visibility="always"
+    )
 
     @api.multi
     def action_invoice_paid(self):
