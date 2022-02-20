@@ -329,6 +329,7 @@ class res_partner(models.Model):
 
     @api.model
     def _cron_migration_lcc_members_v2_v3(self):
+        cycle = 0
         # Company migration
         partners = self.search(
             [
@@ -337,6 +338,8 @@ class res_partner(models.Model):
             ]
         )
         for partner in partners:
+            cycle += 1
+            _logger.debug("Cycle #%s" % cycle)
             profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
             partner.partner_profile = profile["id"]
             partner.create_public_profile()
@@ -349,6 +352,8 @@ class res_partner(models.Model):
             ]
         )
         for partner in partners:
+            cycle += 1
+            _logger.debug("Cycle #%s" % cycle)
             if partner.parent_id == False:
                 profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
                 partner.partner_profile = profile["id"]
