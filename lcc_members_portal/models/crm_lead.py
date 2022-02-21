@@ -73,7 +73,11 @@ class Lead(models.Model):
     )
     total_membership = fields.Float(string=_("Membership amount"))
     message_from_candidate = fields.Text(string=_("Message from the candidate"))
-
+    membership_product_id = fields.Many2one(
+        "product.template",
+        string=_("Membership product"),
+        domain=[("membership", "=", True), ("type", "=", "service")],
+    )
     invoice_url = fields.Char(string=_("Invoice link"))
     application_accepted = fields.Boolean(default=False)
     application_refused = fields.Boolean(default=False)
@@ -102,6 +106,11 @@ class Lead(models.Model):
 
     @api.multi
     def action_validate_organization_application(self):
+        if not self.membership_product_id:
+            raise UserError(
+                "A membership product must be chosen to complete the registration."
+            )
+
         # Organization's main partner creation
         values = {}
         for field_name in self._MAIN_PROFILE_FIELDS:
@@ -144,12 +153,7 @@ class Lead(models.Model):
         values["company_id"] = main_partner.company_id.id
         sale_order = self.env["sale.order"].create(values)
         values = {}
-        values["member_product_id"] = (
-            self.env["product.template"]
-            .sudo()
-            .get_organization_membership_product(main_partner.company_id.id)
-            .id
-        )
+        values["member_product_id"] = self.membership_product_id.id
         values["total_membership"] = self.total_membership
         values["order_id"] = sale_order.id
         sale_order.sudo().create_membership(values)
