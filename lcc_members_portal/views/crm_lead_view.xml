@@ -72,6 +72,7 @@
                         </group>
                         <group name="membership_information" string="Membership Information">
                             <field name="team_id" string="Local Group" />
+                            <field name="membership_product_id" />
                             <field name="total_membership" />
                             <field name="want_newsletter_subscription" />
                             <field name="accept_policy" />
