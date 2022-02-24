@@ -141,9 +141,12 @@ class res_partner(models.Model):
         translate=False,
         readonly=False,
     )
-    is_main_profile = fields.Boolean(compute="_compute_profile_booleans")
-    is_public_profile = fields.Boolean(compute="_compute_profile_booleans")
-    is_position_profile = fields.Boolean(compute="_compute_profile_booleans")
+    is_main_profile = fields.Boolean(compute="_compute_profile_booleans", store=True)
+    is_public_profile = fields.Boolean(compute="_compute_profile_booleans", store=True)
+    is_position_profile = fields.Boolean(
+        compute="_compute_profile_booleans", store=True
+    )
+    has_position = fields.Boolean(compute="_compute_profile_booleans", store=True)
 
     public_profile_id = fields.Many2one(
         "res.partner", compute="_compute_public_profile_id", string="Public profile"
@@ -183,7 +186,7 @@ class res_partner(models.Model):
                 "edit_structure_public_profile"
             ).mapped("contact_id")
 
-    @api.depends("partner_profile")
+    @api.depends("partner_profile", "other_contact_ids")
     def _compute_profile_booleans(self):
         for partner in self:
             partner.is_main_profile = (
@@ -195,6 +198,7 @@ class res_partner(models.Model):
             partner.is_position_profile = (
                 partner.partner_profile.ref == "partner_profile_position"
             )
+            partner.has_position = len(partner.other_contact_ids) > 0
 
     @api.depends("partner_profile")
     def _compute_public_profile_id(self):
