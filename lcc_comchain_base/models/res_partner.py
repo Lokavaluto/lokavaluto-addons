@@ -5,6 +5,29 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class ResPartnerBackend(models.Model):
+    """Add backend commom property for local currency"""
+
+    _inherit = "res.partner.backend"
+
+    type = fields.Selection(selection_add=[("comchain", "Comchain")])
+    comchain_id = fields.Char(string="Address")
+    comchain_wallet = fields.Text(string="Crypted json wallet")
+    comchain_status = fields.Char(string="Comchain Status")
+    comchain_type = fields.Selection(
+        [("0", "Personal"), ("1", "Company"), ("2", "Admin")],
+        string="Type",
+        groups="lcc_comchain_base.group_comchain_manager",
+    )
+    comchain_credit_min = fields.Float(
+        string="Min Credit limit", groups="lcc_comchain_base.group_comchain_manager"
+    )
+    comchain_credit_max = fields.Float(
+        string="Max Credit limit", groups="lcc_comchain_base.group_comchain_manager"
+    )
+    comchain_message_key = fields.Char(string="Message keys")
+
+
 class ResPartner(models.Model):
     """Inherits partner:
     - add comchain fields in the partner form
@@ -51,12 +74,27 @@ class ResPartner(models.Model):
         data.extend(self._comchain_backend_data())
         return data
 
+    def _comchain_backend(self):
+        # We only support one backend per type for now
+        backend_data = self.env["res.partner.backend"]
+        if self.lcc_backend_ids.filtered(lambda r: r.type == "comchain"):
+            backend_data = self.lcc_backend_ids.filtered(
+                lambda r: r.type == "comchain"
+            )[0]
+        return backend_data
+
     @property
     def _comchain_wallet(self):
-        return json.loads(self.comchain_wallet) if self.comchain_wallet else {}
+        backend_data = self._comchain_backend()
+        return (
+            json.loads(backend_data.comchain_wallet)
+            if backend_data.comchain_wallet
+            else {}
+        )
 
     @property
     def _comchain_backend_id(self):
+        """Return the technical id for the backend"""
         wallet = self._comchain_wallet
         currency_name = (
             wallet.get("server", {}).get("name", {})
@@ -65,10 +103,12 @@ class ResPartner(models.Model):
         if not currency_name:
             ## not present in wallet and not configured in general settings
             return False
-        return "comchain:%s" % currency_name
+        return "%s:%s" % ("comchain", currency_name)
 
     def _comchain_backend_data(self):
         """Prepare backend data to be sent by credentials requests"""
+
+        backend_data = self._comchain_backend()
         backend_id = self._comchain_backend_id
         if not backend_id:
             ## not present in wallet and not configured in general settings
@@ -80,8 +120,8 @@ class ResPartner(models.Model):
             data["accounts"].append(
                 {
                     "wallet": wallet,
-                    "message_key": self.comchain_message_key,
-                    "active": self.comchain_active,
+                    "message_key": backend_data.comchain_message_key,
+                    "active": backend_data.status == "active",
                 }
             )
         return [data]
@@ -90,9 +130,10 @@ class ResPartner(models.Model):
         self.ensure_one()
         _logger.debug("SEARCH: backend_keys = %s" % backend_keys)
         data = super(ResPartner, self)._update_search_data(backend_keys)
+        backend_data = self._comchain_backend()
         for backend_key in backend_keys:
-            if backend_key.startswith("comchain:") and self.comchain_id:
-                data[backend_key] = [self.comchain_id]
+            if backend_key.startswith("comchain:") and backend_data:
+                data[backend_key] = [backend_data.comchain_id]
         _logger.debug("SEARCH: data %s" % data)
         return data
 
@@ -107,17 +148,18 @@ class ResPartner(models.Model):
             ResPartner, self
         ).domains_is_unvalidated_currency_backend()
         parent_domains[self._comchain_backend_id] = [
-            "&",
-            ("comchain_active", "=", False),
-            ("comchain_id", "!=", False),
+            ("lcc_backend_ids.status", "=", "to_confirm"),
+            ("lcc_backend_ids.type", "=", "comchain"),
+            ("lcc_backend_ids.comchain_id", "!=", False),
         ]
         return parent_domains
 
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
-        if self.comchain_id:
-            wallet = json.loads(self.comchain_wallet) if self.comchain_wallet else {}
+        backend_data = self._comchain_backend()
+        if backend_data.comchain_id:
+            wallet = self._comchain_wallet()
             currency_name = (
                 wallet.get("server", {}).get("name", {})
                 or self.env.user.company_id.comchain_currency_name
@@ -125,16 +167,17 @@ class ResPartner(models.Model):
             if not currency_name:
                 ## not present in wallet and not configured in general settings
                 return backends
-            return backends | {"comchain:%s" % currency_name}
+            return backends | {"%s:%s" % (backend_data.type, currency_name)}
         else:
             return backends
 
     @api.multi
     def activateComchainUser(self, params):
         self.ensure_one()
-        self.write(
+        backend_data = self._comchain_backend()
+        backend_data.write(
             {
-                "comchain_active": True,
+                "status": "active",
                 "comchain_status": "actif",
                 "comchain_type": "%s" % params.type,
                 "comchain_credit_min": params.credit_min,
