@@ -5,13 +5,34 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class ResPartnerBackend(models.Model):
+    """Add backend commom property for local currency"""
+
+    _name = "res.partner.backend"
+
+    type = fields.Selection([], string="type")
+    name = fields.Char("Name")
+    status = fields.Selection(
+        [
+            ("inactive", "Inactive"),
+            ("to_confirm", "To Confirm"),
+            ("active", "Active"),
+            ("blocked", "Blocked"),
+        ],
+        string="Status",
+    )
+    partner_id = fields.Many2one("res.partner", string="Partner")
+
+
 class ResPartner(models.Model):
     """Inherits partner and adds Tasks information in the partner form"""
 
     _inherit = "res.partner"
 
     in_mobile_app = fields.Boolean("In the mobile map", default=False)
-
+    lcc_backend_ids = fields.One2many(
+        "res.partner.backend", "partner_id", string="Local Currency Backend"
+    )
     app_exported_fields = []
 
     def _get_mobile_app_pro_domain(self, bounding_box, categories):
