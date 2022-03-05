@@ -77,7 +77,7 @@ class PartnerService(Component):
 
         if len(partners) == 1:
             parser = self._get_partner_parser()
-            res = partners.jsonify(parser)[0]
+            res = partners.public_profile_id.jsonify(parser)[0]
             backend_keys = partner_info_get_param.backend_keys
             if backend_keys:
                 res["monujo_backends"] = list(partners)[0]._update_search_data(
@@ -225,7 +225,7 @@ class PartnerService(Component):
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
-        rows = partners.jsonify(parser)
+        rows = partners.mapped("public_profile_id").jsonify(parser)
         if backend_keys:
             for row in rows:
                 partner_id = row["id"]
@@ -242,8 +242,6 @@ class PartnerService(Component):
 
         res = {"count": len(partners), "rows": rows}
         return res
-
-        return self._get_formatted_partners(partners, backend_keys)
 
     ##########################################################
     # TO CLEAN LATER
@@ -263,7 +261,7 @@ class PartnerService(Component):
 
         if len(partners) > 0:
             parser = self._get_partner_parser()
-            res = partners.jsonify(parser)[0]
+            res = partners.mapped("public_profile_id").jsonify(parser)[0]
             backend_keys = partner_url_get_info.backend_keys
             if backend_keys:
                 res["monujo_backends"] = list(partners)[0]._update_search_data(
@@ -342,7 +340,7 @@ class PartnerService(Component):
                 "is_favorite": True,
             }
         )
-        return partner.jsonify(parser)[0]
+        return partner.mapped("public_profile_id").jsonify(parser)[0]
 
     ##########################################################
     ##########################################################
@@ -360,11 +358,13 @@ class PartnerService(Component):
         rows = []
         res = {"count": len(partners), "rows": rows}
         parser = self._get_partner_parser()
-        rows = partners.jsonify(parser)
+        rows = partners.mapped("public_profile_id").jsonify(parser)
         if backend_keys:
             for row in rows:
                 partner_id = row["id"]
-                partner = self.env["res.partner"].search([("id", "=", partner_id)])
+                partner = self.env["res.partner"].search(
+                    [("public_profile_id", "=", partner_id)]
+                )
                 credentials = partner._update_search_data(backend_keys)
                 row["monujo_backends"] = credentials
         res = {"count": len(partners), "rows": rows}
