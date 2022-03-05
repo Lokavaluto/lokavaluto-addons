@@ -71,7 +71,7 @@ class ResPartner(models.Model):
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
-        data.extend(self._comchain_backend_data())
+        data.extend(self._comchain_backend_json_data())
         return data
 
     def _comchain_backend(self):
@@ -105,7 +105,7 @@ class ResPartner(models.Model):
             return False
         return "%s:%s" % ("comchain", currency_name)
 
-    def _comchain_backend_data(self):
+    def _comchain_backend_json_data(self):
         """Prepare backend data to be sent by credentials requests"""
 
         backend_data = self._comchain_backend()
@@ -140,7 +140,7 @@ class ResPartner(models.Model):
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        data.extend(self._comchain_backend_data())
+        data.extend(self._comchain_backend_json_data())
         return data
 
     def domains_is_unvalidated_currency_backend(self):
