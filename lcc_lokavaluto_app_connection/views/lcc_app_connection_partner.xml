@@ -19,6 +19,11 @@
                     }'/>
                 </button>
             </xpath>
+            <page name="accounting" position="after">
+                <page name="lcc_backend" string="Local Currency Backends" attrs="{'invisible': [('is_main_profile','=',False)]}">
+                    <field name="lcc_backend_ids"/>
+                </page>
+            </page>
         </field>
     </record>
 </odoo>
