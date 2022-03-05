@@ -8,6 +8,17 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class ResPartnerBackend(models.Model):
+    """Add backend commom property for local currency"""
+
+    _inherit = "res.partner.backend"
+
+    type = fields.Selection(selection_add=[("cyclos", "Cyclos")])
+    cyclos_create_response = fields.Text(string="Cyclos create response")
+    cyclos_id = fields.Char(string="Cyclos id")
+    cyclos_status = fields.Char(string="Cyclos Status")
+
+
 class ResPartner(models.Model):
     """Inherits partner, adds Cyclos fields in the partner form, and functions"""
 
@@ -82,8 +93,18 @@ class ResPartner(models.Model):
         domain = parsed_uri.netloc
         return "cyclos:%s" % domain
 
-    def _cyclos_backend_data(self):
+    def _cyclos_backend(self):
+        # We only support one backend per type for now
+        backend_data = self.env["res.partner.backend"]
+        if self.lcc_backend_ids.filtered(lambda r: r.type == "cyclos"):
+            backend_data = self.lcc_backend_ids.filtered(lambda r: r.type == "cyclos")[
+                0
+            ]
+        return backend_data
+
+    def _cyclos_backend_json_data(self):
         """Prepare backend data to be sent by credentials requests"""
+        backend_data = self._cyclos_backend()
         backend_id = self._cyclos_backend_id
         if not backend_id:  ## is backend available and configured on odoo
             return []
@@ -91,12 +112,12 @@ class ResPartner(models.Model):
             "type": backend_id,
             "accounts": [],
         }
-        if self.cyclos_id:
+        if backend_data.cyclos_id:
             data["accounts"].append(
                 {
-                    "owner_id": self.cyclos_id,
+                    "owner_id": backend_data.cyclos_id,
                     "url": self.env.user.company_id.cyclos_server_url,
-                    "active": self.cyclos_active,
+                    "active": backend_data.status == "active",
                 }
             )
         return [data]
@@ -105,29 +126,30 @@ class ResPartner(models.Model):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
         # Update cyclos password with odoo one from authenticate session
-        backend_data = self._cyclos_backend_data()
-        if self._cyclos_backend_id and backend_data and self.cyclos_active:
+        backend_json_data = self._cyclos_backend_json_data()
+        if self._cyclos_backend_id and backend_json_data:
             self.forceCyclosPassword(password)
             new_token = self.createCyclosUserToken(self.id, password)
             if new_token:
-                for ua in backend_data[0]["accounts"]:
+                for ua in backend_json_data[0]["accounts"]:
                     ua["token"] = new_token
-        data.extend(backend_data)
+        data.extend(backend_json_data)
         return data
 
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        data.extend(self._cyclos_backend_data())
+        data.extend(self._cyclos_backend_json_data())
         return data
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
         # _logger.debug('SEARCH: backend_keys = %s' % backend_keys)
+        backend_data = self._cyclos_backend()
         data = super(ResPartner, self)._update_search_data(backend_keys)
         for backend_key in backend_keys:
-            if backend_key.startswith("cyclos:") and self.cyclos_id:
-                data[backend_key] = [self.cyclos_id]
+            if backend_key.startswith("cyclos:") and backend_data.cyclos_id:
+                data[backend_key] = [backend_data.cyclos_id]
         # _logger.debug('SEARCH: data %s' % data)
         return data
 
@@ -136,9 +158,9 @@ class ResPartner(models.Model):
             ResPartner, self
         ).domains_is_unvalidated_currency_backend()
         parent_domains[self._cyclos_backend_id] = [
-            "&",
-            ("cyclos_active", "=", False),
-            ("cyclos_id", "!=", False),
+            ("lcc_backend_ids.type", "=", "cyclos"),
+            ("lcc_backend_ids.status", "=", "to_confirm"),
+            ("lcc_backend_ids.cyclos_id", "!=", False),
         ]
         return parent_domains
 
@@ -190,12 +212,14 @@ class ResPartner(models.Model):
     @api.multi
     def action_credit_cyclos_account(self, amount):
         for record in self:
+            backend_data = record._cyclos_backend()
+            parent_backend_data = record.parent_id._cyclos_backend()
             data = {
                 "amount": amount,
                 "description": "Credited by %s" % record.company_id.name,
-                "subject": record.cyclos_id
-                if record.cyclos_active
-                else record.parent_id.cyclos_id,
+                "subject": backend_data.cyclos_id
+                if backend_data.status == "active"
+                else parent_backend_data.cyclos_id,
                 "type": "debit.toPro" if record.is_company else "debit.toUser",
             }
             _logger.debug("data: %s" % data)
@@ -260,16 +284,20 @@ class ResPartner(models.Model):
                         )
                 raise
 
-            record.cyclos_create_response = res.text
             data = json.loads(res.text)
             if data:
                 _logger.debug("data: %s" % data)
-                record.write(
+                backend_obj = self.env["res.partner.backend"]
+                backend_obj.create(
                     {
+                        "partner_id": record.id,
                         "cyclos_id": data.get("user")["id"]
                         if data.get("user", False)
                         else "",
                         "cyclos_status": data.get("status", ""),
+                        "name": "cyclos:%s" % data.get("user")["id"],
+                        "status": "to_confirm",
+                        "cyclos_create_response": res.text,
                     }
                 )
             if record.company_type == "person":
@@ -278,30 +306,32 @@ class ResPartner(models.Model):
     @api.multi
     def validateCyclosUser(self):
         for record in self:
+            backend_data = record._cyclos_backend()
             res = record._cyclos_rest_call(
-                "POST", "/%s/registration/validate" % record.cyclos_id
+                "POST", "/%s/registration/validate" % backend_data.cyclos_id
             )
             _logger.debug("res: %s" % res.text)
-            record.cyclos_create_response = res.text
             data = json.loads(res.text)
             if data.get("status", False) and data.get("status") == "active":
-                record.write(
+                backend_data.write(
                     {
-                        "cyclos_active": True,
                         "cyclos_status": data.get("status", ""),
+                        "status": "active",
+                        "cyclos_create_response": res.text,
                     }
                 )
 
     @api.multi
     def activeCyclosUser(self):
         for record in self:
+            backend_data = record._cyclos_backend()
             data = {"status": "active", "comment": "Disable by Odoo"}
             res = record._cyclos_rest_call(
-                "POST", "/%s/status" % record.cyclos_id, data=data
+                "POST", "/%s/status" % backend_data.cyclos_id, data=data
             )
-            record.write(
+            backend_data.write(
                 {
-                    "cyclos_active": True,
+                    "status": "active",
                     "cyclos_status": "active",
                 }
             )
@@ -310,13 +340,14 @@ class ResPartner(models.Model):
     @api.multi
     def blockCyclosUser(self):
         for record in self:
+            backend_data = record._cyclos_backend()
             data = {"status": "blocked", "comment": "Blocked by Odoo"}
             res = record._cyclos_rest_call(
-                "POST", "/%s/status" % record.cyclos_id, data=data
+                "POST", "/%s/status" % backend_data.cyclos_id, data=data
             )
-            record.write(
+            backend_data.write(
                 {
-                    "cyclos_active": False,
+                    "status": "blocked",
                     "cyclos_status": "Blocked",
                 }
             )
@@ -325,13 +356,14 @@ class ResPartner(models.Model):
     @api.multi
     def disableCyclosUser(self):
         for record in self:
+            backend_data = record._cyclos_backend()
             data = {"status": "disabled", "comment": "Disable by Odoo"}
             res = record._cyclos_rest_call(
-                "POST", "/%s/status" % record.cyclos_id, data=data
+                "POST", "/%s/status" % backend_data.cyclos_id, data=data
             )
-            record.write(
+            backend_data.write(
                 {
-                    "cyclos_active": False,
+                    "status": "inactive",
                     "cyclos_status": "disabled",
                 }
             )
@@ -339,6 +371,7 @@ class ResPartner(models.Model):
 
     def forceCyclosPassword(self, password):
         for record in self:
+            backend_data = record._cyclos_backend()
             # TODO: need to stock password type id from cyclos API and replace -4307382460900696903
             data = {
                 "newPassword": password,
@@ -350,7 +383,7 @@ class ResPartner(models.Model):
                 record._cyclos_rest_call(
                     "POST",
                     "/%s/passwords/%s/change"
-                    % (record.cyclos_id, "-4307382460900696903"),
+                    % (backend_data.cyclos_id, "-4307382460900696903"),
                     data=data,
                 )
             except ValueError as e:
