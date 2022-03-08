@@ -76,6 +76,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "base",
         "lcc_members",
         "crm",
+        "portal",
         "product",
         "membership",
         "website_sale",
@@ -93,6 +94,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "views/product_template_view.xml",
         "views/crm_lead_view.xml",
         "views/auth_signup_login_template.xml",
+        "views/portal_templates.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],
