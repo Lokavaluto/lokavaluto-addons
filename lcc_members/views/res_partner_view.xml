@@ -255,7 +255,7 @@
                         </group>
                     </page>
                     <!-- page Description -->
-                    <page name="description" string="Description" attrs="{'invisible': [('contact_type','=','standalone')]}">
+                    <page name="description" string="Description" attrs="{'invisible': ['|',('is_public_profile','=',False),('is_company','=',False)]}">
                         <field name="website_description" placeholder="Webpage description of the partner" />
                     </page>
                     <!-- page Social Networks -->
