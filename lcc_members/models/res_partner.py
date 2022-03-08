@@ -333,6 +333,7 @@ class res_partner(models.Model):
                     "type": "other",
                     "contact_id": partner.id,
                     "partner_profile": profile["id"],
+                    "company_id": partner.company_id.id,
                 }
                 for field_name in PUBLIC_PROFILE_FIELDS:
                     values[field_name] = partner._get_field_value(field_name)
