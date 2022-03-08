@@ -767,3 +767,8 @@ msgstr "Code postal"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
 msgid "e.g. https://www.odoo.com"
 msgstr "e.x. https://www.odoo.com"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_details_lcc
+msgid "- Modification causes log out. Sign in just after!"
+msgstr "- Si modification, une reconnexion sera demandée."
