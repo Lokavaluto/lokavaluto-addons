@@ -82,7 +82,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "security/comchain_security.xml",
         "security/ir_rule.xml",
         "views/res_config_settings_view.xml",
-        "views/res_partner_view.xml",
+        "views/lcc_backend.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],
