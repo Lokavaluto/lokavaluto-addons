@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="lcc_backend_comchain_form_view" model="ir.ui.view">
+        <field name="name">lcc.backend.comchain.form.view</field>
+        <field name="model">res.partner.backend</field>
+        <field name="inherit_id" ref="lcc_lokavaluto_app_connection.lcc_backend_form_view" />
+        <field name="priority">0</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='general_info']" position="after">
+                <group name="comchain_specific" string="Comchain specific">
+                    <field name="comchain_id" readonly="True" />
+                    <field name="comchain_wallet" readonly="True" />
+                    <field name="comchain_status" readonly="True" />
+                    <field name="comchain_type" readonly="True" />
+                    <field name="comchain_credit_min" readonly="True" />
+                    <field name="comchain_credit_max" readonly="True" />
+                    <field name="comchain_message_key" readonly="True" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
