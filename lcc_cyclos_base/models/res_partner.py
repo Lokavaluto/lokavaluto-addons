@@ -44,6 +44,17 @@ class ResPartner(models.Model):
             "flags": {"form": {"action_buttons": True}},
         }
 
+    def _build_cyclos_error_message(self, e):
+        json_error = e.response.json()
+        msg = ""
+        if json_error.get("code") == "validation":
+            if json_error.get("propertyErrors"):
+                error = json_error.get("propertyErrors")
+            elif json_error.get("generalErrors"):
+                error = json_error.get("generalErrors")
+            msg = ["  - %s: %s" % (k, ", ".join(v)) for k, v in error.items()]
+        return msg
+
     def _cyclos_rest_call(
         self, method, entrypoint, data={}, api_login=False, api_password=False
     ):
@@ -67,12 +78,8 @@ class ResPartner(models.Model):
         except requests.exceptions.HTTPError as e:
             _logger.debug(e.response.json())
             if e.response.status_code == 422:
-                json_error = e.response.json()
-                if json_error.get("code") == "validation":
-                    msg = [
-                        "  - %s: %s" % (k, ", ".join(v))
-                        for k, v in json_error.get("propertyErrors").items()
-                    ]
+                msg = self._build_cyclos_error_message(e)
+                if msg != "":
                     raise ValueError(
                         "Cyclos serveur complained about:\n%s" % "\n".join(msg),
                         e.response,
@@ -273,14 +280,11 @@ class ResPartner(models.Model):
                 res = record._cyclos_rest_call("POST", "/users", data=data)
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 422:
-                    json_error = e.response.json()
-                    if json_error.get("code") == "validation":
-                        msg = [
-                            "  - %s: %s" % (k, ", ".join(v))
-                            for k, v in json_error.get("propertyErrors").items()
-                        ]
+                    msg = self._build_cyclos_error_message(e)
+                    if msg != "":
                         raise ValueError(
-                            "Cyclos serveur complained about:\n%s" % "\n".join(msg)
+                            "Cyclos serveur complained about:\n%s" % "\n".join(msg),
+                            e.response,
                         )
                 raise
 
