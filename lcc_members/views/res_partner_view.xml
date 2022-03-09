@@ -269,15 +269,26 @@
         <record id="members_search_view" model="ir.ui.view">
             <field name="name">Members search View</field>
             <field name="model">res.partner</field>
+            <field name="inherit_id" ref="membership.view_res_partner_member_filter" />
             <field name="arch" type="xml">
-                <search string="Membership Partners">
+                <xpath expr="//field[@name='name']" position="replace">
                     <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]" />
                     <field name="ref" string="Member ID" />
                     <field name="team_id" string="Local group" />
                     <field name="street" string="Legal name or street" />
                     <field name="parent_id" domain="[('is_company','=',True)]" operator="child_of" />
                     <field name="membership_state" string="member status" />
+                    <field name="user_id" />
+                    <field name="phone" filter_domain="['|',('phone','ilike',self),('mobile','=',self)]" />
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="replace">
+                    <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]" />
+                </xpath>
 
+                <xpath expr="//filter[@name='supplier']" position="replace" />
+                <xpath expr="//filter[@name='all_non_members']" position="replace" />
+                <xpath expr="//filter[@name='all_members']" position="replace" />
+                <xpath expr="//filter[@name='customer']" position="replace">
                     <filter name="filter_my_partners" help="My Contacts" domain="[('user_id','=',uid)]" />
                     <filter string="My Favorites" name="my_partners" domain="[('favorite_user_ids', 'in', uid)]" />
                     <separator />
@@ -290,20 +301,10 @@
                     <filter string="Vendors" name="supplier" domain="[('supplier','=',True), ('parent_id', '=', False)]" />
                     <filter string="Archived" name="inactive" domain="[('active','=',False)]" />
                     <separator />
-                    <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]" />
-                    <field name="user_id" />
-                    <field name="phone" filter_domain="['|',('phone','ilike',self),('mobile','=',self)]" />
                     <filter name="all_non_members" domain="[('membership_state', 'in', ['none','canceled','old','waiting'])]" string="All non Members" help="None/Canceled/Old/Waiting" />
                     <filter name="all_members" domain="[('membership_state', 'in', ['invoiced','paid','free'])]" string="All Members" help="Invoiced/Paid/Free" />
                     <filter name="filter_running_contract" string="With agreement" domain="['|', ('contract_ids.date_end', '&gt;=', context_today().strftime('%Y-%m-%d')), ('contract_ids.date_end', '=', False)]" />
-                    <group expand="0" name="group_by" string="Group By">
-                        <filter name="salesperson" string="Salesperson" domain="[]" context="{'group_by' : 'user_id'}" />
-                        <filter string="Associate Member" name="associate" domain="[]" context="{'group_by':'associate_member'}" />
-                        <filter string=" Membership State" name="membership_state" domain="[]" context="{'group_by':'membership_state'}" />
-                        <filter string="Start Date" name="start_month" help="Starting Date Of Membership" domain="[]" context="{'group_by':'membership_start'}" />
-                        <filter string="End Date" name="end_month" help="Ending Date Of Membership" domain="[]" context="{'group_by':'membership_stop'}" />
-                    </group>
-                </search>
+                </xpath>
             </field>
         </record>
 
