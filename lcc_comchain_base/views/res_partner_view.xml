@@ -27,14 +27,6 @@
                         </group>
                     </group>
                 </page>
-                <page name="comchain_disabled" string="Comchain" attrs="{'invisible': ['|',('is_company','=',True),('parent_id','=',False)]}">
-                    <div>
-                        <p>
-                            LCC account related settings are managed on
-                            <button name="open_commercial_member_entity" type="object" string="the parent company" class="oe_link"/>
-                        </p>
-                    </div>
-                </page>
             </page>
         </field>
     </record>

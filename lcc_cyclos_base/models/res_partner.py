@@ -29,21 +29,6 @@ class ResPartner(models.Model):
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
-    @api.multi
-    def open_commercial_member_entity(self):
-        """Utility method used to add an "Open Company" button in partner views"""
-        self.ensure_one()
-        company_form_id = self.env.ref("lcc_members.main_members_view").id
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "res.partner",
-            "view_mode": "form",
-            "views": [(company_form_id, "form")],
-            "res_id": self.commercial_partner_id.id,
-            "target": "current",
-            "flags": {"form": {"action_buttons": True}},
-        }
-
     def _build_cyclos_error_message(self, e):
         json_error = e.response.json()
         msg = ""

@@ -19,8 +19,14 @@
                 </button>
             </xpath>
             <page name="accounting" position="after">
-                <page name="lcc_backend" string="Local Currency Backends" attrs="{'invisible': [('is_main_profile','=',False)]}">
-                    <field name="lcc_backend_ids" nolabel="1" readonly="0">
+                <page name="lcc_backend" string="Local Currency Backends">
+                    <div attrs="{'invisible': ['|',('is_company','=',True),('parent_id','=',False)]}">
+                        <p>
+                            LCC account related settings are managed on
+                            <button name="open_commercial_member_entity" type="object" string="the parent company" class="oe_link" />
+                        </p>
+                    </div>
+                    <field name="lcc_backend_ids" nolabel="1" readonly="0" attrs="{'invisible': [('is_main_profile','=',False)]}">
                         <tree create="false" delete="true">
                             <field name="name" />
                             <field name="type" />

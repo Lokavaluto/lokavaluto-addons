@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 import logging
 
@@ -88,4 +88,19 @@ class ResPartner(models.Model):
             "prefetch": {"type": "dict"},
             "api_token": {"type": "string"},
             "api_version": {"type": "integer"},
+        }
+
+    @api.multi
+    def open_commercial_member_entity(self):
+        """Utility method used to add an "Open Company" button in partner views"""
+        self.ensure_one()
+        partner_form_id = self.env.ref("base.view_partner_form").id
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "res.partner",
+            "view_mode": "form",
+            "views": [(partner_form_id, "form")],
+            "res_id": self.commercial_partner_id.id,
+            "target": "current",
+            "flags": {"form": {"action_buttons": True}},
         }

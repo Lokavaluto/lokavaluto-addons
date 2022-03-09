@@ -7,17 +7,7 @@
     <field eval="17" name="priority" />
     <field name="arch" type="xml">
       <xpath expr="//field[@name='lcc_backend_ids']" position="after">
-        <button name="addCyclosUser" string="Create new Cyclos Wallet" class="oe_highlight" type="object" />
-      </xpath>
-      <xpath expr="//page[@name='lcc_backend']" position="after">
-        <page name="cyclos_disabled" string="Cyclos" attrs="{'invisible': ['|',('is_company','=',True),('parent_id','=',False)]}">
-          <div>
-            <p>
-              LCC account related settings are managed on
-              <button name="open_commercial_member_entity" type="object" string="the parent company" class="oe_link" />
-            </p>
-          </div>
-        </page>
+        <button name="addCyclosUser" string="Create new Cyclos Wallet" class="oe_highlight" type="object" attrs="{'invisible': [('is_main_profile','=',False)]}" />
       </xpath>
     </field>
   </record>
