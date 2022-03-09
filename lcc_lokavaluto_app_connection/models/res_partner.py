@@ -10,7 +10,7 @@ class ResPartnerBackend(models.Model):
 
     _name = "res.partner.backend"
 
-    type = fields.Selection([], string="type")
+    type = fields.Selection([], string="Type")
     name = fields.Char("Name")
     status = fields.Selection(
         [

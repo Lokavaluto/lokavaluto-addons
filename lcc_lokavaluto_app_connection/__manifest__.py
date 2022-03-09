@@ -86,6 +86,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     "data": [
         "security/ir.model.access.csv",
         "views/lcc_app_connection_partner.xml",
+        "views/lcc_backend.xml",
         "data/numeric_data.xml",
     ],
     # only loaded in demonstration mode

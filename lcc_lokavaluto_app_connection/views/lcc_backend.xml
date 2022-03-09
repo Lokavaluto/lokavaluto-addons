@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="lcc_backend_form_view" model="ir.ui.view">
+        <field name="name">lcc.backend.form.view</field>
+        <field name="model">res.partner.backend</field>
+        <field name="priority">0</field>
+        <field name="arch" type="xml">
+            <form string="LCC Backend">
+                <sheet string="LCC Backend">
+                    <group name="general_info">
+                        <group>
+                            <field name="name" />
+                            <field name="type" />
+                            <field name="status" readonly="True" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
