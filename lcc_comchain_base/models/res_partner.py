@@ -52,22 +52,6 @@ class ResPartner(models.Model):
     )
     comchain_message_key = fields.Char(string="Message keys")
 
-    @api.multi
-    def open_commercial_member_entity(self):
-        """Utility method:
-        - add an "Open Company" button in partner views"""
-        self.ensure_one()
-        company_form_id = self.env.ref("lcc_members.main_members_view").id
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "res.partner",
-            "view_mode": "form",
-            "views": [(company_form_id, "form")],
-            "res_id": self.commercial_partner_id.id,
-            "target": "current",
-            "flags": {"form": {"action_buttons": True}},
-        }
-
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
