@@ -14,7 +14,10 @@
                     <field name="cyclos_create_response" readonly="True" />
                 </group>
                 <footer>
-                    <button name="validateCyclosUser" type="object" string="Validate Cyclos Wallet" class="oe_highlight" />
+                    <button name="validateCyclosUser" type="object" string="Validate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': [('status','!=','to_confirm')]}" />
+                    <button name="activateCyclosUser" type="object" string="Activate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': [('cyclos_status','=','active')]}" />
+                    <button name="blockCyclosUser" type="object" string="Block Cyclos Wallet" class="oe_highlight" attrs="{'invisible': [('cyclos_status','=','Blocked')]}" />
+                    <button name="disableCyclosUser" type="object" string="Disable Cyclos Wallet" class="oe_highlight" attrs="{'invisible': [('cyclos_status','=','disabled')]}" />
                 </footer>
             </xpath>
 
