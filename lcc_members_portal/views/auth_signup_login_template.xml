@@ -2,13 +2,13 @@
 <odoo>
     <template id="auth_signup_lcc_fields" inherit_id="auth_signup.fields" name="Add lcc custom fields to Auth SignUp">
         <xpath expr="//div[hasclass('form-group','field-name')]" position="replace">
-            <div t-if="not only_passwords" class="form-group field-firstname">
+            <div t-if="not only_passwords" class="form-group field">
                 <label for="firstname">Your Firstname</label>
                 <input type="text" name="firstname" t-att-value="firstname" id="firstname" class="form-control form-control-sm" placeholder="e.g. John" required="required" autocapitalize="off" autofocus="autofocus" t-att-readonly="'readonly' if only_passwords else None" t-att-autofocus="'autofocus' if login and not only_passwords else None" />
             </div>
-            <div t-if="not only_passwords" class="form-group field-name">
-                <label for="name">Your Lastname</label>
-                <input type="text" name="name" t-att-value="name" id="name" class="form-control form-control-sm" placeholder="e.g. Doe" required="required" autocapitalize="on" autofocus="autofocus" t-att-readonly="'readonly' if only_passwords else None" t-att-autofocus="'autofocus' if login and not only_passwords else None" />
+            <div t-if="not only_passwords" class="form-group field">
+                <label for="lastname">Your Lastname</label>
+                <input type="text" name="lastname" t-att-value="lastname" id="lastname" class="form-control form-control-sm" placeholder="e.g. Doe" required="required" autocapitalize="on" autofocus="autofocus" t-att-readonly="'readonly' if only_passwords else None" t-att-autofocus="'autofocus' if login and not only_passwords else None" />
             </div>
         </xpath>
     </template>

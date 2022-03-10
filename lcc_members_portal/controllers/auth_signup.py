@@ -6,14 +6,31 @@ from odoo.http import request
 
 
 class AuthSignupHome(AuthSignupHome):
+    def get_auth_signup_qcontext(self):
+        qcontext = super(AuthSignupHome, self).get_auth_signup_qcontext()
+        if request.params.get("firstname"):
+            qcontext["firstname"] = request.params.get("firstname")
+        if request.params.get("lastname"):
+            qcontext["lastname"] = request.params.get("lastname")
+        return qcontext
+
     def do_signup(self, qcontext):
-        if qcontext.get("firstname"):
+
+        if qcontext.get("firstname") or qcontext.get("lastname"):
             """Shared helper that creates a res.partner out of a token"""
             # The only change compared to the parent function is the addition of the keys of the new field
             values = {
                 key: qcontext.get(key)
-                for key in ("login", "name", "password", "firstname")
+                for key in ("login", "lastname", "password", "firstname")
             }
+            if qcontext.get("firstname") and qcontext.get("lastname"):
+                values["name"] = (
+                    qcontext.get("firstname") + " " + qcontext.get("lastname")
+                )
+            elif qcontext.get("firstname"):
+                values["name"] = qcontext.get("firstname")
+            elif qcontext.get("lastname"):
+                values["name"] = qcontext.get("lastname")
             if not values:
                 raise UserError(_("The form was not properly filled in."))
             if values.get("password") != qcontext.get("confirm_password"):
