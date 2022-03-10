@@ -3,6 +3,7 @@
 
 import logging
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
@@ -252,6 +253,28 @@ class res_partner(models.Model):
             res.customer = False
             res.supplier = False
         return res
+
+    @api.constrains("email")
+    def _check_email_unique(self):
+        for rec in self.filtered("email"):
+            if "," in rec.email:
+                raise UserError(
+                    _(
+                        "Field contains multiple email addresses. This is "
+                        "not supported."
+                    )
+                )
+            if rec.is_main_profile:
+                if self.search_count(
+                    [
+                        ("email", "=", rec.email),
+                        ("id", "!=", rec.id),
+                        ("is_main_profile", "=", True),
+                    ]
+                ):
+                    raise UserError(
+                        _("Email '%s' is already in use.") % rec.email.strip()
+                    )
 
     @api.onchange("type")
     def _onchange_type(self):
