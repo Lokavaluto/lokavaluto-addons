@@ -4,7 +4,7 @@
         <record model="ir.rule" id="res_partner_portal_cyclos_rule">
             <field name="name">res_partner: portal/public: read/write access on cyclos partner</field>
             <field name="model_id" ref="base.model_res_partner" />
-            <field name="domain_force">[('cyclos_active', '=', 1)]</field>
+            <field name="domain_force">['|',('lcc_backend_ids.type', '=', 'cyclos'), ('contact_id.lcc_backend_ids.type', '=', 'cyclos')]</field>
             <field name="groups" eval="[(4, ref('base.group_portal'))]" />
             <field name="perm_create" eval="False" />
             <field name="perm_unlink" eval="False" />
