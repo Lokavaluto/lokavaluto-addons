@@ -221,5 +221,3 @@ class ResPartner(models.Model):
                         "cyclos_create_response": res.text,
                     }
                 )
-            if record.company_type == "person":
-                backend.validateCyclosUser()
