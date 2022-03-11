@@ -18,6 +18,19 @@ class ResPartnerBackend(models.Model):
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
+    @api.depends("name", "cyclos_status")
+    def _compute_status(self):
+        if self.cyclos_status == "active":
+            self.status = "active"
+        elif self.cyclos_status == "blocked":
+            self.status = "blocked"
+        elif self.cyclos_status == "disabled":
+            self.status = "inactive"
+        elif self.cyclos_status == "pending":
+            self.status = "to_confirm"
+        else:
+            self.status = ""
+
     def _build_cyclos_error_message(self, e):
         json_error = e.response.json()
         msg = ""
@@ -64,64 +77,70 @@ class ResPartnerBackend(models.Model):
     @api.multi
     def validateCyclosUser(self):
         for record in self:
-            res = record._cyclos_rest_call(
-                "POST", "/%s/registration/validate" % record.cyclos_id
-            )
-            _logger.debug("res: %s" % res.text)
-            data = json.loads(res.text)
-            if data.get("status", False) and data.get("status") == "active":
-                record.write(
-                    {
-                        "cyclos_status": data.get("status", ""),
-                        "status": "active",
-                        "cyclos_create_response": res.text,
-                    }
+            if record.cyclos_status == "pending":
+                res = record._cyclos_rest_call(
+                    "POST", "/%s/registration/validate" % record.cyclos_id
                 )
+                _logger.debug("res: %s" % res.text)
+                data = json.loads(res.text)
+                if data.get("status", False) and data.get("status") == "active":
+                    record.write(
+                        {
+                            "cyclos_status": data.get("status", ""),
+                            "cyclos_create_response": res.text,
+                        }
+                    )
 
     @api.multi
     def activateCyclosUser(self):
         for record in self:
-            data = {"status": "active", "comment": "Activated by Odoo"}
-            res = record._cyclos_rest_call(
-                "POST", "/%s/status" % record.cyclos_id, data=data
-            )
-            record.write(
-                {
-                    "status": "active",
-                    "cyclos_status": "active",
-                }
-            )
-            _logger.debug("res: %s" % res)
+            if record.cyclos_status != "active":
+                data = {"status": "active", "comment": "Activated by Odoo"}
+                record._cyclos_rest_call(
+                    "POST", "/%s/status" % record.cyclos_id, data=data
+                )
+                res = record._cyclos_rest_call("GET", "/%s/status" % record.cyclos_id)
+                _logger.debug("res: %s" % res)
+                data_res = json.loads(res.text)
+                record.write(
+                    {
+                        "cyclos_status": data_res.get("status", ""),
+                    }
+                )
 
     @api.multi
     def blockCyclosUser(self):
         for record in self:
-            data = {"status": "blocked", "comment": "Blocked by Odoo"}
-            res = record._cyclos_rest_call(
-                "POST", "/%s/status" % record.cyclos_id, data=data
-            )
-            record.write(
-                {
-                    "status": "blocked",
-                    "cyclos_status": "Blocked",
-                }
-            )
-            _logger.debug("res: %s" % res)
+            if record.cyclos_status != "blocked":
+                data = {"status": "blocked", "comment": "Blocked by Odoo"}
+                record._cyclos_rest_call(
+                    "POST", "/%s/status" % record.cyclos_id, data=data
+                )
+                res = record._cyclos_rest_call("GET", "/%s/status" % record.cyclos_id)
+                _logger.debug("res: %s" % res)
+                data_res = json.loads(res.text)
+                record.write(
+                    {
+                        "cyclos_status": data_res.get("status", ""),
+                    }
+                )
 
     @api.multi
     def disableCyclosUser(self):
         for record in self:
-            data = {"status": "disabled", "comment": "Disabled by Odoo"}
-            res = record._cyclos_rest_call(
-                "POST", "/%s/status" % record.cyclos_id, data=data
-            )
-            record.write(
-                {
-                    "status": "inactive",
-                    "cyclos_status": "disabled",
-                }
-            )
-            _logger.debug("res: %s" % res)
+            if record.cyclos_status != "disabled":
+                data = {"status": "disabled", "comment": "Disabled by Odoo"}
+                record._cyclos_rest_call(
+                    "POST", "/%s/status" % record.cyclos_id, data=data
+                )
+                res = record._cyclos_rest_call("GET", "/%s/status" % record.cyclos_id)
+                _logger.debug("res: %s" % res)
+                data_res = json.loads(res.text)
+                record.write(
+                    {
+                        "cyclos_status": data_res.get("status", ""),
+                    }
+                )
 
     def forceCyclosPassword(self, password):
         for record in self:

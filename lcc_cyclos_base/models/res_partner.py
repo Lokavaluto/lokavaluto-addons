@@ -208,7 +208,7 @@ class ResPartner(models.Model):
             data = json.loads(res.text)
             if data:
                 _logger.debug("data: %s" % data)
-                backend = backend_obj.create(
+                backend_obj.create(
                     {
                         "partner_id": record.id,
                         "cyclos_id": data.get("user")["id"]
@@ -217,7 +217,6 @@ class ResPartner(models.Model):
                         "cyclos_status": data.get("status", ""),
                         "name": "cyclos:%s" % data.get("user")["id"],
                         "type": "cyclos",
-                        "status": "to_confirm",
                         "cyclos_create_response": res.text,
                     }
                 )

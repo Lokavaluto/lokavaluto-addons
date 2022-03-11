@@ -20,8 +20,14 @@ class ResPartnerBackend(models.Model):
             ("blocked", "Blocked"),
         ],
         string="Status",
+        store=True,
+        compute="_compute_status",
     )
     partner_id = fields.Many2one("res.partner", string="Partner")
+
+    @api.depends("name")
+    def _compute_status(self):
+        self.status = ""
 
 
 class ResPartner(models.Model):
