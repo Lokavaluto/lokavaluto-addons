@@ -150,10 +150,16 @@ class res_partner(models.Model):
     has_position = fields.Boolean(compute="_compute_profile_booleans", store=True)
 
     public_profile_id = fields.Many2one(
-        "res.partner", compute="_compute_public_profile_id", string="Public profile"
+        "res.partner",
+        compute="_compute_public_profile_id",
+        string="Public profile",
+        store=True,
     )
     odoo_user_id = fields.Many2one(
-        "res.users", compute="_compute_odoo_user_id", string="Associated Odoo user"
+        "res.users",
+        compute="_compute_odoo_user_id",
+        string="Associated Odoo user",
+        store=True,
     )
 
     edit_structure_main_profile = fields.Boolean(
@@ -217,7 +223,7 @@ class res_partner(models.Model):
             )
             partner.has_position = len(partner.other_contact_ids) > 0
 
-    @api.depends("partner_profile")
+    @api.depends("partner_profile", "contact_id")
     def _compute_public_profile_id(self):
         for partner in self:
             partner.public_profile_id = self.env["res.partner"].search(
