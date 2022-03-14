@@ -135,6 +135,7 @@ class PartnerService(Component):
         value = partner_search_info.value
         backend_keys = partner_search_info.backend_keys
         is_favorite = partner_search_info.is_favorite
+        # NJ TODO: remove company data
         is_company = partner_search_info.is_company
         domain = [("id", "!=", self.env.user.partner_id.id), ("active", "=", True)]
         offset = partner_search_info.offset if partner_search_info.offset else 0
@@ -143,30 +144,24 @@ class PartnerService(Component):
         order = partner_search_info.order
         if is_favorite or not value:
             domain.extend([("favorite_user_ids", "in", self.env.uid)])
-        domain.extend([("is_company", "=", 1 if is_company else 0)])
         if value:
-            if is_company:
-                domain.extend(
-                    [
-                        "|",
-                        "|",
-                        "|",
-                        ("display_name", "ilike", value),
-                        ("email", "ilike", value),
-                        ("phone", "ilike", value),
-                        ("mobile", "ilike", value),
-                    ]
-                )
-            else:
-                domain.extend(
-                    [
-                        "|",
-                        "|",
-                        ("email", "=", value),
-                        ("phone", "=", value),
-                        ("mobile", "=", value),
-                    ]
-                )
+            domain.extend(
+                [
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    ("public_profile_id.name", "ilike", value),
+                    ("public_profile_id.email", "ilike", value),
+                    ("public_profile_id.phone", "ilike", value),
+                    ("public_profile_id.mobile", "ilike", value),
+                    ("industry_id", "ilike", value),
+                    ("secondary_industry_ids.name", "ilike", value),
+                    ("keywords", "ilike", value),
+                ]
+            )
         if website_url:
             partner_id = website_url.split("-")[-1]
             try:

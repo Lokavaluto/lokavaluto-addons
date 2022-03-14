@@ -29,10 +29,9 @@ class ResPartner(models.Model):
     def _cyclos_backend(self):
         # We only support one backend per type for now
         backend_data = self.env["res.partner.backend"]
-        if self.lcc_backend_ids.filtered(lambda r: r.type == "cyclos"):
-            backend_data = self.lcc_backend_ids.filtered(lambda r: r.type == "cyclos")[
-                0
-            ]
+        for backend in self.lcc_backend_ids:
+            if backend.type == "cyclos":
+                return backend
         return backend_data
 
     def _cyclos_backend_json_data(self):
@@ -61,7 +60,7 @@ class ResPartner(models.Model):
         # Update cyclos password with odoo one from authenticate session
         backend = self._cyclos_backend()
         backend_json_data = self._cyclos_backend_json_data()
-        if self._cyclos_backend_id and backend_json_data:
+        if backend and backend_json_data:
             backend.forceCyclosPassword(password)
             new_token = backend.createCyclosUserToken(self.id, password)
             if new_token:
