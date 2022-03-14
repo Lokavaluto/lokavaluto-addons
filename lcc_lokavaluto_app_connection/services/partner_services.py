@@ -26,23 +26,6 @@ class PartnerService(Component):
         If you are not authenticated go to <a href='/web/login'>Login</a>
     """
 
-    def create(self, **params):
-        """
-        Create a new partner
-        """
-        partner = self.env["res.partner"].create(self._prepare_params(params))
-        parser = self._get_partner_parser()
-        return partner.jsonify(parser)
-
-    def update(self, _id, **params):
-        """
-        Update partner informations
-        """
-        partner = self._get(_id)
-        parser = self._get_partner_parser()
-        partner.write(self._prepare_params(params))
-        return partner.jsonify(parser)
-
     def backend_credentials(self):
         """
         This method is used to authenticate and get the token for the user on mobile app.
@@ -86,36 +69,6 @@ class PartnerService(Component):
             return res
         else:
             raise MissingError("No partner found - please check your request")
-
-    ##########################################################
-    # TO CLEAN LATER
-    ##########################################################
-    def partner_search(self, **params):
-        """
-        Search partner by name, email or phone
-        """
-        value = params.get("value", False)
-        backend_keys = params.get("backend_keys", [])
-        partners = self.env["res.partner"].name_search(value)
-        partners = self.env["res.partner"].browse([i[0] for i in partners])
-        if not partners:
-            partners = self.env["res.partner"].search(
-                [
-                    ("active", "=", True),
-                    "|",
-                    ("email", "=", value),
-                    "|",
-                    ("phone", "=", value),
-                    ("mobile", "=", value),
-                ]
-            )
-        partners = partners - self.env.user.partner_id
-        if backend_keys:
-            partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
-        return self._get_formatted_partners(partners, backend_keys)
-
-    ##########################################################
-    ##########################################################
 
     @restapi.method(
         [(["/partner_search", "/search"], "GET")],
@@ -238,37 +191,6 @@ class PartnerService(Component):
         res = {"count": len(partners), "rows": rows}
         return res
 
-    ##########################################################
-    # TO CLEAN LATER
-    ##########################################################
-    @restapi.method(
-        [(["/get_by_url"], "GET")],
-        input_param=Datamodel("partner.url.get.info"),
-    )
-    def get_by_url(self, partner_url_get_info):
-        """
-        Get a partner with a website_url "/partners/..."
-        """
-        _logger.debug("PARAMS: %s" % partner_url_get_info)
-        url = partner_url_get_info.url
-        partners = self.env["res.partner"].search([("active", "=", True)])
-        partners = partners.filtered(lambda r: r.website_url == url)
-
-        if len(partners) > 0:
-            parser = self._get_partner_parser()
-            res = partners.mapped("public_profile_id").jsonify(parser)[0]
-            backend_keys = partner_url_get_info.backend_keys
-            if backend_keys:
-                res["monujo_backends"] = list(partners)[0]._update_search_data(
-                    backend_keys
-                )
-            return res
-        else:
-            raise MissingError("No partner found - please check your url")
-
-    ##########################################################
-    ##########################################################
-
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
     )
@@ -311,34 +233,6 @@ class PartnerService(Component):
             return self.unset_favorite(_id)
         else:
             return self.set_favorite(_id)
-
-    ##########################################################
-    # TO CLEAN LATER
-    ##########################################################
-    def favorite(self):
-        """
-        Get my favorite partner
-        """
-        partners = self.env["res.partner"].search(
-            [("favorite_user_ids", "in", self.env.context.get("uid"))]
-        )
-        return self._get_formatted_partners(partners, [])
-
-    def toggle_favorite(self, _id):
-        """
-        Toggle favorite partner
-        """
-        partner = self._get(_id)
-        parser = self._get_partner_parser()
-        partner.write(
-            {
-                "is_favorite": True,
-            }
-        )
-        return partner.mapped("public_profile_id").jsonify(parser)[0]
-
-    ##########################################################
-    ##########################################################
 
     ##########################################################
     # Private methods
@@ -451,24 +345,6 @@ class PartnerService(Component):
                 "schema": {"type": "string"},  # , "nullable": False, "required": False}
             },
         }
-
-    ##########################################################
-    # TO CLEAN LATER
-    ##########################################################
-    def _validator_partner_search(self):
-        return {
-            "value": {"type": "string", "nullable": False, "required": True},
-            "backend_keys": {
-                "type": "list",
-                "nullable": True,
-                "required": False,
-                "empty": True,
-                "schema": {"type": "string"},  # , "nullable": False, "required": False}
-            },
-        }
-
-    ##########################################################
-    ##########################################################
 
     def _validator_return_create(self):
         return self._validator_return_get()
