@@ -95,7 +95,6 @@ class PartnerService(Component):
         """
         Search partner by name, email or phone
         is_favorite: if True return only favorite partner, else all
-        is_company: if True search in company else in personal partner
         website_url: we can search we url of the web site if needed
         note:
            - when search personal partner we need complete et exact match with value.
@@ -105,8 +104,6 @@ class PartnerService(Component):
         value = partner_search_info.value
         backend_keys = partner_search_info.backend_keys
         is_favorite = partner_search_info.is_favorite
-        # NJ TODO: remove company data
-        is_company = partner_search_info.is_company
         domain = [("id", "!=", self.env.user.partner_id.id), ("active", "=", True)]
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
