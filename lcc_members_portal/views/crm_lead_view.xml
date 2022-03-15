@@ -103,6 +103,7 @@
                         <group name="access_rights" string="Access Rights">
                             <field name="edit_structure_main_profile" />
                             <field name="edit_structure_public_profile" />
+                            <field name="manage_structure_wallet" />
                         </group>
                         <group name="affiliation_candidate_message" string="Candidate message">
                             <field name="message_from_candidate" />

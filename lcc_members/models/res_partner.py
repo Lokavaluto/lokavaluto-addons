@@ -167,6 +167,7 @@ class res_partner(models.Model):
     edit_structure_public_profile = fields.Boolean(
         string=_("Manage structure's public profile")
     )
+    manage_structure_wallet = fields.Boolean(string=_("Manage structure's wallets"))
     can_edit_main_profile_ids = fields.Many2many(
         "res.partner",
         relation="res_partner_main_profile_rel",
@@ -185,6 +186,15 @@ class res_partner(models.Model):
         compute="_compute_can_edit",
         string="Can edit public profile",
     )
+    can_manage_wallets_ids = fields.Many2many(
+        "res.partner",
+        relation="res_partner_manage_wallets_rel",
+        column1="partner_id",
+        column2="profile_id",
+        store=True,
+        compute="_compute_can_edit",
+        string="Can manage wallets",
+    )
     want_newsletter_subscription = fields.Boolean(
         string=_("Want Newsletters Subscription")
     )
@@ -198,6 +208,7 @@ class res_partner(models.Model):
         "other_contact_ids",
         "other_contact_ids.edit_structure_main_profile",
         "other_contact_ids.edit_structure_public_profile",
+        "other_contact_ids.manage_structure_wallet",
     )
     def _compute_can_edit(self):
         for partner in self:
@@ -206,6 +217,9 @@ class res_partner(models.Model):
             ).mapped("contact_id")
             partner.can_edit_public_profile_ids = partner.child_ids.filtered(
                 "edit_structure_public_profile"
+            ).mapped("contact_id")
+            partner.can_manage_wallets_ids = partner.child_ids.filtered(
+                "manage_structure_wallet"
             ).mapped("contact_id")
 
     @api.depends("partner_profile", "other_contact_ids")

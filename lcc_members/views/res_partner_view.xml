@@ -47,6 +47,7 @@
                         <group name="structure_access_rights" attrs="{'invisible': ['|', ('is_position_profile','=',False), ('parent_id','=',False)]}">
                             <field name="edit_structure_main_profile" />
                             <field name="edit_structure_public_profile" />
+                            <field name="manage_structure_wallet" />
                         </group>
                     </group>
                 </xpath>
@@ -129,6 +130,7 @@
                 <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='comment']" position="before">
                     <field name="edit_structure_main_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
                     <field name="edit_structure_public_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
+                    <field name="manage_structure_wallet" attrs="{'invisible': [('is_position_profile','=',False)]}" />
                 </xpath>
                 <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='name']" position="attributes">
                     <attribute name="attrs">{'invisible': [('type', 'in', ['invoice','delivery','other'])]}</attribute>
@@ -155,6 +157,7 @@
                     <field name="parent_id" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True),('partner_profile.ref','=', 'partner_profile_main')]" context="{'default_partner_profile': 1, 'default_is_company': True, 'show_vat': True}" />
                     <field name="edit_structure_main_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
                     <field name="edit_structure_public_profile" attrs="{'invisible': [('is_position_profile','=',False)]}" />
+                    <field name="manage_structure_wallet" attrs="{'invisible': [('is_position_profile','=',False)]}" />
                 </xpath>
 
                 <!-- page Sales & Purchases -->

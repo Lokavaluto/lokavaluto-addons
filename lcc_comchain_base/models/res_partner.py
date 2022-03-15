@@ -56,6 +56,16 @@ class ResPartner(models.Model):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
         data.extend(self._comchain_backend_json_data())
+        # Addition of user's organizations' backends
+        if self.other_contact_ids:
+            # The user has positions in one or several organizations
+            for position_partner in self.other_contact_ids:
+                if position_partner.manage_structure_wallet:
+                    structure = position_partner.parent_id
+                    if structure._comchain_backend():
+                        data.extend(
+                            position_partner.parent_id._comchain_backend_json_data()
+                        )
         return data
 
     def _comchain_backend(self):

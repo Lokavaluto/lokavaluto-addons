@@ -79,6 +79,9 @@ class PortalOrganizationRegistration(CustomerPortal):
         values["edit_structure_public_profile"] = (
             kwargs.get("manage_public_profile", "off") == "on"
         )
+        values["manage_structure_wallet"] = (
+            kwargs.get("manage_structure_wallet", "off") == "on"
+        )
         lead = request.env["crm.lead"].sudo().create(values)
         lead.team_id = partner.team_id
         return request.render("lcc_members_portal.portal_affiliation_request_saved", {})

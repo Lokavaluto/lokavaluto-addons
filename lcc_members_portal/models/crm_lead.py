@@ -71,6 +71,7 @@ class Lead(models.Model):
     edit_structure_public_profile = fields.Boolean(
         string=_("Manage the structure's public profile")
     )
+    manage_structure_wallet = fields.Boolean(string=_("Manage the structure's wallets"))
     total_membership = fields.Float(string=_("Membership amount"))
     message_from_candidate = fields.Text(string=_("Message from the candidate"))
     membership_product_id = fields.Many2one(
@@ -143,6 +144,7 @@ class Lead(models.Model):
         values["type"] = "contact"
         values["edit_structure_main_profile"] = True
         values["edit_structure_public_profile"] = True
+        values["manage_structure_wallet"] = True
         values.update({"phone": values.pop("phone_pro", "")})
         self.env["res.partner"].create(values)
 
@@ -207,6 +209,7 @@ class Lead(models.Model):
             values["type"] = "contact"
             values["edit_structure_main_profile"] = True
             values["edit_structure_public_profile"] = True
+            values["manage_structure_wallet"] = True
             values.update({"phone": values.pop("phone_pro", "")})
             position_partner = self.env["res.partner"].create(values)
 

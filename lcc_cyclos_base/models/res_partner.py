@@ -67,6 +67,23 @@ class ResPartner(models.Model):
                 for ua in backend_json_data[0]["accounts"]:
                     ua["token"] = new_token
         data.extend(backend_json_data)
+        # Addition of user's organizations' backends
+        if self.other_contact_ids:
+            # The user has positions in one or several organizations
+            for position_partner in self.other_contact_ids:
+                if position_partner.manage_structure_wallet:
+                    structure = position_partner.parent_id
+                    structure_backend = structure._cyclos_backend()
+                    structure_backend_json_data = structure._cyclos_backend_json_data()
+                    if structure_backend and structure_backend_json_data:
+                        structure_backend.forceCyclosPassword(password)
+                        new_token = structure_backend.createCyclosUserToken(
+                            structure.id, password
+                        )
+                        if new_token:
+                            for ua in structure_backend_json_data[0]["accounts"]:
+                                ua["token"] = new_token
+                        data.extend(structure_backend_json_data)
         return data
 
     def _get_backend_credentials(self):
