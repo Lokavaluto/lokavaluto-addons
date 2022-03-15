@@ -11,7 +11,7 @@ class AccountInvoice(models.Model):
     )
 
     @api.one
-    @api.depends("state", "invoice_line_ids.product_id", "invoice_line_ids.price_total")
+    @api.depends("state", "invoice_line_ids.product_id")
     def _compute_has_numeric_lcc_products(self):
         self.has_numeric_lcc_products = False
 
@@ -26,6 +26,7 @@ class AccountInvoice(models.Model):
             self.has_numeric_lcc_products = True
 
     def _get_credit_requests(self, backend_keys):
+        ### This method should be inherited in backends modules.###
         return []
 
     def _validate_credit_request(self, invoice_ids):
