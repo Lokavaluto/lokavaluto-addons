@@ -363,4 +363,13 @@
             </t>
         </t>
     </template>
+
+    <template id="portal_my_lcc_details" name="My LCC details" inherit_id="portal.portal_my_details">
+        <xpath expr="//h3" position="before">
+            <div class="oe_structure" id="oe_structure_portal_my_details_1" />
+        </xpath>
+        <xpath expr="//form" position="after">
+            <div class="oe_structure" id="oe_structure_portal_my_details_2" />
+        </xpath>
+    </template>
 </odoo>
