@@ -2,26 +2,28 @@
 <odoo>
     <template id="portal_my_home_registration_menu" name="Portal My Home: Registration Menu" inherit_id="lcc_members.portal_my_home_profile_menu" priority="40">
         <xpath expr="//div[hasclass('o_portal_my_details')]" position="inside">
-            <br />
-            <h4>Registration options</h4>
-            <hr class="mt-1 mb-0" />
-            <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled' or user_id.partner_id.membership_state == 'old'">
-                <a t-attf-href="/my/private_registration">
+            <div t-if="not user_id.partner_id.is_company">
+                <br />
+                <h4>Registration options</h4>
+                <hr class="mt-1 mb-0" />
+                <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled' or user_id.partner_id.membership_state == 'old'">
+                    <a t-attf-href="/my/private_registration">
+                        <button class="btn btn-primary mb8">
+                            Register as a person
+                        </button>
+                    </a>
+                </div>
+                <a t-attf-href="/my/organization_registration">
                     <button class="btn btn-primary mb8">
-                        Register as a person
+                        Apply for your structure membership
+                    </button>
+                </a>
+                <a t-attf-href="/my/affiliation_request">
+                    <button class="btn btn-primary mb8">
+                        Ask for an affiliation
                     </button>
                 </a>
             </div>
-            <a t-attf-href="/my/organization_registration">
-                <button class="btn btn-primary mb8">
-                    Apply for your structure membership
-                </button>
-            </a>
-            <a t-attf-href="/my/affiliation_request">
-                <button class="btn btn-primary mb8">
-                    Ask for an affiliation
-                </button>
-            </a>
         </xpath>
     </template>
 </odoo>
