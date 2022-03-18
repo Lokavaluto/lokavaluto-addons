@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="portal_layout" name="Portal layout: profile menu entries" inherit_id="portal.portal_breadcrumbs" priority="40">
-        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <li t-if="page_name == 'profile' or profile" t-attf-class="breadcrumb-item #{'active ' if not profile else ''}">
-                <a t-if="profile" t-attf-href="/my/profiles?{{ keep_query() }}">Profiles</a>
-                <t t-else="">Profiles</t>
-            </li>
-            <li t-if="profile" class="breadcrumb-item active">
-                <t t-esc="profile.name" />
-            </li>
-        </xpath>
-    </template>
-
-    <template id="portal_my_home" name="Portal My Home: profile entries" inherit_id="portal.portal_my_home" priority="40">
-        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-if="profile_count" t-call="portal.portal_docs_entry">
-                <t t-set="title">Profiles</t>
-                <t t-set="url" t-value="'/my/profiles'" />
-                <t t-set="count" t-value="profile_count" />
-            </t>
+    <template id="portal_my_home_profile_menu" name="Portal My Home: Profile Menu" inherit_id="portal.portal_layout" priority="40">
+        <xpath expr="//div[hasclass('o_portal_my_details')]" position="replace">
+            <div class="o_portal_my_details">
+                <h4>Your Details </h4>
+                <hr class="mt-1 mb-0" />
+                <div class="mb8" t-field="user_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;email&quot;, &quot;phone&quot;, &quot;address&quot;, &quot;name&quot;]}" />
+                <div>
+                    <a t-attf-href="/my/account">
+                        <button class="btn btn-primary mb8">
+                            Modify my account
+                        </button>
+                    </a>
+                    <a t-attf-href="/my/profiles">
+                        <button class="btn btn-primary mb8">
+                            Consult my profiles
+                        </button>
+                    </a>
+                </div>
+            </div>
         </xpath>
     </template>
 
