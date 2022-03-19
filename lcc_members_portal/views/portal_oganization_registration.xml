@@ -160,7 +160,8 @@
                 <div class="row">
                     <div t-attf-class="form-group #{error.get('team_id') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="team_id">Local group</label>
-                        <select name="team_id" t-attf-class="form-control">
+                        <label class="text-danger"> *</label>
+                        <select name="team_id" t-attf-class="form-control" required="True">
                             <option value="">Local group...</option>
                             <t t-foreach="teams or []" t-as="team">
                                 <option t-att-value="team.id">
