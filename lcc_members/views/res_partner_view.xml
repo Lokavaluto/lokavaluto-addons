@@ -178,8 +178,8 @@
                     <!-- page Membership -->
                     <page name="annuaire" string="Directory" attrs="{'invisible': [('is_company','=',False)]}" autofocus="autofocus">
                         <group name="classification" string="Classification (to find easily pro. in the directory)">
-                            <field name="industry_id" string="Main activity" attrs="{'invisible': [('is_company', '=', False)]}" />
-                            <field name="secondary_industry_ids" widget="many2many_tags" string="Others activities" attrs="{'invisible': [('is_company', '=', False)]}" />
+                            <field name="industry_id" string="Main activity" attrs="{'invisible': [('is_company', '=', False)]}" create="False" />
+                            <field name="secondary_industry_ids" widget="many2many_tags" options="{'no_create_edit': True}" string="Others activities" attrs="{'invisible': [('is_company', '=', False)]}" />
                             <field name="detailed_activity" placeholder="Detailled activy (Ex.  lavender honey)" attrs="{'invisible': [('is_company', '=', False)]}" />
                             <field name="keywords" placeholder="keywords giving more information on activities. splite keyword using ;" attrs="{'invisible': [('is_company', '=', False)]}" />
                             <field name="itinerant" attrs="{'invisible': [('is_company', '=', False)]}" />
