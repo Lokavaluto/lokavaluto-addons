@@ -386,6 +386,7 @@ class res_partner(models.Model):
             _logger.debug("Cycle #%s" % cycle)
             profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
             partner.partner_profile = profile["id"]
+            _logger.debug("%s => Public profile creation" % partner.name)
             partner.create_public_profile()
 
         # Person migration
@@ -401,6 +402,7 @@ class res_partner(models.Model):
             if not partner.parent_id:
                 profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
                 partner.partner_profile = profile["id"]
+                _logger.debug("%s => Public profile creation" % partner.name)
                 partner.create_public_profile()
             else:
                 existing_main_partner = self.env["res.partner"].search(
@@ -421,6 +423,7 @@ class res_partner(models.Model):
                 else:
                     profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
                     partner.partner_profile = profile["id"]
+                    _logger.debug("%s => Public profile creation" % partner.name)
                     partner.create_public_profile()
                     # create Position partner
                     profile = self.env.ref(
@@ -435,6 +438,7 @@ class res_partner(models.Model):
                     }
                     for field_name in POSITION_PROFILE_FIELDS:
                         values[field_name] = partner._get_field_value(field_name)
+                    _logger.debug("%s => Position profile creation" % partner.name)
                     partner.create(values)
                     # remove Position data from main profile
                     partner.function = ""
