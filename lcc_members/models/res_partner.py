@@ -398,7 +398,7 @@ class res_partner(models.Model):
         for partner in partners:
             cycle += 1
             _logger.debug("Cycle #%s" % cycle)
-            if partner.parent_id == False:
+            if not partner.parent_id:
                 profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
                 partner.partner_profile = profile["id"]
                 partner.create_public_profile()
