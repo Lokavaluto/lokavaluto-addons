@@ -17,11 +17,12 @@ class AccountInvoice(models.Model):
                 amount = sum(
                     self.invoice_line_ids.filtered(
                         lambda line: line.product_id.categ_id == categ
-                    ).mapped("quantity")
+                    ).mapped("price_subtotal")
                 )
-                invoice.partner_id.action_credit_cyclos_account(amount)
-                invoice.write(
-                    {
-                        "cyclos_amount_credited": amount,
-                    }
-                )
+                if amount > 0:
+                    invoice.partner_id.action_credit_cyclos_account(amount)
+                    invoice.write(
+                        {
+                            "cyclos_amount_credited": amount,
+                        }
+                    )
