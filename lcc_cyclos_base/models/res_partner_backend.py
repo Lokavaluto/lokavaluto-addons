@@ -63,7 +63,15 @@ class ResPartnerBackend(models.Model):
         try:
             res.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            _logger.debug(e.response.json())
+            if e.response.status_code == 404:
+                raise Exception("404 when trying to reach cyclos on %s" % api_url)
+            try:
+                json_output = e.response.json()
+                _logger.debug(e.response.json())
+            except ValueError as e:
+                raise Exception("Non-json output from cyclos on %s" % api_url)
+                _logger.debug(e.response.text)
+
             if e.response.status_code == 422:
                 msg = self._build_cyclos_error_message(e)
                 if msg != "":
