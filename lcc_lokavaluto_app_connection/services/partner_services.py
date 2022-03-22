@@ -96,9 +96,6 @@ class PartnerService(Component):
         Search partner by name, email or phone
         is_favorite: if True return only favorite partner, else all
         website_url: we can search we url of the web site if needed
-        note:
-           - when search personal partner we need complete et exact match with value.
-           - personl partner only search on mobile, phone and email
         """
         _logger.debug("PARAMS: %s" % partner_search_info)
         value = partner_search_info.value
