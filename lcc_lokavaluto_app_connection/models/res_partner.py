@@ -10,8 +10,8 @@ class ResPartnerBackend(models.Model):
 
     _name = "res.partner.backend"
 
-    type = fields.Selection([], string="Type")
-    name = fields.Char("Name")
+    type = fields.Selection([], string="Type", required=True)
+    name = fields.Char("Name", required=True)
     status = fields.Selection(
         [
             ("inactive", "Inactive"),
@@ -23,7 +23,7 @@ class ResPartnerBackend(models.Model):
         store=True,
         compute="_compute_status",
     )
-    partner_id = fields.Many2one("res.partner", string="Partner")
+    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
 
     @api.depends("name")
     def _compute_status(self):
