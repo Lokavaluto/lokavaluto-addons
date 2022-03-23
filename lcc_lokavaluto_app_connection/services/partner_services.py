@@ -295,6 +295,7 @@ class PartnerService(Component):
                 )
                 credentials = partner._update_search_data(backend_keys)
                 row["monujo_backends"] = credentials
+                row["id"] = partner.id
                 row["is_favorite"] = partner.is_favorite
         res = {"count": len(partners), "rows": rows}
         return res
