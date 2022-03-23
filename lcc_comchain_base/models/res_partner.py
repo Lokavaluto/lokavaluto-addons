@@ -61,10 +61,9 @@ class ResPartner(models.Model):
     def _comchain_backend(self):
         # We only support one backend per type for now
         backend_data = self.env["res.partner.backend"]
-        if self.lcc_backend_ids.filtered(lambda r: r.type == "comchain"):
-            backend_data = self.lcc_backend_ids.filtered(
-                lambda r: r.type == "comchain"
-            )[0]
+        for backend in self.lcc_backend_ids:
+            if backend.type == "comchain":
+                return backend
         return backend_data
 
     @property
