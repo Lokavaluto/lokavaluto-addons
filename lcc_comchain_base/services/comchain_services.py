@@ -49,14 +49,18 @@ class ComchainService(Component):
         partner = self.env.user.partner_id
         backend_data = partner._comchain_backend()
         if not backend_data.comchain_wallet:
-            res = backend_data.write(
+            backend_data.create(
                 {
+                    "type": "comchain",
+                    "name": "comchain:%s" % params.address,
+                    "partner_id": partner.id,
                     "status": "to_confirm",
                     "comchain_id": params.address,
                     "comchain_wallet": params.wallet,
                     "comchain_message_key": params.message_key,
                 }
             )
+            res = True
         else:
             res = {
                 "error": "account already exist",
