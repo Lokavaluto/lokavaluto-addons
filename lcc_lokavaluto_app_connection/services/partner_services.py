@@ -94,20 +94,24 @@ class PartnerService(Component):
     def get_partner_search(self, partner_search_info):
         """
         Search partner by name, email or phone
-        is_favorite: if True return only favorite partner, else all
         website_url: we can search we url of the web site if needed
+
+        XXXvlab: upon empty search string, returns all favorite only. And
+        always order by favorite first.
+
         """
         _logger.debug("PARAMS: %s" % partner_search_info)
         value = partner_search_info.value
         backend_keys = partner_search_info.backend_keys
-        is_favorite = partner_search_info.is_favorite
-        domain = [("id", "!=", self.env.user.partner_id.id), ("active", "=", True)]
+        domain = [
+            ("id", "!=", self.env.user.partner_id.id),
+            ("active", "=", True),
+            ("public_profile_id.name", "!=", False),  ## only main profiles
+        ]
         offset = partner_search_info.offset if partner_search_info.offset else 0
         limit = partner_search_info.limit if partner_search_info.limit else 0
         website_url = partner_search_info.website_url
         order = partner_search_info.order
-        if is_favorite or not value:
-            domain.extend([("favorite_user_ids", "in", self.env.uid)])
         if value:
             domain.extend(
                 [
@@ -134,9 +138,33 @@ class PartnerService(Component):
             except ValueError:
                 raise MissingError("Url not valid.")
         _logger.debug("DOMAIN: %s" % domain)
-        partners = self.env["res.partner"].search(
-            domain, limit=limit, offset=offset, order=order
+        ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
+        ## here for a direct search. We'll implement 2 search to fake an
+        ## order by ``is_favorite``
+        partners_fav = self.env["res.partner"].search(
+            [
+                ("favorite_user_ids", "in", self.env.uid),
+            ]
+            + domain,
+            limit=limit,
+            offset=offset,
+            order=order,
         )
+        _logger.debug("partners_fav: %s" % partners_fav)
+        if value:
+            partners_no_fav = self.env["res.partner"].search(
+                [
+                    ("favorite_user_ids", "not in", self.env.uid),
+                ]
+                + domain,
+                limit=limit,
+                offset=offset,
+                order=order,
+            )
+            _logger.debug("partners_no_fav: %s" % partners_no_fav)
+            partners = partners_fav | partners_no_fav
+        else:
+            partners = partners_fav
         _logger.debug("partners: %s" % partners)
         if backend_keys:
             partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
@@ -267,6 +295,7 @@ class PartnerService(Component):
                 )
                 credentials = partner._update_search_data(backend_keys)
                 row["monujo_backends"] = credentials
+                row["is_favorite"] = partner.is_favorite
         res = {"count": len(partners), "rows": rows}
         return res
 
