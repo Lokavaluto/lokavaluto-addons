@@ -142,7 +142,7 @@ class ResPartner(models.Model):
         backends = super(ResPartner, self).backends()
         backend_data = self._comchain_backend()
         if backend_data.comchain_id:
-            wallet = self._comchain_wallet()
+            wallet = self._comchain_wallet
             currency_name = (
                 wallet.get("server", {}).get("name", {})
                 or self.env.user.company_id.comchain_currency_name
