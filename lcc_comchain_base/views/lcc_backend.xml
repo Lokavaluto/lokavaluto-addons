@@ -8,7 +8,7 @@
         <field name="priority">0</field>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='general_info']" position="after">
-                <group name="comchain_specific" string="Comchain specific">
+                <group name="comchain_specific" string="Comchain specific" attrs="{'invisible': [('type','!=','comchain')]}">
                     <field name="comchain_id" readonly="True" />
                     <field name="comchain_wallet" readonly="True" />
                     <field name="comchain_status" readonly="True" />
