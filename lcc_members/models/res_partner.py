@@ -325,19 +325,22 @@ class res_partner(models.Model):
 
     @api.multi
     def create_public_profile(self):
-        profile = self.env.ref("lcc_members.partner_profile_public").read()[0]
+        partner_profile_public = self.env.ref("lcc_members.partner_profile_public")
+        count = 1
         for partner in self:
-            partner._compute_public_profile_id()
+            _logger.debug(
+                "[%s] Create / update public profile: %s" % (count, partner.name)
+            )
+            count += 1
             if not partner.public_profile_id:
                 values = {
                     "type": "other",
                     "contact_id": partner.id,
-                    "partner_profile": profile["id"],
+                    "partner_profile": partner_profile_public.id,
                 }
                 for field_name in PUBLIC_PROFILE_FIELDS:
                     values[field_name] = partner._get_field_value(field_name)
-                partner.create(values)
-                partner._compute_public_profile_id()
+                partner.with_context(_partners_skip_fields_sync=True).create(values)
 
     @api.model
     def _cron_generate_missing_public_profiles(self):
@@ -349,73 +352,115 @@ class res_partner(models.Model):
 
     @api.model
     def _cron_migration_lcc_members_v2_v3(self):
-        cycle = 0
-        # Company migration
-        partners = self.search(
-            [
-                ("is_company", "=", True),
-                ("active", "=", True),
-            ]
-        )
-        for partner in partners:
-            cycle += 1
-            _logger.debug("Cycle #%s" % cycle)
-            profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
-            partner.partner_profile = profile["id"]
-            partner.create_public_profile()
+        from datetime import datetime
 
-        # Person migration
+        # start_time = datetime.now()
+        partner_profile_main = self.env.ref("lcc_members.partner_profile_main")
+        partner_profile_position = self.env.ref("lcc_members.partner_profile_position")
+
+        # # Company migration
+        # _logger.debug("Company migration")
+        # partners = self.search(
+        #     [
+        #         ("is_company", "=", True),
+        #         ("active", "=", True),
+        #     ]
+        # )
+        # _logger.debug("Company migration count: %s" % len(partners))
+        # partners.write(
+        #     {
+        #         "partner_profile": partner_profile_main.id,
+        #     }
+        # )
+        # end_time = datetime.now()
+        # _logger.debug("Duration Write : {}".format(end_time - start_time))
+        # temp_time = datetime.now()
+        # partners.create_public_profile()
+        # end_time = datetime.now()
+        # _logger.debug("Duration create public profile: {}".format(end_time - temp_time))
+        # temp_time = datetime.now()
+        # partners._compute_public_profile_id()
+        # end_time = datetime.now()
+        # _logger.debug("Duration: {}".format(end_time - start_time))
+        # # Person migration without parent_id
+        # temp_time = datetime.now()
+        # _logger.debug("Person migration without parent_id")
+        # partners = self.search(
+        #     [
+        #         ("is_company", "=", False),
+        #         ("active", "=", True),
+        #         ("parent_id", "=", False),
+        #     ]
+        # )
+        # _logger.debug("migration count: %s" % len(partners))
+        # partners.write(
+        #     {
+        #         "partner_profile": partner_profile_main.id,
+        #     }
+        # )
+        # partners.create_public_profile()
+        # _logger.debug("Duration create public profile: {}".format(end_time - temp_time))
+        # temp_time = datetime.now()
+        # partners._compute_public_profile_id()
+        # _logger.debug(
+        #     "Duration compute public profile: {}".format(end_time - temp_time)
+        # )
+
+        # Person migration with parent_id
+        _logger.debug("Person migration with parent_id")
         partners = self.search(
             [
                 ("is_company", "=", False),
                 ("active", "=", True),
+                ("parent_id", "!=", False),
             ]
         )
+        _logger.debug("migration count: %s" % len(partners))
+        count = 0
         for partner in partners:
-            cycle += 1
-            _logger.debug("Cycle #%s" % cycle)
-            if partner.parent_id == False:
-                profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
-                partner.partner_profile = profile["id"]
-                partner.create_public_profile()
-            else:
-                existing_main_partner = self.env["res.partner"].search(
-                    [
-                        ("active", "=", True),
-                        ("is_company", "=", False),
-                        ("name", "=", partner.name),
-                        ("partner_profile.ref", "=", "partner_profile_main"),
-                    ],
-                    limit=1,
-                )
-                if len(existing_main_partner) > 0:
-                    partner.contact_id = existing_main_partner[0].id
-                    profile = self.env.ref(
-                        "lcc_members.partner_profile_position"
-                    ).read()[0]
-                    partner.partner_profile = profile["id"]
-                else:
-                    profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
-                    partner.partner_profile = profile["id"]
-                    partner.create_public_profile()
-                    # create Position partner
-                    profile = self.env.ref(
-                        "lcc_members.partner_profile_position"
-                    ).read()[0]
-                    values = {
-                        "type": "other",
-                        "contact_id": partner.id,
-                        "parent_id": partner.parent_id.id,
-                        "company_id": partner.company_id.id,
-                        "partner_profile": profile["id"],
+            _logger.debug("count: [%s] : %s" % (count, partner.name))
+            existing_main_partner = self.env["res.partner"].search(
+                [
+                    ("active", "=", True),
+                    ("is_company", "=", False),
+                    "|",
+                    ("name", "=", partner.name),
+                    ("email", "=", partner.email),
+                    ("partner_profile.ref", "=", "partner_profile_main"),
+                ],
+                limit=1,
+            )
+            if existing_main_partner:
+                partner.write(
+                    {
+                        "contact_id": existing_main_partner.id,
+                        "partner_profile": partner_profile_position.id,
                     }
-                    for field_name in POSITION_PROFILE_FIELDS:
-                        values[field_name] = partner._get_field_value(field_name)
-                    partner.create(values)
-                    # remove Position data from main profile
-                    partner.function = ""
-                    partner.phone_pro = ""
-                    partner.parent_id = None
+                )
+            else:
+                default_values = {
+                    "partner_profile": partner_profile_main.id,
+                    "company_id": partner.company_id.id,
+                }
+                main_partner = partner.copy(default=default_values)
+                main_partner.write(
+                    {
+                        "name": partner.name,
+                    }
+                )
+                main_partner.create_public_profile()
+                partner.write(
+                    {
+                        "partner_profile": partner_profile_position.id,
+                        "contact_id": main_partner.id,
+                        "type": "other",
+                    }
+                )
+            count += 1
+        _logger.debug("Last clean")
+        partners._compute_public_profile_id()
+        # end_time = datetime.now()
+        # _logger.debug("Duration: {}".format(end_time - start_time))
 
 
 class PartnerImage(models.Model):
