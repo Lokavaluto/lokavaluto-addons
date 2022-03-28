@@ -24,6 +24,16 @@
                     </button>
                 </a>
             </div>
+            <div t-if="user_id.partner_id.is_company">
+                <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled' or user_id.partner_id.membership_state == 'old'">
+                    <a t-attf-href="/my/organization_renewal">
+                        <button class="btn btn-primary mb32">
+                            Renew subscription
+                            <span class="fa fa-arrow-right" />
+                        </button>
+                    </a>
+                </div>
+            </div>
         </xpath>
     </template>
 </odoo>
