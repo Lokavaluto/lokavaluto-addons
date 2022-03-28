@@ -1,3 +1,4 @@
+from bdb import set_trace
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
@@ -39,6 +40,7 @@ class Lead(models.Model):
             ("misc", "Miscellenaous"),
             ("membership_web_application", "Membership Web Application"),
             ("affiliation_request", "Affiliation Request"),
+            ("renewal_request", "Renewal Request"),
         ],
         string="Lead Type",
         required=True,
@@ -92,6 +94,8 @@ class Lead(models.Model):
     )
     affiliation_accepted = fields.Boolean(default=False)
     affiliation_refused = fields.Boolean(default=False)
+    renewal_accepted = fields.Boolean(default=False)
+    renewal_refused = fields.Boolean(default=False)
 
     def _get_field_value(self, fname):
         field = self._fields[fname]
@@ -186,6 +190,51 @@ class Lead(models.Model):
     @api.multi
     def action_refuse_organization_application(self):
         self.application_refused = True
+        return
+
+    @api.multi
+    def action_validate_renewal_request(self):
+        if not self.membership_product_id:
+            raise UserError(
+                "A membership product must be chosen to complete the registration."
+            )
+
+        # Organization's main partner update
+        values = {}
+        for field_name in self._MAIN_PROFILE_FIELDS:
+            values[field_name] = self._get_field_value(field_name)
+        values["name"] = self.commercial_company_name
+        values.update({"email": values.pop("company_email", "")})
+        self.partner_id.write(values)
+
+        # Create sale order and invoice to finalize the registration process
+        values = {}
+        values["partner_id"] = self.partner_id.id
+        values["team_id"] = self.team_id.id
+        values["company_id"] = self.partner_id.company_id.id
+        sale_order = self.env["sale.order"].create(values)
+        values = {}
+        values["member_product_id"] = self.membership_product_id.id
+        values["total_membership"] = self.total_membership
+        values["order_id"] = sale_order.id
+        sale_order.create_membership(values)
+        sale_order.action_confirm()
+        invoice_id = sale_order.action_invoice_create()[0]
+        invoice = self.env["account.invoice"].browse(invoice_id)
+        invoice.action_invoice_open()
+        self.invoice_url = (
+            self.env["website"]
+            .search([("company_id", "=", self.partner_id.company_id.id)], limit=1)
+            .domain
+            + "/my/invoices/"
+            + str(invoice_id)
+        )
+        self.renewal_accepted = True
+        return
+
+    @api.multi
+    def action_refuse_renewal_request(self):
+        self.renewal_refused = True
         return
 
     @api.multi
