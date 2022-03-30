@@ -198,7 +198,9 @@ class Lead(models.Model):
         for field_name in self._MAIN_PROFILE_FIELDS:
             values[field_name] = self._get_field_value(field_name)
         values["name"] = self.commercial_company_name
-        values.update({"email": values.pop("company_email", "")})
+        company_email = values.pop("company_email", "")
+        if company_email and self.partner_id.email != company_email:
+            values.update({"email": company_email})
         self.partner_id.write(values)
 
         # Create sale order and invoice to finalize the registration process
