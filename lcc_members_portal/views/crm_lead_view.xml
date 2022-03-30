@@ -86,7 +86,7 @@
                         </group>
                         <group name="membership_information" string="Membership Information">
                             <field name="team_id" string="Local Group" />
-                            <field name="membership_product_id" attrs="{'required': [('lead_type', '=', 'membership_web_application')]}"/>
+                            <field name="membership_product_id" options="{'create': false, 'create_edit': false}" attrs="{'required': [('lead_type', '=', 'membership_web_application')]}"/>
                             <field name="total_membership" />
                             <field name="want_newsletter_subscription" />
                             <field name="accept_policy" />
@@ -133,7 +133,7 @@
                             <field name="itinerant" />
                         </group>
                         <group name="membership_information" string="Membership Information">
-                            <field name="membership_product_id" attrs="{'required': [('lead_type', '=', 'renewal_request')]}"/>
+                            <field name="membership_product_id" options="{'create': false, 'create_edit': false}" attrs="{'required': [('lead_type', '=', 'renewal_request')]}"/>
                             <field name="total_membership" />
                             <field name="want_newsletter_subscription" />
                             <field name="accept_policy" />
