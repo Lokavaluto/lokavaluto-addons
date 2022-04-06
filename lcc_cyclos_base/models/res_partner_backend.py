@@ -18,18 +18,20 @@ class ResPartnerBackend(models.Model):
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
-    @api.depends("name", "cyclos_status")
+    @api.depends("name", "type", "cyclos_status")
     def _compute_status(self):
-        if self.cyclos_status == "active":
-            self.status = "active"
-        elif self.cyclos_status == "blocked":
-            self.status = "blocked"
-        elif self.cyclos_status == "disabled":
-            self.status = "inactive"
-        elif self.cyclos_status == "pending":
-            self.status = "to_confirm"
-        else:
-            self.status = ""
+        super(ResPartnerBackend, self)._compute_status()
+        if self.type == "cyclos":
+            if self.cyclos_status == "active":
+                self.status = "active"
+            elif self.cyclos_status == "blocked":
+                self.status = "blocked"
+            elif self.cyclos_status == "disabled":
+                self.status = "inactive"
+            elif self.cyclos_status == "pending":
+                self.status = "to_confirm"
+            else:
+                self.status = ""
 
     def _build_cyclos_error_message(self, e):
         json_error = e.response.json()

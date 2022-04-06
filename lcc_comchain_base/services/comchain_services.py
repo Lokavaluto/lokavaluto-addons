@@ -54,7 +54,7 @@ class ComchainService(Component):
                     "type": "comchain",
                     "name": "comchain:%s" % params.address,
                     "partner_id": partner.id,
-                    "status": "to_confirm",
+                    "comchain_status": "pending",
                     "comchain_id": params.address,
                     "comchain_wallet": params.wallet,
                     "comchain_message_key": params.message_key,

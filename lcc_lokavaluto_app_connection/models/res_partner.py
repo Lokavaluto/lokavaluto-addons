@@ -25,9 +25,9 @@ class ResPartnerBackend(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
 
-    @api.depends("name")
+    @api.depends("name", "type")
     def _compute_status(self):
-        self.status = ""
+        pass
 
 
 class ResPartner(models.Model):
