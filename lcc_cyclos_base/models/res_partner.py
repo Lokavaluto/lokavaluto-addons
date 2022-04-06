@@ -84,17 +84,6 @@ class ResPartner(models.Model):
                 data[backend_key] = [backend_data.cyclos_id]
         return data
 
-    def domains_is_unvalidated_currency_backend(self):
-        parent_domains = super(
-            ResPartner, self
-        ).domains_is_unvalidated_currency_backend()
-        parent_domains[self._cyclos_backend_id] = [
-            ("lcc_backend_ids.type", "=", "cyclos"),
-            ("lcc_backend_ids.status", "=", "to_confirm"),
-            ("lcc_backend_ids.cyclos_id", "!=", False),
-        ]
-        return parent_domains
-
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()

@@ -141,17 +141,6 @@ class ResPartner(models.Model):
         data.extend(self._comchain_backend_json_data())
         return data
 
-    def domains_is_unvalidated_currency_backend(self):
-        parent_domains = super(
-            ResPartner, self
-        ).domains_is_unvalidated_currency_backend()
-        parent_domains[self._comchain_backend_id] = [
-            ("lcc_backend_ids.status", "=", "to_confirm"),
-            ("lcc_backend_ids.type", "=", "comchain"),
-            ("lcc_backend_ids.comchain_id", "!=", False),
-        ]
-        return parent_domains
-
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
