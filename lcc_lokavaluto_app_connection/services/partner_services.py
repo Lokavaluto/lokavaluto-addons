@@ -183,20 +183,17 @@ class PartnerService(Component):
     )
     def search_accounts(self, account_search_info):
         _logger.debug("PARAMS: %s" % account_search_info)
-        backend_keys = account_search_info.backend_keys
-        domain = [
-            ("active", "=", True),
-        ]
-        domain_staging = []
+        backend_keys = self.env.user.partner_id.backends() & set(account_search_info.backend_keys)
 
-        domains_unvalidated = self.env[
-            "res.partner"
-        ].domains_is_unvalidated_currency_backend()
-        for backend_id, d in domains_unvalidated.items():
-            domain_staging = ["|"] + d + domain_staging if domain_staging else d
+        ## XXXvlab: big ugly shortcut
+        backend_types = [key.split(":", 1)[0] for key in backend_keys]
 
-        domain += domain_staging
+        currency_accounts = self.env["res.partner.backend"].search([
+            ('status', '=', "to_confirm"),
+            ('type', 'in', backend_types)
+        ])
 
+        domain = [("id", "in", currency_accounts.mapped("partner_id.id"))]
         offset = account_search_info.offset if account_search_info.offset else 0
         limit = account_search_info.limit if account_search_info.limit else 0
         order = account_search_info.order
@@ -208,27 +205,7 @@ class PartnerService(Component):
         if backend_keys:  ## filter out partners not having the queried backends
             partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
 
-        ## Format output
-        rows = []
-        res = {"count": len(partners), "rows": rows}
-        parser = self._get_partner_parser()
-        rows = partners.mapped("public_profile_id").jsonify(parser)
-        if backend_keys:
-            for row in rows:
-                partner_id = row["id"]
-                row["monujo_backends"] = {}
-                for backend_key in backend_keys:
-                    partner = self.env["res.partner"].search(
-                        [("id", "=", partner_id)] + domains_unvalidated[backend_key]
-                    )
-                    if len(partner) == 0:
-                        continue
-                    row["monujo_backends"].update(
-                        partner._update_search_data([backend_key])
-                    )
-
-        res = {"count": len(partners), "rows": rows}
-        return res
+        return self._get_formatted_partners(partners, backend_keys)
 
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
