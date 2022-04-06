@@ -27,6 +27,21 @@ class ResPartnerBackend(models.Model):
     )
     comchain_message_key = fields.Char(string="Message keys")
 
+    @api.depends("name", "type", "comchain_status")
+    def _compute_status(self):
+        super(ResPartnerBackend, self)._compute_status()
+        if self.type == "comchain":
+            if self.comchain_status == "active":
+                self.status = "active"
+            elif self.comchain_status == "blocked":
+                self.status = "blocked"
+            elif self.comchain_status == "disabled":
+                self.status = "inactive"
+            elif self.comchain_status == "pending":
+                self.status = "to_confirm"
+            else:
+                self.status = ""
+
 
 class ResPartner(models.Model):
     """Inherits partner:
@@ -160,7 +175,6 @@ class ResPartner(models.Model):
         backend_data = self._comchain_backend()
         backend_data.write(
             {
-                "status": "active",
                 "comchain_status": "actif",
                 "comchain_type": "%s" % params.type,
                 "comchain_credit_min": params.credit_min,
