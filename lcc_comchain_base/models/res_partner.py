@@ -164,7 +164,7 @@ class ResPartner(models.Model):
         backend_data = self._comchain_backend()
         backend_data.write(
             {
-                "comchain_status": "actif",
+                "comchain_status": "active",
                 "comchain_type": "%s" % params.type,
                 "comchain_credit_min": params.credit_min,
                 "comchain_credit_max": params.credit_max,
