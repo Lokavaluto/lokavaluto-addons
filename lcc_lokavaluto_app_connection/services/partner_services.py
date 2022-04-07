@@ -91,27 +91,27 @@ class PartnerService(Component):
         [(["/partner_search", "/search"], "GET")],
         input_param=Datamodel("partner.search.info"),
     )
-    def get_partner_search(self, partner_search_info):
+    def search_recipients(self, recipients_search_info):
         """
-        Search partner by name, email or phone
+        Search recipients by name, email or phone
         website_url: we can search we url of the web site if needed
 
         XXXvlab: upon empty search string, returns all favorite only. And
         always order by favorite first.
 
         """
-        _logger.debug("PARAMS: %s" % partner_search_info)
-        value = partner_search_info.value
-        backend_keys = partner_search_info.backend_keys
+        _logger.debug("PARAMS: %s" % recipients_search_info)
+        value = recipients_search_info.value
+        backend_keys = recipients_search_info.backend_keys
         domain = [
             ("id", "!=", self.env.user.partner_id.id),
             ("active", "=", True),
             ("public_profile_id.name", "!=", False),  ## only main profiles
         ]
-        offset = partner_search_info.offset if partner_search_info.offset else 0
-        limit = partner_search_info.limit if partner_search_info.limit else 0
-        website_url = partner_search_info.website_url
-        order = partner_search_info.order
+        offset = recipients_search_info.offset if recipients_search_info.offset else 0
+        limit = recipients_search_info.limit if recipients_search_info.limit else 0
+        website_url = recipients_search_info.website_url
+        order = recipients_search_info.order
         if value:
             domain.extend(
                 [
@@ -141,7 +141,7 @@ class PartnerService(Component):
         ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
         ## here for a direct search. We'll implement 2 search to fake an
         ## order by ``is_favorite``
-        partners_fav = self.env["res.partner"].search(
+        recipients_fav = self.env["res.partner"].search(
             [
                 ("favorite_user_ids", "in", self.env.uid),
             ]
@@ -150,9 +150,9 @@ class PartnerService(Component):
             offset=offset,
             order=order,
         )
-        _logger.debug("partners_fav: %s" % partners_fav)
+        _logger.debug("recipients_fav: %s" % recipients_fav)
         if value:
-            partners_no_fav = self.env["res.partner"].search(
+            recipients_no_fav = self.env["res.partner"].search(
                 [
                     ("favorite_user_ids", "not in", self.env.uid),
                 ]
@@ -161,14 +161,14 @@ class PartnerService(Component):
                 offset=offset,
                 order=order,
             )
-            _logger.debug("partners_no_fav: %s" % partners_no_fav)
-            partners = partners_fav | partners_no_fav
+            _logger.debug("recipients_no_fav: %s" % recipients_no_fav)
+            recipients = recipients_fav | recipients_no_fav
         else:
-            partners = partners_fav
-        _logger.debug("partners: %s" % partners)
+            recipients = recipients_fav
+        _logger.debug("recipients: %s" % recipients)
         if backend_keys:
-            partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
-        return self._get_formatted_partners(partners, backend_keys)
+            recipients = recipients.filtered(lambda r: r.backends() & set(backend_keys))
+        return self._get_formatted_recipients(recipients, backend_keys)
 
     @restapi.method(
         [
@@ -188,12 +188,12 @@ class PartnerService(Component):
         ## XXXvlab: big ugly shortcut
         backend_types = [key.split(":", 1)[0] for key in backend_keys]
 
-        currency_accounts = self.env["res.partner.backend"].search([
+        recipients = self.env["res.partner.backend"].search([
             ('status', '=', "to_confirm"),
             ('type', 'in', backend_types)
         ])
 
-        domain = [("id", "in", currency_accounts.mapped("partner_id.id"))]
+        domain = [("id", "in", recipients.mapped("partner_id.id"))]
         offset = account_search_info.offset if account_search_info.offset else 0
         limit = account_search_info.limit if account_search_info.limit else 0
         order = account_search_info.order
@@ -205,7 +205,7 @@ class PartnerService(Component):
         if backend_keys:  ## filter out partners not having the queried backends
             partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
 
-        return self._get_formatted_partners(partners, backend_keys)
+        return self._get_formatted_recipients(partners, backend_keys)
 
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
@@ -259,11 +259,11 @@ class PartnerService(Component):
     def _get(self, _id):
         return self.env["res.partner"].browse(_id)
 
-    def _get_formatted_partners(self, partners, backend_keys):
+    def _get_formatted_recipients(self, recipients, backend_keys):
         rows = []
-        res = {"count": len(partners), "rows": rows}
+        res = {"count": len(recipients), "rows": rows}
         parser = self._get_partner_parser()
-        rows = partners.mapped("public_profile_id").jsonify(parser)
+        rows = recipients.mapped("public_profile_id").jsonify(parser)
         if backend_keys:
             for row in rows:
                 partner_id = row["id"]
@@ -274,7 +274,7 @@ class PartnerService(Component):
                 row["monujo_backends"] = credentials
                 row["id"] = partner.id
                 row["is_favorite"] = partner.is_favorite
-        res = {"count": len(partners), "rows": rows}
+        res = {"count": len(recipients), "rows": rows}
         return res
 
     def _prepare_params(self, params):
