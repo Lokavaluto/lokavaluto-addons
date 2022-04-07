@@ -50,23 +50,6 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    comchain_active = fields.Boolean(string="comchain OK")
-    comchain_id = fields.Char(string="Address")
-    comchain_wallet = fields.Text(string="Crypted json wallet")
-    comchain_status = fields.Char(string="Comchain Status")
-    comchain_type = fields.Selection(
-        [("0", "Personal"), ("1", "Company"), ("2", "Admin")],
-        string="Type",
-        groups="lcc_comchain_base.group_comchain_manager",
-    )
-    comchain_credit_min = fields.Float(
-        string="Min Credit limit", groups="lcc_comchain_base.group_comchain_manager"
-    )
-    comchain_credit_max = fields.Float(
-        string="Max Credit limit", groups="lcc_comchain_base.group_comchain_manager"
-    )
-    comchain_message_key = fields.Char(string="Message keys")
-
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
