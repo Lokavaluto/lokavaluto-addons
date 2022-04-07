@@ -158,7 +158,7 @@ msgstr "Accepter les Conditions Générales d'Utilisation"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #, python-format
 msgid "Accept coupons"
-msgstr "Accept les coupons"
+msgstr "Accepte les coupons"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:58
@@ -166,7 +166,7 @@ msgstr "Accept les coupons"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #, python-format
 msgid "Accept digital currency"
-msgstr "Accept la monnaie numérique"
+msgstr "Accepte la monnaie numérique"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
@@ -196,7 +196,7 @@ msgstr "Affiliation Acceptée"
 #. module: lcc_members_portal
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__affiliation_refused
 msgid "Affiliation Refused"
-msgstr "Affiliation Réfusée"
+msgstr "Affiliation Refusée"
 
 #. module: lcc_members_portal
 #: selection:crm.lead,lead_type:0
@@ -223,12 +223,12 @@ msgstr "Affiliation refusée"
 #. module: lcc_members_portal
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__application_accepted
 msgid "Application Accepted"
-msgstr "Adhésion Acceptée"
+msgstr "Adhésion acceptée"
 
 #. module: lcc_members_portal
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__application_refused
 msgid "Application Refused"
-msgstr "Adhésion Refusée"
+msgstr "Adhésion refusée"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
@@ -243,11 +243,9 @@ msgstr "Adhésion refusée"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
 msgid ""
-"Ask for an affiliation\n"
-"                        <span class=\"fa fa-arrow-right\"/>"
+"Ask for an affiliation"
 msgstr ""
-"Demander une Affiliation\n"
-"                        <span class=\"fa fa-arrow-right\"/>"
+"Demander une Affiliation"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request_saved
@@ -409,19 +407,19 @@ msgstr "Nom légal"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
 msgid "Local Group"
-msgstr "Groupe Local"
+msgstr "Groupe local"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
 msgid "Local group"
-msgstr "Groupe Local"
+msgstr "Groupe local"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
 msgid "Local group..."
-msgstr "Groupe Local..."
+msgstr "Groupe local..."
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:53
@@ -436,7 +434,7 @@ msgstr "Activité principale"
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__edit_structure_main_profile
 #, python-format
 msgid "Manage the structure's main profile"
-msgstr "Gère le profil principale de la structure"
+msgstr "Gère le profil principal de la structure"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:71
@@ -499,7 +497,7 @@ msgstr "Nom de l'organisation"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
 msgid "Organisation Registration"
-msgstr ""
+msgstr "Inscription de l'organsation"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
@@ -539,7 +537,7 @@ msgstr "Téléphone Professionnel"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration_saved
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
 msgid "Private Registration"
-msgstr "Adhésion particulier"
+msgstr "Adhésion particulière"
 
 #. module: lcc_members_portal
 #: model:ir.model,name:lcc_members_portal.model_product_template
@@ -550,7 +548,7 @@ msgstr "Modèle d'article"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 msgid "Professional phone"
-msgstr "Téléphone Professionnel"
+msgstr "Téléphone professionnel"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
@@ -565,11 +563,9 @@ msgstr "Refuser l'adhésion"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
 msgid ""
-"Register your organisation\n"
-"                        <span class=\"fa fa-arrow-right\"/>"
+"Register your organisation"
 msgstr ""
-"Enregistrer votre organisation\n"
-"                        <span class=\"fa fa-arrow-right\"/>"
+"Demander l'adhésion de ma structure"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
@@ -637,8 +633,7 @@ msgid ""
 "Subscribe yourself\n"
 "                        <span class=\"fa fa-arrow-right\"/>"
 msgstr ""
-"S'inscrire\n"
-"                        <span class=\"fa fa-arrow-right\"/>"
+"Adhérer en tant que particulier"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
@@ -719,12 +714,12 @@ msgstr "Utilisé pour l'adhésion Particulier dans le portail"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
 msgid "Validate Affiliation"
-msgstr "Valider l'affiliation"
+msgstr "Accepter l'affiliation"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
 msgid "Validate Application"
-msgstr "Valider la demande"
+msgstr "Accepter l'adhésion"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:64
@@ -743,7 +738,7 @@ msgstr "Site Web"
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__website_description
 #, python-format
 msgid "Website Description"
-msgstr "Description sur le site WEB"
+msgstr "Description sur le site Web"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:55

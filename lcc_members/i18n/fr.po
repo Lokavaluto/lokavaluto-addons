@@ -35,7 +35,7 @@ msgstr "<b>Comptoir de change</b>"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
 msgid "<b>Groupe Local:</b>"
-msgstr "<b>Groupe Local :</b>"
+msgstr "<b>Groupe local :</b>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
@@ -65,7 +65,7 @@ msgstr "<font style=\"font-size: 18px;\">Partager</font>"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
 msgid "<span class=\"d-none d-md-inline\">Profile name</span>"
-msgstr "<span class=\"d-none d-md-inline\">Nom du Profile</span>"
+msgstr "<span class=\"d-none d-md-inline\">Nom du Profil</span>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
@@ -125,7 +125,7 @@ msgstr ""
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_kanban_view
 msgid "<span>Local group:</span>"
-msgstr "<span>Groupe Local :</span>"
+msgstr "<span>Groupe local :</span>"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_users.py:30
@@ -163,7 +163,7 @@ msgstr "Accepte les coupons"
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 #, python-format
 msgid "Accept digital currency"
-msgstr "Accepte la Monnaie numérique"
+msgstr "Accepte la monnaie numérique"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -204,7 +204,7 @@ msgstr "Utilisateur Odoo associé"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "Associated User"
-msgstr "Utilisateur Associé"
+msgstr "Utilisateur associé"
 
 #. module: lcc_members
 #: model:ir.actions.act_window,name:lcc_members.action_carte_vierge_form_view
@@ -237,7 +237,7 @@ msgstr "Classification (pour retrouver facilement un pro dans l'annuaire)"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "Commercial Name"
-msgstr "Nom Commercial"
+msgstr "Nom commercial"
 
 #. module: lcc_members
 #: code:addons/lcc_members/controllers/portal.py:114
@@ -442,13 +442,13 @@ msgstr "Est le profil principal"
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_position_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__is_position_profile
 msgid "Is Position Profile"
-msgstr "est un profil \"position\""
+msgstr "Est un profil Position""
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_public_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__is_public_profile
 msgid "Is Public Profile"
-msgstr "est un profil public"
+msgstr "Est un profil Public"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/crm_team.py:8
@@ -591,7 +591,7 @@ msgstr "Etat de l'adhésion"
 #. module: lcc_members
 #: model:ir.actions.act_window,name:lcc_members.action_type_adherent_form_view
 msgid "Membership Type"
-msgstr "Type d'adhésion"
+msgstr "Type d'adhérent"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -694,7 +694,7 @@ msgstr "Profil du partenaire pour différencier les différents types de fiche c
 #: model:ir.cron,cron_name:lcc_members.ir_cron_generate_missing_public_profiles
 #: model:ir.cron,name:lcc_members.ir_cron_generate_missing_public_profiles
 msgid "Partner: generate missing public profiles"
-msgstr "Partenaire : Générer les profils public manquant"
+msgstr "Partenaire : Générer les profils publics manquants"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -729,7 +729,7 @@ msgstr "Position"
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__private_comment
 #, python-format
 msgid "Private comment"
-msgstr "Commentaire Privé / interne"
+msgstr "Commentaire privé / interne"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -743,7 +743,7 @@ msgstr "Téléphone Professionnel"
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__phone_pro
 #, python-format
 msgid "Professional phone"
-msgstr "Téléphone Professionnel"
+msgstr "Téléphone professionnel"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -755,7 +755,7 @@ msgstr "Professionnels"
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 #, python-format
 msgid "Profile Type"
-msgstr "Type de Profil"
+msgstr "Type de profil"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
@@ -774,7 +774,7 @@ msgstr "Profils"
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__public_profile_id
 #: model:partner.profile,name:lcc_members.partner_profile_public
 msgid "Public profile"
-msgstr "Profils public"
+msgstr "Profil public"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/partner_profile.py:13
@@ -806,7 +806,7 @@ msgstr "Equipes de vente"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Salesperson"
-msgstr "Vendeur"
+msgstr "Référent"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -846,7 +846,7 @@ msgstr "Réseaux Sociaux"
 #: code:addons/lcc_members/wizard/portal_wizard.py:18
 #, python-format
 msgid "Some contacts represent a job position and not a physical person, they can't be linked with a portal user: "
-msgstr "Certains contacts représentent des postes / fonctions et non des personnes physiques. Ils ne peuvent pas être lié à un compte \"Utilisateur Portail\":"
+msgstr "Certains contacts représentent des postes / fonctions et non des personnes physiques. Ils ne peuvent pas être liés à un compte \"Utilisateur Portail\":"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -856,7 +856,7 @@ msgstr "Date de début"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Starting Date Of Membership"
-msgstr "Date de Début de l'Adhésion"
+msgstr "Date de début de l'adhésion"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -908,7 +908,7 @@ msgstr "Il n'y a pas de profils"
 #: code:addons/lcc_members/controllers/portal.py:86
 #, python-format
 msgid "This nickname is already used, please find an other idea."
-msgstr "The Pseudo est déjà utilisé, merci d'en trouver un autre."
+msgstr "Ce pseudo est déjà utilisé, merci d'en trouver un autre."
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:52
@@ -917,7 +917,7 @@ msgstr "The Pseudo est déjà utilisé, merci d'en trouver un autre."
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__to_renew
 #, python-format
 msgid "To renew"
-msgstr "à renouveler"
+msgstr "À renouveler"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -947,7 +947,7 @@ msgstr "Twitter"
 #: code:addons/lcc_members/models/res_partner.py:64
 #, python-format
 msgid "URl Facebook"
-msgstr "Url Facebook"
+msgstr "URL Facebook"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -989,7 +989,7 @@ msgstr "Pourquoi la société adhère à la monnaie locale ? Permettre d'impliqu
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "With agreement"
-msgstr "Avec Accord"
+msgstr "Avec accord"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -1022,7 +1022,7 @@ msgstr "Mots clés"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "keywords giving more information on activities. splite keyword using ;"
-msgstr "Mots clés précisant les acctivités, séparés par des ;"
+msgstr "Mots clés précisant les activités, séparés par des ;"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:58
