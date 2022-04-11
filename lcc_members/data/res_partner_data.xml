@@ -16,11 +16,11 @@
             <field name="model_id" ref="base.model_res_partner" />
             <field name="state">code</field>
             <field name="code">
-                model._migration_v2_v3_pro(limit=200)
-                model._migration_v2_v3_person_without_parent(limit=200)
-                model._migration_v2_v3_person_with_parent_and_existing_main(limit=200)
-                model._migration_v2_v3_person_with_parent_not_existing_main(limit=200)
-                </field>
+model._migration_v2_v3_pro(limit=200)
+model._migration_v2_v3_person_without_parent(limit=200)
+model._migration_v2_v3_person_with_parent_and_existing_main(limit=200)
+model._migration_v2_v3_person_with_parent_not_existing_main(limit=200)
+            </field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="active">0</field>

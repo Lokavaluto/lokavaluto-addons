@@ -490,7 +490,9 @@ class res_partner(models.Model):
                     ("active", "=", True),
                     ("is_company", "=", False),
                     "|",
-                    ("name", "=", partner.name),
+                    "&",
+                    ("lastname", "=", partner.lastname),
+                    ("firstname", "=", partner.firstname),
                     ("email", "=", partner.email),
                     ("partner_profile.ref", "=", "partner_profile_main"),
                 ],
@@ -548,7 +550,9 @@ class res_partner(models.Model):
                     ("active", "=", True),
                     ("is_company", "=", False),
                     "|",
-                    ("name", "=", partner.name),
+                    "&",
+                    ("lastname", "=", partner.lastname),
+                    ("firstname", "=", partner.firstname),
                     ("email", "=", partner.email),
                     ("partner_profile.ref", "=", "partner_profile_main"),
                 ],
@@ -559,11 +563,21 @@ class res_partner(models.Model):
                     "partner_profile": partner_profile_main.id,
                     "company_id": partner.company_id.id,
                     "parent_id": False,
+                    "firstname": partner.firstname,
+                    "lastname": partner.lastname,
+                    "name": "%s %s" % (partner.firstname, partner.lastname),
                 }
-                main_partner = partner.copy(default=default_values)
+                try:
+                    main_partner = partner.copy(default=default_values)
+                except Exception as e:
+                    _logger.debug("Email exist ! try with empty email")
+                    default_values["email"] = ""
+                    main_partner = partner.copy(default=default_values)
+
                 main_partner.write(
                     {
                         "lastname": partner.lastname,
+                        "firstname": partner.firstname,
                     }
                 )
                 _logger.debug(
