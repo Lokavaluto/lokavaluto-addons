@@ -488,13 +488,15 @@ class res_partner(models.Model):
             existing_main_partner = self.env["res.partner"].search(
                 [
                     ("active", "=", True),
+                    ("partner_profile.ref", "=", "partner_profile_main"),
                     ("is_company", "=", False),
                     "|",
                     "&",
                     ("lastname", "=", partner.lastname),
                     ("firstname", "=", partner.firstname),
+                    "&",
+                    ("email", "!=", False),
                     ("email", "=", partner.email),
-                    ("partner_profile.ref", "=", "partner_profile_main"),
                 ],
                 limit=1,
             )
@@ -548,13 +550,15 @@ class res_partner(models.Model):
             existing_main_partner = self.env["res.partner"].search(
                 [
                     ("active", "=", True),
+                    ("partner_profile.ref", "=", "partner_profile_main"),
                     ("is_company", "=", False),
                     "|",
                     "&",
                     ("lastname", "=", partner.lastname),
                     ("firstname", "=", partner.firstname),
+                    "&",
+                    ("email", "!=", False),
                     ("email", "=", partner.email),
-                    ("partner_profile.ref", "=", "partner_profile_main"),
                 ],
                 limit=1,
             )
@@ -578,6 +582,7 @@ class res_partner(models.Model):
                     {
                         "lastname": partner.lastname,
                         "firstname": partner.firstname,
+                        "name": "%s %s" % (partner.firstname, partner.lastname),
                     }
                 )
                 _logger.debug(
