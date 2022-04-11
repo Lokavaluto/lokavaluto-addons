@@ -280,7 +280,8 @@ class res_partner(models.Model):
     def _onchange_type(self):
         self.contact_type = "standalone"
         self.partner_profile = False
-        if self.type == "contact" and self.parent_id != False:
+        if self.type == "contact" and self.parent_id:
+            _logger.debug("Contact type: attached")
             # A contact with parent_id is partner_profile=Position, and contact_type=attached
             position_profile = self.env.ref("lcc_members.partner_profile_position")
             self.contact_type = "attached"
@@ -348,14 +349,15 @@ class res_partner(models.Model):
 
     @api.multi
     def create_public_profile(self):
-        profile = self.env.ref("lcc_members.partner_profile_public").read()[0]
+        profile = self.env.ref("lcc_members.partner_profile_public")
         for partner in self:
+            _logger.debug("Create public profile [%s] %s" % (partner.id, partner.name))
             partner._compute_public_profile_id()
             if not partner.public_profile_id:
                 values = {
                     "type": "other",
                     "contact_id": partner.id,
-                    "partner_profile": profile["id"],
+                    "partner_profile": profile.id,
                     "company_id": partner.company_id.id,
                 }
                 for field_name in PUBLIC_PROFILE_FIELDS:
@@ -372,74 +374,211 @@ class res_partner(models.Model):
             partner.create_public_profile()
 
     @api.model
-    def _cron_migration_lcc_members_v2_v3(self):
-        cycle = 0
-        # Company migration
-        partners = self.search(
-            [
-                ("is_company", "=", True),
-                ("active", "=", True),
-            ]
-        )
-        for partner in partners:
-            cycle += 1
-            _logger.debug("Cycle #%s" % cycle)
-            profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
-            partner.partner_profile = profile["id"]
-            partner.create_public_profile()
+    def _migration_v2_v3_pro(self, limit=None, id=False):
 
-        # Person migration
-        partners = self.search(
-            [
-                ("is_company", "=", False),
-                ("active", "=", True),
-            ]
-        )
+        partners = self.env["res.partner"]
+        partner_profile_main = self.env.ref("lcc_members.partner_profile_main")
+
+        # # Company migration
+        _logger.debug("Company migration")
+        if id:
+            partners = self.search(
+                [
+                    ("is_company", "=", True),
+                    ("active", "=", True),
+                    ("partner_profile", "=", False),
+                    ("id", "=", id),
+                ],
+                limit=limit,
+            )
+        else:
+            partners = self.search(
+                [
+                    ("is_company", "=", True),
+                    ("active", "=", True),
+                    ("partner_profile", "=", False),
+                ],
+                limit=limit,
+            )
+        _logger.debug("Company migration count: %s" % len(partners))
+        if partners:
+            partners.write(
+                {
+                    "partner_profile": partner_profile_main.id,
+                }
+            )
+            partners.create_public_profile()
+        _logger.debug("### End migration ###")
+
+    @api.model
+    def _migration_v2_v3_person_without_parent(self, limit=None, id=False):
+
+        partner_profile_main = self.env.ref("lcc_members.partner_profile_main")
+        partners = self.env["res.partner"]
+        # Person migration without parent_id
+
+        if id:
+            partners = self.search(
+                [
+                    ("is_company", "=", False),
+                    ("active", "=", True),
+                    ("parent_id", "=", False),
+                    ("partner_profile", "=", False),
+                    ("id", "=", id),
+                ],
+                limit=limit,
+            )
+        else:
+            partners = self.search(
+                [
+                    ("is_company", "=", False),
+                    ("active", "=", True),
+                    ("parent_id", "=", False),
+                    ("partner_profile", "=", False),
+                ],
+                limit=limit,
+            )
+        _logger.debug("migration count: %s" % len(partners))
+        if partners:
+            partners.write(
+                {
+                    "partner_profile": partner_profile_main.id,
+                }
+            )
+            _logger.debug("Create public profiles")
+            partners.create_public_profile()
+        _logger.debug("### End migration ###")
+
+    @api.model
+    def _migration_v2_v3_person_with_parent_and_existing_main(
+        self, limit=None, id=False
+    ):
+
+        partners = self.env["res.partner"]
+        partner_profile_position = self.env.ref("lcc_members.partner_profile_position")
+
+        # Person migration with parent_id
+        _logger.debug("Person migration with parent_id")
+        if id:
+            partners = self.search(
+                [
+                    ("is_company", "=", False),
+                    ("active", "=", True),
+                    ("parent_id", "!=", False),
+                    ("partner_profile", "=", False),
+                    ("id", "=", id),
+                ],
+                limit=limit,
+            )
+        else:
+            partners = self.search(
+                [
+                    ("is_company", "=", False),
+                    ("active", "=", True),
+                    ("parent_id", "!=", False),
+                    ("partner_profile", "=", False),
+                ],
+                limit=limit,
+            )
+        _logger.debug("migration count: %s" % len(partners))
+        count = 0
         for partner in partners:
-            cycle += 1
-            _logger.debug("Cycle #%s" % cycle)
-            if partner.parent_id == False:
-                profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
-                partner.partner_profile = profile["id"]
-                partner.create_public_profile()
-            else:
-                existing_main_partner = self.env["res.partner"].search(
-                    [
-                        ("active", "=", True),
-                        ("is_company", "=", False),
-                        ("name", "=", partner.name),
-                        ("partner_profile.ref", "=", "partner_profile_main"),
-                    ],
-                    limit=1,
-                )
-                if len(existing_main_partner) > 0:
-                    partner.contact_id = existing_main_partner[0].id
-                    profile = self.env.ref(
-                        "lcc_members.partner_profile_position"
-                    ).read()[0]
-                    partner.partner_profile = profile["id"]
-                else:
-                    profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
-                    partner.partner_profile = profile["id"]
-                    partner.create_public_profile()
-                    # create Position partner
-                    profile = self.env.ref(
-                        "lcc_members.partner_profile_position"
-                    ).read()[0]
-                    values = {
-                        "type": "other",
-                        "contact_id": partner.id,
-                        "parent_id": partner.parent_id.id,
-                        "company_id": partner.company_id.id,
-                        "partner_profile": profile["id"],
+            _logger.debug("count: [%s] : %s" % (count, partner.name))
+            existing_main_partner = self.env["res.partner"].search(
+                [
+                    ("active", "=", True),
+                    ("is_company", "=", False),
+                    "|",
+                    ("name", "=", partner.name),
+                    ("email", "=", partner.email),
+                    ("partner_profile.ref", "=", "partner_profile_main"),
+                ],
+                limit=1,
+            )
+            if existing_main_partner:
+                _logger.debug("UPDATE Position")
+                partner.write(
+                    {
+                        "contact_id": existing_main_partner.id,
+                        "partner_profile": partner_profile_position.id,
                     }
-                    for field_name in POSITION_PROFILE_FIELDS:
-                        values[field_name] = partner._get_field_value(field_name)
-                    partner.create(values)
-                    # remove Position data from main profile
-                    partner.function = ""
-                    partner.phone_pro = ""
-                    partner.parent_id = None
+                )
+            count += 1
+        _logger.debug("### End migration ###")
+
+    @api.model
+    def _migration_v2_v3_person_with_parent_not_existing_main(
+        self, limit=None, id=False
+    ):
+
+        partners = self.env["res.partner"]
+        partner_profile_main = self.env.ref("lcc_members.partner_profile_main")
+        partner_profile_position = self.env.ref("lcc_members.partner_profile_position")
+
+        # Person migration with parent_id
+        _logger.debug("Person migration with parent_id")
+        if id:
+            partners = self.search(
+                [
+                    ("is_company", "=", False),
+                    ("active", "=", True),
+                    ("parent_id", "!=", False),
+                    ("partner_profile", "=", False),
+                    ("id", "=", id),
+                ],
+                limit=limit,
+            )
+        else:
+            partners = self.search(
+                [
+                    ("is_company", "=", False),
+                    ("active", "=", True),
+                    ("parent_id", "!=", False),
+                    ("partner_profile", "=", False),
+                ],
+                limit=limit,
+            )
+        _logger.debug("migration count: %s" % len(partners))
+        count = 0
+        for partner in partners:
+            _logger.debug("count: [%s] : %s" % (count, partner.name))
+            existing_main_partner = self.env["res.partner"].search(
+                [
+                    ("active", "=", True),
+                    ("is_company", "=", False),
+                    "|",
+                    ("name", "=", partner.name),
+                    ("email", "=", partner.email),
+                    ("partner_profile.ref", "=", "partner_profile_main"),
+                ],
+                limit=1,
+            )
+            if not existing_main_partner:
+                default_values = {
+                    "partner_profile": partner_profile_main.id,
+                    "company_id": partner.company_id.id,
+                    "parent_id": False,
+                }
+                main_partner = partner.copy(default=default_values)
+                main_partner.write(
+                    {
+                        "lastname": partner.lastname,
+                    }
+                )
+                _logger.debug(
+                    "count: [%s] %s -> [%s] %s "
+                    % (partner.id, partner.name, main_partner.id, main_partner.name)
+                )
+                # main_partner.create_public_profile()
+                partner.write(
+                    {
+                        "partner_profile": partner_profile_position.id,
+                        "contact_id": main_partner.id,
+                        "type": "other",
+                    }
+                )
+            count += 1
+        _logger.debug("Last clean")
 
 
 class PartnerImage(models.Model):
