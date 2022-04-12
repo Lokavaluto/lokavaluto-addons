@@ -129,15 +129,11 @@ class ResPartner(models.Model):
         backends = super(ResPartner, self).backends()
         backend_data = self._comchain_backend()
         if backend_data.comchain_id:
-            wallet = backend_data.comchain_wallet_parsed
-            currency_name = (
-                wallet.get("server", {}).get("name", {})
-                or self.env.user.company_id.comchain_currency_name
-            )
-            if not currency_name:
+            backend_id = backend_data.comchain_backend_id
+            if not backend_id:
                 ## not present in wallet and not configured in general settings
                 return backends
-            return backends | {"%s:%s" % (backend_data.type, currency_name)}
+            return backends | {backend_id}
         else:
             return backends
 
