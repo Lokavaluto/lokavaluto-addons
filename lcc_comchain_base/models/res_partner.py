@@ -35,6 +35,20 @@ class ResPartnerBackend(models.Model):
             else {}
         )
 
+    @property
+    def comchain_backend_id(self):
+        """Return the technical id for the backend"""
+        wallet = self.comchain_wallet_parsed
+        currency_name = (
+            wallet.get("server", {}).get("name", {})
+            or self.env.user.company_id.comchain_currency_name
+        )
+        if not currency_name:
+            ## not present in wallet and not configured in general settings
+            return False
+        return "%s:%s" % ("comchain", currency_name)
+
+
     @api.depends("name", "type", "comchain_status")
     def _compute_status(self):
         super(ResPartnerBackend, self)._compute_status()
@@ -72,25 +86,11 @@ class ResPartner(models.Model):
                 return backend
         return backend_data
 
-    @property
-    def _comchain_backend_id(self):
-        """Return the technical id for the backend"""
-        backend_data = self._comchain_backend()
-        wallet = backend_data.comchain_wallet_parsed
-        currency_name = (
-            wallet.get("server", {}).get("name", {})
-            or self.env.user.company_id.comchain_currency_name
-        )
-        if not currency_name:
-            ## not present in wallet and not configured in general settings
-            return False
-        return "%s:%s" % ("comchain", currency_name)
-
     def _comchain_backend_json_data(self):
         """Prepare backend data to be sent by credentials requests"""
 
         backend_data = self._comchain_backend()
-        backend_id = self._comchain_backend_id
+        backend_id = backend_data.comchain_backend_id
         if not backend_id:
             ## not present in wallet and not configured in general settings
             return []
