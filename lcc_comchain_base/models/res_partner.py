@@ -28,7 +28,7 @@ class ResPartnerBackend(models.Model):
     comchain_message_key = fields.Char(string="Message keys")
 
     @property
-    def _comchain_wallet(self):
+    def comchain_wallet_parsed(self):
         return (
             json.loads(self.comchain_wallet)
             if self.comchain_wallet
@@ -76,7 +76,7 @@ class ResPartner(models.Model):
     def _comchain_backend_id(self):
         """Return the technical id for the backend"""
         backend_data = self._comchain_backend()
-        wallet = backend_data._comchain_wallet
+        wallet = backend_data.comchain_wallet_parsed
         currency_name = (
             wallet.get("server", {}).get("name", {})
             or self.env.user.company_id.comchain_currency_name
@@ -96,7 +96,7 @@ class ResPartner(models.Model):
             return []
 
         data = {"type": backend_id, "accounts": []}
-        wallet = backend_data._comchain_wallet
+        wallet = backend_data.comchain_wallet_parsed
         if wallet:
             data["accounts"].append(
                 {
@@ -129,7 +129,7 @@ class ResPartner(models.Model):
         backends = super(ResPartner, self).backends()
         backend_data = self._comchain_backend()
         if backend_data.comchain_id:
-            wallet = backend_data._comchain_wallet
+            wallet = backend_data.comchain_wallet_parsed
             currency_name = (
                 wallet.get("server", {}).get("name", {})
                 or self.env.user.company_id.comchain_currency_name
