@@ -128,14 +128,13 @@ class ResPartner(models.Model):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
         backend_data = self._comchain_backend()
-        if backend_data.comchain_id:
-            backend_id = backend_data.comchain_backend_id
-            if not backend_id:
-                ## not present in wallet and not configured in general settings
-                return backends
-            return backends | {backend_id}
-        else:
+        if not backend_data.comchain_id:
             return backends
+        backend_id = backend_data.comchain_backend_id
+        if not backend_id:
+            ## not present in wallet and not configured in general settings
+            return backends
+        return backends | {backend_id}
 
     @api.multi
     def activateComchainUser(self, params):
