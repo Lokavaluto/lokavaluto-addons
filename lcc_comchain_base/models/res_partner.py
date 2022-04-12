@@ -48,6 +48,25 @@ class ResPartnerBackend(models.Model):
             return False
         return "%s:%s" % ("comchain", currency_name)
 
+    @property
+    def comchain_backend_accounts_data(self):
+        """Return normalized backend account's data"""
+        backend_id = self.comchain_backend_id
+        if not backend_id:
+            ## not present in wallet and not configured in general settings
+            return []
+
+        data = {"type": backend_id, "accounts": []}
+        wallet = self.comchain_wallet_parsed
+        if wallet:
+            data["accounts"].append(
+                {
+                    "wallet": wallet,
+                    "message_key": self.comchain_message_key,
+                    "active": self.status == "active",
+                }
+            )
+        return [data]
 
     @api.depends("name", "type", "comchain_status")
     def _compute_status(self):
@@ -75,7 +94,8 @@ class ResPartner(models.Model):
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
-        data.extend(self._comchain_backend_json_data())
+        backend_data = self._comchain_backend()
+        data.extend(backend_data.comchain_backend_accounts_data)
         return data
 
     def _comchain_backend(self):
@@ -85,27 +105,6 @@ class ResPartner(models.Model):
             if backend.type == "comchain":
                 return backend
         return backend_data
-
-    def _comchain_backend_json_data(self):
-        """Prepare backend data to be sent by credentials requests"""
-
-        backend_data = self._comchain_backend()
-        backend_id = backend_data.comchain_backend_id
-        if not backend_id:
-            ## not present in wallet and not configured in general settings
-            return []
-
-        data = {"type": backend_id, "accounts": []}
-        wallet = backend_data.comchain_wallet_parsed
-        if wallet:
-            data["accounts"].append(
-                {
-                    "wallet": wallet,
-                    "message_key": backend_data.comchain_message_key,
-                    "active": backend_data.status == "active",
-                }
-            )
-        return [data]
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
@@ -121,7 +120,8 @@ class ResPartner(models.Model):
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        data.extend(self._comchain_backend_json_data())
+        backend_data = self._comchain_backend()
+        data.extend(backend_data.comchain_backend_accounts_data)
         return data
 
     def backends(self):
