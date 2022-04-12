@@ -15,6 +15,25 @@ from odoo.exceptions import (
 _logger = logging.getLogger(__name__)
 
 
+def _recipient_order_normalize(order):
+    """Filters API's order to res.partner.backend order"""
+    ORDER_CONV = {
+        'name': 'partner_public_name',
+    }
+    new_orders = []
+    for order_part in order.split(","):
+        _logger.debug("order_part: %s" % order_part)
+        olabel_odirection = order_part.strip().split(" ", 1)
+        olabel = olabel_odirection[0]
+        if olabel not in ORDER_CONV:
+            _logger.debug("ignore: %s" % olabel)
+            continue  ## ignore
+        _logger.debug("add: %s -> %s" % (olabel, ORDER_CONV[olabel]))
+        new_orders.append(" ".join(([ORDER_CONV[olabel]] + olabel_odirection[1:])))
+    return ", ".join(new_orders)
+
+
+
 class PartnerService(Component):
     _inherit = "base.rest.service"
     _name = "partner.service"
@@ -102,16 +121,22 @@ class PartnerService(Component):
         """
         _logger.debug("PARAMS: %s" % recipients_search_info)
         value = recipients_search_info.value
-        backend_keys = recipients_search_info.backend_keys
+        backend_keys = set(self.env.user.partner_id.backends()) & set(recipients_search_info.backend_keys)
+
+        backend_types = [key.split(":", 1)[0] for key in backend_keys]
+
         domain = [
-            ("id", "!=", self.env.user.partner_id.id),
-            ("active", "=", True),
-            ("public_profile_id.name", "!=", False),  ## only main profiles
+            ('status', '=', "active"),
+            ('type', 'in', backend_types),
+            ("partner_id.id", "!=", self.env.user.partner_id.id),
+            ("partner_id.active", "=", True),
+            ("partner_id.public_profile_id.name", "!=", False),  ## only main profiles
         ]
         offset = recipients_search_info.offset if recipients_search_info.offset else 0
         limit = recipients_search_info.limit if recipients_search_info.limit else 0
+        order = recipients_search_info.order if recipients_search_info.order else "name asc"
+        order = _recipient_order_normalize(order)
         website_url = recipients_search_info.website_url
-        order = recipients_search_info.order
         if value:
             domain.extend(
                 [
@@ -121,29 +146,29 @@ class PartnerService(Component):
                     "|",
                     "|",
                     "|",
-                    ("public_profile_id.name", "ilike", value),
-                    ("public_profile_id.email", "ilike", value),
-                    ("public_profile_id.phone", "ilike", value),
-                    ("public_profile_id.mobile", "ilike", value),
-                    ("industry_id", "ilike", value),
-                    ("secondary_industry_ids.name", "ilike", value),
-                    ("keywords", "ilike", value),
+                    ("partner_id.public_profile_id.name", "ilike", value),
+                    ("partner_id.public_profile_id.email", "ilike", value),
+                    ("partner_id.public_profile_id.phone", "ilike", value),
+                    ("partner_id.public_profile_id.mobile", "ilike", value),
+                    ("partner_id.industry_id", "ilike", value),
+                    ("partner_id.secondary_industry_ids.name", "ilike", value),
+                    ("partner_id.keywords", "ilike", value),
                 ]
             )
         if website_url:
             partner_id = website_url.split("-")[-1]
             try:
                 partner_id = int(partner_id)
-                domain.extend([("id", "=", partner_id)])
+                domain.extend([("partner_id.id", "=", partner_id)])
             except ValueError:
                 raise MissingError("Url not valid.")
         _logger.debug("DOMAIN: %s" % domain)
         ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
         ## here for a direct search. We'll implement 2 search to fake an
         ## order by ``is_favorite``
-        recipients_fav = self.env["res.partner"].search(
+        recipients_fav = self.env["res.partner.backend"].search(
             [
-                ("favorite_user_ids", "in", self.env.uid),
+                ("partner_id.favorite_user_ids", "in", self.env.uid),
             ]
             + domain,
             limit=limit,
@@ -152,9 +177,9 @@ class PartnerService(Component):
         )
         _logger.debug("recipients_fav: %s" % recipients_fav)
         if value:
-            recipients_no_fav = self.env["res.partner"].search(
+            recipients_no_fav = self.env["res.partner.backend"].search(
                 [
-                    ("favorite_user_ids", "not in", self.env.uid),
+                    ("partner_id.favorite_user_ids", "not in", self.env.uid),
                 ]
                 + domain,
                 limit=limit,
@@ -166,9 +191,7 @@ class PartnerService(Component):
         else:
             recipients = recipients_fav
         _logger.debug("recipients: %s" % recipients)
-        if backend_keys:
-            recipients = recipients.filtered(lambda r: r.backends() & set(backend_keys))
-        return self._get_formatted_recipients(recipients, backend_keys)
+        return self._get_formatted_recipients(recipients.mapped(lambda x: x.partner_id), backend_keys)
 
     @restapi.method(
         [
