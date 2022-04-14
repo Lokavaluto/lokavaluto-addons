@@ -27,7 +27,7 @@
                         </p>
                     </div>
                     <field name="lcc_backend_ids" nolabel="1" readonly="0" attrs="{'invisible': [('is_main_profile','=',False)]}">
-                        <tree create="false" delete="true">
+                        <tree create="false" delete="false">
                             <field name="name" />
                             <field name="type" />
                             <field name="status" />
