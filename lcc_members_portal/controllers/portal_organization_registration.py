@@ -17,7 +17,7 @@ class PortalOrganizationRegistration(CustomerPortal):
         "country_id",
         # "team_id",  # TODO: issue occuring when this field is added. INVESTIGATION NEEDED
         "phone",
-        "email",
+        "company_email",
         "website_url",
         "industry_id",
         "detailed_activity",

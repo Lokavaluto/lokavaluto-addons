@@ -77,10 +77,10 @@
                         <label class="text-danger"> *</label>
                         <input type="tel" name="phone" t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}" t-att-value="phone" required="True" />
                     </div>
-                    <div t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="email">Email</label>
+                    <div t-attf-class="form-group #{error.get('company_email') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="company_email">Email</label>
                         <label class="text-danger"> *</label>
-                        <input type="email" name="email" t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}" t-att-value="email" required="True" />
+                        <input type="company_email" name="company_email" t-attf-class="form-control #{error.get('company_email') and 'is-invalid' or ''}" t-att-value="company_email" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('website_url') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="website_url">Website</label>
