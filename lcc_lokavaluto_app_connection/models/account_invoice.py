@@ -15,9 +15,8 @@ class AccountInvoice(models.Model):
     def _compute_has_numeric_lcc_products(self):
         self.has_numeric_lcc_products = False
 
-        categ = self.env.ref(
-            "lcc_lokavaluto_app_connection.product_category_numeric_lcc"
-        )
+        categ = self.env["product.category"].search([("name", "=", "Numeric LCC")])
+
         lcc_numeric_products = self.invoice_line_ids.filtered(
             lambda line: line.product_id.categ_id == categ
             or line.product_id.categ_id.parent_id == categ
