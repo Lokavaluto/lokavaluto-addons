@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="portal_my_home_column_width" name="Portal My Home: Column width" inherit_id="portal.portal_layout" priority="40">
+        <xpath expr="//div[hasclass('justify-content-between')]//div[1]" position="attributes">
+            <attribute name="t-attf-class">col-12 col-md col-lg-8</attribute>
+        </xpath>
+    </template>
+
     <template id="portal_my_home_registration_menu" name="Portal My Home: Registration Menu" inherit_id="lcc_members.portal_my_home_profile_menu" priority="40">
         <xpath expr="//div[hasclass('o_portal_my_details')]" position="inside">
             <div t-if="not user_id.partner_id.is_company">
