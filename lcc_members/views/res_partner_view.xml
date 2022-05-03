@@ -55,7 +55,7 @@
                     <field name="member_type_id" string="Subscription type" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="currency_exchange_office" attrs="{'invisible': [('is_company', '=', False)]}" />
                     <field name="is_volunteer" attrs="{'invisible': ['|',('is_company','=', True),('is_position_profile','=',True)]}" />
-                    <field name="team_id" string="Local group" required="True" options="{'limit': 16, 'create': false, 'create_edit': false}" attrs="{'invisible': [('contact_type','=','attached')]}" />
+                    <field name="team_id" string="Local group" options="{'limit': 16, 'create': false, 'create_edit': false}" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="user_id" string="Referent" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="ref" string="Subcription number" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="want_newsletter_subscription" readonly="1" />
