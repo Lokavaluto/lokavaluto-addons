@@ -1,65 +1,106 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* lcc_members
+#	* lcc_members
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-21 13:38+0000\n"
-"PO-Revision-Date: 2022-01-21 15:10+0100\n"
+"POT-Creation-Date: 2022-05-03 15:50+0000\n"
+"PO-Revision-Date: 2022-05-03 15:50+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"X-Generator: Poedit 3.0.1\n"
-"X-Poedit-Bookmarks: 145,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
-msgid ""
-"<b>Attention:</b>\n"
-"                                    Odoo ne compresse pas les images. la somme totale de vos images ne doit pas dépasser 4mo. Pour compresser vos images vous pouvez par exemple utiliser ce site :"
-msgstr ""
-"<b>Attention:</b>\n"
+msgid "<b>Warning:</b>\n"
+"                                    Odoo doesn't compress pictures. The total sum of your pictures must not exceed 4Mo. To compress your pictures, you can use the following tool:"
+msgstr "<b>Attention:</b>\n"
 "                                    Odoo ne compresse pas les images. la somme totale de vos images ne doit pas dépasser 4mo. Pour compresser vos images vous pouvez par exemple utiliser ce site :"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid "<b>Comptoir de change</b>"
-msgstr "<b>Comptoir de change</b>"
+msgid "<b>Exchange counter</b>"
+msgstr "Comptoir de change"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid "<b>Groupe Local:</b>"
-msgstr "<b>Groupe Local :</b>"
+msgid "<b>Itinerant</b>"
+msgstr "Itinérant"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid "<b>Itinérant</b>"
-msgstr "<b>Itinérant</b>"
+msgid "<b>Local group:</b>"
+msgstr "Groupe local"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
+msgid "<b>Main profiles :</b>\n"
+"                internal and private profiles, used for membership management and internal communication.\n"
+"                <br/>\n"
+"                <b>Public profiles :</b>\n"
+"                profiles that are available to tierce applications (annuary, currency wallet or maps for instance)."
+msgstr "<b>Profils Principaux :</b>\n"
+"                Profils internes et privés, utilisés pour la gestion des adhésions et la communication interne.\n"
+"                <br/>\n"
+"                <b>Profils Publiques :</b>\n"
+"                Profils diffusés à des applications tierces (annuaire, porte-monnaie électronique ou cartographie par exemple)."
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
+msgid "<b>Public profile :</b>\n"
+"                profiles that is available to tierce applications (annuary, currency wallet or maps for instance).\n"
+"                <br/>\n"
+"                <b>Position profiles :</b>\n"
+"                profiles that indicate your belonging to an organization, and the role you have in."
+msgstr "<b>Profils Publiques :</b>\n"
+"                Profils diffusés à des applications tierces (annuaire, porte-monnaie électronique ou cartographie par exemple).\n"
+"                <br/>\n"
+"                <b>Profils Position :</b>\n"
+"                Profils qui indiquent votre appartenance à une organisation, et votre rôle dans cette dernière."
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid "<br/>Activity information"
-msgstr "<br/>Information sur les Activités"
+msgid "<br/>\n"
+"                                        Activity information"
+msgstr "<br/>\n"
+"                                        Informations sur l'activité"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid "<br/>Contact information"
-msgstr "<br/>Informations de contact"
+msgid "<br/>\n"
+"                                        Contact information"
+msgstr "<br/>\n"
+"                                        Informations de contact"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid "<br/>Job position"
-msgstr "<br/>Poste Occupé"
+msgid "<br/>\n"
+"                                        Job position"
+msgstr "<br/>\n"
+"                                        Poste occupé"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
+msgid "<br/>\n"
+"                My organizations' profiles"
+msgstr "<br/>\n"
+"                Mes profils position"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
+msgid "<br/>\n"
+"                My profiles"
+msgstr "<br/>\n"
+"                Mes profils"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid "<font style=\"font-size: 18px;\">Partager</font>"
+msgid "<font style=\"font-size: 18px;\">Share</font>"
 msgstr "<font style=\"font-size: 18px;\">Partager</font>"
 
 #. module: lcc_members
@@ -69,58 +110,48 @@ msgstr "<span class=\"d-none d-md-inline\">Nom du Profile</span>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid ""
-"<span class=\"fa fa-calendar s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Horaires d'ouverture</font>\n"
-"                    <br/>"
-msgstr ""
-"<span class=\"fa fa-calendar s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Horaires d'ouverture</font>\n"
-"                    <br/>"
+msgid "<span class=\"fa fa-calendar s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Opening time</font>\n"
+"                          <br/>"
+msgstr "<span class=\"fa fa-calendar s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Horaires d'ouverture</font>\n"
+"                          <br/>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid ""
-"<span class=\"fa fa-list-alt s_alert_icon text-beta\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Autres informations</font>\n"
-"                    <br/>"
-msgstr ""
-"<span class=\"fa fa-list-alt s_alert_icon text-beta\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Autres informations</font>\n"
-"                    <br/>"
+msgid "<span class=\"fa fa-list-alt s_alert_icon text-beta\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Other information</font>\n"
+"                          <br/>"
+msgstr "<span class=\"fa fa-list-alt s_alert_icon text-beta\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Autres informations</font>\n"
+"                          <br/>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid ""
-"<span class=\"fa fa-money s_alert_icon text-alpha\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Réductions</font>\n"
-"                    <br/>"
-msgstr ""
-"<span class=\"fa fa-money s_alert_icon text-alpha\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Réductions</font>\n"
-"                    <br/>"
+msgid "<span class=\"fa fa-money s_alert_icon text-alpha\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Discounts</font>\n"
+"                          <br/>"
+msgstr "<span class=\"fa fa-money s_alert_icon text-alpha\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Réductions</font>\n"
+"                          <br/>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid ""
-"<span class=\"fa fa-question-circle s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Pourquoi la MLC ?</font>\n"
-"                    <br/>"
-msgstr ""
-"<span class=\"fa fa-question-circle s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Pourquoi la MLC ?</font>\n"
-"                    <br/>"
+msgid "<span class=\"fa fa-question-circle s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Why the LCC?</font>\n"
+"                          <br/>"
+msgstr "<span class=\"fa fa-question-circle s_alert_icon text-beta\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Pourquoi la monnaie locale ?</font>\n"
+"                          <br/>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
-msgid ""
-"<span class=\"fa fa-vcard s_alert_icon text-alpha\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Informations de contact</font>\n"
-"                    <br/>"
-msgstr ""
-"<span class=\"fa fa-vcard s_alert_icon text-alpha\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                    <font style=\"font-size: 18px;\">Informations de contact</font>\n"
-"                    <br/>"
+msgid "<span class=\"fa fa-vcard s_alert_icon text-alpha\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Contact information</font>\n"
+"                          <br/>"
+msgstr "<span class=\"fa fa-vcard s_alert_icon text-alpha\" style=\"background-color: rgb(255, 255, 255);\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
+"                          <font style=\"font-size: 18px;\">Informations de contact</font>\n"
+"                          <br/>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_kanban_view
@@ -128,52 +159,48 @@ msgid "<span>Local group:</span>"
 msgstr "<span>Groupe Local :</span>"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_users.py:30
-#, python-format
-msgid ""
-"A user cannot have both Tax B2B and Tax B2C.\n"
-"You should go in General Settings, and choose to display Product Prices\n"
-"either in 'Tax-Included' or in 'Tax-Excluded' mode\n"
-"(or switch twice the mode if you are already in the desired one)."
-msgstr ""
-"Un utilisateur ne peut pas être dans le groupe Taxe B2B et le groupe Taxe B2C.\n"
-"."
-
-#. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:160
+#: code:addons/lcc_members/models/res_partner.py:192
+#: code:addons/lcc_members/models/res_partner.py:194
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_policy
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_policy
 #, python-format
 msgid "Accept LCC Policy"
-msgstr "Accepte les Conditions Générales d'Utilisation"
+msgstr "Accepter les Conditions Générales d'Utilisation"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:119
+#: code:addons/lcc_members/models/res_partner.py:130
+#: code:addons/lcc_members/models/res_partner.py:132
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_coupons
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_coupons
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 #, python-format
 msgid "Accept coupons"
-msgstr "Accepte les coupons"
+msgstr "Accept les coupons"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:122
+#: code:addons/lcc_members/models/res_partner.py:133
+#: code:addons/lcc_members/models/res_partner.py:135
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_digital_currency
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_digital_currency
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 #, python-format
 msgid "Accept digital currency"
-msgstr "Accepte la Monnaie numérique"
+msgstr "Accept la monnaie numérique"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 msgid "Activity..."
-msgstr "Détails des Activités ..."
+msgstr "Activités..."
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "Additional informations"
 msgstr "Informations supplémentaires"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
+msgid "Administrative Name"
+msgstr "Nom administratif"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -189,11 +216,6 @@ msgstr "Tous les non-membres"
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Archived"
 msgstr "Archivé"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Associate Member"
-msgstr "Membre associé"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__odoo_user_id
@@ -236,7 +258,12 @@ msgstr "Classification (pour retrouver facilement un pro dans l'annuaire)"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
-msgid "Commercial Name"
+msgid "Commercial Name..."
+msgstr "Nom commercial..."
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
+msgid "Commercial name"
 msgstr "Nom Commercial"
 
 #. module: lcc_members
@@ -246,6 +273,11 @@ msgstr "Nom Commercial"
 #, python-format
 msgid "Company"
 msgstr "Société"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_menu
+msgid "Consult my profiles"
+msgstr "Consulter mes profils"
 
 #. module: lcc_members
 #: model:ir.model,name:lcc_members.model_res_partner
@@ -263,7 +295,8 @@ msgid "Convention"
 msgstr "Convention"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:101
+#: code:addons/lcc_members/models/res_partner.py:112
+#: code:addons/lcc_members/models/res_partner.py:114
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_agreement
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_agreement
 #, python-format
@@ -271,8 +304,8 @@ msgid "Convention agreement"
 msgstr "Convention"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:95
-#: code:addons/lcc_members/models/res_partner.py:112
+#: code:addons/lcc_members/models/res_partner.py:106
+#: code:addons/lcc_members/models/res_partner.py:108
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_specific_agreement
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_specific_agreement
 #, python-format
@@ -309,8 +342,8 @@ msgid "Created on"
 msgstr "Créé le"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:106
-#: code:addons/lcc_members/models/res_partner.py:118
+#: code:addons/lcc_members/models/res_partner.py:117
+#: code:addons/lcc_members/models/res_partner.py:119
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__currency_exchange_office
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__currency_exchange_office
 #, python-format
@@ -329,14 +362,14 @@ msgid "Description"
 msgstr "Description"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:86
-#: code:addons/lcc_members/models/res_partner.py:94
+#: code:addons/lcc_members/models/res_partner.py:97
+#: code:addons/lcc_members/models/res_partner.py:99
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__detailed_activity
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__detailed_activity
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 #, python-format
 msgid "Detailed activity"
-msgstr "Activité détaillée"
+msgstr "Activités détaillées"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -368,14 +401,11 @@ msgid "Email"
 msgstr "Courriel"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "End Date"
-msgstr "Date de fin"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Ending Date Of Membership"
-msgstr "Date de fin d'adhésion"
+#: code:addons/lcc_members/models/res_partner.py:283
+#: code:addons/lcc_members/models/res_partner.py:285
+#, python-format
+msgid "Email '%s' is already in use."
+msgstr "L'email %s est déjà utilisé"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -383,21 +413,29 @@ msgid "Extra Images"
 msgstr "Images supplémentaires"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Group By"
-msgstr "Grouper par"
+#: code:addons/lcc_members/models/res_partner.py:268
+#: code:addons/lcc_members/models/res_partner.py:270
+#, python-format
+msgid "Field contains multiple email addresses. This is not supported."
+msgstr "Le champs contient plusieurs courriels. Ce n'est pas supporté."
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__has_position
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__has_position
+msgid "Has Position"
+msgstr "As un profil position"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__id
 #: model:ir.model.fields,field_description:lcc_members.field_partner_image__id
 #: model:ir.model.fields,field_description:lcc_members.field_partner_profile__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_partner_image__image
 msgid "Image"
-msgstr "Image"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.view_partner_image_form
@@ -408,13 +446,7 @@ msgstr "Nom de l'image"
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__partner_image_ids
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__partner_image_ids
 msgid "Images"
-msgstr "Images"
-
-#. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:21
-#, python-format
-msgid "Instagram"
-msgstr "Instagram"
+msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/controllers/portal.py:93
@@ -436,19 +468,19 @@ msgstr "Facturé/Payé/Gratuit"
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_main_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__is_main_profile
 msgid "Is Main Profile"
-msgstr "Est le profil principal"
+msgstr "Est le profil Principal"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_position_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__is_position_profile
 msgid "Is Position Profile"
-msgstr "est un profil \"position\""
+msgstr "est un profil Position"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_public_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__is_public_profile
 msgid "Is Public Profile"
-msgstr "est un profil public"
+msgstr "est un profil Public"
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/crm_team.py:8
@@ -458,8 +490,8 @@ msgid "Is a local group"
 msgstr "Est un groupe local"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:89
 #: code:addons/lcc_members/models/res_partner.py:100
+#: code:addons/lcc_members/models/res_partner.py:102
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_volunteer
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__is_volunteer
 #, python-format
@@ -467,8 +499,8 @@ msgid "Is volunteer"
 msgstr "Est bénévole"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:83
-#: code:addons/lcc_members/models/res_partner.py:88
+#: code:addons/lcc_members/models/res_partner.py:94
+#: code:addons/lcc_members/models/res_partner.py:96
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__itinerant
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__itinerant
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -508,10 +540,11 @@ msgid "Legal name or street"
 msgstr "Rue"
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_membership_invoice__team_id
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Local group"
-msgstr "Groupe local"
+msgstr "Groupe Local"
 
 #. module: lcc_members
 #: model:partner.profile,name:lcc_members.partner_profile_main
@@ -527,10 +560,11 @@ msgstr "Profil Principal"
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 msgid "Main activity"
-msgstr "Activitée Principale"
+msgstr "Activité principale"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:146
+#: code:addons/lcc_members/models/res_partner.py:166
+#: code:addons/lcc_members/models/res_partner.py:168
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__edit_structure_main_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__edit_structure_main_profile
 #, python-format
@@ -538,7 +572,8 @@ msgid "Manage structure's main profile"
 msgstr "Gère le profil principal de la structure"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:149
+#: code:addons/lcc_members/models/res_partner.py:169
+#: code:addons/lcc_members/models/res_partner.py:171
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__edit_structure_public_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__edit_structure_public_profile
 #, python-format
@@ -556,8 +591,8 @@ msgid "Member Types"
 msgstr "Type d'Adhérent"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:33
-#: code:addons/lcc_members/models/res_partner.py:52
+#: code:addons/lcc_members/models/res_partner.py:63
+#: code:addons/lcc_members/models/res_partner.py:65
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_comment
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__member_comment
 #, python-format
@@ -565,8 +600,8 @@ msgid "Member comment"
 msgstr "Commentaire de l'adhérent"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:40
-#: code:addons/lcc_members/models/res_partner.py:56
+#: code:addons/lcc_members/models/res_partner.py:67
+#: code:addons/lcc_members/models/res_partner.py:69
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_type_id
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__member_type_id
 #, python-format
@@ -574,19 +609,14 @@ msgid "Member's type"
 msgstr "Type d'adhérent"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Membership Partners"
-msgstr "Adhérents"
+#: model:ir.model,name:lcc_members.model_membership_invoice
+msgid "Membership Invoice"
+msgstr "Facture de l'adhésion"
 
 #. module: lcc_members
 #: model:ir.ui.menu,name:lcc_members.menu_action_membership_product_form_menu
 msgid "Membership Products"
 msgstr "Produits d'adhésion"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Membership State"
-msgstr "Etat de l'adhésion"
 
 #. module: lcc_members
 #: model:ir.actions.act_window,name:lcc_members.action_type_adherent_form_view
@@ -597,6 +627,11 @@ msgstr "Type d'adhésion"
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 msgid "Mobile"
 msgstr "Portable"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_menu
+msgid "Modify my account"
+msgstr "Modifier mon compte"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -635,8 +670,8 @@ msgid "None/Canceled/Old/Waiting"
 msgstr "Aucune/Annulée/Ancienne/En attente"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:80
-#: code:addons/lcc_members/models/res_partner.py:82
+#: code:addons/lcc_members/models/res_partner.py:91
+#: code:addons/lcc_members/models/res_partner.py:93
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__opening_time
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__opening_time
 #, python-format
@@ -676,7 +711,8 @@ msgid "Partner Images"
 msgstr "Images du partenaire"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:129
+#: code:addons/lcc_members/models/res_partner.py:140
+#: code:addons/lcc_members/models/res_partner.py:142
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__partner_profile
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__partner_profile
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -688,6 +724,13 @@ msgstr "Profil du partenaire"
 #: model:ir.model,name:lcc_members.model_partner_profile
 msgid "Partner profile to differentiate the attached partner entries"
 msgstr "Profil du partenaire pour différencier les différents types de fiche contact"
+
+#. module: lcc_members
+#: model:ir.actions.server,name:lcc_members.ir_cron_migration_v2_v3_2_ir_actions_server
+#: model:ir.cron,cron_name:lcc_members.ir_cron_migration_v2_v3_2
+#: model:ir.cron,name:lcc_members.ir_cron_migration_v2_v3_2
+msgid "Partner: Migration lcc_members v2 to v3"
+msgstr ""
 
 #. module: lcc_members
 #: model:ir.actions.server,name:lcc_members.ir_cron_generate_missing_public_profiles_ir_actions_server
@@ -723,8 +766,13 @@ msgid "Position"
 msgstr "Position"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:92
-#: code:addons/lcc_members/models/res_partner.py:106
+#: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
+msgid "Position Profile"
+msgstr "Profil Position"
+
+#. module: lcc_members
+#: code:addons/lcc_members/models/res_partner.py:103
+#: code:addons/lcc_members/models/res_partner.py:105
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__private_comment
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__private_comment
 #, python-format
@@ -737,8 +785,8 @@ msgid "Professional Phone"
 msgstr "Téléphone Professionnel"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:27
-#: code:addons/lcc_members/models/res_partner.py:49
+#: code:addons/lcc_members/models/res_partner.py:60
+#: code:addons/lcc_members/models/res_partner.py:62
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__phone_pro
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__phone_pro
 #, python-format
@@ -752,7 +800,6 @@ msgstr "Professionnels"
 
 #. module: lcc_members
 #: code:addons/lcc_members/controllers/portal.py:113
-#: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 #, python-format
 msgid "Profile Type"
 msgstr "Type de Profil"
@@ -763,11 +810,14 @@ msgid "Profile type"
 msgstr "Type de profil"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_layout
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
 msgid "Profiles"
 msgstr "Profils"
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
+msgid "Public Profile"
+msgstr "Profil Public"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__public_profile_id
@@ -781,7 +831,7 @@ msgstr "Profils public"
 #: model:ir.model.fields,field_description:lcc_members.field_partner_profile__ref
 #, python-format
 msgid "Ref"
-msgstr "Ref"
+msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -804,17 +854,10 @@ msgid "Sales Channels"
 msgstr "Equipes de vente"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Salesperson"
-msgstr "Vendeur"
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid ""
-"Save\n"
+msgid "Save\n"
 "                                            <span class=\"fa fa-long-arrow-right\"/>"
-msgstr ""
-"Enregistrer\n"
+msgstr "Enregistrer\n"
 "                                            <span class=\"fa fa-long-arrow-right\"/>"
 
 #. module: lcc_members
@@ -843,20 +886,10 @@ msgid "Social networks"
 msgstr "Réseaux Sociaux"
 
 #. module: lcc_members
-#: code:addons/lcc_members/wizard/portal_wizard.py:18
+#: code:addons/lcc_members/wizard/portal_wizard.py:24
 #, python-format
 msgid "Some contacts represent a job position and not a physical person, they can't be linked with a portal user: "
 msgstr "Certains contacts représentent des postes / fonctions et non des personnes physiques. Ils ne peuvent pas être lié à un compte \"Utilisateur Portail\":"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Start Date"
-msgstr "Date de début"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Starting Date Of Membership"
-msgstr "Date de Début de l'Adhésion"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
@@ -882,7 +915,7 @@ msgstr "Historique d'adhesion"
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 msgid "Subscription reason"
-msgstr "Raison de l'adhésion"
+msgstr "Raison de l'inscription"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -911,8 +944,8 @@ msgid "This nickname is already used, please find an other idea."
 msgstr "The Pseudo est déjà utilisé, merci d'en trouver un autre."
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:52
-#: code:addons/lcc_members/models/res_partner.py:68
+#: code:addons/lcc_members/models/res_partner.py:79
+#: code:addons/lcc_members/models/res_partner.py:81
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__to_renew
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__to_renew
 #, python-format
@@ -921,33 +954,22 @@ msgstr "à renouveler"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
-msgid ""
-"To see Sales and Purchases an information about this contact, please\n"
+msgid "To see Sales and Purchases an information about this contact, please\n"
 "                    go to to the this person form:"
-msgstr ""
-"Pour voir les informations de ventes et d'achat de ce contact, merci\n"
+msgstr "Pour voir les informations de ventes et d'achat de ce contact, merci\n"
 "                    d'aller sur son profil principal:"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
-msgid ""
-"To see membership information about this contact, please\n"
+msgid "To see membership information about this contact, please\n"
 "                    go to to the this person form:"
-msgstr ""
-"Pour voir les informations d'adhésion de ce contact, merci\n"
+msgstr "Pour voir les informations d'adhésion de ce contact, merci\n"
 "                    d'aller sur son profil principal:"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:76
-#, python-format
-msgid "Twitter"
-msgstr "Twitter"
-
-#. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:64
-#, python-format
-msgid "URl Facebook"
-msgstr "Url Facebook"
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_invoices_lcc
+msgid "Total amount"
+msgstr "Total"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -955,12 +977,13 @@ msgid "Vendors"
 msgstr "Fournisseurs"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:158
+#: code:addons/lcc_members/models/res_partner.py:190
+#: code:addons/lcc_members/models/res_partner.py:192
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__want_newsletter_subscription
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__want_newsletter_subscription
 #, python-format
 msgid "Want Newsletters Subscription"
-msgstr "Souhaite s'inscrire à l'infolettre"
+msgstr "Veux souscrire à l'Infolettre"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -973,13 +996,13 @@ msgid "Website"
 msgstr "Site Web"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:15
-#: code:addons/lcc_members/models/res_partner.py:43
+#: code:addons/lcc_members/models/res_partner.py:54
+#: code:addons/lcc_members/models/res_partner.py:56
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__reasons_choosing_mlc
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__reasons_choosing_mlc
 #, python-format
 msgid "Why did I choose local currency"
-msgstr "Pourquoi j'ai choisi la monnaie locale"
+msgstr "Pourquoi j'ai choisi la monnaie locale ?"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -992,13 +1015,18 @@ msgid "With agreement"
 msgstr "Avec Accord"
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_menu
+msgid "Your Details"
+msgstr "Vos détails"
+
+#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 msgid "Zip / Postal Code"
 msgstr "Code postal"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:46
-#: code:addons/lcc_members/models/res_partner.py:62
+#: code:addons/lcc_members/models/res_partner.py:73
+#: code:addons/lcc_members/models/res_partner.py:75
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_signature_date
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_signature_date
 #, python-format
@@ -1008,11 +1036,11 @@ msgstr "Date de signature de la convetion"
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "https://compressjpeg.com/fr/"
-msgstr "https://compressjpeg.com/fr/"
+msgstr ""
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:70
-#: code:addons/lcc_members/models/res_partner.py:77
+#: code:addons/lcc_members/models/res_partner.py:88
+#: code:addons/lcc_members/models/res_partner.py:90
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__keywords
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__keywords
 #, python-format
@@ -1025,8 +1053,8 @@ msgid "keywords giving more information on activities. splite keyword using ;"
 msgstr "Mots clés précisant les acctivités, séparés par des ;"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:58
-#: code:addons/lcc_members/models/res_partner.py:71
+#: code:addons/lcc_members/models/res_partner.py:82
+#: code:addons/lcc_members/models/res_partner.py:84
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__legal_activity_code
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__legal_activity_code
 #, python-format
@@ -1042,3 +1070,4 @@ msgstr "Statut de l'adhérent"
 #: model:ir.model,name:lcc_members.model_member_type
 msgid "member.type"
 msgstr "Type d'adhérent"
+
