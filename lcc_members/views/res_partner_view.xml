@@ -218,8 +218,8 @@
                             <!-- TODO v4 : delete this group once all lcc informed -->
                             <div role="alertdialog" class="alert alert-warning">
                                 <span>
-                                    <b>Attention:</b>
-                                    Odoo ne compresse pas les images. la somme totale de vos images ne doit pas dépasser 4mo. Pour compresser vos images vous pouvez par exemple utiliser ce site :
+                                    <b>Warning:</b>
+                                    Odoo doesn't compress pictures. The total sum of your pictures must not exceed 4Mo. To compress your pictures, you can use the following tool:
                                     <a href="https://compressjpeg.com/fr/" target="_blank">https://compressjpeg.com/fr/</a>
                                 </span>
                             </div>
