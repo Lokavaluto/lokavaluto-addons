@@ -23,7 +23,7 @@
                 <!-- MAIN DISPLAY UPDATE -->
                 <!-- ################### -->
                 <xpath expr="//field[@name='name']" position="replace">
-                    <field name="name" default_focus="1" placeholder="Commercial Name" attrs="{'readonly': [('is_company', '=', False)],'required': [('is_company', '=', True)]}" widget="field_partner_autocomplete" />
+                    <field name="name" default_focus="1" placeholder="Administrative Name" attrs="{'readonly': [('is_company', '=', False)],'required': [('is_company', '=', True)]}" widget="field_partner_autocomplete" />
                     <p class="oe_read_only" style="font-size:small; font-style:italic" attrs="{'invisible': [('is_main_profile','=',False)]}">Main Profile</p>
                     <p class="oe_read_only" style="font-size:small; font-style:italic" attrs="{'invisible': [('is_public_profile','=',False)]}">Public Profile</p>
                     <p class="oe_read_only" style="font-size:small; font-style:italic" attrs="{'invisible': [('is_position_profile','=',False)]}">Position Profile</p>
@@ -49,6 +49,9 @@
                             <field name="edit_structure_public_profile" />
                         </group>
                     </group>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="before">
+                    <field name="company_name" string="Commercial name" placeholder="Commercial Name..." attrs="{'invisible': [('is_company', '=', False)]}" />
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">
                     <field name="membership_state" string="Subscription status" attrs="{'invisible': [('contact_type','=','attached')]}" />
