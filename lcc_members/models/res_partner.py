@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 
 PUBLIC_PROFILE_FIELDS = [
     "name",
+    "company_name",
     "lastname",
     "firstname",
     "function",
