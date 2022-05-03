@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_membership_invoice_team_idview" model="ir.ui.view">
+        <field name="name">membership.invoice.team_idview.form</field>
+        <field name="model">membership.invoice</field>
+        <field name="inherit_id" ref="membership.view_membership_invoice_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='member_price']" position="after">
+                <field name="team_id" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
