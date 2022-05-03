@@ -34,6 +34,7 @@ PUBLIC_PROFILE_FIELDS = [
     "opening_time",
     "discount",
     "is_company",
+    "lang",
 ]
 
 POSITION_PROFILE_FIELDS = [
