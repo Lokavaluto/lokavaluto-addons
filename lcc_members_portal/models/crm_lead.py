@@ -119,7 +119,8 @@ class Lead(models.Model):
         values = {}
         for field_name in self._MAIN_PROFILE_FIELDS:
             values[field_name] = self._get_field_value(field_name)
-        values["name"] = self.commercial_company_name
+        values["name"] = self.company_name
+        values["company_name"] = self.commercial_company_name
         values["is_company"] = True
         values["partner_profile"] = (
             self.env["partner.profile"]
