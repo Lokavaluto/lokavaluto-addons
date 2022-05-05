@@ -28,7 +28,7 @@ class AuthService(Component):
         if request.httprequest.authorization and not request.session._login:
             try:
                 uid = request.session.authenticate(
-                    params.get("db"),
+                    params.get("db") or self.env.cr.dbname,
                     request.httprequest.authorization.username,
                     request.httprequest.authorization.password,
                     None,
@@ -69,7 +69,7 @@ class AuthService(Component):
     # Validator
     def _validator_authenticate(self):
         return {
-            "db": {"type": "string", "required": True},
+            "db": {"type": "string", },
             "params": {"type": "list", "schema": {"type": "string"}},
         }
 
