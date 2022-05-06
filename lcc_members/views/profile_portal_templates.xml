@@ -233,7 +233,7 @@
                                     <div class="row">
                                         <div t-attf-class="form-group #{error.get('nickname') and 'o_has_error' or ''} col-xl-12">
                                             <label class="col-form-label" for="nickname">Name / Nickname</label>
-                                            <input type="text" name="nickname" t-attf-class="form-control #{error.get('nickname') and 'is-invalid' or ''}" t-att-value="nickname or profile.lastname" />
+                                            <input type="text" name="nickname" t-attf-class="form-control #{error.get('nickname') and 'is-invalid' or ''}" t-att-value="nickname or profile.name" />
                                         </div>
                                     </div>
                                     <div class="row">
