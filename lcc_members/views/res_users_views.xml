@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- In order to manipulate membership Odoo accounts, mlc's teams must be able to generate 
+             portal or internal accounts without developper mode -->
+        <record id="user_groups_lcc_view" model="ir.ui.view">
+            <field name="name">res.users.groups</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="sequence">99</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sel_groups_1_9_10']" position="replace">
+                    <field name="sel_groups_1_9_10" widget="radio" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
