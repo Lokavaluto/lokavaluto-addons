@@ -72,8 +72,10 @@ class CustomerPortal(CustomerPortal):
         # nickname uniqueness
         if (
             data.get("nickname")
-            and request.env["res.partner"].browse([9]).is_public_profile
-            and request.env["res.partner"].search(
+            and request.env["res.partner"].sudo().browse([9]).is_public_profile
+            and request.env["res.partner"]
+            .sudo()
+            .search(
                 [
                     ("name", "=", data.get("nickname")),
                     ("partner_profile.ref", "=", "partner_profile_public"),
