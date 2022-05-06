@@ -8,18 +8,6 @@
             <field name="sequence">99</field>
             <field name="arch" type="xml">
                 <!-- ################### -->
-                <!-- ADDITION OF BUTTONS -->
-                <!-- ################### -->
-                <button name="toggle_active" position="before">
-                    <button name="act_show_contract" type="object" class="oe_stat_button" icon="fa-book" context="{'default_contract_type': 'sale', 'contract_type': 'sale'}" attrs="{'invisible': [('customer','=',False)]}" help="Show the sale contracts for this partner">
-                        <field name="sale_contract_count" widget="statinfo" string="Sale contacts" />
-                    </button>
-                    <!-- button name="act_show_contract" type="object" class="oe_stat_button" icon="fa-book" context="{'default_contract_type': 'purchase', 'contract_type': 'purchase'}" attrs="{'invisible': [('supplier','=',False)]}" help="Montrer les convenitions de ce professionel">
-                    <field name="purchase_contract_count" widget="statinfo" string="Purchases contracts"/>
-                </button-->
-                </button>
-
-                <!-- ################### -->
                 <!-- MAIN DISPLAY UPDATE -->
                 <!-- ################### -->
                 <xpath expr="//field[@name='name']" position="replace">
