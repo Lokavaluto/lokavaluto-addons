@@ -197,6 +197,15 @@ class res_partner(models.Model):
         domain=[("partner_profile.ref", "=", "partner_profile_position")]
     )
 
+    website_id = fields.Many2one(compute="_compute_website_id", store=True)
+
+    def _compute_website_id(self):
+        for partner in self:
+            website = self.env["website"].search(
+                [("company_id", "=", partner.company_id.id)], limit=1
+            )
+            partner.website_id = website.id
+
     @api.depends(
         "other_contact_ids",
         "other_contact_ids.edit_structure_main_profile",
