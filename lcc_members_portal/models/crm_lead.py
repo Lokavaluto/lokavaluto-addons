@@ -32,6 +32,11 @@ class Lead(models.Model):
 
     _POSITION_PROFILE_FIELDS = [
         "function",
+        "street",
+        "street2",
+        "city",
+        "zip",
+        "country_id",
         "email_pro",
         "phone_pro",
     ]
@@ -62,6 +67,7 @@ class Lead(models.Model):
     accept_digital_currency = fields.Boolean(string=_("Accept digital currency"))
     accept_coupons = fields.Boolean(string=_("Accept coupons"))
     itinerant = fields.Boolean(string=_("Itinerant"))
+    email_pro = fields.Char(string=_("Email Pro"))
     function = fields.Char(string=_("Job Position"))
     phone_pro = fields.Char(string=_("Phone Pro"))
     want_newsletter_subscription = fields.Boolean(
@@ -82,9 +88,9 @@ class Lead(models.Model):
         domain=[("membership", "=", True), ("type", "=", "service")],
     )
     invoice_url = fields.Char(string=_("Invoice link"))
+    from_website = fields.Boolean(default=False)
     application_accepted = fields.Boolean(default=False)
     application_refused = fields.Boolean(default=False)
-
     affiliated_company = fields.Many2one(
         "res.partner",
         string="Affiliated organization",
@@ -133,24 +139,38 @@ class Lead(models.Model):
         main_partner = self.env["res.partner"].create(values)
         # Organization's public profile is automaticcaly created
 
-        # Organization's contact's position partner creation
-        values = {}
-        for field_name in self._POSITION_PROFILE_FIELDS:
-            values[field_name] = self._get_field_value(field_name)
-        values["name"] = self.contact_name
-        values["is_company"] = False
-        values["contact_id"] = self.partner_id.id
-        values["parent_id"] = main_partner.id
-        values["partner_profile"] = (
-            self.env["partner.profile"]
-            .search([("ref", "=", "partner_profile_position")], limit=1)
-            .id
-        )
-        values["type"] = "contact"
-        values["edit_structure_main_profile"] = True
-        values["edit_structure_public_profile"] = True
-        values.update({"phone": values.pop("phone_pro", "")})
-        self.env["res.partner"].create(values)
+        if self.from_website:
+            # Organization created from website, we create only a billing contact
+            values = {}
+            for field_name in self._POSITION_PROFILE_FIELDS:
+                values[field_name] = self._get_field_value(field_name)
+            values["name"] = self.contact_name
+            values.update({"phone": values.pop("phone_pro", "")})
+            values.update({"email": values.pop("email_pro", "")})
+            values["is_company"] = False
+            values["type"] = "invoice"
+            values["parent_id"] = main_partner.id
+            self.env["res.partner"].create(values)
+        else:
+            # Organization's contact's position partner creation
+            values = {}
+            for field_name in self._POSITION_PROFILE_FIELDS:
+                values[field_name] = self._get_field_value(field_name)
+            values["name"] = self.contact_name
+            values["is_company"] = False
+            values["contact_id"] = self.partner_id.id
+            values["parent_id"] = main_partner.id
+            values["partner_profile"] = (
+                self.env["partner.profile"]
+                .search([("ref", "=", "partner_profile_position")], limit=1)
+                .id
+            )
+            values["type"] = "contact"
+            values["edit_structure_main_profile"] = True
+            values["edit_structure_public_profile"] = True
+            values.update({"phone": values.pop("phone_pro", "")})
+            values.update({"email": values.pop("email_pro", "")})
+            self.env["res.partner"].create(values)
 
         # Create sale order and invoice to finalize the registration process
         values = {}
