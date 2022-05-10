@@ -9,11 +9,6 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Url for cyclos serveur",
     )
-    cyclos_client_token = fields.Char(
-        related="company_id.cyclos_client_token",
-        readonly=False,
-        string="Client token auth for cyclos server",
-    )
 
     cyclos_server_login = fields.Char(
         related="company_id.cyclos_server_login",
