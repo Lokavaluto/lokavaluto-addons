@@ -93,8 +93,10 @@
                             <field name="invoice_url" attrs="{'invisible': [('application_accepted', '=', False)]}" widget='url' />
                         </group>
                         <group name="organization_contact" string="Organization's Contact">
+                            <field name="from_website" invisible="1" />
                             <field name="contact_name" />
                             <field name="function" />
+                            <field name="email_pro" widget="email" />
                             <field name="phone_pro" widget="phone" />
                             <field name="mobile" invisible="1" />
                         </group>
