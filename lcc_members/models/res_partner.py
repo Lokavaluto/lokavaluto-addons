@@ -255,21 +255,25 @@ class res_partner(models.Model):
 
     @api.model
     def create(self, vals):
-        """When creating, if partner_profile is not defined by a previous process, the defaut value is Main"""
-        modified_self = self._basecontact_check_context("create")
-        if not vals.get("partner_profile") and not vals.get("contact_id"):
-            profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
-            vals["partner_profile"] = profile["id"]
-        res = super(res_partner, modified_self).create(vals)
-        if (
-            res.partner_profile.ref == "partner_profile_main"
-            and not res.public_profile_id
-        ):
-            res.create_public_profile()
-        if res.partner_profile.ref == "partner_profile_public":
-            # Public profile can't be customer or supplier. Only main or position profiles can
-            res.customer = False
-            res.supplier = False
+        if vals["type"] == "contact":
+            """When creating, if partner_profile is not defined by a previous process, the defaut value is Main"""
+            modified_self = self._basecontact_check_context("create")
+            if not vals.get("partner_profile") and not vals.get("contact_id"):
+                profile = self.env.ref("lcc_members.partner_profile_main").read()[0]
+                vals["partner_profile"] = profile["id"]
+            res = super(res_partner, modified_self).create(vals)
+            if (
+                res.partner_profile.ref == "partner_profile_main"
+                and not res.public_profile_id
+            ):
+                res.create_public_profile()
+            if res.partner_profile.ref == "partner_profile_public":
+                # Public profile can't be customer or supplier. Only main or position profiles can
+                res.customer = False
+                res.supplier = False
+        else:
+            modified_self = self._basecontact_check_context("create")
+            res = super(res_partner, modified_self).create(vals)
         return res
 
     @api.constrains("email")
