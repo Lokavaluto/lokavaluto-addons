@@ -156,6 +156,7 @@ class res_partner(models.Model):
         compute="_compute_public_profile_id",
         string="Public profile",
         store=True,
+        ondelete="cascade",
     )
     odoo_user_id = fields.Many2one(
         "res.users",
