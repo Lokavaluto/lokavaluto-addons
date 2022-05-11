@@ -32,6 +32,7 @@ class Lead(models.Model):
 
     _POSITION_PROFILE_FIELDS = [
         "function",
+        "email_pro",
         "phone_pro",
     ]
 

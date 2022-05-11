@@ -143,15 +143,20 @@
                     Your position in the organisation
                 </h4>
                 <div class="row">
-                    <div t-attf-class="form-group #{error.get('function') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="function">Job position</label>
+                    <div t-attf-class="form-group #{error.get('email_pro') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="email_pro">Professional email</label>
                         <label class="text-danger"> *</label>
-                        <input type="text" name="function" t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}" t-att-value="function" required="True" />
+                        <input type="email" name="email_pro" t-attf-class="form-control #{error.get('email_pro') and 'is-invalid' or ''}" t-att-value="email_pro" required="True" />
                     </div>
                     <div t-attf-class="form-group #{error.get('phone_pro') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="phone_pro">Professional phone</label>
                         <label class="text-danger"> *</label>
                         <input type="text" name="phone_pro" t-attf-class="form-control #{error.get('phone_pro') and 'is-invalid' or ''}" t-att-value="phone_pro" required="True" />
+                    </div>
+                    <div t-attf-class="form-group #{error.get('function') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="function">Job position</label>
+                        <label class="text-danger"> *</label>
+                        <input type="text" name="function" t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}" t-att-value="function" required="True" />
                     </div>
                 </div>
                 <h4>
