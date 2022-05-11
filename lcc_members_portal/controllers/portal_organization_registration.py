@@ -25,6 +25,7 @@ class PortalOrganizationRegistration(CustomerPortal):
         "opening_time",
         "discount",
         "function",
+        "email_pro",
         "phone_pro",
         "message_from_candidate",
     ]
