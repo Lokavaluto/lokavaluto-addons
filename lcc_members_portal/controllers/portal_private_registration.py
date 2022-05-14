@@ -80,6 +80,25 @@ class PortalPrivateRegistration(CustomerPortal):
         )
         return request.render("lcc_members_portal.portal_private_registration", values)
 
+    def _compute_private_form_data(self, data):
+        values = {}
+        for field in self._PRIVATE_REGISTRATION_FIELDS:
+            if data.get(field):
+                values[field] = data.pop(field)
+        for field in self._EXTRA_FIELDS:
+            if data.get(field):
+                values[field] = data.pop(field)
+        values["lastname"] = values["lastname"].upper()
+        values["firstname"] = values["firstname"].title()
+        values["name"] = values["firstname"] + " " + values["lastname"]
+        values.update({"zip": values.pop("zipcode", "")})
+
+        values["want_newsletter_subscription"] = (
+            data.get("want_newsletter_subscription", "off") == "on"
+        )
+        values["accept_policy"] = data.get("accept_policy", "off") == "on"
+        return values
+
     @http.route(
         ["/membership/subscribe_member"],
         type="http",
@@ -89,22 +108,7 @@ class PortalPrivateRegistration(CustomerPortal):
     def membership_subscription(self, **kwargs):
         # Update the partner data
         main_partner = request.env.user.partner_id
-        values = {}
-        for field in self._PRIVATE_REGISTRATION_FIELDS:
-            if kwargs.get(field):
-                values[field] = kwargs.pop(field)
-        for field in self._EXTRA_FIELDS:
-            if kwargs.get(field):
-                values[field] = kwargs.pop(field)
-        values["lastname"] = values["lastname"].upper()
-        values["firstname"] = values["firstname"].title()
-        values["name"] = values["firstname"] + " " + values["lastname"]
-        values.update({"zip": values.pop("zipcode", "")})
-
-        values["want_newsletter_subscription"] = (
-            kwargs.get("want_newsletter_subscription", "off") == "on"
-        )
-        values["accept_policy"] = kwargs.get("accept_policy", "off") == "on"
+        values = self._compute_private_form_data(kwargs)
         main_partner.sudo().write(values)
 
         # Create sale order to finalize the registration process

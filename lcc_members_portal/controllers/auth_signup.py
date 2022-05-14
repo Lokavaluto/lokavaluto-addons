@@ -18,11 +18,12 @@ class AuthSignupHome(AuthSignupHome):
 
         if qcontext.get("firstname") or qcontext.get("lastname"):
             """Shared helper that creates a res.partner out of a token"""
-            # The only change compared to the parent function is the addition of the keys of the new field
+            # Addition of the keys of the new fields
             values = {
                 key: qcontext.get(key)
                 for key in ("login", "lastname", "password", "firstname")
             }
+            # Name computation depending on the values
             if qcontext.get("firstname") and qcontext.get("lastname"):
                 values["name"] = (
                     qcontext.get("firstname") + " " + qcontext.get("lastname")
@@ -31,6 +32,7 @@ class AuthSignupHome(AuthSignupHome):
                 values["name"] = qcontext.get("firstname")
             elif qcontext.get("lastname"):
                 values["name"] = qcontext.get("lastname")
+            # Next lines are the same than in parent function
             if not values:
                 raise UserError(_("The form was not properly filled in."))
             if values.get("password") != qcontext.get("confirm_password"):
