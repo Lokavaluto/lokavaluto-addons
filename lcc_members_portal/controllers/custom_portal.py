@@ -8,6 +8,7 @@ class CustomCustomerPortal(CustomerPortal):
     @route(["/my/account"], type="http", auth="user", website=True)
     def account(self, redirect=None, **post):
         response = super(CustomCustomerPortal, self).account(redirect, **post)
+        # If email is modified, the user is logged out
         if post and request.httprequest.method == "POST":
             error, error_message = self.details_form_validate(post)
             if not error:

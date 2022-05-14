@@ -105,6 +105,44 @@ class PortalOrganizationRegistration(CustomerPortal):
             "lcc_members_portal.portal_organization_registration", values
         )
 
+    def _compute_organization_form_data(self, data):
+        partner = request.env.user.partner_id
+        values = {
+            "partner_id": partner.id,
+            "company_id": partner.company_id.id,
+            "type": "opportunity",
+            "lead_type": "membership_web_application",
+            "accept_coupons": data.get("accept_coupons", "off") == "on",
+            "accept_digital_currency": data.get("accept_digital_currency", "off")
+            == "on",
+            "itinerant": data.get("itinerant", "off") == "on",
+            "want_newsletter_subscription": data.get(
+                "want_newsletter_subscription", "off"
+            )
+            == "on",
+            "accept_policy": data.get("accept_policy", "off") == "on",
+        }
+
+        if float(data.get("total_membership", False)):
+            values["total_membership"] = float(data.get("total_membership"))
+        else:
+            values[
+                "total_membership"
+            ] = self.get_organization_membership_product().list_price
+
+        for field in self._ORGANIZATION_REGISTRATION_FIELDS:
+            if data.get(field):
+                values[field] = data.pop(field)
+        for field in self._EXTRA_FIELDS:
+            if data.get(field):
+                values[field] = data.pop(field)
+
+        values["name"] = "[NEW APPLICATION] " + values["company_name"]
+        values.update({"zip": values.pop("zipcode", "")})
+        values.update({"website": values.pop("website_url", "")})
+
+        return values
+
     @http.route(
         ["/membership/send_request"],
         type="http",
@@ -113,37 +151,7 @@ class PortalOrganizationRegistration(CustomerPortal):
     )
     def send_registration_request(self, **kwargs):
         # Create a new lead
-        values = {}
-        for field in self._ORGANIZATION_REGISTRATION_FIELDS:
-            if kwargs.get(field):
-                values[field] = kwargs.pop(field)
-        for field in self._EXTRA_FIELDS:
-            if kwargs.get(field):
-                values[field] = kwargs.pop(field)
-        values["name"] = "[NEW APPLICATION] " + values["company_name"]
-        main_partner = request.env.user.partner_id
-        values["partner_id"] = main_partner.id
-        values["company_id"] = main_partner.company_id.id
-        values["type"] = "opportunity"
-        values["lead_type"] = "membership_web_application"
-        values.update({"zip": values.pop("zipcode", "")})
-        values.update({"website": values.pop("website_url", "")})
-        values["accept_coupons"] = kwargs.get("accept_coupons", "off") == "on"
-        values["accept_digital_currency"] = (
-            kwargs.get("accept_digital_currency", "off") == "on"
-        )
-        values["itinerant"] = kwargs.get("itinerant", "off") == "on"
-        values["want_newsletter_subscription"] = (
-            kwargs.get("want_newsletter_subscription", "off") == "on"
-        )
-        values["accept_policy"] = kwargs.get("accept_policy", "off") == "on"
-        if float(kwargs.get("total_membership", False)):
-            values["total_membership"] = float(kwargs.get("total_membership"))
-        else:
-            values[
-                "total_membership"
-            ] = self.get_organization_membership_product().list_price
-
+        values = self._compute_organization_form_data(kwargs)
         lead = request.env["crm.lead"].sudo().create(values)
         lead.team_id = kwargs.pop(
             "team_id"

@@ -115,6 +115,80 @@ class Lead(models.Model):
         else:
             return self[fname]
 
+    def _get_values_main_partner(self):
+        values = {
+            "name": self.company_name,
+            "company_name": self.commercial_company_name,
+            "is_company": True,
+            "partner_profile": self.env["partner.profile"]
+            .search([("ref", "=", "partner_profile_main")], limit=1)
+            .id,
+            "type": "contact",
+        }
+        for field_name in self._MAIN_PROFILE_FIELDS:
+            values[field_name] = self._get_field_value(field_name)
+        values.update({"email": values.pop("company_email", "")})
+        return values
+
+    def _get_values_other_contact(self, main_partner):
+        values = {
+            "name": self.contact_name,
+            "is_company": False,
+            "type": "other",
+            "parent_id": main_partner.id,
+        }
+        for field_name in self._POSITION_PROFILE_FIELDS:
+            values[field_name] = self._get_field_value(field_name)
+        values.update({"phone": values.pop("phone_pro", "")})
+        values.update({"email": values.pop("email_pro", "")})
+        return values
+
+    def _get_values_position_partner(self, main_partner):
+        values = {
+            "name": self.contact_name,
+            "is_company": False,
+            "contact_id": self.partner_id.id,
+            "parent_id": main_partner.id,
+            "partner_profile": self.env["partner.profile"]
+            .search([("ref", "=", "partner_profile_position")], limit=1)
+            .id,
+            "type": "contact",
+            "edit_structure_main_profile": True,
+            "edit_structure_public_profile": True,
+        }
+        for field_name in self._POSITION_PROFILE_FIELDS:
+            values[field_name] = self._get_field_value(field_name)
+        values.update({"phone": values.pop("phone_pro", "")})
+        values.update({"email": values.pop("email_pro", "")})
+        return values
+
+    def _get_sale_order_values(self, partner):
+        values = {
+            "partner_id": partner.id,
+            "team_id": self.team_id.id,
+            "company_id": partner.company_id.id,
+        }
+        return values
+
+    def _get_membership_values(self, sale_order):
+        values = {
+            "member_product_id": self.membership_product_id.id,
+            "total_membership": self.total_membership,
+            "order_id": sale_order.id,
+        }
+        return values
+
+    def _create_organization_so_and_invoice(self, partner):
+        values = self._get_sale_order_values(partner)
+        sale_order = self.env["sale.order"].create(values)
+        values = self._get_membership_values(sale_order)
+        sale_order.sudo().create_membership(values)
+        sale_order.sudo().action_confirm()
+        invoice_id = sale_order.sudo().action_invoice_create()[0]
+        invoice = self.env["account.invoice"].browse(invoice_id)
+        invoice.action_invoice_open()
+        self.invoice_url = invoice.get_portal_url()
+
     @api.multi
     def action_validate_organization_application(self):
         if not self.membership_product_id:
@@ -123,71 +197,22 @@ class Lead(models.Model):
             )
 
         # Organization's main partner creation
-        values = {}
-        for field_name in self._MAIN_PROFILE_FIELDS:
-            values[field_name] = self._get_field_value(field_name)
-        values["name"] = self.company_name
-        values["company_name"] = self.commercial_company_name
-        values["is_company"] = True
-        values["partner_profile"] = (
-            self.env["partner.profile"]
-            .search([("ref", "=", "partner_profile_main")], limit=1)
-            .id
-        )
-        values["type"] = "contact"
-        values.update({"email": values.pop("company_email", "")})
+        values = self._get_values_main_partner()
         main_partner = self.env["res.partner"].create(values)
         # Organization's public profile is automaticcaly created
 
         if self.from_website:
-            # Organization created from website, we create only a billing contact
-            values = {}
-            for field_name in self._POSITION_PROFILE_FIELDS:
-                values[field_name] = self._get_field_value(field_name)
-            values["name"] = self.contact_name
-            values.update({"phone": values.pop("phone_pro", "")})
-            values.update({"email": values.pop("email_pro", "")})
-            values["is_company"] = False
-            values["type"] = "other"
-            values["parent_id"] = main_partner.id
+            # Organization created from website, we create only an "other" contact
+            values = self._get_values_other_contact(main_partner)
             self.env["res.partner"].create(values)
         else:
             # Organization's contact's position partner creation
-            values = {}
-            for field_name in self._POSITION_PROFILE_FIELDS:
-                values[field_name] = self._get_field_value(field_name)
-            values["name"] = self.contact_name
-            values["is_company"] = False
-            values["contact_id"] = self.partner_id.id
-            values["parent_id"] = main_partner.id
-            values["partner_profile"] = (
-                self.env["partner.profile"]
-                .search([("ref", "=", "partner_profile_position")], limit=1)
-                .id
-            )
-            values["type"] = "contact"
-            values["edit_structure_main_profile"] = True
-            values["edit_structure_public_profile"] = True
-            values.update({"phone": values.pop("phone_pro", "")})
-            values.update({"email": values.pop("email_pro", "")})
+            values = self._get_values_position_partner(main_partner)
             self.env["res.partner"].create(values)
 
         # Create sale order and invoice to finalize the registration process
-        values = {}
-        values["partner_id"] = main_partner.id
-        values["team_id"] = self.team_id.id
-        values["company_id"] = main_partner.company_id.id
-        sale_order = self.env["sale.order"].create(values)
-        values = {}
-        values["member_product_id"] = self.membership_product_id.id
-        values["total_membership"] = self.total_membership
-        values["order_id"] = sale_order.id
-        sale_order.sudo().create_membership(values)
-        sale_order.sudo().action_confirm()
-        invoice_id = sale_order.sudo().action_invoice_create()[0]
-        invoice = self.env["account.invoice"].browse(invoice_id)
-        invoice.action_invoice_open()
-        self.invoice_url = invoice.get_portal_url()
+        self._create_organization_so_and_invoice(main_partner)
+
         self.application_accepted = True
 
         # Redirect to the main profile
@@ -208,6 +233,17 @@ class Lead(models.Model):
         self.application_refused = True
         return
 
+    def _get_renewal_values_main_partner(self):
+        values = {
+            "name": self.commercial_company_name,
+        }
+        for field_name in self._MAIN_PROFILE_FIELDS:
+            values[field_name] = self._get_field_value(field_name)
+        company_email = values.pop("company_email", "")
+        if company_email and self.partner_id.email != company_email:
+            values.update({"email": company_email})
+        return values
+
     @api.multi
     def action_validate_renewal_request(self):
         if not self.membership_product_id:
@@ -216,37 +252,12 @@ class Lead(models.Model):
             )
 
         # Organization's main partner update
-        values = {}
-        for field_name in self._MAIN_PROFILE_FIELDS:
-            values[field_name] = self._get_field_value(field_name)
-        values["name"] = self.commercial_company_name
-        company_email = values.pop("company_email", "")
-        if company_email and self.partner_id.email != company_email:
-            values.update({"email": company_email})
+        values = self._get_renewal_values_main_partner()
         self.partner_id.write(values)
 
         # Create sale order and invoice to finalize the registration process
-        values = {}
-        values["partner_id"] = self.partner_id.id
-        values["team_id"] = self.team_id.id
-        values["company_id"] = self.partner_id.company_id.id
-        sale_order = self.env["sale.order"].create(values)
-        values = {}
-        values["member_product_id"] = self.membership_product_id.id
-        values["total_membership"] = self.total_membership
-        values["order_id"] = sale_order.id
-        sale_order.create_membership(values)
-        sale_order.action_confirm()
-        invoice_id = sale_order.action_invoice_create()[0]
-        invoice = self.env["account.invoice"].browse(invoice_id)
-        invoice.action_invoice_open()
-        self.invoice_url = (
-            self.env["website"]
-            .search([("company_id", "=", self.partner_id.company_id.id)], limit=1)
-            .domain
-            + "/my/invoices/"
-            + str(invoice_id)
-        )
+        self._create_organization_so_and_invoice(self.partner_id)
+
         self.renewal_accepted = True
         return
 
@@ -259,22 +270,7 @@ class Lead(models.Model):
     def action_validate_affiliation_request(self):
         if self.affiliated_company:
             # Organization's contact's position partner creation
-            values = {}
-            for field_name in self._POSITION_PROFILE_FIELDS:
-                values[field_name] = self._get_field_value(field_name)
-            values["name"] = self.contact_name
-            values["is_company"] = False
-            values["contact_id"] = self.partner_id.id
-            values["parent_id"] = self.affiliated_company.id
-            values["partner_profile"] = (
-                self.env["partner.profile"]
-                .search([("ref", "=", "partner_profile_position")], limit=1)
-                .id
-            )
-            values["type"] = "contact"
-            values["edit_structure_main_profile"] = True
-            values["edit_structure_public_profile"] = True
-            values.update({"phone": values.pop("phone_pro", "")})
+            values = self._get_values_position_partner(self.affiliated_company)
             position_partner = self.env["res.partner"].create(values)
 
             self.affiliation_accepted = True

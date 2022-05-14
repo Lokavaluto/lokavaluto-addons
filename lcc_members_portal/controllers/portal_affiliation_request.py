@@ -5,7 +5,7 @@ from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
-class PortalOrganizationRegistration(CustomerPortal):
+class PortalOrganizationAffiliation(CustomerPortal):
     _AFFILIATION_REQUEST_FIELDS = [
         "company_name",
         "function",
@@ -38,11 +38,9 @@ class PortalOrganizationRegistration(CustomerPortal):
     )
     def portal_affiliation_request(self, access_token=None, redirect=None, **kw):
         partner = request.env.user.partner_id
-
         values = self._affiliation_get_page_view_values(partner, access_token, **kw)
         error = dict()
         error_message = []
-
         values.update(
             {
                 "error": error,
@@ -50,6 +48,28 @@ class PortalOrganizationRegistration(CustomerPortal):
             }
         )
         return request.render("lcc_members_portal.portal_affiliation_request", values)
+
+    def _compute_affiliation_form_data(self, data):
+        partner = request.env.user.partner_id
+        values = {
+            "partner_id": partner.id,
+            "type": "opportunity",
+            "lead_type": "affiliation_request",
+            "edit_structure_main_profile": data.get("manage_main_profile", "off")
+            == "on",
+            "edit_structure_public_profile": data.get("manage_public_profile", "off")
+            == "on",
+        }
+        for field in self._AFFILIATION_REQUEST_FIELDS:
+            if data.get(field):
+                values[field] = data.pop(field)
+        for field in self._EXTRA_FIELDS:
+            if data.get(field):
+                values[field] = data.pop(field)
+        values["name"] = (
+            "[AFFILIATION] " + partner.name + " in " + values["company_name"]
+        )
+        return values
 
     @http.route(
         ["/affiliation/send_request"],
@@ -59,26 +79,7 @@ class PortalOrganizationRegistration(CustomerPortal):
     )
     def send_affiliation_request(self, **kwargs):
         # Create a new lead
-        values = {}
-        for field in self._AFFILIATION_REQUEST_FIELDS:
-            if kwargs.get(field):
-                values[field] = kwargs.pop(field)
-        for field in self._EXTRA_FIELDS:
-            if kwargs.get(field):
-                values[field] = kwargs.pop(field)
-        partner = request.env.user.partner_id
-        values["name"] = (
-            "[AFFILIATION] " + partner.name + " in " + values["company_name"]
-        )
-        values["partner_id"] = partner.id
-        values["type"] = "opportunity"
-        values["lead_type"] = "affiliation_request"
-        values["edit_structure_main_profile"] = (
-            kwargs.get("manage_main_profile", "off") == "on"
-        )
-        values["edit_structure_public_profile"] = (
-            kwargs.get("manage_public_profile", "off") == "on"
-        )
+        values = self._compute_affiliation_form_data(kwargs)
         lead = request.env["crm.lead"].sudo().create(values)
-        lead.team_id = partner.team_id
+        lead.team_id = request.env.user.partner_id.team_id
         return request.render("lcc_members_portal.portal_affiliation_request_saved", {})
