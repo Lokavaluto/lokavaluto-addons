@@ -12,6 +12,11 @@
                             Modify my account
                         </button>
                     </a>
+                    <a t-attf-href="/web/reset_password">
+                        <button class="btn btn-primary mb8">
+                            Reset password
+                        </button>
+                    </a>
                     <a t-attf-href="/my/profiles">
                         <button class="btn btn-primary mb8">
                             Consult my profiles

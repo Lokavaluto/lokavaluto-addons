@@ -634,6 +634,11 @@ msgid "Modify my account"
 msgstr "Modifier mon compte"
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_menu
+msgid "Reset password"
+msgstr "Modifier mon mot de passe"
+
+#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "My Contacts"
 msgstr "Mes Contacts"
