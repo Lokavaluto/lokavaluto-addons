@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_digital_currency" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.digital_currency</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="99" />
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="digital_currency" string="Digital Currency" data-key="digital_currency">
+                    <h2>Digital currency application configuration</h2>
+                    <div class="row mt16 o_settings_container" id="app_connection_settings">
+                        <group>
+                            <field name="monujo_web_app_url" />
+                            <field name="monujo_android_app_url" />
+                            <field name="monujo_ios_app_url" />
+                        </group>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
