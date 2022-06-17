@@ -83,3 +83,12 @@ class CustomCustomerPortal(CustomerPortal):  # Inherit in your custom class
         tx = order._create_payment_transaction(vals)
         PaymentProcessing.add_payment_transaction(tx)
         return request.redirect("/payment/process")
+
+    def _prepare_portal_layout_values(self):
+        values = super(CustomerPortal, self)._prepare_portal_layout_values()
+        values["monujo_web_app_url"] = request.env.user.company_id.monujo_web_app_url
+        values[
+            "monujo_android_app_url"
+        ] = request.env.user.company_id.monujo_android_app_url
+        values["monujo_ios_app_url"] = request.env.user.company_id.monujo_ios_app_url
+        return values
