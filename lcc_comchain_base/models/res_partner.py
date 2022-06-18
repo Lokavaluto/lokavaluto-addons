@@ -181,3 +181,12 @@ class ResPartner(models.Model):
                 {"state": "sent", "require_signature": False, "require_payment": True}
             )
         return order_id
+
+    def show_app_access_buttons(self):
+        # For comchain the app access buttons on the portal are always displayed
+        # as long as the comchain currency is defined,
+        # as the user needs to connect to Monujo to create its wallet
+        res = super(ResPartner, self).show_app_access_buttons()
+        if self.env.user.company_id.comchain_currency_name:
+            res = True
+        return res

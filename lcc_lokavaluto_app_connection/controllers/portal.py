@@ -91,4 +91,7 @@ class CustomCustomerPortal(CustomerPortal):  # Inherit in your custom class
             "monujo_android_app_url"
         ] = request.env.user.company_id.monujo_android_app_url
         values["monujo_ios_app_url"] = request.env.user.company_id.monujo_ios_app_url
+        values[
+            "show_app_access_buttons"
+        ] = request.env.user.partner_id.show_app_access_buttons()
         return values

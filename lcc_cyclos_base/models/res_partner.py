@@ -208,3 +208,13 @@ class ResPartner(models.Model):
                         "cyclos_create_response": res.text,
                     }
                 )
+
+    def show_app_access_buttons(self):
+        # For Cyclos, we display the app access buttons on portal
+        # only if the user has at least one activated Cyclos wallet
+        res = super(ResPartner, self).show_app_access_buttons()
+        for backend in self.lcc_backend_ids:
+            if (backend.type == "cyclos") and (backend.status == "active"):
+                res = True
+                break
+        return res

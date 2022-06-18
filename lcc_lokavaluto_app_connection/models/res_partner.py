@@ -117,3 +117,6 @@ class ResPartner(models.Model):
             "target": "current",
             "flags": {"form": {"action_buttons": True}},
         }
+
+    def show_app_access_buttons(self):
+        return False
