@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="calendar_event_form_view" model="ir.ui.view">
+            <field name="name">lcc.calendar.event.view</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form" />
+            <field name="sequence">99</field>
+            <field name="arch" type="xml">
+                <field name="partner_ids" position="attributes">
+                    <attribute name="domain">[('is_public_profile', '=', False)]</attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
