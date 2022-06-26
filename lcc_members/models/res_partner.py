@@ -255,6 +255,8 @@ class res_partner(models.Model):
 
     @api.model
     def create(self, vals):
+        """Assume if not type, default is contact"""
+        vals["type"] = vals.get("type", "contact")
         if vals["type"] == "contact":
             """When creating, if partner_profile is not defined by a previous process, the defaut value is Main"""
             modified_self = self._basecontact_check_context("create")
