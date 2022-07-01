@@ -1,5 +1,5 @@
 import logging
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 from odoo.addons.payment.controllers.portal import PaymentProcessing
 from odoo.addons.sale.controllers.portal import CustomerPortal  # Import the class
