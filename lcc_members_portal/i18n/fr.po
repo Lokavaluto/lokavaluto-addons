@@ -198,6 +198,50 @@ msgid "<small>- Modification causes log out. Sign in just after!</small>"
 msgstr "<small>- La modification de ce champ entraîne une déconnexion. Veuillez vous reconnecter jusste après !</small>"
 
 #. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Non-member</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Non adhérent</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Old member</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Ancien adhérent</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Pending membership</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Adhésion en cours</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Up to date member</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Adhésion à jour</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:69
 #: code:addons/lcc_members_portal/models/crm_lead.py:76
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__accept_policy
