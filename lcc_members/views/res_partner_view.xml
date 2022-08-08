@@ -51,6 +51,7 @@
                     <field name="ref" string="Subcription number" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="want_newsletter_subscription" readonly="1" />
                     <field name="accept_policy" readonly="1" />
+                    <field name="refuse_numeric_wallet_creation" />
                 </xpath>
 
                 <xpath expr="//field[@name='phone']" position="replace">

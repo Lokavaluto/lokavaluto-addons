@@ -844,6 +844,14 @@ msgid "Referent"
 msgstr "Reférent"
 
 #. module: lcc_members
+#: code:addons/lcc_members/models/res_partner.py:196
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__refuse_numeric_wallet_creation
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__refuse_numeric_wallet_creation
+#, python-format
+msgid "Refuse the creation of a numeric wallet."
+msgstr "Refuse la création d'un portefeuille numérique"
+
+#. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_partner_image__partner_id
 msgid "Related Partner"
 msgstr "Partenaire associé"
