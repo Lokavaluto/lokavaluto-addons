@@ -192,6 +192,9 @@ class res_partner(models.Model):
     want_newsletter_subscription = fields.Boolean(
         string=_("Want Newsletters Subscription")
     )
+    refuse_numeric_wallet_creation = fields.Boolean(
+        string=_("Refuse the creation of a numeric wallet.")
+    )
     accept_policy = fields.Boolean(string=_("Accept LCC Policy"))
 
     other_contact_ids = fields.One2many(
