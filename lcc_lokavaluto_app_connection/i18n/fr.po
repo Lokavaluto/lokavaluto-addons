@@ -250,6 +250,7 @@ msgstr ""
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_organization_registration_wallet
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_private_registration_wallet
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.website_organization_registration_wallet
 msgid "Refuse numeric wallet creation"
 msgstr "Refuser la création d'un portefeuille numérique"
 
