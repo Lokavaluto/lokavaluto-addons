@@ -80,6 +80,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "base_jsonify",
         "partner_favorite",
         "lcc_members",
+        "lcc_members_portal",
         "lcc_members_qr",
     ],
     # always loaded
@@ -89,6 +90,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "views/lcc_backend.xml",
         "views/portal_my_home.xml",
         "views/res_config_settings_view.xml",
+        "views/portal_private_registration.xml",
         "data/numeric_data.xml",
     ],
     # only loaded in demonstration mode
