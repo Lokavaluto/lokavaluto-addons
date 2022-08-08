@@ -1,2 +1,0 @@
-* Lokavaluto
-* Nicolas JEUDY (Myceliandre)
