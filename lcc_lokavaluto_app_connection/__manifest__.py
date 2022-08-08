@@ -92,6 +92,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "views/res_config_settings_view.xml",
         "views/portal_private_registration.xml",
         "views/portal_organization_registration.xml",
+        "views/website_organization_registration.xml",
         "views/crm_lead_view.xml",
         "data/numeric_data.xml",
     ],
