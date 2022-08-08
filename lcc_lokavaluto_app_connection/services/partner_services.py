@@ -146,7 +146,9 @@ class PartnerService(Component):
                     "|",
                     "|",
                     "|",
+                    "|",
                     ("partner_id.public_profile_id.name", "ilike", value),
+                    ("partner_id.public_profile_id.company_name", "ilike", value),
                     ("partner_id.public_profile_id.email", "ilike", value),
                     ("partner_id.public_profile_id.phone", "ilike", value),
                     ("partner_id.public_profile_id.mobile", "ilike", value),
@@ -312,6 +314,7 @@ class PartnerService(Component):
         parser = [
             "id",
             "name",
+            "company_name",
             "street",
             "street2",
             "zip",
