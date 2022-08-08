@@ -49,9 +49,6 @@
                     <field name="team_id" string="Local group" options="{'limit': 16, 'create': false, 'create_edit': false}" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="user_id" string="Referent" attrs="{'invisible': [('contact_type','=','attached')]}" />
                     <field name="ref" string="Subcription number" attrs="{'invisible': [('contact_type','=','attached')]}" />
-                    <field name="want_newsletter_subscription" readonly="1" />
-                    <field name="accept_policy" readonly="1" />
-                    <field name="refuse_numeric_wallet_creation" />
                 </xpath>
 
                 <xpath expr="//field[@name='phone']" position="replace">
@@ -164,6 +161,13 @@
                 <!-- page Personnal Information -->
                 <xpath expr="//page[@name='personal_information_page']" position='attributes'>
                     <attribute name='attrs'>{'invisible': [('is_main_profile','=',False)]}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='personal_information_page']" position='inside'>
+                    <group name="user_choices" string="User choices">
+                        <field name="accept_policy" readonly="1" />
+                        <field name="want_newsletter_subscription" readonly="1" />
+                        <field name="refuse_numeric_wallet_creation" />
+                    </group>
                 </xpath>
 
                 <!-- ################## -->
