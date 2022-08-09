@@ -25,10 +25,10 @@
                             <label class="text-danger"> *</label>
                             <input type="text" name="company_name" t-attf-class="form-control #{error.get('company_name') and 'is-invalid' or ''}" t-att-value="company_name" required="True" />
                         </div>
-                        <div t-attf-class="form-group #{error.get('commercial_company_name') and 'o_has_error' or ''} col-xl-6">
-                            <label class="col-form-label" for="commercial_company_name">Commercial Name</label>
+                        <div t-attf-class="form-group #{error.get('business_name') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="business_name">Commercial Name</label>
                             <label class="text-danger"> *</label>
-                            <input type="text" name="commercial_company_name" t-attf-class="form-control #{error.get('commercial_company_name') and 'is-invalid' or ''}" t-att-value="commercial_company_name" required="True" />
+                            <input type="text" name="business_name" t-attf-class="form-control #{error.get('business_name') and 'is-invalid' or ''}" t-att-value="business_name" required="True" />
                         </div>
                     </div>
                     <div class="row">

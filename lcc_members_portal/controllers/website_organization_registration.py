@@ -7,7 +7,7 @@ from odoo.http import request
 class WebsiteOrganizationRegistration(http.Controller):
     _ORGANIZATION_REGISTRATION_FIELDS = [
         "company_name",
-        "commercial_company_name",
+        "business_name",
         "website_description",
         "street",
         "street2",

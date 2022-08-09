@@ -8,7 +8,7 @@ from odoo.addons.portal.controllers.portal import CustomerPortal
 class PortalOrganizationRenewal(CustomerPortal):
     _ORGANIZATION_RENEWAL_FIELDS = [
         "company_name",
-        "commercial_company_name",
+        "business_name",
         "website_description",
         "street",
         "street2",
