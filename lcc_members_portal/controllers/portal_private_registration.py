@@ -44,6 +44,12 @@ class PortalPrivateRegistration(CustomerPortal):
         )
         return product
 
+    def _get_selected_team_id(self, partner):
+        if len(request.env['res.company'].sudo().search([])) > 1:
+            return request.env["crm.team"].sudo().search([("local_group", "=", True), ("company_id", "=", partner.company_id.id)])
+        else:
+            return request.env["crm.team"].sudo().search([("local_group", "=", True)])
+
     @http.route(
         ["/my/private_registration"],
         type="http",
@@ -56,13 +62,7 @@ class PortalPrivateRegistration(CustomerPortal):
         product = self.get_private_membership_product()
         titles = request.env["res.partner.title"].sudo().search([])
         countries = request.env["res.country"].sudo().search([])
-        teams = (
-            request.env["crm.team"]
-            .sudo()
-            .search(
-                [("local_group", "=", True), ("company_id", "=", partner.company_id.id)]
-            )
-        )
+        teams = self._get_selected_team_id(partner)
         error = dict()
         error_message = []
 
