@@ -57,6 +57,7 @@ class Lead(models.Model):
 
     company_name = fields.Char(string=_("Company Name"))
     commercial_company_name = fields.Char(string=_("Commercial Company Name"))
+    business_name = fields.Char(string=_("Business Name"))
     website_description = fields.Html(string=_("Website Description"), strip_style=True)
     company_email = fields.Char(string=_("Email"))
     industry_id = fields.Many2one("res.partner.industry", string=_("Main activity"))
@@ -118,7 +119,7 @@ class Lead(models.Model):
     def _get_values_main_partner(self):
         values = {
             "name": self.company_name,
-            "company_name": self.commercial_company_name,
+            "business_name": self.business_name,
             "is_company": True,
             "partner_profile": self.env["partner.profile"]
             .search([("ref", "=", "partner_profile_main")], limit=1)
@@ -235,7 +236,8 @@ class Lead(models.Model):
 
     def _get_renewal_values_main_partner(self):
         values = {
-            "name": self.commercial_company_name,
+            "name": self.company_name,
+            "business_name" : self.business_name,
         }
         for field_name in self._MAIN_PROFILE_FIELDS:
             values[field_name] = self._get_field_value(field_name)
