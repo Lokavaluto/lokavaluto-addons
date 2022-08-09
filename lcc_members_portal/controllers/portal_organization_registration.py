@@ -54,10 +54,12 @@ class PortalOrganizationRegistration(CustomerPortal):
         )
         return product
 
-    def get_selected_team_id(self, kwargs):
-        team_obj = request.env["crm.team"]
-        team_id = kwargs.get("team_id")
-        return team_obj.sudo().browse(int(team_id))[0]
+    def _get_selected_team_id(self, partner):
+        if len(request.env['res.company'].sudo().search([])) > 1:
+            return request.env["crm.team"].sudo().search([("local_group", "=", True), ("company_id", "=", partner.company_id.id)])
+        else:
+            return request.env["crm.team"].sudo().search([("local_group", "=", True)])
+
 
     @http.route(
         ["/my/organization_registration"],
@@ -72,13 +74,7 @@ class PortalOrganizationRegistration(CustomerPortal):
         product = self.get_organization_membership_product()
         titles = request.env["res.partner.title"].sudo().search([])
         countries = request.env["res.country"].sudo().search([])
-        teams = (
-            request.env["crm.team"]
-            .sudo()
-            .search(
-                [("local_group", "=", True), ("company_id", "=", partner.company_id.id)]
-            )
-        )
+        teams = self._get_selected_team_id(partner)
         industries = request.env["res.partner.industry"].sudo().search([])
         error = dict()
         error_message = []
