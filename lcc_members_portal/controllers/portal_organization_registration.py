@@ -59,11 +59,6 @@ class PortalOrganizationRegistration(CustomerPortal):
         team_id = kwargs.get("team_id")
         return team_obj.sudo().browse(int(team_id))[0]
 
-    def get_selected_country_id(self, kwargs):
-        country_obj = request.env["res.country"]
-        country_id = kwargs.get("country_id")
-        return country_obj.sudo().browse(int(country_id))[0]
-
     @http.route(
         ["/my/organization_registration"],
         type="http",
