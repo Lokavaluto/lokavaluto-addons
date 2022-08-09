@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-15 13:29+0000\n"
-"PO-Revision-Date: 2022-07-15 13:29+0000\n"
+"POT-Creation-Date: 2022-08-09 14:19+0000\n"
+"PO-Revision-Date: 2022-08-09 14:19+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,9 +25,9 @@ msgstr "<br/>\n"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 msgid "<br/>\n"
-"                        Who are you?"
+"                        Membership information"
 msgstr "<br/>\n"
-"                        Qui êtres-vous ?"
+"                        Informations d'adhésion"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
@@ -35,13 +35,6 @@ msgid "<br/>\n"
 "                        Organization Contact information"
 msgstr "<br/>\n"
 "                        Informations de contact de l'organisation"
-
-#. module: lcc_members_portal
-#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
-msgid "<br/>\n"
-"                        Membership information"
-msgstr "<br/>\n"
-"                        Informations d'adhésion"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
@@ -70,6 +63,13 @@ msgid "<br/>\n"
 "                        What is your organization?"
 msgstr "<br/>\n"
 "                        Quelle est votre organisation ?"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "<br/>\n"
+"                        Who are you?"
+msgstr "<br/>\n"
+"                        Qui êtres-vous ?"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
@@ -242,7 +242,13 @@ msgstr "<span>\n"
 "                </span>"
 
 #. module: lcc_members_portal
+#: model:crm.lead.tag,name:lcc_members_portal.categ_oppor_affiliation
+msgid "AFFILIATION"
+msgstr "AFFILIATION"
+
+#. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:76
+#: code:addons/lcc_members_portal/models/crm_lead.py:77
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__accept_policy
 #, python-format
 msgid "Accept LCC Policy"
@@ -258,6 +264,7 @@ msgstr "Accepter les Conditions Générales d'Utilisation"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:68
+#: code:addons/lcc_members_portal/models/crm_lead.py:69
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__accept_coupons
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
@@ -268,6 +275,7 @@ msgstr "Accept les coupons"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:67
+#: code:addons/lcc_members_portal/models/crm_lead.py:68
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__accept_digital_currency
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
@@ -331,6 +339,11 @@ msgid "Affiliation refused"
 msgstr "Affiliation refusée"
 
 #. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_opportunity_lcc_filter
+msgid "Affiliations"
+msgstr "Demandes d'affiliation"
+
+#. module: lcc_members_portal
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__application_accepted
 msgid "Application Accepted"
 msgstr "Adhésion Acceptée"
@@ -375,6 +388,13 @@ msgid "Back to Home page\n"
 "                        <span class=\"fa fa-long-arrow-right\"/>"
 msgstr "Revenir à la page d'accueil\n"
 "                        <span class=\"fa fa-long-arrow-right\"/>"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:60
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__business_name
+#, python-format
+msgid "Business Name"
+msgstr "Nom commercial"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
@@ -431,10 +451,11 @@ msgstr "Pays..."
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:63
+#: code:addons/lcc_members_portal/models/crm_lead.py:64
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__detailed_activity
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
@@ -445,6 +466,7 @@ msgstr "Activités détaillées"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:66
+#: code:addons/lcc_members_portal/models/crm_lead.py:67
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__discount
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
@@ -455,6 +477,7 @@ msgstr "Remise"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:61
+#: code:addons/lcc_members_portal/models/crm_lead.py:62
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__company_email
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
@@ -466,6 +489,7 @@ msgstr "Courriel"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:70
+#: code:addons/lcc_members_portal/models/crm_lead.py:71
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__email_pro
 #, python-format
 msgid "Email Pro"
@@ -474,7 +498,7 @@ msgstr "Email pro"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 msgid "Email pro"
-msgstr "Email pro"
+msgstr ""
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
@@ -503,6 +527,7 @@ msgstr "Je souhaite gérer le profil public de la société"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:90
+#: code:addons/lcc_members_portal/models/crm_lead.py:91
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__invoice_url
 #, python-format
 msgid "Invoice link"
@@ -510,6 +535,7 @@ msgstr "Lien vers la facture"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:69
+#: code:addons/lcc_members_portal/models/crm_lead.py:70
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__itinerant
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
@@ -520,6 +546,7 @@ msgstr "Itinérant"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:71
+#: code:addons/lcc_members_portal/models/crm_lead.py:72
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__function
 #, python-format
 msgid "Job Position"
@@ -575,6 +602,7 @@ msgstr "Groupe Local..."
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:62
+#: code:addons/lcc_members_portal/models/crm_lead.py:63
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__industry_id
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
@@ -585,6 +613,7 @@ msgstr "Activité principale"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:78
+#: code:addons/lcc_members_portal/models/crm_lead.py:79
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__edit_structure_main_profile
 #, python-format
 msgid "Manage the structure's main profile"
@@ -592,6 +621,7 @@ msgstr "Gère le profil principale de la structure"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:81
+#: code:addons/lcc_members_portal/models/crm_lead.py:82
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__edit_structure_public_profile
 #, python-format
 msgid "Manage the structure's public profile"
@@ -609,6 +639,7 @@ msgstr "Demande d'adhésion"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:83
+#: code:addons/lcc_members_portal/models/crm_lead.py:84
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__total_membership
 #, python-format
 msgid "Membership amount"
@@ -616,6 +647,7 @@ msgstr "Montant de l'adhésion"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:87
+#: code:addons/lcc_members_portal/models/crm_lead.py:88
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__membership_product_id
 #, python-format
 msgid "Membership product"
@@ -623,6 +655,7 @@ msgstr "Article d'adhésion"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:84
+#: code:addons/lcc_members_portal/models/crm_lead.py:85
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__message_from_candidate
 #, python-format
 msgid "Message from the candidate"
@@ -639,12 +672,23 @@ msgid "Mobile"
 msgstr "Portable"
 
 #. module: lcc_members_portal
+#: model:crm.lead.tag,name:lcc_members_portal.categ_oppor_application
+msgid "NEW APPLICATION"
+msgstr "NOUVELLE CANDIDATURE"
+
+#. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 msgid "Name"
 msgstr "Nom"
 
 #. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_opportunity_lcc_filter
+msgid "New applications"
+msgstr "Nouvelles candidatures"
+
+#. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:65
+#: code:addons/lcc_members_portal/models/crm_lead.py:66
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__opening_time
 #, python-format
 msgid "Opening Time"
@@ -714,6 +758,7 @@ msgstr "Téléphone"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:72
+#: code:addons/lcc_members_portal/models/crm_lead.py:73
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__phone_pro
 #, python-format
 msgid "Phone Pro"
@@ -742,6 +787,11 @@ msgstr "Email profesionnel"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 msgid "Professional phone"
 msgstr "Téléphone Professionnel"
+
+#. module: lcc_members_portal
+#: model:crm.lead.tag,name:lcc_members_portal.categ_oppor_renewal
+msgid "RENEWAL"
+msgstr "RENOUVELLEMENT"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
@@ -808,6 +858,11 @@ msgstr "Renouvellement accepté"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
 msgid "Renewal refused"
 msgstr "Renouvellement refusé"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_opportunity_lcc_filter
+msgid "Renewals"
+msgstr "Renouvellements"
 
 #. module: lcc_members_portal
 #: model:ir.model,name:lcc_members_portal.model_sale_order
@@ -990,6 +1045,7 @@ msgstr "Valider le renouvellement"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:74
+#: code:addons/lcc_members_portal/models/crm_lead.py:75
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__want_newsletter_subscription
 #, python-format
 msgid "Want Newsletters Subscription"
@@ -1004,6 +1060,7 @@ msgstr "Site Web"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:60
+#: code:addons/lcc_members_portal/models/crm_lead.py:61
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__website_description
 #, python-format
 msgid "Website Description"
@@ -1011,6 +1068,7 @@ msgstr "Description sur le site WEB"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:64
+#: code:addons/lcc_members_portal/models/crm_lead.py:65
 #: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__reasons_choosing_mlc
 #, python-format
 msgid "Why did I choose local currency"
@@ -1018,6 +1076,7 @@ msgstr "Pourquoi j'ai choisi la monnaie locale ?"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:292
+#: code:addons/lcc_members_portal/models/crm_lead.py:294
 #, python-format
 msgid "You must indicate an Affiliated Organization in order to link it to the user.\n"
 "\n"
