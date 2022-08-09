@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 PUBLIC_PROFILE_FIELDS = [
     "name",
-    "company_name",
+    "business_name",
     "lastname",
     "firstname",
     "function",
@@ -52,6 +52,7 @@ POSITION_PROFILE_FIELDS = [
 class res_partner(models.Model):
     _inherit = "res.partner"
 
+    business_name = fields.Char(string=_("Business Name"))
     reasons_choosing_mlc = fields.Text(
         string=_("Why did I choose local currency"),
         required=False,

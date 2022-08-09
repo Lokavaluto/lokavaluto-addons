@@ -39,7 +39,7 @@
                     </group>
                 </xpath>
                 <xpath expr="//field[@name='type']" position="before">
-                    <field name="company_name" string="Commercial name" placeholder="Commercial Name..." attrs="{'invisible': [('is_company', '=', False)]}" />
+                    <field name="business_name" string="Commercial name" placeholder="Commercial Name..." attrs="{'invisible': [('is_company', '=', False)]}" />
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">
                     <field name="membership_state" string="Subscription status" attrs="{'invisible': [('contact_type','=','attached')]}" />
