@@ -20,22 +20,24 @@ msgstr ""
 msgid "<br/>\n"
 "                        <strong>Applications mobiles:</strong>\n"
 "                        <br/>"
-msgstr ""
+msgstr "<br/>\n"
+"                        <strong>Applications mobiles:</strong>\n"
+"                        <br/>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
 msgid "<span class=\"o_form_label\">Android app download URL</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">URL de téléchargement Android</span>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
 msgid "<span class=\"o_form_label\">Web application URL</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">URL de la WEBAPP</span>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
 msgid "<span class=\"o_form_label\">iOS app download URL</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Url de téléchargement IOS</span>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_auth_api_key
@@ -45,7 +47,7 @@ msgstr "Clé API"
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
 msgid "Accès web"
-msgstr ""
+msgstr "Accès web"
 
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,status:0
@@ -60,7 +62,7 @@ msgstr "Bloqué"
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,type:0
 msgid "Comchain"
-msgstr ""
+msgstr "Comchain"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_company
@@ -75,7 +77,7 @@ msgstr "Paramètres de config"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
@@ -90,7 +92,7 @@ msgstr "Créé le"
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,type:0
 msgid "Cyclos"
-msgstr ""
+msgstr "Cyclos"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
@@ -111,7 +113,7 @@ msgstr "Nom affiché"
 #: model:product.product,name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
 #: model:product.template,name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
 msgid "Generic Numeric LCC"
-msgstr ""
+msgstr "MLC Numérique générique"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_invoice__has_numeric_lcc_products
@@ -133,7 +135,7 @@ msgstr "Si nous stockons vos informations de paiement sur notre serveur, les pai
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__in_mobile_app
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__in_mobile_app
 msgid "In the mobile map"
-msgstr ""
+msgstr "Dans l'application mobile"
 
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,status:0
@@ -158,7 +160,7 @@ msgstr "Portefeuilles numériques"
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
 msgid "LCC account related settings are managed on"
-msgstr ""
+msgstr "Paramètres liés aux compte MLC sont gérés sur"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
@@ -201,13 +203,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__monujo_ios_app_url
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__monujo_ios_app_url
 msgid "Monujo iOS app URL"
-msgstr ""
+msgstr "URL de l'application Monujo pour iOS"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__monujo_web_app_url
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__monujo_web_app_url
 msgid "Monujo web app URL"
-msgstr ""
+msgstr "URL de l'application Monujo pour web"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_auth_api_key__name
@@ -219,7 +221,7 @@ msgstr "Nom"
 #: code:addons/lcc_lokavaluto_app_connection/services/partner_images_services.py:38
 #, python-format
 msgid "No image found for partner %s"
-msgstr ""
+msgstr "Pas d'image trouvée pour le partenaire %s"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:product.category,name:lcc_lokavaluto_app_connection.product_category_numeric_lcc
@@ -245,7 +247,7 @@ msgstr "Payer et confirmer"
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
 msgid "Portefeuille numérique"
-msgstr ""
+msgstr "Portefeuille numérique"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_organization_registration_wallet
@@ -280,7 +282,7 @@ msgstr "A confirmer"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__type
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:product.product,uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
@@ -292,12 +294,12 @@ msgstr "Unité"
 #: model:product.product,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
 #: model:product.template,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner_backend
 msgid "res.partner.backend"
-msgstr ""
+msgstr "res.partner.backend"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
