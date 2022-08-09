@@ -18,17 +18,17 @@ msgstr ""
 #. module: lcc_cyclos_base
 #: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
 msgid "<span class=\"o_form_label\">Cyclos server Login</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Login serveur Cyclos</span>"
 
 #. module: lcc_cyclos_base
 #: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
 msgid "<span class=\"o_form_label\">Cyclos server Password</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Mot de passe serveur Cyclos</span>"
 
 #. module: lcc_cyclos_base
 #: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
 msgid "<span class=\"o_form_label\">Cyclos server URL</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">URL Cyclos serveur</span>"
 
 #. module: lcc_cyclos_base
 #: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_backend_cyclos_form_view
@@ -48,7 +48,7 @@ msgstr "Token d'authentification Cyclos"
 #. module: lcc_cyclos_base
 #: selection:res.partner.backend,type:0
 msgid "Comchain"
-msgstr ""
+msgstr "Comchain"
 
 #. module: lcc_cyclos_base
 #: model:ir.model,name:lcc_cyclos_base.model_res_company
@@ -63,7 +63,7 @@ msgstr "Paramètres de config"
 #. module: lcc_cyclos_base
 #: model:ir.model,name:lcc_cyclos_base.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #. module: lcc_cyclos_base
 #: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_cyclos_partner_form
@@ -74,7 +74,7 @@ msgstr "Créer un portefeuille Cyclos"
 #: model:product.category,name:lcc_cyclos_base.product_category_cyclos
 #: selection:res.partner.backend,type:0
 msgid "Cyclos"
-msgstr ""
+msgstr "Cyclos"
 
 #. module: lcc_cyclos_base
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_status
@@ -89,12 +89,12 @@ msgstr "Montant crédité sur Cyclos"
 #. module: lcc_cyclos_base
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_create_response
 msgid "Cyclos create response"
-msgstr ""
+msgstr "Réponse de création Cyclos"
 
 #. module: lcc_cyclos_base
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_id
 msgid "Cyclos id"
-msgstr ""
+msgstr "ID Cyclos"
 
 #. module: lcc_cyclos_base
 #: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
@@ -120,24 +120,24 @@ msgstr "Facture"
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_company__cyclos_server_login
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_config_settings__cyclos_server_login
 msgid "Login for cyclos server"
-msgstr ""
+msgstr "Login pour le serveur Cyclos"
 
 #. module: lcc_cyclos_base
 #: model:product.product,name:lcc_cyclos_base.product_product_cyclos
 #: model:product.template,name:lcc_cyclos_base.product_product_cyclos_product_template
 msgid "Numeric LCC (Cyclos)"
-msgstr ""
+msgstr "MLC Numérique (Cyclos)"
 
 #. module: lcc_cyclos_base
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_company__cyclos_server_password
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_config_settings__cyclos_server_password
 msgid "Password for cyclos server"
-msgstr ""
+msgstr "Mot de passe pour le serveur Cyclos"
 
 #. module: lcc_cyclos_base
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__type
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #. module: lcc_cyclos_base
 #: model:product.product,uom_name:lcc_cyclos_base.product_product_cyclos
@@ -148,12 +148,12 @@ msgstr "Unité"
 #. module: lcc_cyclos_base
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_company__cyclos_server_url
 msgid "Url for cyclos server"
-msgstr ""
+msgstr "URL pour le serveur Cyclos"
 
 #. module: lcc_cyclos_base
 #: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_config_settings__cyclos_server_url
 msgid "Url for cyclos serveur"
-msgstr ""
+msgstr "URL pour le serveur Cyclos"
 
 #. module: lcc_cyclos_base
 #: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_backend_cyclos_form_view
@@ -164,10 +164,10 @@ msgstr "Activer le portefeuille"
 #: model:product.product,weight_uom_name:lcc_cyclos_base.product_product_cyclos
 #: model:product.template,weight_uom_name:lcc_cyclos_base.product_product_cyclos_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #. module: lcc_cyclos_base
 #: model:ir.model,name:lcc_cyclos_base.model_res_partner_backend
 msgid "res.partner.backend"
-msgstr ""
+msgstr "res.partner.backend"
 

@@ -430,12 +430,12 @@ msgstr "As un profil position"
 #: model:ir.model.fields,field_description:lcc_members.field_partner_image__id
 #: model:ir.model.fields,field_description:lcc_members.field_partner_profile__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_partner_image__image
 msgid "Image"
-msgstr ""
+msgstr "Image"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.view_partner_image_form
@@ -446,7 +446,7 @@ msgstr "Nom de l'image"
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__partner_image_ids
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__partner_image_ids
 msgid "Images"
-msgstr ""
+msgstr "Images"
 
 #. module: lcc_members
 #: code:addons/lcc_members/controllers/portal.py:93
@@ -735,7 +735,7 @@ msgstr "Profil du partenaire pour différencier les différents types de fiche c
 #: model:ir.cron,cron_name:lcc_members.ir_cron_migration_v2_v3_2
 #: model:ir.cron,name:lcc_members.ir_cron_migration_v2_v3_2
 msgid "Partner: Migration lcc_members v2 to v3"
-msgstr ""
+msgstr "Contact: Migration lcc_members v2 to v3"
 
 #. module: lcc_members
 #: model:ir.actions.server,name:lcc_members.ir_cron_generate_missing_public_profiles_ir_actions_server
@@ -836,7 +836,7 @@ msgstr "Profils public"
 #: model:ir.model.fields,field_description:lcc_members.field_partner_profile__ref
 #, python-format
 msgid "Ref"
-msgstr ""
+msgstr "Ref"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view

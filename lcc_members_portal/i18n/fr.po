@@ -451,7 +451,7 @@ msgstr "Pays..."
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:63
@@ -498,7 +498,7 @@ msgstr "Email pro"
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 msgid "Email pro"
-msgstr ""
+msgstr "Email pro"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration

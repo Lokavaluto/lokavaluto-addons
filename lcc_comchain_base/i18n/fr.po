@@ -28,17 +28,18 @@ msgstr "Adresse"
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,comchain_type:0
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,type:0
+msgid "Comchain"
 msgid "Comchain"
 msgstr ""
 
 #. module: lcc_comchain_base
 #: model:res.groups,name:lcc_comchain_base.group_comchain_manager
 msgid "Comchain Manager"
-msgstr ""
+msgstr "Gestionnaire Comchain"
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_status
@@ -88,7 +89,7 @@ msgstr "Paramètres de config"
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_wallet
@@ -108,7 +109,7 @@ msgstr "Nom de la monnaie"
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,type:0
 msgid "Cyclos"
-msgstr ""
+msgstr "Cyclos"
 
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_account_invoice
@@ -123,7 +124,7 @@ msgstr "Crédit max"
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_message_key
 msgid "Message keys"
-msgstr ""
+msgstr "Clés de message"
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_credit_min
@@ -134,7 +135,7 @@ msgstr "Crédit min"
 #: model:product.product,name:lcc_comchain_base.product_product_comchain
 #: model:product.template,name:lcc_comchain_base.product_product_comchain_product_template
 msgid "Numeric LCC (comchain)"
-msgstr ""
+msgstr "MLC Numérique (comchain)"
 
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,comchain_type:0
@@ -145,7 +146,7 @@ msgstr "Personnel"
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_type
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__type
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #. module: lcc_comchain_base
 #: model:product.product,uom_name:lcc_comchain_base.product_product_comchain
@@ -161,13 +162,13 @@ msgstr "Vous avez"
 #. module: lcc_comchain_base
 #: model:product.category,name:lcc_comchain_base.product_category_comchain
 msgid "comchain"
-msgstr ""
+msgstr "comchain"
 
 #. module: lcc_comchain_base
 #: model:product.product,weight_uom_name:lcc_comchain_base.product_product_comchain
 #: model:product.template,weight_uom_name:lcc_comchain_base.product_product_comchain_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.view_account_invoice_customer_conchain_form
@@ -177,5 +178,5 @@ msgstr "Monnaie numérique à créditer pour cet utilisateur. Merci d'utiliser l
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_partner_backend
 msgid "res.partner.backend"
-msgstr ""
+msgstr "res.partner.backend"
 
