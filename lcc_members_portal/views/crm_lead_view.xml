@@ -169,4 +169,19 @@
             </xpath>
         </field>
     </record>
+
+
+    <record model="ir.ui.view" id="crm_opportunity_lcc_filter">
+        <field name="name">crm.opportunity.lcc.filter</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter" />
+        <field name="arch" type="xml">
+            <filter name="open_opportunities" position="after">
+                <separator />
+                <filter string="New applications" name="new_applications" domain="[('lead_type', '=', 'membership_web_application')]" />
+                <filter string="Renewals" name="renewals" domain="[('lead_type', '=', 'renewal_request')]" />
+                <filter string="Affiliations" name="affiliations" domain="[('lead_type', '=', 'affiliation_request')]" />
+            </filter>
+        </field>
+    </record>
 </odoo>
