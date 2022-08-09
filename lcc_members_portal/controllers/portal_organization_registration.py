@@ -112,6 +112,7 @@ class PortalOrganizationRegistration(CustomerPortal):
             )
             == "on",
             "accept_policy": data.get("accept_policy", "off") == "on",
+            "tag_ids": [(4, request.env.ref("lcc_members_portal.categ_oppor_application").id, None)],
         }
 
         if float(data.get("total_membership", False)):
@@ -128,7 +129,7 @@ class PortalOrganizationRegistration(CustomerPortal):
             if data.get(field):
                 values[field] = data.pop(field)
 
-        values["name"] = "[NEW APPLICATION] " + values["company_name"]
+        values["name"] = values["company_name"]
         values.update({"zip": values.pop("zipcode", "")})
         values.update({"website": values.pop("website_url", "")})
 

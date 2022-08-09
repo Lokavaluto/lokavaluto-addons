@@ -87,6 +87,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     },
     # always loaded
     "data": [
+        "data/crm_lead_tag_data.xml",
         "views/portal_my_home.xml",
         "views/portal_private_registration.xml",
         "views/portal_organization_registration.xml",

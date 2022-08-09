@@ -59,6 +59,7 @@ class PortalOrganizationAffiliation(CustomerPortal):
             == "on",
             "edit_structure_public_profile": data.get("manage_public_profile", "off")
             == "on",
+            "tag_ids": [(4, request.env.ref("lcc_members_portal.categ_oppor_affiliation").id, None)],
         }
         for field in self._AFFILIATION_REQUEST_FIELDS:
             if data.get(field):
@@ -66,9 +67,7 @@ class PortalOrganizationAffiliation(CustomerPortal):
         for field in self._EXTRA_FIELDS:
             if data.get(field):
                 values[field] = data.pop(field)
-        values["name"] = (
-            "[AFFILIATION] " + partner.name + " in " + values["company_name"]
-        )
+        values["name"] =  values["company_name"]
         return values
 
     @http.route(

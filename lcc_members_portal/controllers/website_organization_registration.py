@@ -94,6 +94,7 @@ class WebsiteOrganizationRegistration(http.Controller):
             )
             == "on",
             "accept_policy": data.get("accept_policy", "off") == "on",
+            "tag_ids": [(4, request.env.ref("lcc_members_portal.categ_oppor_application").id, None)],
         }
         if float(data.get("total_membership", False)):
             values["total_membership"] = float(data.get("total_membership"))
@@ -107,7 +108,7 @@ class WebsiteOrganizationRegistration(http.Controller):
         for field in self._EXTRA_FIELDS:
             if data.get(field):
                 values[field] = data.pop(field)
-        values["name"] = "[NEW APPLICATION] " + values["company_name"]
+        values["name"] = values["company_name"]
         values.update({"zip": values.pop("zipcode", "")})
         values.update({"website": values.pop("website_url", "")})
         return values

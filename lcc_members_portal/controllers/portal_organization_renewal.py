@@ -93,6 +93,7 @@ class PortalOrganizationRenewal(CustomerPortal):
             )
             == "on",
             "accept_policy": data.get("accept_policy", "off") == "on",
+            "tag_ids": [(4, request.env.ref("lcc_members_portal.categ_oppor_renewal").id, None)],
         }
 
         if float(data.get("total_membership", False)):
@@ -109,7 +110,7 @@ class PortalOrganizationRenewal(CustomerPortal):
             if data.get(field):
                 values[field] = data.pop(field)
 
-        values["name"] = ("[RENEWAL] " + values["company_name"],)
+        values["name"] = values["company_name"]
         values.update({"zip": values.pop("zipcode", "")})
         values.update({"website": values.pop("website_url", "")})
 
