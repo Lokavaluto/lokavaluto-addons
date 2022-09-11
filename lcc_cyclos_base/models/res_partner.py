@@ -29,10 +29,17 @@ class ResPartner(models.Model):
     def _cyclos_backend(self):
         # We only support one backend per type for now
         backend_data = self.env["res.partner.backend"]
-        for backend in self.lcc_backend_ids:
-            if backend.type == "cyclos":
-                return backend
-        return backend_data
+        backends = [
+            backend
+            for backend in self.lcc_backend_ids
+            if backend.type == "cyclos" and backend.status == "active"
+        ]
+        if len(backends) == 0:
+            return backend_data
+        elif len(backends) == 1:
+            return backends[0]
+        else:
+            raise NotImplementedError("Multiple cyclos active backends are not supported yet")
 
     def _cyclos_backend_json_data(self):
         """Prepare backend data to be sent by credentials requests"""
