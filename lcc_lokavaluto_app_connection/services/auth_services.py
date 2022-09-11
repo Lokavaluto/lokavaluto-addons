@@ -3,7 +3,7 @@ from odoo import exceptions
 from odoo.http import request
 from odoo.addons.base_rest.components.service import to_int
 from odoo.addons.component.core import Component
-
+from .. import http
 
 _logger = logging.getLogger(__name__)
 
@@ -62,6 +62,7 @@ class AuthService(Component):
 
                 response["api_version"] = __api_version__
             except Exception as e:
+                _logger.debug(http.format_last_exception())
                 response["error"] = "%s" % e
                 response["status"] = "Error"
         return response
