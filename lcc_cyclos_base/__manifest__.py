@@ -84,6 +84,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "views/res_config_settings_view.xml",
         "views/res_partner_view.xml",
         "views/lcc_backend.xml",
+        "views/signup.xml",
         "data/cyclos_data.xml",
     ],
     # only loaded in demonstration mode
