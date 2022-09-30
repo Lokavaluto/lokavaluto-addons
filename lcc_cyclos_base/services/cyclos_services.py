@@ -37,3 +37,23 @@ class CyclosService(Component):
             new_order = partner.cyclosCreateOrder(owner_id, amount)
             cyclos_response.order_url = base_url + new_order.get_portal_url()
         return cyclos_response
+
+    @restapi.method(
+        [(["/partners"], "POST")],
+        input_param=Datamodel("cyclos.partners.info"),
+    )
+    def partners(self, params):
+        """Return display name for partner matching comchain addresses"""
+
+        partner = self.env["res.partner"]
+        partner_ids = partner.search(
+            [("lcc_backend_ids.cyclos_id", "in", params.addresses)]
+        )
+        res = {}
+        for partner in partner_ids:
+            backend_data = partner._cyclos_backend()
+            res[backend_data.comchain_id] = {
+                "partner_id": partner.id,
+                "public_name": partner.public_name,
+            }
+        return res
