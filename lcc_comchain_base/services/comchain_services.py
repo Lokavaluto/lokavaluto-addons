@@ -34,7 +34,7 @@ class ComchainService(Component):
             backend_data = partner._comchain_backend()
             res[backend_data.comchain_id] = {
                 "partner_id": partner.id,
-                "display_name": partner.public_profile_id.display_name,
+                "public_name": partner.public_name,
             }
         return res
 
