@@ -1,1 +1,1 @@
-from . import credit_info
+from . import cyclos
