@@ -159,6 +159,7 @@ class res_partner(models.Model):
         store=True,
         ondelete="cascade",
     )
+    public_name = fields.Char(compute="_compute_public_name", store=True)
     odoo_user_id = fields.Many2one(
         "res.users",
         compute="_compute_odoo_user_id",
@@ -210,6 +211,19 @@ class res_partner(models.Model):
                 [("company_id", "=", partner.company_id.id)], limit=1
             )
             partner.website_id = website.id
+
+    @api.depends(
+        "public_profile_id.display_name",
+        "public_profile_id.is_company",
+        "public_profile_id.business_name",
+    )
+    def _compute_public_name(self):
+        for partner in self:
+            partner.public_name = partner.public_profile_id[
+                "business_name"
+                if partner.public_profile_id.is_company
+                else "display_name"
+            ]
 
     @api.depends(
         "other_contact_ids",
