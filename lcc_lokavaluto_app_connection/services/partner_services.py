@@ -296,6 +296,7 @@ class PartnerService(Component):
                     [("public_profile_id", "=", partner_id)]
                 )
                 credentials = partner._update_search_data(backend_keys)
+                row["public_name"] = partner.public_name
                 row["monujo_backends"] = credentials
                 row["id"] = partner.id
                 row["is_favorite"] = partner.is_favorite
