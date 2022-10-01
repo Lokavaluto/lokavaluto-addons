@@ -216,6 +216,7 @@ class res_partner(models.Model):
         "public_profile_id.display_name",
         "public_profile_id.is_company",
         "public_profile_id.business_name",
+        "public_profile_id.name",
     )
     def _compute_public_name(self):
         for partner in self:
@@ -223,7 +224,7 @@ class res_partner(models.Model):
                 "business_name"
                 if partner.public_profile_id.is_company
                 else "display_name"
-            ]
+            ] or partner.public_profile_id.name
 
     @api.depends(
         "other_contact_ids",
