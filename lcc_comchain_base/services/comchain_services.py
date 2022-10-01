@@ -18,13 +18,11 @@ class ComchainService(Component):
     """
 
     @restapi.method(
-        [(["/partners"], "POST")],
+        [(["/contact"], "POST")],
         input_param=Datamodel("comchain.partners.info"),
     )
-    def partners(self, params):
-        """
-        Return display name for partner matching comchain addresses
-        """
+    def contact(self, params):
+        """Return public name for contacts matching comchain addresses"""
         partner = self.env["res.partner"]
         partner_ids = partner.search(
             [("lcc_backend_ids.comchain_id", "in", params.addresses)]

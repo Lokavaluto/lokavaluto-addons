@@ -39,11 +39,11 @@ class CyclosService(Component):
         return cyclos_response
 
     @restapi.method(
-        [(["/partners"], "POST")],
+        [(["/contact"], "POST")],
         input_param=Datamodel("cyclos.partners.info"),
     )
-    def partners(self, params):
-        """Return display name for partner matching comchain addresses"""
+    def contact(self, params):
+        """Return public name for contact matching comchain addresses"""
 
         partner = self.env["res.partner"]
         partner_ids = partner.search(
@@ -52,7 +52,7 @@ class CyclosService(Component):
         res = {}
         for partner in partner_ids:
             backend_data = partner._cyclos_backend()
-            res[backend_data.comchain_id] = {
+            res[backend_data.cyclos_id] = {
                 "partner_id": partner.id,
                 "public_name": partner.public_name,
             }
