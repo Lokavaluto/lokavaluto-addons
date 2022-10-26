@@ -47,9 +47,11 @@ class ResPartner(models.Model):
         backend_id = self._cyclos_backend_id
         if not backend_id:  ## is backend available and configured on odoo
             return []
+        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
         data = {
             "type": backend_id,
             "accounts": [],
+            "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
         }
         if backend_data.cyclos_id:
             data["accounts"].append(

@@ -55,8 +55,12 @@ class ResPartnerBackend(models.Model):
         if not backend_id:
             ## not present in wallet and not configured in general settings
             return []
-
-        data = {"type": backend_id, "accounts": []}
+        comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain")
+        data = {
+            "type": backend_id,
+            "accounts": [],
+            "min_credit_amount": getattr(comchain_product, "sale_min_qty", 0),
+        }
         wallet = self.comchain_wallet_parsed
         if wallet:
             data["accounts"].append(
