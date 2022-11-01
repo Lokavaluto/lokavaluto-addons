@@ -70,18 +70,12 @@ class CustomerPortal(CustomerPortal):
         error = dict()
         error_message = []
         # nickname uniqueness
-        if (
-            data.get("nickname")
-            and request.env["res.partner"].sudo().browse([9]).is_public_profile
-            and request.env["res.partner"]
-            .sudo()
-            .search(
-                [
-                    ("name", "=", data.get("nickname")),
-                    ("partner_profile.ref", "=", "partner_profile_public"),
-                    ("id", "!=", profile_id),
-                ]
-            )
+        if data.get("nickname") and request.env["res.partner"].sudo().search(
+            [
+                ("name", "=", data.get("nickname")),
+                ("partner_profile.ref", "=", "partner_profile_public"),
+                ("id", "!=", profile_id),
+            ]
         ):
             error["nickname"] = "error"
             error_message.append(
