@@ -1,18 +1,28 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
+        <record id="lcc_profiles_form_view" model="ir.ui.view">
+            <field name="name">LCC Profiles Form View</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="partner_profiles.partner_profiles_form_view" />
+            <field name="sequence">99</field>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='profile_status']/field[@name='contact_id']" position="before">
+                    <field name="odoo_user_id" string="Associated User" readonly="1" attrs="{'invisible': [('is_main_profile','=',False)]}" />
+                </xpath>
+            </field>
+        </record>
+
+
         <record id="lcc_members_form_view" model="ir.ui.view">
             <field name="name">LCC Members Form View</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="partner_profiles.partner_profiles_form_view" />
+            <field name="inherit_id" ref="base.view_partner_form" />
             <field name="sequence">99</field>
             <field name="arch" type="xml">
                 <!-- ################### -->
                 <!-- MAIN DISPLAY UPDATE -->
                 <!-- ################### -->
-                <xpath expr="//group[@name='profile_status']/field[@name='contact_id']" position="before">
-                    <field name="odoo_user_id" string="Associated User" readonly="1" attrs="{'invisible': [('is_main_profile','=',False)]}" />
-                </xpath>
                 <xpath expr="//field[@name='type']" position="before">
                     <field name="business_name" string="Commercial name" placeholder="Commercial Name..." attrs="{'invisible': [('is_company', '=', False)]}" />
                 </xpath>
