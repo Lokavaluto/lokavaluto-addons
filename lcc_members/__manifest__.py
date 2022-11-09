@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_members",
-    "version": "12.0.3.0.1",
+    "version": "12.0.4.0.0",
     "author": "Lokavaluto",
     "maintainer": "False",
     "website": "False",
@@ -74,7 +74,8 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "base",
         "partner_firstname",
         "partner_industry_secondary",
-        "partner_contact_in_several_companies",
+        "partner_profiles",
+        "partner_profiles_portal",
         "membership",
         "complementary_contact_data",
         "base_address_city",
@@ -108,10 +109,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "views/profile_portal_templates.xml",
         "views/invoice_portal_templates.xml",
         "views/res_users_views.xml",
-        "views/calendar_event_view.xml",
         "wizard/membership_invoice_views.xml",
-        "data/partner_profile_data.xml",
-        "data/res_partner_data.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],

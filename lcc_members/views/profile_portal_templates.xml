@@ -1,372 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="portal_my_home_profile_menu" name="Portal My Home: Profile Menu" inherit_id="portal.portal_layout" priority="40">
-        <xpath expr="//div[hasclass('o_portal_my_details')]" position="replace">
-            <div class="o_portal_my_details">
-                <h4>Your Details </h4>
-                <hr class="mt-1 mb-0" />
-                <div class="mb8" t-field="user_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;email&quot;, &quot;phone&quot;, &quot;address&quot;, &quot;name&quot;]}" />
-                <div>
-                    <a t-attf-href="/my/account">
-                        <button class="btn btn-primary mb8">
-                            Modify my account
-                        </button>
-                    </a>
-                    <a t-attf-href="/web/reset_password">
-                        <button class="btn btn-primary mb8">
-                            Reset password
-                        </button>
-                    </a>
-                    <a t-attf-href="/my/profiles">
-                        <button class="btn btn-primary mb8">
-                            Consult my profiles
-                        </button>
-                    </a>
-                </div>
-            </div>
+    <template id="portal_my_home_profile_lcc_menu" name="Portal My Home: Profile LCC Menu" inherit_id="partner_profiles_portal.portal_my_home_profile_menu" priority="40">
+        <xpath expr="//div[@name='profiles_management']" position="inside">
+            <a t-attf-href="/web/reset_password">
+                <button class="btn btn-primary mb8">
+                    Reset password
+                </button>
+            </a>
         </xpath>
     </template>
 
-    <template id="portal_my_profiles" name="My Profiles">
-        <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="True" />
-
-            <t t-call="portal.portal_searchbar">
-                <t t-set="title">Profiles</t>
-            </t>
-            <div class="oe_structure" id="oe_structure_portal_my_profiles_1" />
-            <t t-if="not profiles">
-                <div class="alert alert-warning mt8" role="alert">
-                    There are no profiles.
+    <template id="portal_my_lcc_profile" name="My Profile" inherit_id="partner_profiles_portal.portal_my_profile">
+        <xpath expr="//div[@name='nickname']" position="after">
+            <div name="description" class="row">
+                <div t-attf-class="form-group #{error.get('website_description') and 'o_has_error' or ''} col-xl-12">
+                    <label class="col-form-label" for="website_description">Description</label>
+                    <textarea rows="4" name="website_description" t-attf-class="form-control #{error.get('website_description') and 'is-invalid' or ''}" t-att-value="website_description or profile.website_description" />
                 </div>
-            </t>
-            <h3>
+            </div>
+        </xpath>
+        <xpath expr="//div[@name='contact_info_2']" position="after">
+            <h3 t-if="profile.is_public_profile and  profile.is_company">
                 <br />
-                My profiles
+                Activity information
             </h3>
-            <t t-if="profiles" t-call="portal.portal_table">
-                <thead>
-                    <tr class="active">
-                        <th>
-                            <span class='d-none d-md-inline'>Profile name</span>
-                        </th>
-                        <th class="text-right">Profile type</th>
-                        <th class="text-right">Position</th>
-                        <th class="text-right">Company</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr t-foreach="profiles" t-as="profile">
-                        <t t-if="not profile.is_company">
-                            <td>
-                                <a t-attf-href="/my/profile/#{profile.id}?{{ keep_query() }}">
-                                    <span t-field="profile.name" />
-                                </a>
-                            </td>
-                            <td class="text-right">
-                                <span t-field="profile.partner_profile" />
-                            </td>
-                            <td class="text-right">
-                                <span t-field="profile.function" />
-                            </td>
-                            <td class="text-right">
-                                <span t-field="profile.parent_id" />
-                            </td>
+            <div name="activity_info_1" class="row" t-if="profile.is_public_profile and profile.is_company">
+                <div name="industry_id" t-attf-class="form-group #{error.get('industry_id') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label" for="industry_id">Main activity</label>
+                    <select name="industry_id" t-attf-class="form-control">
+                        <option value="">Activity...</option>
+                        <t t-foreach="industries or []" t-as="industry">
+                            <option t-att-value="industry.id" t-att-selected="industry.id == int(industry_id) if industry_id else industry.id == profile.industry_id.id">
+                                <t t-esc="industry.name" />
+                            </option>
                         </t>
-                    </tr>
-                </tbody>
-            </t>
-            <p style="font-style:italic; font-size:smaller">
-                <b>Public profile :</b>
-                profiles that is available to tierce applications (annuary, currency wallet or maps for instance).
-                <br />
-                <b>Position profiles :</b>
-                profiles that indicate your belonging to an organization, and the role you have in.
-            </p>
-            <h3>
-                <br />
-                My organizations' profiles
-            </h3>
-            <t t-if="profiles" t-call="portal.portal_table">
-                <thead>
-                    <tr class="active">
-                        <th>
-                            <span class='d-none d-md-inline'>Profile name</span>
-                        </th>
-                        <th class="text-right">Profile type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr t-foreach="profiles" t-as="profile">
-                        <t t-if="profile.is_company">
-                            <td>
-                                <a t-attf-href="/my/profile/#{profile.id}?{{ keep_query() }}">
-                                    <span t-field="profile.name" />
-                                </a>
-                            </td>
-                            <td class="text-right">
-                                <span t-field="profile.partner_profile" />
-                            </td>
-                        </t>
-                    </tr>
-                </tbody>
-            </t>
-            <p style="font-style:italic; font-size:smaller">
-                <b>Main profiles :</b>
-                internal and private profiles, used for membership management and internal communication.
-                <br />
-                <b>Public profiles :</b>
-                profiles that are available to tierce applications (annuary, currency wallet or maps for instance).
-            </p>
-            <div class="oe_structure" id="oe_structure_portal_my_profiles_2" />
-        </t>
-    </template>
-
-    <template id="portal_my_profile" name="My Profile">
-        <t t-call="portal.portal_layout">
-            <t t-set="o_portal_fullwidth_alert" groups="profile.group_profile_user">
-                <t t-call="portal.portal_back_in_edit_mode">
-                    <t t-set="backend_url" t-value="'/web#return_label=Website&amp;model=res.partner&amp;id=%s&amp;view_type=form' % (profile.id)" />
-                </t>
-            </t>
-
-            <t t-call="portal.portal_record_layout">
-                <t t-set="card_header">
-                    <h5 class="mb-0">
-                        <strong>
-                            <span t-field="profile.name" />
-                        </strong>
-                        <small class="text-muted">
-                            -
-                            <span t-field="profile.partner_profile" />
-                        </small>
-                    </h5>
-                    <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'partner_profile_position')">
-                        <h5 class="mb-0">
-                            <span t-field="profile.parent_id" />
-                        </h5>
+                    </select>
+                </div>
+                <!-- TODO: add field secondary_industry_ids -->
+                <div name="detailled_activity" t-attf-class="form-group #{error.get('detailed_activity') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label" for="detailed_activity">Detailed activity</label>
+                    <input type="text" name="detailed_activity" t-attf-class="form-control #{error.get('detailed_activity') and 'is-invalid' or ''}" t-att-value="detailed_activity or profile.detailed_activity" />
+                </div>
+                <div name="subscription_reason" t-attf-class="form-group #{error.get('reasons_choosing_mlc') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label" for="reasons_choosing_mlc">Subscription reason</label>
+                    <input type="text" name="reasons_choosing_mlc" t-attf-class="form-control #{error.get('reasons_choosing_mlc') and 'is-invalid' or ''}" t-att-value="reasons_choosing_mlc or profile.reasons_choosing_mlc" />
+                </div>
+            </div>
+            <div name="activity_info_2" class="row" t-if="profile.is_public_profile and profile.is_company">
+                <div name="itinerant" t-attf-class="form-group #{error.get('itinerant') and 'o_has_error' or ''} col-xl-6">
+                    <input type="checkbox" name="itinerant" t-att-value="itinerant or profile.itinerant" />
+                    <label class="col-form-label" for="itinerant">Itinerant</label>
+                </div>
+                <div name="accept">
+                    <div t-attf-class="form-group #{(error.get('accept_coupons') or error.get('accept_digital_currency')) and 'o_has_error' or ''} col-xl-12">
+                        <input type="checkbox" name="accept_coupons" t-att-value="accept_coupons or profile.accept_coupons" />
+                        <label class="col-form-label" for="accept_coupons">Accept coupons</label>
                         <br />
-                        <ul class="col-12 col-md-6 pb-2" style="list-style-type:none">
-                            <li>
-                                <span t-field="profile.street" />
-                            </li>
-                            <li>
-                                <span t-field="profile.zip" />
-                            </li>
-                            <li>
-                                <span t-field="profile.city" />
-                            </li>
-                            <li>
-                                <span t-field="profile.country_id" />
-                            </li>
-                        </ul>
+                        <input type="checkbox" name="accept_digital_currency" t-att-value="accept_digital_currency or profile.accept_digital_currency" />
+                        <label class="col-form-label" for="accept_digital_currency">Accept digital currency</label>
                     </div>
-                </t>
-                <t t-set="card_body">
-                    <div class="oe_structure" id="oe_structure_portal_my_profile_1" />
-                    <!-- Body for Position partner profiles-->
-                    <div t-if="profile.partner_profile and (profile.partner_profile.ref == 'partner_profile_position')">
-                        <form action="/my/profile/save" method="post">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                            <div class="row o_portal_details">
-                                <div class="col-lg-12">
-                                    <div class="col-lg-12">
-                                        <div t-if="error_message" class="alert alert-danger" role="alert">
-                                            <t t-foreach="error_message" t-as="err">
-                                                <t t-esc="err" />
-                                                <br />
-                                            </t>
-                                        </div>
-                                    </div>
-                                    <h3>
-                                        <br />
-                                        Job position
-                                    </h3>
-                                    <div class="row">
-                                        <div t-attf-class="form-group #{error.get('function') and 'o_has_error' or ''} col-xl-12">
-                                            <input type="text" name="function" t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}" t-att-value="function or profile.function" />
-                                        </div>
-                                    </div>
-                                    <h3>
-                                        <br />
-                                        Contact information
-                                    </h3>
-                                    <div class="row">
-                                        <div t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="phone">Phone</label>
-                                            <input type="tel" name="phone" t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}" t-att-value="phone or profile.phone" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('mobile') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="mobile">Mobile</label>
-                                            <input type="tel" name="mobile" t-attf-class="form-control #{error.get('mobile') and 'is-invalid' or ''}" t-att-value="mobile or profile.mobile" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="email">Email</label>
-                                            <input type="email" name="email" t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}" t-att-value="email or profile.email" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('website_url') and 'o_has_error' or ''}col-xl-6">
-                                            <label class="col-form-label" for="website_url">Website</label>
-                                            <input type="text" name="website_url" t-attf-class="form-control #{error.get('website') and 'is-invalid' or ''}" t-att-value="website_url or profile.website" />
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="profile_id" t-att-value="profile_id" />
-                                    <input type="hidden" name="redirect" t-att-value="redirect" />
-                                    <div class="clearfix">
-                                        <button type="submit" class="btn btn-primary float-right mb32 ">
-                                            Save
-                                            <span class="fa fa-long-arrow-right" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Body for Public partner profiles-->
-                    <div t-if="profile.partner_profile and (profile.partner_profile.ref in ['partner_profile_public','partner_profile_main'])">
-                        <form action="/my/profile/save" method="post">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                            <div class="row o_portal_details">
-                                <div class="col-lg-12">
-                                    <div class="col-lg-12">
-                                        <div t-if="error_message" class="alert alert-danger" role="alert">
-                                            <t t-foreach="error_message" t-as="err">
-                                                <t t-esc="err" />
-                                                <br />
-                                            </t>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div t-attf-class="form-group #{error.get('nickname') and 'o_has_error' or ''} col-xl-12">
-                                            <label class="col-form-label" for="nickname">Name / Nickname</label>
-                                            <input type="text" name="nickname" t-attf-class="form-control #{error.get('nickname') and 'is-invalid' or ''}" t-att-value="nickname or profile.name" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div t-attf-class="form-group #{error.get('website_description') and 'o_has_error' or ''} col-xl-12">
-                                            <label class="col-form-label" for="website_description">Description</label>
-                                            <textarea rows="4" name="website_description" t-attf-class="form-control #{error.get('website_description') and 'is-invalid' or ''}" t-att-value="website_description or profile.website_description" />
-                                        </div>
-                                    </div>
-                                    <h3>
-                                        <br />
-                                        Contact information
-                                    </h3>
-                                    <div class="row">
-                                        <div t-attf-class="form-group #{error.get('street') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="street">Street</label>
-                                            <input type="text" name="street" t-attf-class="form-control #{error.get('street') and 'is-invalid' or ''}" t-att-value="street or profile.street" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('street2') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="street2">Street 2</label>
-                                            <input type="text" name="street2" t-attf-class="form-control #{error.get('street2') and 'is-invalid' or ''}" t-att-value="street2 or profile.street2" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('zipcode') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="zipcode">Zip / Postal Code</label>
-                                            <input type="text" name="zipcode" t-attf-class="form-control #{error.get('zipcode') and 'is-invalid' or ''}" t-att-value="zipcode or profile.zip" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('city') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="city">City</label>
-                                            <input type="text" name="city" t-attf-class="form-control #{error.get('city') and 'is-invalid' or ''}" t-att-value="city or profile.city" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('country_id') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="country_id">Country</label>
-                                            <select name="country_id" t-attf-class="form-control">
-                                                <option value="">Country...</option>
-                                                <t t-foreach="countries or []" t-as="country">
-                                                    <option t-att-value="country.id" t-att-selected="country.id == int(country_id) if country_id else country.id == profile.country_id.id">
-                                                        <t t-esc="country.name" />
-                                                    </option>
-                                                </t>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="phone">Phone</label>
-                                            <input type="tel" name="phone" t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}" t-att-value="phone or profile.phone" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('mobile') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="mobile">Mobile</label>
-                                            <input type="tel" name="mobile" t-attf-class="form-control #{error.get('mobile') and 'is-invalid' or ''}" t-att-value="mobile or profile.mobile" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="email">Email</label>
-                                            <input type="email" name="email" t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}" t-att-value="email or profile.email" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('website_url') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="website_url">Website</label>
-                                            <input type="text" name="website_url" t-attf-class="form-control #{error.get('website_url') and 'is-invalid' or ''}" t-att-value="website_url or profile.website" />
-                                        </div>
-                                    </div>
-                                    <h3 t-if="profile.is_public_profile and  profile.is_company">
-                                        <br />
-                                        Activity information
-                                    </h3>
-                                    <div class="row" t-if="profile.is_public_profile and profile.is_company">
-                                        <div t-attf-class="form-group #{error.get('industry_id') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="industry_id">Main activity</label>
-                                            <select name="industry_id" t-attf-class="form-control">
-                                                <option value="">Activity...</option>
-                                                <t t-foreach="industries or []" t-as="industry">
-                                                    <option t-att-value="industry.id" t-att-selected="industry.id == int(industry_id) if industry_id else industry.id == profile.industry_id.id">
-                                                        <t t-esc="industry.name" />
-                                                    </option>
-                                                </t>
-                                            </select>
-                                        </div>
-                                        <!-- TODO: add field secondary_industry_ids -->
-                                        <div t-attf-class="form-group #{error.get('detailed_activity') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="detailed_activity">Detailed activity</label>
-                                            <input type="text" name="detailed_activity" t-attf-class="form-control #{error.get('detailed_activity') and 'is-invalid' or ''}" t-att-value="detailed_activity or profile.detailed_activity" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('reasons_choosing_mlc') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="reasons_choosing_mlc">Subscription reason</label>
-                                            <input type="text" name="reasons_choosing_mlc" t-attf-class="form-control #{error.get('reasons_choosing_mlc') and 'is-invalid' or ''}" t-att-value="reasons_choosing_mlc or profile.reasons_choosing_mlc" />
-                                        </div>
-                                    </div>
-                                    <div class="row" t-if="profile.is_public_profile and profile.is_company">
-                                        <div t-attf-class="form-group #{error.get('itinerant') and 'o_has_error' or ''} col-xl-6">
-                                            <input type="checkbox" name="itinerant" t-att-value="itinerant or profile.itinerant" />
-                                            <label class="col-form-label" for="itinerant">Itinerant</label>
-                                        </div>
-                                        <div>
-                                            <div t-attf-class="form-group #{(error.get('accept_coupons') or error.get('accept_digital_currency')) and 'o_has_error' or ''} col-xl-12">
-                                                <input type="checkbox" name="accept_coupons" t-att-value="accept_coupons or profile.accept_coupons" />
-                                                <label class="col-form-label" for="accept_coupons">Accept coupons</label>
-                                                <br />
-                                                <input type="checkbox" name="accept_digital_currency" t-att-value="accept_digital_currency or profile.accept_digital_currency" />
-                                                <label class="col-form-label" for="accept_digital_currency">Accept digital currency</label>
-                                            </div>
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('phone_pro') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="phone_pro">Professional Phone</label>
-                                            <input type="tel" name="phone_pro" t-attf-class="form-control #{error.get('phone_pro') and 'is-invalid' or ''}" t-att-value="phone_pro or profile.phone_pro" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('opening_time') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="opening_time">Opening time</label>
-                                            <input type="text" name="opening_time" t-attf-class="form-control #{error.get('opening_time') and 'is-invalid' or ''}" t-att-value="opening_time or profile.opening_time" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('discount') and 'o_has_error' or ''} col-xl-6">
-                                            <label class="col-form-label" for="discount">Discount</label>
-                                            <input type="text" name="discount" t-attf-class="form-control #{error.get('discount') and 'is-invalid' or ''}" t-att-value="discount or profile.discount" />
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="profile_id" t-att-value="profile_id" />
-                                    <input type="hidden" name="redirect" t-att-value="redirect" />
-                                    <div class="clearfix">
-                                        <button type="submit" class="btn btn-primary float-right mb32 ">
-                                            Save
-                                            <span class="fa fa-long-arrow-right" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="oe_structure" id="oe_structure_portal_my_profile_2" />
-                </t>
-            </t>
-        </t>
+                </div>
+                <div name="phone_pro" t-attf-class="form-group #{error.get('phone_pro') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label" for="phone_pro">Professional Phone</label>
+                    <input type="tel" name="phone_pro" t-attf-class="form-control #{error.get('phone_pro') and 'is-invalid' or ''}" t-att-value="phone_pro or profile.phone_pro" />
+                </div>
+                <div name="opening_time" t-attf-class="form-group #{error.get('opening_time') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label" for="opening_time">Opening time</label>
+                    <input type="text" name="opening_time" t-attf-class="form-control #{error.get('opening_time') and 'is-invalid' or ''}" t-att-value="opening_time or profile.opening_time" />
+                </div>
+                <div name="discount" t-attf-class="form-group #{error.get('discount') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label" for="discount">Discount</label>
+                    <input type="text" name="discount" t-attf-class="form-control #{error.get('discount') and 'is-invalid' or ''}" t-att-value="discount or profile.discount" />
+                </div>
+            </div>
+        </xpath>
     </template>
 
     <template id="portal_my_lcc_details" name="My LCC details" inherit_id="portal.portal_my_details">
