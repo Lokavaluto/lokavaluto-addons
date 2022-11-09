@@ -38,32 +38,6 @@ msgid "<b>Local group:</b>"
 msgstr "Groupe local"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "<b>Main profiles :</b>\n"
-"                internal and private profiles, used for membership management and internal communication.\n"
-"                <br/>\n"
-"                <b>Public profiles :</b>\n"
-"                profiles that are available to tierce applications (annuary, currency wallet or maps for instance)."
-msgstr "<b>Profils Principaux :</b>\n"
-"                Profils internes et privés, utilisés pour la gestion des adhésions et la communication interne.\n"
-"                <br/>\n"
-"                <b>Profils Publiques :</b>\n"
-"                Profils diffusés à des applications tierces (annuaire, porte-monnaie électronique ou cartographie par exemple)."
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "<b>Public profile :</b>\n"
-"                profiles that is available to tierce applications (annuary, currency wallet or maps for instance).\n"
-"                <br/>\n"
-"                <b>Position profiles :</b>\n"
-"                profiles that indicate your belonging to an organization, and the role you have in."
-msgstr "<b>Profils Publiques :</b>\n"
-"                Profils diffusés à des applications tierces (annuaire, porte-monnaie électronique ou cartographie par exemple).\n"
-"                <br/>\n"
-"                <b>Profils Position :</b>\n"
-"                Profils qui indiquent votre appartenance à une organisation, et votre rôle dans cette dernière."
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 msgid "<br/>\n"
 "                                        Activity information"
@@ -71,42 +45,9 @@ msgstr "<br/>\n"
 "                                        Informations sur l'activité"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid "<br/>\n"
-"                                        Contact information"
-msgstr "<br/>\n"
-"                                        Informations de contact"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid "<br/>\n"
-"                                        Job position"
-msgstr "<br/>\n"
-"                                        Poste occupé"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "<br/>\n"
-"                My organizations' profiles"
-msgstr "<br/>\n"
-"                Mes profils position"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "<br/>\n"
-"                My profiles"
-msgstr "<br/>\n"
-"                Mes profils"
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
 msgid "<font style=\"font-size: 18px;\">Share</font>"
 msgstr "<font style=\"font-size: 18px;\">Partager</font>"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "<span class=\"d-none d-md-inline\">Profile name</span>"
-msgstr "<span class=\"d-none d-md-inline\">Nom du Profile</span>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
@@ -235,18 +176,6 @@ msgid "Blank card"
 msgstr "Carte Vierge"
 
 #. module: lcc_members
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__can_edit_main_profile_ids
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__can_edit_main_profile_ids
-msgid "Can edit main profile"
-msgstr "Peut éditer le profil principal"
-
-#. module: lcc_members
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__can_edit_public_profile_ids
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__can_edit_public_profile_ids
-msgid "Can edit public profile"
-msgstr "Peux éditer le profil public"
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
 msgid "City"
 msgstr "Ville"
@@ -273,11 +202,6 @@ msgstr "Nom Commercial"
 #, python-format
 msgid "Company"
 msgstr "Société"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_menu
-msgid "Consult my profiles"
-msgstr "Consulter mes profils"
 
 #. module: lcc_members
 #: model:ir.model,name:lcc_members.model_res_partner
@@ -449,12 +373,6 @@ msgid "Images"
 msgstr "Images"
 
 #. module: lcc_members
-#: code:addons/lcc_members/controllers/portal.py:93
-#, python-format
-msgid "Invalid Email! Please enter a valid email address."
-msgstr "L'email n'est pas valide, merci de renseigner un email valide!"
-
-#. module: lcc_members
 #: model:ir.model,name:lcc_members.model_account_invoice
 msgid "Invoice"
 msgstr "Facture"
@@ -563,24 +481,6 @@ msgid "Main activity"
 msgstr "Activité principale"
 
 #. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:166
-#: code:addons/lcc_members/models/res_partner.py:168
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__edit_structure_main_profile
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__edit_structure_main_profile
-#, python-format
-msgid "Manage structure's main profile"
-msgstr "Gère le profil principal de la structure"
-
-#. module: lcc_members
-#: code:addons/lcc_members/models/res_partner.py:169
-#: code:addons/lcc_members/models/res_partner.py:171
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__edit_structure_public_profile
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__edit_structure_public_profile
-#, python-format
-msgid "Manage structure's public profile"
-msgstr "Gère le profil public de la structure"
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Member ID"
 msgstr "Numéro d'Adhérent"
@@ -630,11 +530,6 @@ msgstr "Portable"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_menu
-msgid "Modify my account"
-msgstr "Modifier mon compte"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_menu
 msgid "Reset password"
 msgstr "Modifier mon mot de passe"
 
@@ -654,7 +549,6 @@ msgid "My local group"
 msgstr "Mon groupe local"
 
 #. module: lcc_members
-#: code:addons/lcc_members/controllers/portal.py:112
 #: code:addons/lcc_members/models/member_type.py:12
 #: code:addons/lcc_members/models/partner_profile.py:12
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__name
@@ -663,11 +557,6 @@ msgstr "Mon groupe local"
 #, python-format
 msgid "Name"
 msgstr "Nom"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid "Name / Nickname"
-msgstr "Nom / Pseudo"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -765,12 +654,6 @@ msgid "Portal User Config"
 msgstr "Paramétrage du portail utilisateur"
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-#: model:partner.profile,name:lcc_members.partner_profile_position
-msgid "Position"
-msgstr "Position"
-
-#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "Position Profile"
 msgstr "Profil Position"
@@ -802,22 +685,6 @@ msgstr "Téléphone Professionnel"
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Professionals"
 msgstr "Professionnels"
-
-#. module: lcc_members
-#: code:addons/lcc_members/controllers/portal.py:113
-#, python-format
-msgid "Profile Type"
-msgstr "Type de Profil"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "Profile type"
-msgstr "Type de profil"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "Profiles"
-msgstr "Profils"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
@@ -865,13 +732,6 @@ msgstr "Contacts de ventes"
 #: model:ir.model,name:lcc_members.model_crm_team
 msgid "Sales Channels"
 msgstr "Equipes de vente"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profile
-msgid "Save\n"
-"                                            <span class=\"fa fa-long-arrow-right\"/>"
-msgstr "Enregistrer\n"
-"                                            <span class=\"fa fa-long-arrow-right\"/>"
 
 #. module: lcc_members
 #: model:ir.ui.menu,name:lcc_members.action_membership_industry_menu
@@ -944,17 +804,6 @@ msgstr "Type d'adhésion"
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Tag"
 msgstr "Étiquette"
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_profiles
-msgid "There are no profiles."
-msgstr "Il n'y a pas de profils"
-
-#. module: lcc_members
-#: code:addons/lcc_members/controllers/portal.py:86
-#, python-format
-msgid "This nickname is already used, please find an other idea."
-msgstr "The Pseudo est déjà utilisé, merci d'en trouver un autre."
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:79
