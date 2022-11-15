@@ -12,10 +12,22 @@
 
     <template id="portal_my_lcc_profile" name="My Profile" inherit_id="partner_profiles_portal.portal_my_profile">
         <xpath expr="//div[@name='nickname']" position="after">
-            <div name="description" class="row">
-                <div t-attf-class="form-group #{error.get('website_description') and 'o_has_error' or ''} col-xl-12">
-                    <label class="col-form-label" for="website_description">Description</label>
-                    <textarea rows="4" name="website_description" t-attf-class="form-control #{error.get('website_description') and 'is-invalid' or ''}" t-att-value="website_description or profile.website_description" />
+            <div name="website_description" t-if="profile.is_public_profile and profile.is_company">
+                <h3 t-if="profile.is_public_profile and  profile.is_company">
+                    <br />
+                    Description
+                </h3>
+                <div class="row" t-attf-class="col-lg-12">
+                    <div name="current_description">
+                        <label>Current description:</label>
+                        <div t-field="profile.website_description" />
+                    </div>
+                    <div name="new_description">
+                        <label>New description:</label>
+                        <div t-attf-class="form-group #{error.get('website_description') and 'o_has_error' or ''}">
+                            <textarea rows="4" name="website_description" t-attf-class="form-control #{error.get('website_description') and 'is-invalid' or ''}" t-att-value="website_description or profile.website_description" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </xpath>
