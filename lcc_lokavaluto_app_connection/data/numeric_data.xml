@@ -8,11 +8,11 @@
         <record id="product_product_numeric_lcc" model="product.product">
             <field name="list_price">1.0</field>
             <field name="standard_price">1.0</field>
-            <field name="uom_id" ref="uom.product_uom_unit"/>
-            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="uom_id" ref="uom.product_uom_unit" />
+            <field name="uom_po_id" ref="uom.product_uom_unit" />
             <field name="name">Generic Numeric LCC</field>
-            <field name="description_sale" eval="False"/>
-            <field name="categ_id" ref="lcc_lokavaluto_app_connection.product_category_numeric_lcc"/>
+            <field name="description_sale" eval="False" />
+            <field name="categ_id" ref="product_category_numeric_lcc" />
             <field name="type">consu</field>
         </record>
     </data>

@@ -15,16 +15,23 @@ class AccountInvoice(models.Model):
     def _compute_has_numeric_lcc_products(self):
         self.has_numeric_lcc_products = False
 
-        categ = self.env.ref(
-            "lcc_lokavaluto_app_connection.product_category_numeric_lcc"
-        )
+        try:
+            categ = self.env.ref(
+                "lcc_lokavaluto_app_connection.product_category_numeric_lcc"
+            )
+        except Exception as e:
+            categ = self.env["product.category"].search(
+                [("name", "=", "Numeric LCC")]
+            )
+        
+        if categ:
+            lcc_numeric_products = self.invoice_line_ids.filtered(
+                lambda line: line.product_id.categ_id == categ
+                or line.product_id.categ_id.parent_id == categ
+            )
+            if lcc_numeric_products:
+                self.has_numeric_lcc_products = True
 
-        lcc_numeric_products = self.invoice_line_ids.filtered(
-            lambda line: line.product_id.categ_id == categ
-            or line.product_id.categ_id.parent_id == categ
-        )
-        if lcc_numeric_products:
-            self.has_numeric_lcc_products = True
 
     def _get_credit_requests(self, backend_keys):
         ### This method should be inherited in backends modules.###
