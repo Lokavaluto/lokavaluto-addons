@@ -97,7 +97,7 @@ class Lead(models.Model):
         string="Affiliated organization",
         domain=[
             ("is_company", "=", True),
-            ("partner_profile.ref", "=", "partner_profile_main"),
+            ("is_main_profile", "=", True),
         ],
     )
     affiliation_accepted = fields.Boolean(default=False)
