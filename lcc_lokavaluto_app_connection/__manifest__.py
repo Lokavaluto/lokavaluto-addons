@@ -82,6 +82,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "lcc_members",
         "lcc_members_portal",
         "lcc_members_qr",
+        "partner_profiles_portal",
     ],
     # always loaded
     "data": [
