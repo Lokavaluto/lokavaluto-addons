@@ -107,7 +107,7 @@
                           </p>
                           <p class="card-text" t-if="partner.team_id">
                             <b>Local group:</b>
-                            <t t-field="partner.team_id" />
+                            <span t-field="partner.team_id" />
                           </p>
 
                         </div>
