@@ -23,6 +23,9 @@
                 <!-- ################### -->
                 <!-- MAIN DISPLAY UPDATE -->
                 <!-- ################### -->
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="placeholder">Administrative Name</attribute>
+                </xpath>
                 <xpath expr="//field[@name='type']" position="before">
                     <field name="business_name" string="Commercial name" placeholder="Commercial Name..." attrs="{'invisible': [('is_company', '=', False)]}" />
                 </xpath>
