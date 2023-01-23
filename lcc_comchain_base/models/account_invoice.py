@@ -35,7 +35,8 @@ class AccountInvoice(models.Model):
     def _get_credit_requests(self, backend_keys):
         res = super(AccountInvoice, self)._get_credit_requests(backend_keys)
         invoice_s = self.env["account.invoice"].sudo()
-        invoice_ids = invoice_s.search([("comchain_amount_to_credit", ">", 0)])
+        invoice_ids = invoice_s.search([("comchain_amount_to_credit", ">", 0),
+                                        ("state", "=", "paid")])
         if invoice_ids:
             comchainCreditRequest = self.env.datamodels["comchain.credit.request"]
             for invoice in invoice_ids:
