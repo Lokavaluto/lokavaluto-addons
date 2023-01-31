@@ -16,18 +16,17 @@ class ProductTemplate(models.Model):
     )
 
     @api.multi
-    def get_private_membership_product(self, company_id):
+    def get_private_membership_products(self, company_id):
         today = datetime.today()
-        product_template = self.env["product.template"].search(
+        product_templates = self.env["product.template"].search(
             [
                 ("portal_private_registration_product", "=", True),
                 ("portal_organization_registration_product", "=", False),
                 ("active", "=", True),
                 ("company_id", "=", company_id),
             ],
-            limit=1,
         )
-        return product_template
+        return product_templates
 
     @api.multi
     def get_organization_membership_product(self, company_id):

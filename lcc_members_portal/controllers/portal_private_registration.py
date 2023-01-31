@@ -37,12 +37,12 @@ class PortalPrivateRegistration(CustomerPortal):
             **kwargs
         )
 
-    def get_private_membership_product(self):
+    def get_private_membership_products(self):
         product_obj = request.env["product.template"]
-        product = product_obj.sudo().get_private_membership_product(
+        products = product_obj.sudo().get_private_membership_products(
             request.env.user.partner_id.company_id.id
         )
-        return product
+        return products
 
     def _get_selected_team_id(self, partner):
         if len(request.env['res.company'].sudo().search([])) > 1:
@@ -59,7 +59,14 @@ class PortalPrivateRegistration(CustomerPortal):
     def portal_private_registration(self, access_token=None, redirect=None, **kw):
         partner = request.env.user.partner_id
         values = self._membership_get_page_view_values(partner, access_token, **kw)
-        product = self.get_private_membership_product()
+        # Retrieve all the products that are proposed for private registration
+        products = self.get_private_membership_products()
+        # If one product only, dynamic price is allowed
+        dynamic_price = False
+        total_membership = 0
+        if len(products) == 1:
+            dynamic_price = products[0].dynamic_price
+            total_membership = products[0].list_price
         titles = request.env["res.partner.title"].sudo().search([])
         countries = request.env["res.country"].sudo().search([])
         teams = self._get_selected_team_id(partner)
@@ -68,9 +75,9 @@ class PortalPrivateRegistration(CustomerPortal):
 
         values.update(
             {
-                "product": product,
-                "total_membership": product.list_price,
-                "dynamic_price": product.dynamic_price,
+                "products": products,
+                "total_membership": total_membership,
+                "dynamic_price": dynamic_price,
                 "titles": titles,
                 "countries": countries,
                 "teams": teams,
@@ -116,13 +123,12 @@ class PortalPrivateRegistration(CustomerPortal):
         sale_order.company_id = main_partner.company_id.id
         sale_order.team_id = values["team_id"]
         values = {}
-        values["member_product_id"] = self.get_private_membership_product().id
-        if float(kwargs.get("total_membership", False)):
+        product = request.env["product.template"].sudo().browse(int(kwargs.get("product_id")))
+        values["member_product_id"] = product.id
+        if product.dynamic_price and float(kwargs.get("total_membership", False)):
             values["total_membership"] = float(kwargs.get("total_membership"))
         else:
-            values[
-                "total_membership"
-            ] = self.get_private_membership_product().list_price
+            values["total_membership"] = product.list_price
         values["order_id"] = sale_order.id
         sale_order.sudo().create_membership(values)
         return request.redirect("/shop/cart")
