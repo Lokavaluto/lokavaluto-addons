@@ -76,6 +76,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "base",
         "lcc_lokavaluto_app_connection",
         "lcc_members",
+        "onchange_helper",
     ],
     # always loaded
     "data": [
