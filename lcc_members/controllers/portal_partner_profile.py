@@ -9,7 +9,6 @@ class CustomerPortalPartnerProfileLcc(CustomerPortalPartnerProfile):
     def _get_profile_fields(self):
         fields = super(CustomerPortalPartnerProfileLcc, self)._get_profile_fields()
         lcc_fields = [
-            "website_description",
             "industry_id",
             "detailed_activity",
             "reasons_choosing_mlc",
@@ -28,4 +27,12 @@ class CustomerPortalPartnerProfileLcc(CustomerPortalPartnerProfile):
         values.update(
             {"industries": request.env["res.partner.industry"].sudo().search([])}
         )
+        return values
+
+    def _get_page_saving_values(self, profile, kw):
+        values = super(CustomerPortalPartnerProfileLcc, self)._get_page_saving_values(profile, kw)
+        if kw["website_description"] != "":
+            values.update(
+                {"website_description": kw["website_description"]}
+            )
         return values
