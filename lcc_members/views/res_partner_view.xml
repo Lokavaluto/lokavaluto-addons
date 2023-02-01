@@ -5,7 +5,7 @@
             <field name="name">LCC Profiles Form View</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="partner_profiles.partner_profiles_form_view" />
-            <field name="sequence">99</field>
+            <field name="priority">99</field>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='profile_status']/field[@name='contact_id']" position="before">
                     <field name="odoo_user_id" string="Associated User" readonly="1" attrs="{'invisible': [('is_main_profile','=',False)]}" />
@@ -18,7 +18,7 @@
             <field name="name">LCC Members Form View</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
-            <field name="sequence">99</field>
+            <field name="priority">99</field>
             <field name="arch" type="xml">
                 <!-- ################### -->
                 <!-- MAIN DISPLAY UPDATE -->
@@ -170,9 +170,7 @@
                             <!-- TODO v4 : delete this group once all lcc informed -->
                             <div role="alertdialog" class="alert alert-warning">
                                 <span>
-                                    <b>Warning:</b>
-                                    Odoo doesn't compress pictures. The total sum of your pictures must not exceed 4Mo. To compress your pictures, you can use the following tool:
-                                    <a href="https://compressjpeg.com/fr/" target="_blank">https://compressjpeg.com/fr/</a>
+                                    <b>Warning:</b> Odoo doesn't compress pictures. The total sum of your pictures must not exceed 4Mo. To compress your pictures, you can use the following tool: <a href="https://compressjpeg.com/fr/" target="_blank">https://compressjpeg.com/fr/</a>
                                 </span>
                             </div>
                             <field name="partner_image_ids" class="o_website_sale_image_list" attrs="{'invisible': [('is_company', '=', False)]}" context="{'default_name': name, 'default_partner_id': active_id}" nolabel="1">
@@ -320,9 +318,7 @@
                         <span style="color:#566d24;">
                             <b>
                                 <field name="membership_state" />
-                            </b>
-                            -
-                            <field name="ref" />
+                            </b> - <field name="ref" />
                         </span>
                     </xpath>
 
