@@ -5,6 +5,7 @@ from odoo.http import request
 
 class CustomerBadge(models.AbstractModel):
     _name = "report.lcc_members_qr.member_qr_template"
+    _description = "Customer badge"
 
     @api.model
     def _get_report_values(self, docids, data=None):
