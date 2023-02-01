@@ -15,8 +15,8 @@ class ResPartnerBackend(models.Model):
     comchain_wallet = fields.Text(string="Crypted json wallet")
     comchain_status = fields.Char(string="Comchain Status")
     comchain_type = fields.Selection(
-        [("0", "Personal"), ("1", "Company"), ("2", "Admin")],
-        string="Type",
+        [("0", "Personal"), ("1", "Company"), ("2", "Super Admin"), ("3", "Pledge Admin"), ("4", "Status Admin")],
+        string="Comachain account type",
         groups="lcc_comchain_base.group_comchain_manager",
     )
     comchain_credit_min = fields.Float(
