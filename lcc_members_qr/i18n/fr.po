@@ -1,0 +1,81 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* lcc_members_qr
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-01 11:51+0000\n"
+"PO-Revision-Date: 2023-02-01 11:51+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lcc_members_qr
+#: model:ir.model,name:lcc_members_qr.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: lcc_members_qr
+#: model:ir.model,name:lcc_members_qr.model_report_lcc_members_qr_member_qr_template
+msgid "Customer badge"
+msgstr "Badge client"
+
+#. module: lcc_members_qr
+#: model:ir.model.fields,field_description:lcc_members_qr.field_report_lcc_members_qr_member_qr_template__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: lcc_members_qr
+#: model_terms:ir.ui.view,arch_db:lcc_members_qr.partner_lcc_qr_form
+msgid "Generate QR"
+msgstr "Générer le QR"
+
+#. module: lcc_members_qr
+#: model:ir.model.fields,field_description:lcc_members_qr.field_report_lcc_members_qr_member_qr_template__id
+msgid "ID"
+msgstr ""
+
+#. module: lcc_members_qr
+#: model:ir.model.fields,field_description:lcc_members_qr.field_report_lcc_members_qr_member_qr_template____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: lcc_members_qr
+#: model:ir.actions.report,name:lcc_members_qr.print_qr
+msgid "Member Badge"
+msgstr "Badge membre"
+
+#. module: lcc_members_qr
+#: model:ir.model.fields,field_description:lcc_members_qr.field_res_partner__qr
+#: model:ir.model.fields,field_description:lcc_members_qr.field_res_users__qr
+msgid "Member QR code"
+msgstr "QR code membre"
+
+#. module: lcc_members_qr
+#: model:ir.model.fields,field_description:lcc_members_qr.field_res_partner__qr_url
+#: model:ir.model.fields,field_description:lcc_members_qr.field_res_users__qr_url
+msgid "Member QR code URL"
+msgstr "URL du QR code membre"
+
+#. module: lcc_members_qr
+#: code:addons/lcc_members_qr/models/res_partner.py:56
+#, python-format
+msgid "Necessary requirements are not satisfied - Need qrcode and base64 Python libraries"
+msgstr ""
+
+#. module: lcc_members_qr
+#: model_terms:ir.ui.view,arch_db:lcc_members_qr.partner_lcc_qr_form
+msgid "QR code"
+msgstr ""
+
+#. module: lcc_members_qr
+#: model:ir.model.fields,field_description:lcc_members_qr.field_res_partner__qr_content
+#: model:ir.model.fields,field_description:lcc_members_qr.field_res_users__qr_content
+msgid "QR code content"
+msgstr "Contenu du QR code"
+

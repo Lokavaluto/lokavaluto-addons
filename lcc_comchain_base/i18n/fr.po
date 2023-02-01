@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-08 14:58+0000\n"
-"PO-Revision-Date: 2022-08-08 14:58+0000\n"
+"POT-Creation-Date: 2023-02-01 19:09+0000\n"
+"PO-Revision-Date: 2023-02-01 19:09+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,23 +16,17 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: lcc_comchain_base
-#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
-msgid "<span class=\"o_form_label\">Comchain currency name</span>"
-msgstr "<span class=\"o_form_label\">Nom de la monnaie Comchain</span>"
-
-#. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_id
 msgid "Address"
 msgstr "Adresse"
 
 #. module: lcc_comchain_base
-#: selection:res.partner.backend,comchain_type:0
-msgid "Admin"
-msgstr "Admin"
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_type
+msgid "Comachain account type"
+msgstr "Type de compte Comchain"
 
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,type:0
-msgid "Comchain"
 msgid "Comchain"
 msgstr ""
 
@@ -62,6 +56,21 @@ msgid "Comchain amount to credit"
 msgstr "Montant à créditer sur Comchain"
 
 #. module: lcc_comchain_base
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__comchain_currency_name
+msgid "Comchain currency name"
+msgstr "Nom de la monnaie"
+
+#. module: lcc_comchain_base
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__config_comchain_delegated_pwd
+msgid "Comchain delegated password"
+msgstr "Mot de passe du portefeuille"
+
+#. module: lcc_comchain_base
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__config_comchain_delegated_wallet
+msgid "Comchain delegated wallet"
+msgstr "Protefeuille délégué"
+
+#. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid "Comchain service configuration"
 msgstr "Configuration de Comchain"
@@ -70,6 +79,11 @@ msgstr "Configuration de Comchain"
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.lcc_backend_comchain_form_view
 msgid "Comchain specific"
 msgstr "Spécifique Comchain"
+
+#. module: lcc_comchain_base
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__config_comchain_stock_id
+msgid "Comchain stock wallet address"
+msgstr "Adresse du portefeuille de stock"
 
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_company
@@ -89,7 +103,7 @@ msgstr "Paramètres de config"
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_partner
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_wallet
@@ -97,24 +111,19 @@ msgid "Crypted json wallet"
 msgstr "Portefeuille JSON chiffré"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__comchain_currency_name
-msgid "Currency Name"
-msgstr "Nom de la monnaie"
-
-#. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__comchain_currency_name
 msgid "Currency name"
 msgstr "Nom de la monnaie"
 
 #. module: lcc_comchain_base
-#: selection:res.partner.backend,type:0
-msgid "Cyclos"
-msgstr "Cyclos"
-
-#. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_account_invoice
 msgid "Invoice"
 msgstr "Facture"
+
+#. module: lcc_comchain_base
+#: model:ir.module.category,name:lcc_comchain_base.module_category_comchain
+msgid "LCC Comchain"
+msgstr "Comchain MLC"
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_credit_max
@@ -138,15 +147,34 @@ msgid "Numeric LCC (comchain)"
 msgstr "MLC Numérique (comchain)"
 
 #. module: lcc_comchain_base
+#: model:ir.model,name:lcc_comchain_base.model_res_partner_backend
+msgid "Partner Wallet"
+msgstr "Portefeuille numérique"
+
+#. module: lcc_comchain_base
 #: selection:res.partner.backend,comchain_type:0
 msgid "Personal"
 msgstr "Personnel"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_type
+#: selection:res.partner.backend,comchain_type:0
+msgid "Pledge Admin"
+msgstr "Validation Crédits"
+
+#. module: lcc_comchain_base
+#: selection:res.partner.backend,comchain_type:0
+msgid "Status Admin"
+msgstr "Gestion Statut"
+
+#. module: lcc_comchain_base
+#: selection:res.partner.backend,comchain_type:0
+msgid "Super Admin"
+msgstr "Administrateur"
+
+#. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__type
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:product.product,uom_name:lcc_comchain_base.product_product_comchain
@@ -162,21 +190,16 @@ msgstr "Vous avez"
 #. module: lcc_comchain_base
 #: model:product.category,name:lcc_comchain_base.product_category_comchain
 msgid "comchain"
-msgstr "comchain"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:product.product,weight_uom_name:lcc_comchain_base.product_product_comchain
 #: model:product.template,weight_uom_name:lcc_comchain_base.product_product_comchain_product_template
 msgid "kg"
-msgstr "kg"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.view_account_invoice_customer_conchain_form
 msgid "numeric currency to credit for this customer. Please use mobile app to validate credit request."
 msgstr "Monnaie numérique à créditer pour cet utilisateur. Merci d'utiliser l'application de paiement pour valider la demande de crédit."
-
-#. module: lcc_comchain_base
-#: model:ir.model,name:lcc_comchain_base.model_res_partner_backend
-msgid "res.partner.backend"
-msgstr "res.partner.backend"
 
