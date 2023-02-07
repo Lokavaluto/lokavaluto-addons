@@ -69,7 +69,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "12.0.2.0.5",
+    "version": "12.0.2.1.0",
     # any module necessary for this one to work correctly
     "depends": [
         "base",
@@ -83,12 +83,14 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "lcc_members_portal",
         "lcc_members_qr",
         "partner_profiles_portal",
+        "membership",
     ],
     # always loaded
     "data": [
         "security/ir.model.access.csv",
         "views/lcc_app_connection_partner.xml",
         "views/lcc_backend.xml",
+        "views/menu.xml",
         "views/portal_my_home.xml",
         "views/res_config_settings_view.xml",
         "views/portal_private_registration.xml",

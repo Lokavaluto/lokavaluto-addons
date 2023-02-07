@@ -5,7 +5,7 @@
         <field name="model">res.partner.backend</field>
         <field name="priority">0</field>
         <field name="arch" type="xml">
-            <form string="LCC Backend">
+            <form string="LCC Backend" create="0">
                 <sheet string="LCC Backend">
                     <group name="general_info">
                         <group>
@@ -16,6 +16,19 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="lcc_backend_view_tree" model="ir.ui.view">
+        <field name="name">lcc.backend.view.tree</field>
+        <field name="model">res.partner.backend</field>
+        <field name="arch" type="xml">
+            <tree string="LCC Backends" create="0">
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="type" />
+                <field name="status" />
+            </tree>
         </field>
     </record>
 </odoo>
