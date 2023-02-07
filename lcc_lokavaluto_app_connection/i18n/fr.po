@@ -6,23 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-08 14:32+0000\n"
-"PO-Revision-Date: 2022-08-08 14:32+0000\n"
+"POT-Creation-Date: 2023-02-07 16:09+0000\n"
+"PO-Revision-Date: 2023-02-07 16:09+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
-msgid "<br/>\n"
-"                        <strong>Applications mobiles:</strong>\n"
-"                        <br/>"
-msgstr "<br/>\n"
-"                        <strong>Applications mobiles:</strong>\n"
-"                        <br/>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
@@ -45,11 +36,6 @@ msgid "API Key"
 msgstr "Clé API"
 
 #. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
-msgid "Accès web"
-msgstr "Accès web"
-
-#. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,status:0
 msgid "Active"
 msgstr "Actif"
@@ -62,7 +48,7 @@ msgstr "Bloqué"
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,type:0
 msgid "Comchain"
-msgstr "Comchain"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_company
@@ -77,7 +63,7 @@ msgstr "Paramètres de config"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
@@ -92,7 +78,7 @@ msgstr "Créé le"
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,type:0
 msgid "Cyclos"
-msgstr "Cyclos"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
@@ -123,7 +109,7 @@ msgstr "A des produits de monnaie numérique"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__id
 msgid "ID"
-msgstr "Identifiant"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: code:addons/lcc_lokavaluto_app_connection/controllers/portal.py:49
@@ -163,6 +149,12 @@ msgid "LCC account related settings are managed on"
 msgstr "Paramètres liés aux compte MLC sont gérés sur"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_lcc_backends_tree_view
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.lcc_backends_tree_menu
+msgid "LCC backends"
+msgstr "Portefeuilles numériques"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
@@ -170,12 +162,12 @@ msgstr "Dernière modification le"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_uid
 msgid "Last Updated by"
-msgstr "Mis à jour par"
+msgstr "Dernière mise à jour par"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_date
 msgid "Last Updated on"
-msgstr "Mis à jour le"
+msgstr "Dernière mise à jour le"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_crm_lead
@@ -245,11 +237,6 @@ msgid "Pay & Confirm"
 msgstr "Payer et confirmer"
 
 #. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
-msgid "Portefeuille numérique"
-msgstr "Portefeuille numérique"
-
-#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_organization_registration_wallet
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_private_registration_wallet
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.website_organization_registration_wallet
@@ -282,24 +269,24 @@ msgstr "A confirmer"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__type
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:product.product,uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
 #: model:product.template,uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
 msgid "Unit(s)"
-msgstr "Unité"
+msgstr "Unité(s)"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:product.product,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
 #: model:product.template,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
 msgid "kg"
-msgstr "kg"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner_backend
 msgid "res.partner.backend"
-msgstr "res.partner.backend"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
