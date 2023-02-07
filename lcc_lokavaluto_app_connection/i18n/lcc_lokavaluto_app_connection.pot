@@ -1,0 +1,312 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* lcc_lokavaluto_app_connection
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-07 16:08+0000\n"
+"PO-Revision-Date: 2023-02-07 16:08+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
+msgid "<br/>\n"
+"                        <strong>Applications mobiles:</strong>\n"
+"                        <br/>"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "<span class=\"o_form_label\">Android app download URL</span>"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "<span class=\"o_form_label\">Web application URL</span>"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "<span class=\"o_form_label\">iOS app download URL</span>"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_auth_api_key
+msgid "API Key"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
+msgid "Accès web"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:res.partner.backend,status:0
+msgid "Active"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:res.partner.backend,status:0
+msgid "Blocked"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:res.partner.backend,type:0
+msgid "Comchain"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:res.partner.backend,type:0
+msgid "Cyclos"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "Digital Currency"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "Digital currency application configuration"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:product.product,name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
+#: model:product.template,name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
+msgid "Generic Numeric LCC"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_invoice__has_numeric_lcc_products
+msgid "Has lcc numeric products"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__id
+msgid "ID"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: code:addons/lcc_lokavaluto_app_connection/controllers/portal.py:49
+#, python-format
+msgid "If we store your payment information on our server, subscription payments will be made automatically."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__in_mobile_app
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__in_mobile_app
+msgid "In the mobile map"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:res.partner.backend,status:0
+msgid "Inactive"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_account_invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_auth_api_key__key
+msgid "Key"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_form_view
+msgid "LCC Backend"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid "LCC account related settings are managed on"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_lcc_backends_tree_view
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.lcc_backends_tree_menu
+msgid "LCC backends"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__lcc_backend_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__lcc_backend_ids
+msgid "Local Currency Backend"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid "Local Currency Backends"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__monujo_android_app_url
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__monujo_android_app_url
+msgid "Monujo Android app URL"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__monujo_ios_app_url
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__monujo_ios_app_url
+msgid "Monujo iOS app URL"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__monujo_web_app_url
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__monujo_web_app_url
+msgid "Monujo web app URL"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_auth_api_key__name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__name
+msgid "Name"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: code:addons/lcc_lokavaluto_app_connection/services/partner_images_services.py:38
+#, python-format
+msgid "No image found for partner %s"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:product.category,name:lcc_lokavaluto_app_connection.product_category_numeric_lcc
+msgid "Numeric LCC"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__partner_id
+msgid "Partner"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__partner_public_name
+msgid "Partner Public Name"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: code:addons/lcc_lokavaluto_app_connection/controllers/portal.py:46
+#, python-format
+msgid "Pay & Confirm"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
+msgid "Portefeuille numérique"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_organization_registration_wallet
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_private_registration_wallet
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.website_organization_registration_wallet
+msgid "Refuse numeric wallet creation"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: code:addons/lcc_lokavaluto_app_connection/models/crm_lead.py:10
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_crm_lead__refuse_numeric_wallet_creation
+#, python-format
+msgid "Refuse the creation of a numeric wallet."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__status
+msgid "Status"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,help:lcc_lokavaluto_app_connection.field_auth_api_key__key
+msgid "The API key. Keep the default value in this field if it is\n"
+"        obtained from the server environment configuration."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:res.partner.backend,status:0
+msgid "To Confirm"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__type
+msgid "Type"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:product.product,uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
+#: model:product.template,uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
+msgid "Unit(s)"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:product.product,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
+#: model:product.template,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
+msgid "kg"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner_backend
+msgid "res.partner.backend"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid "the parent company"
+msgstr ""
+
