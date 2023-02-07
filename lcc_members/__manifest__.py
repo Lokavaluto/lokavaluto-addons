@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_members",
-    "version": "12.0.4.0.3",
+    "version": "12.0.4.1.0",
     "author": "Lokavaluto",
     "maintainer": "False",
     "website": "False",
@@ -104,6 +104,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
         "views/crm_team_view.xml",
         "views/res_partner_view.xml",
         "views/member_type_view.xml",
+        "views/membership_lines.xml",
         "views/website_partner_view.xml",
         "views/assets.xml",
         "views/profile_portal_templates.xml",
