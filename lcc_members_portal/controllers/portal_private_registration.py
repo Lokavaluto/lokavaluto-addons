@@ -40,7 +40,7 @@ class PortalPrivateRegistration(CustomerPortal):
     def get_private_membership_products(self):
         product_obj = request.env["product.template"]
         products = product_obj.sudo().get_private_membership_products(
-            request.env.user.partner_id.company_id.id
+            request.website.company_id.id
         )
         return products
 
