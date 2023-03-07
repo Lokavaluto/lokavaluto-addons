@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_members",
-    "version": "12.0.4.1.0",
+    "version": "12.0.4.1.1",
     "author": "Lokavaluto",
     "maintainer": "False",
     "website": "False",
@@ -18,6 +18,7 @@
         "partner_profiles",
         "partner_profiles_portal",
         "membership",
+        "membership_extension",
         "complementary_contact_data",
         "base_address_city",
         "base_geolocalize",
