@@ -7,10 +7,10 @@
             <form action="/membership/subscribe_member" method="post">
                 <div class="oe_structure" id="oe_structure_portal_private_registration_1" />
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                <h3>
-                    <br /> Private registration Form </h3>
-                <h4>
-                    <br /> Who are you? </h4>
+                <br />
+                <h3>Private registration Form</h3>
+                <br />
+                <h4>Who are you?</h4>
                 <div class="row">
                     <div
                         t-attf-class="form-group #{error.get('title') and 'o_has_error' or ''} col-xl-6">
@@ -54,8 +54,8 @@
                             t-att-value="email or partner.email" required="True" />
                     </div>
                 </div>
-                <h4>
-                    <br /> Contact information </h4>
+                <br />
+                <h4>Contact information</h4>
                 <div class="row">
                     <div
                         t-attf-class="form-group #{error.get('street') and 'o_has_error' or ''} col-xl-6">
@@ -120,8 +120,8 @@
                             t-att-value="mobile or partner.mobile" />
                     </div>
                 </div>
-                <h4>
-                    <br /> Membership information </h4>
+                <br />
+                <h4>Membership information</h4>
                 <div class="row">
                     <div
                         t-attf-class="form-group #{error.get('team_id') and 'o_has_error' or ''} col-xl-6">
@@ -142,8 +142,8 @@
                             t-attf-class="form-group #{(error.get('want_newsletter_subscription') or error.get('accept_policy')) and 'o_has_error' or ''} col-xl-12">
                             <input type="checkbox" name="want_newsletter_subscription"
                                 t-att-checked="want_newsletter_subscription or partner.want_newsletter_subscription" />
-                            <label class="col-form-label" for="want_newsletter_subscription">Subscribe
-                                to our newsletters</label>
+                            <label class="col-form-label"
+                                for="want_newsletter_subscription">Subscribe to our newsletters</label>
                             <br />
                             <input type="checkbox" name="accept_policy"
                                 t-att-checked="accept_policy or partner.accept_policy"
@@ -179,7 +179,7 @@
                 </div>
                 <div class="clearfix">
                     <br />
-                    <button type="submit" class="btn btn-primary float-right mb32 "> Submit <span
+                    <button type="submit" class="btn btn-primary float-right mb32 ">Submit<span
                             class="fa fa-long-arrow-right" />
                     </button>
                 </div>
