@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-07 16:24+0000\n"
-"PO-Revision-Date: 2023-02-07 16:24+0000\n"
+"POT-Creation-Date: 2023-03-08 22:42+0000\n"
+"PO-Revision-Date: 2023-03-08 22:42+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,18 +34,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "<b>Warning:</b>\n"
 "                                    Odoo doesn't compress pictures. The total sum of your pictures must not exceed 4Mo. To compress your pictures, you can use the following tool:"
-msgstr ""
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
-msgid "<br/>\n"
-"                    Description"
-msgstr ""
-
-#. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
-msgid "<br/>\n"
-"                Activity information"
 msgstr ""
 
 #. module: lcc_members
@@ -95,16 +83,12 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:114
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_policy
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_policy
 #, python-format
 msgid "Accept LCC Policy"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:92
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_coupons
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_coupons
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
 #, python-format
 msgid "Accept coupons"
@@ -112,11 +96,14 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:95
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_digital_currency
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_digital_currency
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
 #, python-format
 msgid "Accept digital currency"
+msgstr ""
+
+#. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
+msgid "Activity information"
 msgstr ""
 
 #. module: lcc_members
@@ -168,8 +155,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:14
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__business_name
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__business_name
 #, python-format
 msgid "Business Name"
 msgstr ""
@@ -200,22 +185,13 @@ msgid "Contact Tags"
 msgstr ""
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
-msgid "Convention"
-msgstr ""
-
-#. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:74
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_agreement
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_agreement
 #, python-format
 msgid "Convention agreement"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:68
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_specific_agreement
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_specific_agreement
 #, python-format
 msgid "Convention specific agreement"
 msgstr ""
@@ -234,8 +210,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:79
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__currency_exchange_office
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__currency_exchange_office
 #, python-format
 msgid "Currency exchange office"
 msgstr ""
@@ -252,13 +226,12 @@ msgstr ""
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
+#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
 msgid "Description"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:59
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__detailed_activity
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__detailed_activity
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
 #, python-format
 msgid "Detailed activity"
@@ -338,23 +311,18 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/crm_team.py:8
-#: model:ir.model.fields,field_description:lcc_members.field_crm_team__local_group
 #, python-format
 msgid "Is a local group"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:62
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_volunteer
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__is_volunteer
 #, python-format
 msgid "Is volunteer"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:56
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__itinerant
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__itinerant
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_lcc_profile
 #, python-format
 msgid "Itinerant"
@@ -418,16 +386,12 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:25
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_comment
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__member_comment
 #, python-format
 msgid "Member comment"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:29
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_type_id
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__member_type_id
 #, python-format
 msgid "Member's type"
 msgstr ""
@@ -453,6 +417,11 @@ msgid "Membership Type"
 msgstr ""
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.membership_line_view_form
+msgid "Membership line"
+msgstr ""
+
+#. module: lcc_members
 #: model:ir.ui.menu,name:lcc_members.action_membership_line_menu
 #: model_terms:ir.ui.view,arch_db:lcc_members.membership_line_view_tree
 msgid "Membership lines"
@@ -475,7 +444,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/member_type.py:12
-#: model:ir.model.fields,field_description:lcc_members.field_member_type__name
 #: model:ir.model.fields,field_description:lcc_members.field_partner_image__name
 #, python-format
 msgid "Name"
@@ -493,8 +461,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:53
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__opening_time
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__opening_time
 #, python-format
 msgid "Opening Time"
 msgstr ""
@@ -566,8 +532,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:65
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__private_comment
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__private_comment
 #, python-format
 msgid "Private comment"
 msgstr ""
@@ -579,8 +543,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:22
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__phone_pro
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__phone_pro
 #, python-format
 msgid "Professional phone"
 msgstr ""
@@ -608,8 +570,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:112
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__refuse_numeric_wallet_creation
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__refuse_numeric_wallet_creation
 #, python-format
 msgid "Refuse the creation of a numeric wallet."
 msgstr ""
@@ -693,8 +653,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:41
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__to_renew
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__to_renew
 #, python-format
 msgid "To renew"
 msgstr ""
@@ -716,8 +674,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:109
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__want_newsletter_subscription
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__want_newsletter_subscription
 #, python-format
 msgid "Want Newsletters Subscription"
 msgstr ""
@@ -729,8 +685,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:16
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__reasons_choosing_mlc
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__reasons_choosing_mlc
 #, python-format
 msgid "Why did I choose local currency"
 msgstr ""
@@ -747,8 +701,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:35
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_signature_date
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_signature_date
 #, python-format
 msgid "convention signature date"
 msgstr ""
@@ -760,8 +712,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:50
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__keywords
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__keywords
 #, python-format
 msgid "keywords"
 msgstr ""
@@ -773,8 +723,6 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:44
-#: model:ir.model.fields,field_description:lcc_members.field_res_partner__legal_activity_code
-#: model:ir.model.fields,field_description:lcc_members.field_res_users__legal_activity_code
 #, python-format
 msgid "legal activity code (ex. APE in France)"
 msgstr ""
@@ -788,4 +736,3 @@ msgstr ""
 #: model:ir.model,name:lcc_members.model_member_type
 msgid "member.type"
 msgstr ""
-
