@@ -18,6 +18,7 @@
         "partner_profiles",
         "partner_profiles_portal",
         "membership",
+        "membership_extension",
         "complementary_contact_data",
         "base_address_city",
         "base_geolocalize",
