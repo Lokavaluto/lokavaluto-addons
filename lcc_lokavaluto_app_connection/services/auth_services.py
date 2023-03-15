@@ -2,6 +2,7 @@ import logging
 from odoo import exceptions
 from odoo.http import request
 from odoo.addons.base_rest.components.service import to_int
+from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 from odoo.addons.component.core import Component
 from .. import http
 
@@ -66,6 +67,15 @@ class AuthService(Component):
                 response["error"] = "%s" % e
                 response["status"] = "Error"
         return response
+
+    def reset_password(self):
+        """Request password reset email"""
+
+        web_auth_response = AuthSignupHome().web_auth_reset_password()
+        error = web_auth_response.qcontext.get("error")
+        if error:
+            return {"error": error, "status": "Error"}
+        return {"status": "OK"}
 
     # Validator
     def _validator_authenticate(self):

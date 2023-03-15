@@ -11,6 +11,7 @@
         "sale",
         "base_rest",
         "auth_api_key",
+        "auth_signup",
         "base_rest_datamodel",
         "base_jsonify",
         "partner_favorite",
