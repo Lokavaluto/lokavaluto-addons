@@ -89,6 +89,10 @@ class AuthService(Component):
             return {"error": error, "status": "Error"}
         return {"status": "OK"}
 
+    def can_signup(self):
+        """check if free_signup is enabled"""
+        return request.env["res.users"]._get_signup_invitation_scope() == "b2c"
+
     def reset_password(self):
         """Request password reset email"""
 
