@@ -2,7 +2,7 @@ import logging
 from odoo import exceptions
 from odoo.http import request
 from odoo.addons.base_rest.components.service import to_int
-from odoo.addons.auth_signup.controllers.main import AuthSignupHome
+from odoo.addons.lcc_members_portal.controllers.auth_signup import AuthSignupHome
 from odoo.addons.component.core import Component
 from .. import http
 
@@ -67,6 +67,26 @@ class AuthService(Component):
                 response["error"] = "%s" % e
                 response["status"] = "Error"
         return response
+
+    def signup(self):
+        """Trigger odoo Sign-up process
+
+        Note that we just forward the request to odoo's own entrypoint.
+
+        Example request:
+        {
+          "login": "john.doe@email.com",
+          "firstname": "John",
+          "lastname": "Doe",
+          "password": "p4ssw0rd",
+        }
+        """
+        request.params["confirm_password"] = request.params["password"]
+        web_auth_response = AuthSignupHome().web_auth_signup()
+        error = web_auth_response.qcontext.get("error")
+        if error:
+            return {"error": error, "status": "Error"}
+        return {"status": "OK"}
 
     def can_reset_password(self):
         return (
