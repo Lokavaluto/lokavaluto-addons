@@ -68,6 +68,13 @@ class AuthService(Component):
                 response["status"] = "Error"
         return response
 
+    def can_reset_password(self):
+        return (
+            request.env["ir.config_parameter"]
+            .sudo()
+            .get_param("auth_signup.reset_password")
+        ) == "True"
+
     def reset_password(self):
         """Request password reset email"""
 
