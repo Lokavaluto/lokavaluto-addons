@@ -392,6 +392,11 @@ msgid "Legal name or street"
 msgstr ""
 
 #. module: lcc_members
+#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
+msgid "Business namet"
+msgstr ""
+
+#. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_membership_invoice__team_id
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
