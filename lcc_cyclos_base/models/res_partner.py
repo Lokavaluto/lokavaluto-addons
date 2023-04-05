@@ -116,6 +116,7 @@ class ResPartner(models.Model):
             # TODO: case with contact of a company ?
             order_vals = {
                 "partner_id": partner.id,
+                "user_id": 2,  # OdooBot-s ID
             }
             order_vals = order.play_onchanges(order_vals, ["partner_id"])
             _logger.debug("CYCLOS ORDER: %s" % order_vals)
