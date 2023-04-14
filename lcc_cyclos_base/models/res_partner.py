@@ -52,6 +52,7 @@ class ResPartner(models.Model):
             "type": backend_id,
             "accounts": [],
             "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
+            "max_credit_amount": getattr(cyclos_product, "sale_max_qty", 0),
         }
         if backend_data.cyclos_id:
             data["accounts"].append(

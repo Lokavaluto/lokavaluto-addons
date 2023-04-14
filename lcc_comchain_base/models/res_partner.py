@@ -60,6 +60,7 @@ class ResPartnerBackend(models.Model):
             "type": backend_id,
             "accounts": [],
             "min_credit_amount": getattr(comchain_product, "sale_min_qty", 0),
+            "max_credit_amount": getattr(comchain_product, "sale_max_qty", 0),
         }
         wallet = self.comchain_wallet_parsed
         if wallet:
