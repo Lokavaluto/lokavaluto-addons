@@ -98,12 +98,6 @@ class res_partner(models.Model):
         readonly=False,
     )
     public_name = fields.Char(compute="_compute_public_name", store=True)
-    odoo_user_id = fields.Many2one(
-        "res.users",
-        compute="_compute_odoo_user_id",
-        string="Associated Odoo user",
-        store=True,
-    )
 
     want_newsletter_subscription = fields.Boolean(
         string=_("Want Newsletters Subscription")
@@ -134,14 +128,6 @@ class res_partner(models.Model):
                 if partner.public_profile_id.is_company
                 else "display_name"
             ] or partner.public_profile_id.name
-
-    
-    @api.depends("user_ids")
-    def _compute_odoo_user_id(self):
-        for partner in self:
-            partner.odoo_user_id = self.env["res.users"].search(
-                [("partner_id", "=", partner.id)], limit=1
-            )
 
     @api.constrains("email")
     def _check_email_unique(self):
