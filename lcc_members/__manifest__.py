@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_members",
-    "version": "12.0.4.3.0",
+    "version": "12.0.4.4.0",
     "author": "Lokavaluto",
     "maintainer": "False",
     "website": "False",
@@ -47,6 +47,7 @@
         "views/res_partner_view.xml",
         "views/member_type_view.xml",
         "views/membership_lines.xml",
+        "views/portal_my_account.xml",
         "views/website_partner_view.xml",
         "views/assets.xml",
         "views/profile_portal_templates.xml",
