@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_details_profiles_lcc"
+        inherit_id="partner_profiles_portal.portal_my_details_profiles"
+        name="User profiles details for LCC">
+        <xpath expr="//div[@id='name']" position="after">
+            <div t-if="partner.is_company" name="website_description">
+                <label class="col-form-label">Description: </label>
+                <div class="row">
+                    <div name="current_description" t-attf-class="col-xl-6">
+                        <i>Current description:</i>
+                        <div t-field="partner.website_description" />
+                    </div>
+                    <div name="new_description"
+                        t-attf-class="col-xl-6">
+                        <i>New description:</i>
+                        <div
+                            t-attf-class="form-group #{error.get('main_website_description') and 'o_has_error' or ''}">
+                            <textarea rows="4" name="main_website_description"
+                                t-attf-class="form-control #{error.get('main_website_description') and 'is-invalid' or ''}"
+                                t-att-value="main_website_description or partner.website_description" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='contact']" position="after">
+            <div name="activity_description" t-if="partner.is_company">
+                <br />
+                <h3>Activity information</h3>
+                <div id="activity_info_1" class="row">
+                    <div id="industry_id"
+                        t-attf-class="form-group #{error.get('main_industry_id') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="main_industry_id">Main activity</label>
+                        <select name="main_industry_id"
+                            t-attf-class="form-control">
+                            <option value="">Activity...</option>
+                            <t t-foreach="industries or []" t-as="industry">
+                                <option t-att-value="industry.id"
+                                    t-att-selected="industry.id == int(main_industry_id) if main_industry_id else industry.id == partner.industry_id.id">
+                                    <t t-esc="industry.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <!-- TODO: add field secondary_industry_ids -->
+                </div>
+                <div id="activity_info_2">
+                    <div id="detailled_activity"
+                        t-attf-class="form-group #{error.get('main_detailed_activity') and 'o_has_error' or ''}">
+                        <label class="col-form-label" for="main_detailed_activity">Detailed activity</label>
+                        <input type="text" name="main_detailed_activity"
+                            t-attf-class="form-control #{error.get('main_detailed_activity') and 'is-invalid' or ''}"
+                            t-att-value="main_detailed_activity or partner.detailed_activity" />
+                    </div>
+                </div>
+                <div id="activity_info_3" class="row">
+                    <div id="subscription_reason"
+                        t-attf-class="form-group #{error.get('main_reasons_choosing_mlc') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="main_reasons_choosing_mlc">Subscription
+                            reason</label>
+                        <input type="text" name="main_reasons_choosing_mlc"
+                            t-attf-class="form-control #{error.get('main_reasons_choosing_mlc') and 'is-invalid' or ''}"
+                            t-att-value="main_reasons_choosing_mlc or partner.reasons_choosing_mlc" />
+                    </div>
+                    <div id="opening_time"
+                        t-attf-class="form-group #{error.get('main_opening_time') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="main_opening_time">Opening time</label>
+                        <input type="text" name="main_opening_time"
+                            t-attf-class="form-control #{error.get('main_opening_time') and 'is-invalid' or ''}"
+                            t-att-value="main_opening_time or partner.opening_time" />
+                    </div>
+                    <div id="phone_pro"
+                        t-attf-class="form-group #{error.get('main_phone_pro') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="main_phone_pro">Professional Phone</label>
+                        <input type="tel" name="main_phone_pro"
+                            t-attf-class="form-control #{error.get('main_phone_pro') and 'is-invalid' or ''}"
+                            t-att-value="main_phone_pro or partner.phone_pro" />
+                    </div>
+                    <div id="itinerant"
+                        t-attf-class="form-group #{error.get('main_itinerant') and 'o_has_error' or ''} col-xl-6">
+                        <input type="checkbox" name="main_itinerant"
+                            t-att-value="main_itinerant or partner.itinerant" readonly="True" />
+                        <label class="col-form-label" for="main_itinerant">Itinerant</label>
+                    </div>
+                    <div id="accept">
+                        <div
+                            t-attf-class="form-group #{(error.get('main_accept_coupons') or error.get('main_accept_digital_currency')) and 'o_has_error' or ''} col-xl-12">
+                            <input type="checkbox" name="main_accept_coupons"
+                                t-att-value="main_accept_coupons or partner.accept_coupons" />
+                            <label class="col-form-label" for="main_accept_coupons">Accept coupons</label>
+                            <br />
+                            <input type="checkbox" name="main_accept_digital_currency"
+                                t-att-value="main_accept_digital_currency or partner.accept_digital_currency" />
+                            <label class="col-form-label"
+                                for="main_accept_digital_currency">Accept digital currency</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="activity_info_4">
+                    <label class="col-form-label">Discount: </label>
+                    <div class="row">
+                        <div name="current_discount" t-attf-class="col-xl-6">
+                            <i>Current discounts:</i>
+                            <div t-field="partner.discount" />
+                        </div>
+                        <div name="new_discount" t-attf-class="col-xl-6">
+                            <i>New discounts:</i>
+                            <div
+                                t-attf-class="form-group #{error.get('main_discount') and 'o_has_error' or ''}">
+                                <textarea rows="4" name="main_discount"
+                                    t-attf-class="form-control #{error.get('main_discount') and 'is-invalid' or ''}"
+                                    t-att-value="main_discount or partner.discount" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
