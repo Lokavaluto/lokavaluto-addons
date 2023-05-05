@@ -14,30 +14,46 @@
                     <attribute name="placeholder">Administrative Name</attribute>
                 </xpath>
                 <xpath expr="//field[@name='type']" position="before">
-                    <field name="business_name" string="Commercial name" placeholder="Commercial Name..." attrs="{'invisible': [('is_company', '=', False)]}" />
+                    <field name="business_name" string="Commercial name"
+                        placeholder="Commercial Name..."
+                        attrs="{'invisible': [('is_company', '=', False)]}" />
                 </xpath>
                 <xpath expr="//field[@name='vat']" position="replace">
-                    <field name="membership_state" string="Subscription status" attrs="{'invisible': [('contact_type','=','attached')]}" />
-                    <field name="member_type_id" string="Subscription type" attrs="{'invisible': [('contact_type','=','attached')]}" />
-                    <field name="currency_exchange_office" attrs="{'invisible': [('is_company', '=', False)]}" />
-                    <field name="is_volunteer" attrs="{'invisible': ['|',('is_company','=', True),('is_position_profile','=',True)]}" />
-                    <field name="team_id" string="Local group" options="{'limit': 16, 'create': false, 'create_edit': false}" attrs="{'invisible': [('contact_type','=','attached')]}" />
-                    <field name="user_id" string="Referent" attrs="{'invisible': [('contact_type','=','attached')]}" />
-                    <field name="ref" string="Subcription number" attrs="{'invisible': [('contact_type','=','attached')]}" />
+                    <field name="membership_state" string="Subscription status"
+                        attrs="{'invisible': [('contact_type','=','attached')]}" />
+                    <field name="member_type_id" string="Subscription type"
+                        attrs="{'invisible': [('contact_type','=','attached')]}" />
+                    <field name="currency_exchange_office"
+                        attrs="{'invisible': [('is_company', '=', False)]}" />
+                    <field name="is_volunteer"
+                        attrs="{'invisible': ['|',('is_company','=', True),('is_position_profile','=',True)]}" />
+                    <field name="team_id" string="Local group"
+                        options="{'limit': 16, 'create': false, 'create_edit': false}"
+                        attrs="{'invisible': [('contact_type','=','attached')]}" />
+                    <field name="user_id" string="Referent"
+                        attrs="{'invisible': [('contact_type','=','attached')]}" />
+                    <field name="ref" string="Subcription number"
+                        attrs="{'invisible': [('contact_type','=','attached')]}" />
                 </xpath>
 
                 <xpath expr="//field[@name='phone']" position="replace">
                     <label for="phone" />
                     <div class="o_row">
                         <field name="phone" widget="phone" />
-                        <button type="action" name="137" class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS" title="Send SMS" attrs="{'invisible':[('phone', '=', False)]}" context="{'field_name': 'phone'}" />
+                        <button type="action" name="137"
+                            class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS"
+                            title="Send SMS" attrs="{'invisible':[('phone', '=', False)]}"
+                            context="{'field_name': 'phone'}" />
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='mobile']" position="replace">
                     <label for="mobile" />
                     <div class="o_row">
                         <field name="mobile" widget="phone" />
-                        <button type="action" name="137" class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS" title="Send SMS" attrs="{'invisible':[('mobile', '=', False)]}" context="{'field_name': 'mobile'}" />
+                        <button type="action" name="137"
+                            class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS"
+                            title="Send SMS" attrs="{'invisible':[('mobile', '=', False)]}"
+                            context="{'field_name': 'mobile'}" />
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='extra_contact_ids']" position="replace" />
@@ -51,11 +67,15 @@
                     <field name="to_renew" />
                 </xpath>
                 <xpath expr="//field[@name='associate_member']/.." position="after">
-                    <group name="convention" string="Convention" attrs="{'invisible': [('is_company', '=', False)]}">
-                        <field name="convention_signature_date" attrs="{'invisible': [('is_company', '=', False)]}" />
-                        <field name="convention_agreement" attrs="{'invisible': [('is_company', '=', False)]}" />
+                    <group name="convention" string="Convention"
+                        attrs="{'invisible': [('is_company', '=', False)]}">
+                        <field name="convention_signature_date"
+                            attrs="{'invisible': [('is_company', '=', False)]}" />
+                        <field name="convention_agreement"
+                            attrs="{'invisible': [('is_company', '=', False)]}" />
                     </group>
-                    <separator string="Subscription history" attrs="{'invisible': [('is_company', '=', False)]}" />
+                    <separator string="Subscription history"
+                        attrs="{'invisible': [('is_company', '=', False)]}" />
                 </xpath>
                 <xpath expr="//field[@name='associate_member']" position="attributes">
                     <attribute name='invisible'>1</attribute>
@@ -67,10 +87,14 @@
                     <attribute name='delete'>0</attribute>
                     <attribute name='create'>0</attribute>
                 </xpath>
-                <xpath expr="//field[@name='member_lines']/form/group/group/field[@name='membership_id']" position='attributes'>
+                <xpath
+                    expr="//field[@name='member_lines']/form/group/group/field[@name='membership_id']"
+                    position='attributes'>
                     <attribute name='readonly'>1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='member_lines']/form/group/group/field[@name='member_price']" position='attributes'>
+                <xpath
+                    expr="//field[@name='member_lines']/form/group/group/field[@name='member_price']"
+                    position='attributes'>
                     <attribute name='readonly'>1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='member_lines']/.." position='attributes'>
@@ -78,14 +102,20 @@
                 </xpath>
 
                 <!-- page Contacts & Adresses -->
-                <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='name']" position="attributes">
-                    <attribute name="attrs">{'invisible': [('type', 'in', ['invoice','delivery','other'])]}</attribute>
+                <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='name']"
+                    position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', 'in',
+                        ['invoice','delivery','other'])]}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='child_ids']/form/sheet//field[@name='lastname']" position="attributes">
-                    <attribute name="attrs">{'invisible': [('type', 'in', ['invoice','delivery','other'])]}</attribute>
+                <xpath expr="//field[@name='child_ids']/form/sheet//field[@name='lastname']"
+                    position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', 'in',
+                        ['invoice','delivery','other'])]}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='child_ids']/form/sheet//field[@name='firstname']" position="attributes">
-                    <attribute name="attrs">{'invisible': [('type', 'in', ['invoice','delivery','other'])]}</attribute>
+                <xpath expr="//field[@name='child_ids']/form/sheet//field[@name='firstname']"
+                    position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', 'in',
+                        ['invoice','delivery','other'])]}</attribute>
                 </xpath>
 
                 <!-- page Invoicing -->
@@ -118,13 +148,24 @@
                 <!-- ################## -->
                 <xpath expr="//notebook/page[1]" position="before">
                     <!-- page Membership -->
-                    <page name="annuaire" string="Directory" attrs="{'invisible': [('is_company','=',False)]}" autofocus="autofocus">
-                        <group name="classification" string="Classification (to find easily pro. in the directory)">
-                            <field name="industry_id" string="Main activity" attrs="{'invisible': [('is_company', '=', False)]}" create="False" />
-                            <field name="secondary_industry_ids" widget="many2many_tags" options="{'no_create_edit': True}" string="Others activities" attrs="{'invisible': [('is_company', '=', False)]}" />
-                            <field name="detailed_activity" placeholder="Detailled activy (Ex.  lavender honey)" attrs="{'invisible': [('is_company', '=', False)]}" />
-                            <field name="keywords" placeholder="keywords giving more information on activities. splite keyword using ;" attrs="{'invisible': [('is_company', '=', False)]}" />
-                            <field name="itinerant" attrs="{'invisible': [('is_company', '=', False)]}" />
+                    <page name="annuaire" string="Directory"
+                        attrs="{'invisible': ['|',('is_company','=',False),('is_main_profile', '=', False)]}"
+                        autofocus="autofocus">
+                        <group name="classification"
+                            string="Classification (to find easily pro. in the directory)">
+                            <field name="industry_id" string="Main activity"
+                                attrs="{'invisible': [('is_company', '=', False)]}" create="False" />
+                            <field name="secondary_industry_ids" widget="many2many_tags"
+                                options="{'no_create_edit': True}" string="Others activities"
+                                attrs="{'invisible': [('is_company', '=', False)]}" />
+                            <field name="detailed_activity"
+                                placeholder="Detailled activy (Ex.  lavender honey)"
+                                attrs="{'invisible': [('is_company', '=', False)]}" />
+                            <field name="keywords"
+                                placeholder="keywords giving more information on activities. splite keyword using ;"
+                                attrs="{'invisible': [('is_company', '=', False)]}" />
+                            <field name="itinerant"
+                                attrs="{'invisible': [('is_company', '=', False)]}" />
                         </group>
                         <group name="lcc_type" string="LCC type">
                             <field name="accept_coupons" />
@@ -133,11 +174,19 @@
                         <group name="additional_info" string="Additional informations">
                             <label for="phone_pro" />
                             <div class="o_row">
-                                <field name="phone_pro" widget="phone" string="Phone displayed on the map" />
-                                <button type="action" name="137" class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS" title="Send SMS" attrs="{'invisible':[('phone_pro', '=', False)]}" context="{'field_name': 'phone_pro'}" />
+                                <field name="phone_pro" widget="phone"
+                                    string="Phone displayed on the map" />
+                                <button type="action" name="137"
+                                    class="btn-sm btn-link mb4 fa fa-envelope-o"
+                                    aria-label="Send SMS" title="Send SMS"
+                                    attrs="{'invisible':[('phone_pro', '=', False)]}"
+                                    context="{'field_name': 'phone_pro'}" />
                             </div>
-                            <field name="opening_time" placeholder="Opening hours(ex. every day from 9am to 18pm or opening hours day by day)" attrs="{'invisible': [('is_company', '=', False)]}" />
-                            <field name="reasons_choosing_mlc" string="Subscription reason" placeholder="Why the pro. subscribe to LCC? allow to involve customers" />
+                            <field name="opening_time"
+                                placeholder="Opening hours(ex. every day from 9am to 18pm or opening hours day by day)"
+                                attrs="{'invisible': [('is_company', '=', False)]}" />
+                            <field name="reasons_choosing_mlc" string="Subscription reason"
+                                placeholder="Why the pro. subscribe to LCC? allow to involve customers" />
                             <field name="discount" />
                         </group>
                         <!-- <group colspan="2" col="2">
@@ -157,36 +206,57 @@
                             <!-- TODO v4 : delete this group once all lcc informed -->
                             <div role="alertdialog" class="alert alert-warning">
                                 <span>
-                                    <b>Warning:</b>
-                                    Odoo doesn't compress pictures. The total sum of your pictures must not exceed 4Mo. To compress your pictures, you can use the following tool:
-                                    <a href="https://compressjpeg.com/fr/" target="_blank">https://compressjpeg.com/fr/</a>
+                                    <b>Warning:</b> Odoo doesn't compress pictures. The total sum of
+                                    your pictures must not exceed 4Mo. To compress your pictures,
+                                    you can use the following tool: <a
+                                        href="https://compressjpeg.com/fr/" target="_blank">
+                                    https://compressjpeg.com/fr/</a>
                                 </span>
                             </div>
-                            <field name="partner_image_ids" class="o_website_sale_image_list" attrs="{'invisible': [('is_company', '=', False)]}" context="{'default_name': name, 'default_partner_id': active_id}" nolabel="1">
+                            <field name="partner_image_ids" class="o_website_sale_image_list"
+                                attrs="{'invisible': [('is_company', '=', False)]}"
+                                context="{'default_name': name, 'default_partner_id': active_id}"
+                                nolabel="1">
                                 <kanban string="Partner Images" class="o_attachments_previews">
                                     <field name="id" />
                                     <field name="name" />
                                     <field name="image" />
                                     <templates>
                                         <t t-name="kanban-box">
-                                            <div class="o_attachment oe_kanban_global_click o_website_sale_image_card">
+                                            <div
+                                                class="o_attachment oe_kanban_global_click o_website_sale_image_card">
                                                 <div class="o_attachment_wrap">
                                                     <div class="o_image_box">
-                                                        <div class="o_attachment_image" t-attf-style="background-image:url({{kanban_image('partner.image', 'image', record.id.raw_value)}});" />
-                                                        <div t-attf-class="o_image_overlay" t-att-title="record.name.value" />
-                                                        <div class="o_website_sale_image_card_title" t-att-title="record.name.value">
+                                                        <div class="o_attachment_image"
+                                                            t-attf-style="background-image:url({{kanban_image('partner.image', 'image', record.id.raw_value)}});" />
+                                                        <div t-attf-class="o_image_overlay"
+                                                            t-att-title="record.name.value" />
+                                                        <div class="o_website_sale_image_card_title"
+                                                            t-att-title="record.name.value">
                                                             <field name="name" />
                                                         </div>
 
-                                                        <t t-set="size" t-value="[record.image.value][0]" />
-                                                        <t t-set="size_status" t-value="'normal'" t-if="size.indexOf('Bytes') !== -1 or ( size.indexOf('Kb') !== -1 and size[2]=='.')" />
-                                                        <t t-set="size_status" t-value="'warning'" t-elif="( size.indexOf('Kb') !== -1 and size[3]=='.')" />
-                                                        <t t-set="size_status" t-value="'danger'" t-else="" />
-                                                        <t t-set="message" t-value="'Acceptable file size'" t-if="size_status == 'normal'"></t>
-                                                        <t t-set="message" t-value="'Huge file size. The image should be optimized/reduced.'" t-elif="size_status == 'warning'"></t>
-                                                        <t t-set="message" t-value="'Optimization required! Reduce the image size or increase your compression settings.'" t-else=""></t>
+                                                        <t t-set="size"
+                                                            t-value="[record.image.value][0]" />
+                                                        <t t-set="size_status" t-value="'normal'"
+                                                            t-if="size.indexOf('Bytes') !== -1 or ( size.indexOf('Kb') !== -1 and size[2]=='.')" />
+                                                        <t t-set="size_status" t-value="'warning'"
+                                                            t-elif="( size.indexOf('Kb') !== -1 and size[3]=='.')" />
+                                                        <t t-set="size_status" t-value="'danger'"
+                                                            t-else="" />
+                                                        <t t-set="message"
+                                                            t-value="'Acceptable file size'"
+                                                            t-if="size_status == 'normal'"></t>
+                                                        <t t-set="message"
+                                                            t-value="'Huge file size. The image should be optimized/reduced.'"
+                                                            t-elif="size_status == 'warning'"></t>
+                                                        <t t-set="message"
+                                                            t-value="'Optimization required! Reduce the image size or increase your compression settings.'"
+                                                            t-else=""></t>
 
-                                                        <span t-attf-class="o_website_sale_image_card_size badge badge-#{size_status}" t-att-title="message">
+                                                        <span
+                                                            t-attf-class="o_website_sale_image_card_size badge badge-#{size_status}"
+                                                            t-att-title="message">
                                                             <t t-esc="record.image.value" />
                                                         </span>
                                                     </div>
@@ -199,12 +269,16 @@
                         </group>
                     </page>
                     <!-- page Description -->
-                    <page name="description" string="Description" attrs="{'invisible': ['|',('is_public_profile','=',False),('is_company','=',False)]}">
-                        <field name="website_description" placeholder="Webpage description of the partner" />
+                    <page name="description" string="Description"
+                        attrs="{'invisible': ['|',('is_main_profile','=',False),('is_company','=',False)]}">
+                        <field name="website_description"
+                            placeholder="Webpage description of the partner" />
                     </page>
                     <!-- page Social Networks -->
-                    <page name="social" string="Social networks">
-                        <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="True" colspan="1" />
+                    <page name="social" string="Social networks"
+                        attrs="{'invisible': [('is_main_profile','=',False)]}">
+                        <field name="extra_contact_ids" widget="contactInfoWidget" nolabel="True"
+                            colspan="1" />
                     </page>
                 </xpath>
             </field>
@@ -216,38 +290,52 @@
             <field name="inherit_id" ref="membership.view_res_partner_member_filter" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="replace">
-                    <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]" />
+                    <field name="name"
+                        filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]" />
                     <field name="ref" string="Member ID" />
                     <field name="team_id" string="Local group" />
                     <field name="street" string="Legal name or street" />
                     <field name="parent_id" domain="[('is_company','=',True)]" operator="child_of" />
                     <field name="membership_state" string="member status" />
                     <field name="user_id" />
-                    <field name="phone" filter_domain="['|',('phone','ilike',self),('mobile','=',self)]" />
+                    <field name="phone"
+                        filter_domain="['|',('phone','ilike',self),('mobile','=',self)]" />
                 </xpath>
                 <xpath expr="//field[@name='category_id']" position="replace">
-                    <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]" />
+                    <field name="category_id" string="Tag"
+                        filter_domain="[('category_id','ilike', self)]" />
                 </xpath>
 
                 <xpath expr="//filter[@name='supplier']" position="replace" />
                 <xpath expr="//filter[@name='all_non_members']" position="replace" />
                 <xpath expr="//filter[@name='all_members']" position="replace" />
                 <xpath expr="//filter[@name='customer']" position="replace">
-                    <filter name="filter_my_partners" help="My Contacts" domain="[('user_id','=',uid)]" />
-                    <filter string="My Favorites" name="my_partners" domain="[('favorite_user_ids', 'in', uid)]" />
+                    <filter name="filter_my_partners" help="My Contacts"
+                        domain="[('user_id','=',uid)]" />
+                    <filter string="My Favorites" name="my_partners"
+                        domain="[('favorite_user_ids', 'in', uid)]" />
                     <separator />
-                    <filter string="My local group" name="Local group" domain="[('team_id.member_ids', 'in', uid)]" />
+                    <filter string="My local group" name="Local group"
+                        domain="[('team_id.member_ids', 'in', uid)]" />
                     <separator />
                     <filter string="Person" name="type_person" domain="[('is_company','=',False)]" />
-                    <filter string="Professionals" name="type_company" domain="[('is_company','=',True)]" />
+                    <filter string="Professionals" name="type_company"
+                        domain="[('is_company','=',True)]" />
                     <separator />
-                    <filter string="Customers" name="customer" domain="[('customer','=',True), ('parent_id', '=', False)]" />
-                    <filter string="Vendors" name="supplier" domain="[('supplier','=',True), ('parent_id', '=', False)]" />
+                    <filter string="Customers" name="customer"
+                        domain="[('customer','=',True), ('parent_id', '=', False)]" />
+                    <filter string="Vendors" name="supplier"
+                        domain="[('supplier','=',True), ('parent_id', '=', False)]" />
                     <filter string="Archived" name="inactive" domain="[('active','=',False)]" />
                     <separator />
-                    <filter name="all_non_members" domain="[('membership_state', 'in', ['none','canceled','old','waiting'])]" string="All non Members" help="None/Canceled/Old/Waiting" />
-                    <filter name="all_members" domain="[('membership_state', 'in', ['invoiced','paid','free'])]" string="All Members" help="Invoiced/Paid/Free" />
-                    <filter name="filter_running_contract" string="With agreement" domain="['|', ('contract_ids.date_end', '&gt;=', context_today().strftime('%Y-%m-%d')), ('contract_ids.date_end', '=', False)]" />
+                    <filter name="all_non_members"
+                        domain="[('membership_state', 'in', ['none','canceled','old','waiting'])]"
+                        string="All non Members" help="None/Canceled/Old/Waiting" />
+                    <filter name="all_members"
+                        domain="[('membership_state', 'in', ['invoiced','paid','free'])]"
+                        string="All Members" help="Invoiced/Paid/Free" />
+                    <filter name="filter_running_contract" string="With agreement"
+                        domain="['|', ('contract_ids.date_end', '&gt;=', context_today().strftime('%Y-%m-%d')), ('contract_ids.date_end', '=', False)]" />
                 </xpath>
             </field>
         </record>
@@ -307,9 +395,8 @@
                         <span style="color:#566d24;">
                             <b>
                                 <field name="membership_state" />
-                            </b>
-                            -
-                            <field name="ref" />
+                            </b> - <field
+                                name="ref" />
                         </span>
                     </xpath>
 
@@ -332,7 +419,8 @@
                                 <field name="partner_id" invisible="1" />
                             </div>
                         </div>
-                        <div class="col-md-6 col-xl-7 text-center o_website_sale_image_modal_container">
+                        <div
+                            class="col-md-6 col-xl-7 text-center o_website_sale_image_modal_container">
                             <field name="image" widget="image" />
                         </div>
                     </div>
