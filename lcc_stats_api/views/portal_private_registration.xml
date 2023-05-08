@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_private_registration_wallet" name="Portal: Private Registration Wallet creation" inherit_id="lcc_members_portal.portal_private_registration" priority="40">
+        <xpath expr="//input[@name='want_newsletter_subscription']" position="before">
+            <input type="checkbox" name="refuse_numeric_wallet_creation" t-att-checked="refuse_numeric_wallet_creation or partner.refuse_numeric_wallet_creation" />
+            <label class="col-form-label" for="refuse_numeric_wallet_creation">Refuse numeric wallet creation</label>
+            <br />
+        </xpath>
+    </template>
+</odoo>
