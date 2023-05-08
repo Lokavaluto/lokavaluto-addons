@@ -45,8 +45,19 @@ class PublicStatsMlccService(Component):
             else:
                 mlcc_to_eur += invoice.amount_total
 
+        domain_partners = [
+            # ("accept_digital_currency", "=", True),
+            ("membership_state", "!=", "none"),
+        ]
+        partners = self.env["res.partner"].search(domain_partners)
+        for p in partners:
+            print(f"partner {p.name} {p.is_company} {p.membership_state}")
+        individuals = len([p for p in partners if p.is_company == False])
+        companies = len(partners) - individuals
         return {
             "eur_to_mlcc": eur_to_mlcc,
             "mlcc_to_eur": mlcc_to_eur,
             "mlcc_circulated": eur_to_mlcc - mlcc_to_eur,
+            "nb_individuals": individuals,
+            "nb_companies": companies,
         }
