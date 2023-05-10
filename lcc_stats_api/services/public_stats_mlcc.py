@@ -3,14 +3,12 @@ import logging
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
-from typing_extensions import TypedDict
+
 from .build_stats import (
     build_currency_stats_from_invoices,
     CurrencyStats,
     currency_stats_validator,
 )
-from dataclasses import dataclass
-
 
 _logger = logging.getLogger(__name__)
 
