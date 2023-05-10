@@ -4,6 +4,11 @@ from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
+from .build_stats import (
+    CurrencyStats,
+    build_currency_stats_from_invoices,
+)
+
 _logger = logging.getLogger(__name__)
 
 
@@ -30,10 +35,17 @@ class PrivateStatsPartnerService(Component):
         """
         domain = [("partner_id", "=", _id)]
         invoices = self.env["account.invoice"].search(domain)
-        print("got invoices")
-        for invoice in invoices:
-            print(invoice)
-            print(invoice.type)
 
-        print(invoices)
-        return {"message": f"Hello {_id} and {invoices}"}
+        currency_stats: CurrencyStats = build_currency_stats_from_invoices(invoices)
+
+        return currency_stats
+
+    ##########################################################
+    # Validators
+    ##########################################################
+    def _validator_return_get(self):
+        res = {
+            "nb_individuals": {"type": "integer", "required": True, "empty": False},
+            "nb_companies": {"type": "integer", "required": True, "empty": False},
+        }
+        return res

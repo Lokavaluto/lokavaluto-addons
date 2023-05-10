@@ -3,8 +3,21 @@ import logging
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
+from typing_extensions import TypedDict
+from .build_stats import (
+    build_currency_stats_from_invoices,
+    CurrencyStats,
+    currency_stats_validator,
+)
+from dataclasses import dataclass
+
 
 _logger = logging.getLogger(__name__)
+
+
+class MlccStats(CurrencyStats):
+    nb_individuals: int
+    nb_companies: int
 
 
 class PublicStatsMlccService(Component):
@@ -33,31 +46,30 @@ class PublicStatsMlccService(Component):
             ("type", "in", ["out_invoice", "in_invoice"]),
             ("has_numeric_lcc_products", "=", True),
         ]
-        invoices = self.env["account.invoice"].search(domain)
-        mlcc_to_eur = 0.00
-        eur_to_mlcc = 0.00
-        for invoice in invoices:
-            print(
-                f"looking at {invoice.number} with {invoice.amount_total} and type {invoice.type}"
-            )
-            if invoice.type == "out_invoice":
-                eur_to_mlcc += invoice.amount_total
-            else:
-                mlcc_to_eur += invoice.amount_total
+        invoices = self.env["account.invoice"].sudo().search(domain)
+        currency_stats: CurrencyStats = build_currency_stats_from_invoices(invoices)
 
         domain_partners = [
             # ("accept_digital_currency", "=", True),
             ("membership_state", "!=", "none"),
+            ("is_main_profile", "=", True),
         ]
-        partners = self.env["res.partner"].search(domain_partners)
+        partners = self.env["res.partner"].sudo().search(domain_partners)
         for p in partners:
             print(f"partner {p.name} {p.is_company} {p.membership_state}")
         individuals = len([p for p in partners if p.is_company == False])
         companies = len(partners) - individuals
-        return {
-            "eur_to_mlcc": eur_to_mlcc,
-            "mlcc_to_eur": mlcc_to_eur,
-            "mlcc_circulated": eur_to_mlcc - mlcc_to_eur,
-            "nb_individuals": individuals,
-            "nb_companies": companies,
+        return MlccStats(
+            **currency_stats, nb_individuals=individuals, nb_companies=companies
+        )
+
+    ##########################################################
+    # Validators
+    ##########################################################
+    def _validator_return_get(self):
+        res = {
+            **currency_stats_validator,
+            "nb_individuals": {"type": "integer", "required": True, "empty": False},
+            "nb_companies": {"type": "integer", "required": True, "empty": False},
         }
+        return res
