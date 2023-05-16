@@ -55,9 +55,7 @@ class PortalOrganizationAffiliation(CustomerPortal):
             "partner_id": partner.id,
             "type": "opportunity",
             "lead_type": "affiliation_request",
-            "edit_structure_main_profile": data.get("manage_main_profile", "off")
-            == "on",
-            "edit_structure_public_profile": data.get("manage_public_profile", "off")
+            "edit_structure_profiles": data.get("manage_structure_profilse", "off")
             == "on",
             "tag_ids": [(4, request.env.ref("lcc_members_portal.categ_oppor_affiliation").id, None)],
         }

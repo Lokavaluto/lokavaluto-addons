@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_members_portal",
-    "version": "12.0.1.5.1",
+    "version": "12.0.1.6.0",
     "author": "Lokavaluto",
     "maintainer": "False",
     "website": "False",
