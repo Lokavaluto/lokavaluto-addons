@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="portal_my_details_lcc" inherit_id="portal.portal_my_details" name="Add lcc custom fields or data">
-        <xpath expr="//input[@name='email']" position="before">
-            <small>- Modification causes log out. Sign in just after!</small>
-        </xpath>
-    </template>
-</odoo>

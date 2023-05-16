@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_members_portal",
-    "version": "12.0.1.5.0",
+    "version": "12.0.1.5.1",
     "author": "Lokavaluto",
     "maintainer": "False",
     "website": "False",
@@ -36,7 +36,6 @@
         "views/product_template_view.xml",
         "views/crm_lead_view.xml",
         "views/auth_signup_login_template.xml",
-        "views/portal_templates.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],
