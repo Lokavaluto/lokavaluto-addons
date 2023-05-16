@@ -46,15 +46,11 @@
                     <div>
                         <div
                             t-attf-class="form-group #{(error.get('manage_main_profile') or error.get('accept_digital_currency')) and 'o_has_error' or ''} col-xl-12">
-                            <input type="checkbox" name="manage_main_profile"
+                            <input type="checkbox" name="manage_structure_profiles"
                                 t-att-value="manage_main_profile" />
-                            <label class="col-form-label" for="manage_main_profile">
-                                I wish to manage the organization membership profile</label>
+                            <label class="col-form-label" for="manage_structure_profiles">
+                                I wish to manage the organization profiles</label>
                             <br />
-                            <input type="checkbox" name="manage_public_profile"
-                                t-att-value="manage_public_profile" />
-                            <label class="col-form-label" for="manage_public_profile">
-                                I wish to manage the organization public profile</label>
                         </div>
                     </div>
                 </div>

@@ -75,11 +75,8 @@ class Lead(models.Model):
         string=_("Want Newsletters Subscription")
     )
     accept_policy = fields.Boolean(string=_("Accept LCC Policy"))
-    edit_structure_main_profile = fields.Boolean(
-        string=_("Manage the structure's main profile")
-    )
-    edit_structure_public_profile = fields.Boolean(
-        string=_("Manage the structure's public profile")
+    edit_structure_profiles = fields.Boolean(
+        string=_("Manage the structure's profiles")
     )
     total_membership = fields.Float(string=_("Membership amount"))
     message_from_candidate = fields.Text(string=_("Message from the candidate"))
@@ -154,8 +151,7 @@ class Lead(models.Model):
             .search([("ref", "=", "partner_profile_position")], limit=1)
             .id,
             "type": "contact",
-            "edit_structure_main_profile": True,
-            "edit_structure_public_profile": True,
+            "edit_structure_profiles": True,
         }
         for field_name in self._POSITION_PROFILE_FIELDS:
             values[field_name] = self._get_field_value(field_name)
