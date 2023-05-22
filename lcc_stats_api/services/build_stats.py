@@ -1,13 +1,14 @@
 from typing_extensions import TypedDict
 
 
-# @dataclass
+# Generic stats about currency
 class CurrencyStats(TypedDict):
     eur_to_mlcc: float
     mlcc_to_eur: float
     mlcc_circulating: float
 
 
+# Generic validator for an API returning currency stats
 currency_stats_validator = {
     "eur_to_mlcc": {"type": "float", "required": True, "empty": False},
     "mlcc_to_eur": {"type": "float", "required": True, "empty": False},
@@ -15,7 +16,10 @@ currency_stats_validator = {
 }
 
 
-def build_currency_stats_from_invoices(invoices):
+def build_currency_stats_from_invoices(invoices) -> CurrencyStats:
+    """
+    Build stats about MLCC from invoices
+    """
     print("received invoices", invoices)
     mlcc_to_eur = 0.00
     eur_to_mlcc = 0.00

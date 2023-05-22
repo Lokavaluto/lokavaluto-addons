@@ -9,6 +9,7 @@ from .build_stats import (
     CurrencyStats,
     currency_stats_validator,
 )
+from ..datamodel.stats_filter import StatsFilter
 
 _logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ class PublicStatsMlccService(Component):
         [(["/get", "/"], "GET")],
         input_param=Datamodel("stats.filter"),
     )
-    def get(self, stats_filter):
+    def get(self, stats_filter: StatsFilter) -> MlccStats:
         """
         Get MLCC public stats.
         """

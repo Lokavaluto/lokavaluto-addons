@@ -9,6 +9,7 @@ from .build_stats import (
     build_currency_stats_from_invoices,
     currency_stats_validator,
 )
+from ..datamodel.stats_filter import StatsFilter
 
 _logger = logging.getLogger(__name__)
 
@@ -30,7 +31,7 @@ class PrivateStatsPartnerService(Component):
         [(["/<int:id>/get", "/<int:id>"], "GET")],
         input_param=Datamodel("stats.filter"),
     )
-    def get(self, _id, stats_filter):
+    def get(self, _id, stats_filter: StatsFilter) -> CurrencyStats:
         """
         Get a partner MLCC stats.
         """
