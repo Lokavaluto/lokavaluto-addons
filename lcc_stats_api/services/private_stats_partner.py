@@ -7,6 +7,7 @@ from odoo.addons.component.core import Component
 from .build_stats import (
     CurrencyStats,
     build_currency_stats_from_invoices,
+    currency_stats_validator,
 )
 
 _logger = logging.getLogger(__name__)
@@ -45,7 +46,6 @@ class PrivateStatsPartnerService(Component):
     ##########################################################
     def _validator_return_get(self):
         res = {
-            "nb_individuals": {"type": "integer", "required": True, "empty": False},
-            "nb_companies": {"type": "integer", "required": True, "empty": False},
+            **currency_stats_validator,
         }
         return res
