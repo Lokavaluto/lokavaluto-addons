@@ -1,5 +1,7 @@
 from typing_extensions import TypedDict
 
+from ..datamodel.stats_filter import StatsFilter
+
 
 # Generic stats about currency
 class CurrencyStats(TypedDict):
@@ -16,11 +18,28 @@ currency_stats_validator = {
 }
 
 
-def build_currency_stats_from_invoices(invoices) -> CurrencyStats:
+def build_currency_stats_from_invoices(
+    invoices_model, partner_id: int = None, stats_filter: StatsFilter = None
+) -> CurrencyStats:
     """
     Build stats about MLCC from invoices
     """
-    print("received invoices", invoices)
+
+    domain_invoices = [
+        ("state", "=", "paid"),
+        ("type", "in", ["out_invoice", "in_invoice"]),
+        ("has_numeric_lcc_products", "=", True),
+    ]
+    if partner_id:
+        domain_invoices.append(("partner_id", "=", partner_id))
+
+    if stats_filter and stats_filter.start_date:
+        domain_invoices.append(("date_invoice", ">=", stats_filter.start_date))
+
+    if stats_filter and stats_filter.end_date:
+        domain_invoices.append(("date_invoice", "<=", stats_filter.end_date))
+
+    invoices = invoices_model.search(domain_invoices)
     mlcc_to_eur = 0.00
     eur_to_mlcc = 0.00
     for invoice in invoices:

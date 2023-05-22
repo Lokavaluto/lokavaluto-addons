@@ -40,16 +40,11 @@ class PublicStatsMlccService(Component):
         Get MLCC public stats.
         """
 
-        domain = [
-            ("state", "=", "paid"),
-            ("type", "in", ["out_invoice", "in_invoice"]),
-            ("has_numeric_lcc_products", "=", True),
-        ]
-        invoices = self.env["account.invoice"].sudo().search(domain)
-        currency_stats: CurrencyStats = build_currency_stats_from_invoices(invoices)
+        currency_stats: CurrencyStats = build_currency_stats_from_invoices(
+            self.env["account.invoice"].sudo(), stats_filter=stats_filter
+        )
 
         domain_partners = [
-            # ("accept_digital_currency", "=", True),
             ("membership_state", "!=", "none"),
             ("is_main_profile", "=", True),
         ]
