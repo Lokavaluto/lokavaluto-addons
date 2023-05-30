@@ -133,7 +133,7 @@ class PartnerService(Component):
             ("partner_id.public_profile_id.name", "!=", False),  ## only main profiles
         ]
         offset = recipients_search_info.offset if recipients_search_info.offset else 0
-        limit = recipients_search_info.limit if recipients_search_info.limit else 0
+        limit = recipients_search_info.limit if recipients_search_info.limit else None
         order = recipients_search_info.order if recipients_search_info.order else "name asc"
         order = _recipient_order_normalize(order)
         website_url = recipients_search_info.website_url
@@ -178,22 +178,56 @@ class PartnerService(Component):
             order=order,
         )
         _logger.debug("recipients_fav: %s" % recipients_fav)
-        if value:
-            recipients_no_fav = self.env["res.partner.backend"].search(
-                [
-                    ("partner_id.favorite_user_ids", "not in", self.env.uid),
-                ]
-                + domain,
-                limit=limit,
-                offset=offset,
-                order=order,
-            )
-            _logger.debug("recipients_no_fav: %s" % recipients_no_fav)
-            recipients = recipients_fav | recipients_no_fav
-        else:
-            recipients = recipients_fav
+        len_recipients = len(recipients_fav)
+        recipients = recipients_fav
+        if (limit is None or len_recipients < limit) and value:
+            if len_recipients == 0:
+                fav_count = (
+                    0
+                    if offset == 0
+                    else self.env["res.partner.backend"].search_count(
+                        [
+                            ("partner_id.favorite_user_ids", "in", self.env.uid),
+                        ]
+                        + domain,
+                    )
+                )
+                offset -= fav_count
+            else:
+                if limit is not None:
+                    limit -= len_recipients
+
+                offset = 0
+
+            if limit != 0:
+                recipients_no_fav = self.env["res.partner.backend"].search(
+                    [
+                        ("partner_id.favorite_user_ids", "not in", self.env.uid),
+                    ]
+                    + domain,
+                    limit=limit,
+                    offset=offset,
+                    order=order,
+                )
+                _logger.debug("recipients_no_fav: %s" % recipients_no_fav)
+                recipients |= recipients_no_fav
         _logger.debug("recipients: %s" % recipients)
-        return self._get_formatted_recipients(recipients.mapped(lambda x: x.partner_id), backend_keys)
+
+        ## Group by partner
+        parser = self._get_partner_parser()
+        rows = []
+        for recipient in recipients:
+            partner = recipient.partner_id
+            row = partner.public_profile_id.jsonify(parser)[0]
+            row["monujo_backends"] = partner._update_search_data([
+                k for k in backend_keys if k.startswith("%s:" % recipient.type)
+            ])
+            row["public_name"] = partner.public_name
+            row["id"] = partner.id
+            row["is_favorite"] = partner.is_favorite
+            rows.append(row)
+
+        return {"count": len(rows), "rows": rows}
 
     @restapi.method(
         [
