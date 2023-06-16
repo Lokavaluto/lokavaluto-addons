@@ -31,6 +31,17 @@ class CustomerPortal(CustomerPortal):
         )
         return  fields
 
+    def _get_main_boolean_account_fields(self):
+        fields = super(CustomerPortal, self)._get_main_boolean_account_fields()
+        fields.extend(
+            [
+                "main_itinerant",
+                "main_accept_coupons",
+                "main_accept_digital_currency",
+            ]
+        )
+        return  fields
+
     def _get_page_opening_values(self):
         values = super(CustomerPortal, self)._get_page_opening_values()
         values.update(
