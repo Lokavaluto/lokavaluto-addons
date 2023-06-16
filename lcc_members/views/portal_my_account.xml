@@ -80,18 +80,18 @@
                     <div id="itinerant"
                         t-attf-class="form-group #{error.get('main_itinerant') and 'o_has_error' or ''} col-xl-6">
                         <input type="checkbox" name="main_itinerant"
-                            t-att-value="main_itinerant or partner.itinerant" readonly="True" />
+                            t-att-checked="main_itinerant or partner.itinerant" readonly="True" />
                         <label class="col-form-label" for="main_itinerant">Itinerant</label>
                     </div>
                     <div id="accept">
                         <div
                             t-attf-class="form-group #{(error.get('main_accept_coupons') or error.get('main_accept_digital_currency')) and 'o_has_error' or ''} col-xl-12">
                             <input type="checkbox" name="main_accept_coupons"
-                                t-att-value="main_accept_coupons or partner.accept_coupons" />
+                                t-att-checked="main_accept_coupons or partner.accept_coupons" />
                             <label class="col-form-label" for="main_accept_coupons">Accept coupons</label>
                             <br />
                             <input type="checkbox" name="main_accept_digital_currency"
-                                t-att-value="main_accept_digital_currency or partner.accept_digital_currency" />
+                                t-att-checked="main_accept_digital_currency or partner.accept_digital_currency" />
                             <label class="col-form-label"
                                 for="main_accept_digital_currency">Accept digital currency</label>
                         </div>

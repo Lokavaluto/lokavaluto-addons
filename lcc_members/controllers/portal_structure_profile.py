@@ -21,6 +21,16 @@ class CustomerPortalStructureProfileLcc(CustomerPortalStructureProfile):
         fields.extend(lcc_fields) 
         return fields
 
+    def _get_main_boolean_structure_fields(self):
+        fields = super(CustomerPortalStructureProfileLcc, self)._get_main_boolean_structure_fields()
+        lcc_fields = [
+            "main_itinerant",
+            "main_accept_coupons",
+            "main_accept_digital_currency",
+        ]
+        fields.extend(lcc_fields)
+        return fields
+
     def _get_page_opening_values(self):
         values = super(CustomerPortalStructureProfileLcc, self)._get_page_opening_values()
         values.update(

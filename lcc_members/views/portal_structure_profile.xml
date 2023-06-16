@@ -84,7 +84,7 @@
                     <div id="itinerant"
                         t-attf-class="form-group #{error.get('main_itinerant') and 'o_has_error' or ''} col-xl-6">
                         <input type="checkbox" name="main_itinerant" t-if="can_edit_structure"
-                            t-att-value="main_itinerant or structure.itinerant" readonly="True" />
+                            t-att-checked="main_itinerant or structure.itinerant" readonly="True" />
                         <i t-if="not can_edit_structure and structure.itinerant"
                             class="fa fa-fw fa-check-circle" />
                         <i t-if="not can_edit_structure and not structure.itinerant"
@@ -96,7 +96,7 @@
                             t-attf-class="form-group #{(error.get('main_accept_coupons') or error.get('main_accept_digital_currency')) and 'o_has_error' or ''} col-xl-12">
                             <input type="checkbox" name="main_accept_coupons"
                                 t-if="can_edit_structure"
-                                t-att-value="main_accept_coupons or structure.accept_coupons" />
+                                t-att-checked="main_accept_coupons or structure.accept_coupons" />
                             <i t-if="not can_edit_structure and structure.accept_coupons"
                                 class="fa fa-fw fa-check-circle" />
                             <i t-if="not can_edit_structure and not structure.accept_coupons"
@@ -105,7 +105,7 @@
                             <br />
                             <input type="checkbox" name="main_accept_digital_currency"
                                 t-if="can_edit_structure"
-                                t-att-value="main_accept_digital_currency or structure.accept_digital_currency" />
+                                t-att-checked="main_accept_digital_currency or structure.accept_digital_currency" />
                             <i t-if="not can_edit_structure and structure.accept_digital_currency"
                                 class="fa fa-fw fa-check-circle" />
                             <i
