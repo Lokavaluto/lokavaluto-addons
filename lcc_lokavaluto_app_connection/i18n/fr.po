@@ -177,13 +177,13 @@ msgstr "Piste/opportunité"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__lcc_backend_ids
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__lcc_backend_ids
-msgid "Local Currency Backend"
-msgstr "Outil de numérisation de la MLC"
+msgid "Local Currency Wallets"
+msgstr "Portefeuilles numériques"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
-msgid "Local Currency Backends"
-msgstr "Outils de numérisation de la MLC"
+msgid "Local Currency Wallets"
+msgstr "Portefeuilles numériques"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__monujo_android_app_url
