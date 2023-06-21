@@ -15,7 +15,6 @@ class CustomerPortal(CustomerPortal):
                 "main_itinerant",
                 "main_accept_coupons",
                 "main_accept_digital_currency",
-                "main_phone_pro",
                 "main_opening_time",
             ]
         )

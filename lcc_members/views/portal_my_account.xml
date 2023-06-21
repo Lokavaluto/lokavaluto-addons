@@ -70,13 +70,6 @@
                             t-attf-class="form-control #{error.get('main_opening_time') and 'is-invalid' or ''}"
                             t-att-value="main_opening_time or partner.opening_time" />
                     </div>
-                    <div id="phone_pro"
-                        t-attf-class="form-group #{error.get('main_phone_pro') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="main_phone_pro">Professional Phone</label>
-                        <input type="tel" name="main_phone_pro"
-                            t-attf-class="form-control #{error.get('main_phone_pro') and 'is-invalid' or ''}"
-                            t-att-value="main_phone_pro or partner.phone_pro" />
-                    </div>
                     <div id="itinerant"
                         t-attf-class="form-group #{error.get('main_itinerant') and 'o_has_error' or ''} col-xl-6">
                         <input type="checkbox" name="main_itinerant"
