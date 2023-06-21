@@ -69,8 +69,8 @@ msgstr "<span>\n"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
-msgid "A message to the team?"
-msgstr "Un message pour l'équipe ?"
+msgid "Any additional information?"
+msgstr "Avez-vous des informations complémentaires à nous transmettre?"
 
 #. module: lcc_members_portal
 #: model:crm.lead.tag,name:lcc_members_portal.categ_oppor_affiliation
@@ -346,13 +346,8 @@ msgstr "Genre"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
-msgid "I wish to manage the organization membership profile"
-msgstr "Je souhaite gérer le profil principal de la société"
-
-#. module: lcc_members_portal
-#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
-msgid "I wish to manage the organization public profile"
-msgstr "Je souhaite gérer le profil public de la société"
+msgid "I wish to manage the organization profiles"
+msgstr "Je souhaite gérer les informations de ma structure"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:91
@@ -435,14 +430,8 @@ msgstr "Activité principale"
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:79
 #, python-format
-msgid "Manage the structure's main profile"
-msgstr "Gère le profil principale de la structure"
-
-#. module: lcc_members_portal
-#: code:addons/lcc_members_portal/models/crm_lead.py:82
-#, python-format
-msgid "Manage the structure's public profile"
-msgstr "Gère le profil public de la structure"
+msgid "Manage the structure's profiles"
+msgstr "Gère les informations de la structure"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
