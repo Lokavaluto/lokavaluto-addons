@@ -47,7 +47,7 @@ class ResPartner(models.Model):
 
     in_mobile_app = fields.Boolean("In the mobile map", default=False)
     lcc_backend_ids = fields.One2many(
-        "res.partner.backend", "partner_id", string="Local Currency Backend"
+        "res.partner.backend", "partner_id", string="Local Currency Wallets"
     )
     app_exported_fields = []
 
