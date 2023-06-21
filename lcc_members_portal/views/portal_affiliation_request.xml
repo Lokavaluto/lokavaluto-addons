@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <br />
-                <h4>A message to the team?</h4>
+                <h4>Any additional information?</h4>
                 <div class="row">
                     <div
                         t-attf-class="form-group #{error.get('message_from_candidate') and 'o_has_error' or ''} col-xl-12">
