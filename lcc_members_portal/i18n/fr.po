@@ -936,7 +936,7 @@ msgstr "Votre nom"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
 msgid "Your position in the organisation"
-msgstr "Votre position dans la structure"
+msgstr "Votre fonction dans la structure"
 
 #. module: lcc_members_portal
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
