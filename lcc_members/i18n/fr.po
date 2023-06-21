@@ -52,7 +52,7 @@ msgstr "<i>Description actuelle :</i>"
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 msgid "<i>Current discounts:</i>"
-msgstr "<i>Dicsounts actuels :"
+msgstr "<i>Promotions actuelles :</i>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
@@ -64,7 +64,7 @@ msgstr "<i>Nouvelle description :</i>"
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 msgid "<i>New discounts:</i>"
-msgstr "<i>Nouveaux discounts :</i>"
+msgstr "<i>Nouvelles promotions :</i>"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_partner_detail
@@ -90,7 +90,7 @@ msgid "<span class=\"fa fa-money s_alert_icon text-alpha\" style=\"\" data-origi
 "                          <font style=\"font-size: 18px;\">Discounts</font>\n"
 "                          <br/>"
 msgstr "<span class=\"fa fa-money s_alert_icon text-alpha\" style=\"\" data-original-title=\"\" title=\"\" aria-describedby=\"tooltip657732\"/>\n"
-"                          <font style=\"font-size: 18px;\">Réductions</font>\n"
+"                          <font style=\"font-size: 18px;\">Promotions</font>\n"
 "                          <br/>"
 
 #. module: lcc_members
@@ -281,13 +281,13 @@ msgstr "Annuaire"
 #: model:ir.model.fields,field_description:lcc_members.field_res_partner__discount
 #: model:ir.model.fields,field_description:lcc_members.field_res_users__discount
 msgid "Discount"
-msgstr "Remise"
+msgstr "Promotions"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 msgid "Discount:"
-msgstr "Discount :"
+msgstr "Promotion :"
 
 #. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_member_type__display_name
