@@ -540,12 +540,6 @@ msgid "Private comment"
 msgstr ""
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
-#: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
-msgid "Professional Phone"
-msgstr ""
-
-#. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:22
 #, python-format
 msgid "Professional phone"

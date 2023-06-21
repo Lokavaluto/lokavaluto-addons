@@ -73,14 +73,6 @@
                             t-att-value="main_opening_time or structure.opening_time" />
                         <span t-if="not can_edit_structure" t-field="structure.opening_time" />
                     </div>
-                    <div id="phone_pro"
-                        t-attf-class="form-group #{error.get('main_phone_pro') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="main_phone_pro">Professional Phone</label>
-                        <input type="tel" name="main_phone_pro" t-if="can_edit_structure"
-                            t-attf-class="form-control #{error.get('main_phone_pro') and 'is-invalid' or ''}"
-                            t-att-value="main_phone_pro or structure.phone_pro" />
-                        <span t-if="not can_edit_structure" t-field="structure.phone_pro" />
-                    </div>
                     <div id="itinerant"
                         t-attf-class="form-group #{error.get('main_itinerant') and 'o_has_error' or ''} col-xl-6">
                         <input type="checkbox" name="main_itinerant" t-if="can_edit_structure"

@@ -15,7 +15,6 @@ class CustomerPortalStructureProfileLcc(CustomerPortalStructureProfile):
             "main_itinerant",
             "main_accept_coupons",
             "main_accept_digital_currency",
-            "main_phone_pro",
             "main_opening_time",
         ]
         fields.extend(lcc_fields) 
