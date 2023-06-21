@@ -305,7 +305,7 @@ msgstr "Activités détaillées"
 #: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
 #, python-format
 msgid "Discount"
-msgstr "Remise"
+msgstr "Promotion"
 
 #. module: lcc_members_portal
 #: code:addons/lcc_members_portal/models/crm_lead.py:62
