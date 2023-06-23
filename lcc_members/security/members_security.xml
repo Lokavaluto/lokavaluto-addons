@@ -3,7 +3,10 @@
     <record id="account_invoice_rule_portal" model="ir.rule">
         <field name="name">Portal Personal Account Invoices (profile)</field>
         <field name="model_id" ref="account.model_account_invoice" />
-        <field name="domain_force">[(user.partner_id.has_position, '=', True),('message_partner_ids.child_ids','in',[x.id for x in user.other_contact_ids])]</field>
+        <field name="domain_force">[(user.partner_id.has_position, '=',
+            True),'|',('message_partner_ids.child_ids','in',[x.id for x in
+            user.other_contact_ids]),('message_partner_ids.structure_position_ids','in',[x.id for x
+            in user.other_contact_ids])]</field>
         <field name="groups" eval="[(4, ref('base.group_portal'))]" />
     </record>
 </odoo>
