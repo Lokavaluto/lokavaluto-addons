@@ -47,7 +47,6 @@ class AccountInvoice(models.Model):
             ]
         )
         if invoice_ids:
-            comchainCreditRequest = self.env.datamodels["comchain.credit.request"]
             for invoice in invoice_ids:
                 backend_account = invoice.partner_id._comchain_backend()
                 if len(backend_account) == 0:
@@ -58,17 +57,19 @@ class AccountInvoice(models.Model):
                     raise NotImplementedError(
                         "More than one comchain backend account is not yet supported"
                     )
-                comchain_response = comchainCreditRequest(
-                    credit_id=invoice.id,
-                    amount=invoice.comchain_amount_to_credit,
-                    date="%s" % invoice.date_invoice,
-                    name=invoice.partner_id.name,
-                    monujo_backend=[
-                        "comchain:%s" % self.env.user.company_id.comchain_currency_name,
-                        backend_account.comchain_id,
-                    ],
+                res.append(
+                    {
+                        "credit_id": invoice.id,
+                        "amount": invoice.comchain_amount_to_credit,
+                        "date": "%s" % invoice.date_invoice,
+                        "name": invoice.partner_id.name,
+                        "monujo_backend": [
+                            "comchain:%s"
+                            % self.env.user.company_id.comchain_currency_name,
+                            backend_account.comchain_id,
+                        ],
+                    }
                 )
-                res.append(comchain_response)
         return res
 
     def _validate_credit_request(self, invoice_ids):

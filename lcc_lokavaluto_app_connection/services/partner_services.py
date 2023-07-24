@@ -56,7 +56,6 @@ class PartnerService(Component):
     @restapi.method(
         [(["/credit-requests"], "GET")],
         input_param=Datamodel("partner.credit.requests.get.param"),
-        output_param=Datamodel("partner.credit.request", is_list=True),
     )
     def credit_requests(self, partner_credit_requests_get_param):
         backend_keys = partner_credit_requests_get_param.backend_keys

@@ -28,16 +28,6 @@ class PartnerSearchInfo(Datamodel):
     order = fields.String(required=False, allow_nano=True)
 
 
-class PartnerCreditRequest(Datamodel):
-    _name = "partner.credit.request"
-
-    credit_id = fields.Integer(required=True)
-    amount = fields.Float(required=True)
-    date = fields.Date(required=True)
-    name = fields.String(required=True)
-    monujo_backend = fields.List(fields.String(), required=True)
-
-
 class PartnerValidateCreditRequest(Datamodel):
     _name = "partner.validate.credit.requests.param"
 
