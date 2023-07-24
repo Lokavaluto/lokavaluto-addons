@@ -61,7 +61,7 @@ class AccountInvoice(models.Model):
                     {
                         "credit_id": invoice.id,
                         "amount": invoice.comchain_amount_to_credit,
-                        "date": "%s" % invoice.date_invoice,
+                        "date": int(invoice.create_date.timestamp()),
                         "name": invoice.partner_id.name,
                         "monujo_backend": [
                             "comchain:%s"
