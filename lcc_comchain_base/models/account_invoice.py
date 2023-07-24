@@ -20,7 +20,11 @@ class AccountInvoice(models.Model):
         super(AccountInvoice, self).action_invoice_paid()
         categ = self.env.ref("lcc_comchain_base.product_category_comchain")
         for invoice in self:
-            if (invoice.type == "out_invoice") and (invoice.state == "paid") and invoice.has_numeric_lcc_products:
+            if (
+                (invoice.type == "out_invoice")
+                and (invoice.state == "paid")
+                and invoice.has_numeric_lcc_products
+            ):
                 amount = sum(
                     self.invoice_line_ids.filtered(
                         lambda line: line.product_id.categ_id == categ
@@ -35,18 +39,25 @@ class AccountInvoice(models.Model):
     def _get_credit_requests(self, backend_keys):
         res = super(AccountInvoice, self)._get_credit_requests(backend_keys)
         invoice_s = self.env["account.invoice"].sudo()
-        invoice_ids = invoice_s.search([("comchain_amount_to_credit", ">", 0),
-                                        ("type", "=", "out_invoice"),
-                                        ("state", "=", "paid")])
+        invoice_ids = invoice_s.search(
+            [
+                ("comchain_amount_to_credit", ">", 0),
+                ("type", "=", "out_invoice"),
+                ("state", "=", "paid"),
+            ]
+        )
         if invoice_ids:
             comchainCreditRequest = self.env.datamodels["comchain.credit.request"]
             for invoice in invoice_ids:
                 backend_account = invoice.partner_id._comchain_backend()
                 if len(backend_account) == 0:
-                    raise Exception("No backend account found for user %r" % invoice.partner_id)
+                    raise Exception(
+                        "No backend account found for user %r" % invoice.partner_id
+                    )
                 if len(backend_account) > 1:
                     raise NotImplementedError(
-                        "More than one comchain backend account is not yet supported")
+                        "More than one comchain backend account is not yet supported"
+                    )
                 comchain_response = comchainCreditRequest(
                     credit_id=invoice.id,
                     amount=invoice.comchain_amount_to_credit,
@@ -64,9 +75,11 @@ class AccountInvoice(models.Model):
         res = super(AccountInvoice, self)._get_credit_requests(invoice_ids)
         invoice_s = self.env["account.invoice"].sudo()
         invoice_ids = invoice_s.search(
-            [("comchain_amount_to_credit", ">", 0),
-             ("type", "=", "out_invoice"),
-             ("id", "in", invoice_ids)]
+            [
+                ("comchain_amount_to_credit", ">", 0),
+                ("type", "=", "out_invoice"),
+                ("id", "in", invoice_ids),
+            ]
         )
         for invoice in invoice_ids:
             invoice.write(
