@@ -85,7 +85,7 @@ class ResPartnerBackend(models.Model):
         return res
 
     @api.multi
-    def validate_cyclos_user(self):
+    def cyclos_validate_user(self):
         for record in self:
             if record.cyclos_status == "pending":
                 res = record._cyclos_rest_call(
@@ -102,7 +102,7 @@ class ResPartnerBackend(models.Model):
                     )
 
     @api.multi
-    def activate_cyclos_user(self):
+    def cyclos_activate_user(self):
         for record in self:
             if record.cyclos_status != "active":
                 data = {"status": "active", "comment": "Activated by Odoo"}
@@ -119,7 +119,7 @@ class ResPartnerBackend(models.Model):
                 )
 
     @api.multi
-    def block_cyclos_user(self):
+    def cyclos_block_user(self):
         for record in self:
             if record.cyclos_status != "blocked":
                 data = {"status": "blocked", "comment": "Blocked by Odoo"}
@@ -136,7 +136,7 @@ class ResPartnerBackend(models.Model):
                 )
 
     @api.multi
-    def disable_cyclos_user(self):
+    def cyclos_disable_user(self):
         for record in self:
             if record.cyclos_status != "disabled":
                 data = {"status": "disabled", "comment": "Disabled by Odoo"}
@@ -178,7 +178,7 @@ class ResPartnerBackend(models.Model):
                 else:
                     raise
 
-    def create_cyclos_user_token(self, api_login, api_password):
+    def cyclos_create_user_token(self, api_login, api_password):
         self.ensure_one()
         for record in self:
             res = record._cyclos_rest_call(
@@ -193,7 +193,7 @@ class ResPartnerBackend(models.Model):
             return data.get("sessionToken", False)
 
     @api.multi
-    def remove_cyclos_user_token(self, api_login, api_password):
+    def cyclos_remove_user_token(self, api_login, api_password):
         for record in self:
             res = record._cyclos_rest_call(
                 "DELETE",
@@ -203,7 +203,7 @@ class ResPartnerBackend(models.Model):
             )
             _logger.debug("res: %s" % res.text)
 
-    def credit_cyclos_account(self, amount):
+    def cyclos_credit_account(self, amount):
         for record in self:
             data = {
                 "amount": amount,
