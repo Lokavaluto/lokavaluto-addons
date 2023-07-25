@@ -34,7 +34,7 @@ class CyclosService(Component):
         CyclosCreditResponse = self.env.datamodels["cyclos.credit.response"]
         cyclos_response = CyclosCreditResponse(partial=True)
         if owner_id and amount:
-            new_order = partner.cyclosCreateOrder(owner_id, amount)
+            new_order = partner.cyclos_create_order(owner_id, amount)
             cyclos_response.order_url = base_url + new_order.get_portal_url()
         return cyclos_response
 

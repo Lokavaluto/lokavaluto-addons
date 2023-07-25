@@ -85,7 +85,7 @@ class ResPartnerBackend(models.Model):
         return res
 
     @api.multi
-    def validateCyclosUser(self):
+    def validate_cyclos_user(self):
         for record in self:
             if record.cyclos_status == "pending":
                 res = record._cyclos_rest_call(
@@ -102,7 +102,7 @@ class ResPartnerBackend(models.Model):
                     )
 
     @api.multi
-    def activateCyclosUser(self):
+    def activate_cyclos_user(self):
         for record in self:
             if record.cyclos_status != "active":
                 data = {"status": "active", "comment": "Activated by Odoo"}
@@ -119,7 +119,7 @@ class ResPartnerBackend(models.Model):
                 )
 
     @api.multi
-    def blockCyclosUser(self):
+    def block_cyclos_user(self):
         for record in self:
             if record.cyclos_status != "blocked":
                 data = {"status": "blocked", "comment": "Blocked by Odoo"}
@@ -136,7 +136,7 @@ class ResPartnerBackend(models.Model):
                 )
 
     @api.multi
-    def disableCyclosUser(self):
+    def disable_cyclos_user(self):
         for record in self:
             if record.cyclos_status != "disabled":
                 data = {"status": "disabled", "comment": "Disabled by Odoo"}
@@ -152,7 +152,7 @@ class ResPartnerBackend(models.Model):
                     }
                 )
 
-    def forceCyclosPassword(self, password):
+    def force_cyclos_password(self, password):
         for record in self:
             # TODO: need to stock password type id from cyclos API and replace -4307382460900696903
             data = {
@@ -178,7 +178,7 @@ class ResPartnerBackend(models.Model):
                 else:
                     raise
 
-    def createCyclosUserToken(self, api_login, api_password):
+    def create_cyclos_user_token(self, api_login, api_password):
         self.ensure_one()
         for record in self:
             res = record._cyclos_rest_call(
@@ -193,7 +193,7 @@ class ResPartnerBackend(models.Model):
             return data.get("sessionToken", False)
 
     @api.multi
-    def removeCyclosUserToken(self, api_login, api_password):
+    def remove_cyclos_user_token(self, api_login, api_password):
         for record in self:
             res = record._cyclos_rest_call(
                 "DELETE",

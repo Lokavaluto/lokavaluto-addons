@@ -14,10 +14,10 @@
                     <field name="cyclos_create_response" readonly="True" />
                 </group>
                 <footer>
-                    <button name="validateCyclosUser" type="object" string="Validate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','!=','pending')]}" />
-                    <button name="activateCyclosUser" type="object" string="Activate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','active')]}" />
-                    <button name="blockCyclosUser" type="object" string="Block Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','blocked')]}" />
-                    <button name="disableCyclosUser" type="object" string="Disable Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','disabled')]}" />
+                    <button name="validate_cyclos_user" type="object" string="Validate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','!=','pending')]}" />
+                    <button name="activate_cyclos_user" type="object" string="Activate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','active')]}" />
+                    <button name="block_cyclos_user" type="object" string="Block Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','blocked')]}" />
+                    <button name="disable_cyclos_user" type="object" string="Disable Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','disabled')]}" />
                 </footer>
             </xpath>
 
