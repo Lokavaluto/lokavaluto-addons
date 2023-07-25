@@ -7,8 +7,9 @@ from odoo.tools.translate import _
 class Lead(models.Model):
     _inherit = "crm.lead"
 
-    refuse_numeric_wallet_creation = fields.Boolean(string=_("Refuse the creation of a numeric wallet."))
-
+    refuse_numeric_wallet_creation = fields.Boolean(
+        string=_("Refuse the creation of a numeric wallet.")
+    )
 
     def _get_values_main_partner(self):
         values = super(Lead, self)._get_values_main_partner()

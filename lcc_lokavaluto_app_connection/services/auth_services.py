@@ -111,7 +111,9 @@ class AuthService(Component):
     # Validator
     def _validator_authenticate(self):
         return {
-            "db": {"type": "string", },
+            "db": {
+                "type": "string",
+            },
             "params": {"type": "list", "schema": {"type": "string"}},
         }
 

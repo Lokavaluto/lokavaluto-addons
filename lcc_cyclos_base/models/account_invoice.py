@@ -13,7 +13,11 @@ class AccountInvoice(models.Model):
         super(AccountInvoice, self).action_invoice_paid()
         categ = self.env.ref("lcc_cyclos_base.product_category_cyclos")
         for invoice in self:
-            if invoice.type == "out_invoice" and (invoice.state == "paid") and invoice.has_numeric_lcc_products:
+            if (
+                invoice.type == "out_invoice"
+                and (invoice.state == "paid")
+                and invoice.has_numeric_lcc_products
+            ):
                 amount = sum(
                     self.invoice_line_ids.filtered(
                         lambda line: line.product_id.categ_id == categ

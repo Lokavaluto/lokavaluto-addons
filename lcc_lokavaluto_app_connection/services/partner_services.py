@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 def _recipient_order_normalize(order):
     """Filters API's order to res.partner.backend order"""
     ORDER_CONV = {
-        'name': 'partner_public_name',
+        "name": "partner_public_name",
     }
     new_orders = []
     for order_part in order.split(","):
@@ -31,7 +31,6 @@ def _recipient_order_normalize(order):
         _logger.debug("add: %s -> %s" % (olabel, ORDER_CONV[olabel]))
         new_orders.append(" ".join(([ORDER_CONV[olabel]] + olabel_odirection[1:])))
     return ", ".join(new_orders)
-
 
 
 class PartnerService(Component):
@@ -81,10 +80,9 @@ class PartnerService(Component):
     )
     def get(self, rpid):
         """Return profile information"""
-        partners = self.env["res.partner"].search([
-            ("active", "=", True),
-            ("id", "=", rpid or self.env.user.partner_id.id)
-        ])
+        partners = self.env["res.partner"].search(
+            [("active", "=", True), ("id", "=", rpid or self.env.user.partner_id.id)]
+        )
         if len(partners) == 0:
             raise MissingError("No partner found - please check your request")
         return partners[0].lcc_profile_info()[0]
@@ -104,20 +102,24 @@ class PartnerService(Component):
         """
         _logger.debug("PARAMS: %s" % recipients_search_info)
         value = recipients_search_info.value
-        backend_keys = set(self.env.user.partner_id.backends()) & set(recipients_search_info.backend_keys)
+        backend_keys = set(self.env.user.partner_id.backends()) & set(
+            recipients_search_info.backend_keys
+        )
 
         backend_types = [key.split(":", 1)[0] for key in backend_keys]
 
         domain = [
-            ('status', '=', "active"),
-            ('type', 'in', backend_types),
+            ("status", "=", "active"),
+            ("type", "in", backend_types),
             ("partner_id.id", "!=", self.env.user.partner_id.id),
             ("partner_id.active", "=", True),
             ("partner_id.public_profile_id.name", "!=", False),  ## only main profiles
         ]
         offset = recipients_search_info.offset if recipients_search_info.offset else 0
         limit = recipients_search_info.limit if recipients_search_info.limit else None
-        order = recipients_search_info.order if recipients_search_info.order else "name asc"
+        order = (
+            recipients_search_info.order if recipients_search_info.order else "name asc"
+        )
         order = _recipient_order_normalize(order)
         website_url = recipients_search_info.website_url
         if value:
@@ -224,7 +226,7 @@ class PartnerService(Component):
         backend_types = [key.split(":", 1)[0] for key in backend_keys]
         domain = [
             ("status", "=", "active"),
-            ('type', 'in', backend_types),
+            ("type", "in", backend_types),
             ("partner_id.active", "=", True),
             ("partner_id.is_main_profile", "=", True),  ## only main profiles
         ]
@@ -265,15 +267,16 @@ class PartnerService(Component):
     )
     def search_accounts(self, account_search_info):
         _logger.debug("PARAMS: %s" % account_search_info)
-        backend_keys = self.env.user.partner_id.backends() & set(account_search_info.backend_keys)
+        backend_keys = self.env.user.partner_id.backends() & set(
+            account_search_info.backend_keys
+        )
 
         ## XXXvlab: big ugly shortcut
         backend_types = [key.split(":", 1)[0] for key in backend_keys]
 
-        recipients = self.env["res.partner.backend"].search([
-            ('status', '=', "to_confirm"),
-            ('type', 'in', backend_types)
-        ])
+        recipients = self.env["res.partner.backend"].search(
+            [("status", "=", "to_confirm"), ("type", "in", backend_types)]
+        )
 
         domain = [("id", "in", recipients.mapped("partner_id.id"))]
         offset = account_search_info.offset if account_search_info.offset else 0
@@ -346,7 +349,7 @@ class PartnerService(Component):
         if backend_keys:
             for partner in recipients:
                 row = recipients.lcc_profile_info()[0]
-                row["monujo_backends"] =  partner._update_search_data(backend_keys)
+                row["monujo_backends"] = partner._update_search_data(backend_keys)
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
 
@@ -357,7 +360,6 @@ class PartnerService(Component):
                 if val.get("id"):
                     params["%s_id" % key] = val["id"]
         return params
-
 
     ##########################################################
     # Request Validators

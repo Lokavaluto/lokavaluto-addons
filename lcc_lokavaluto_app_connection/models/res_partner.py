@@ -12,7 +12,8 @@ class ResPartnerBackend(models.Model):
 
     type = fields.Selection([], string="Type", required=True)
     name = fields.Char("Name", required=True)
-    partner_public_name = fields.Char("Partner Public Name",
+    partner_public_name = fields.Char(
+        "Partner Public Name",
         store=True,
         compute="_compute_partner_name",
     )
@@ -33,7 +34,7 @@ class ResPartnerBackend(models.Model):
     def _compute_status(self):
         pass
 
-    @api.depends('partner_id.public_profile_id', 'partner_id.public_profile_id.name')
+    @api.depends("partner_id.public_profile_id", "partner_id.public_profile_id.name")
     def _compute_partner_name(self):
         for record in self:
             if record.partner_id.public_profile_id:
