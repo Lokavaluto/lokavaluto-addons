@@ -72,6 +72,48 @@ class AccountInvoice(models.Model):
                 )
         return res
 
+    def _get_pending_credit_requests(self, backend_keys):
+        res = super(AccountInvoice, self)._get_pending_credit_requests(backend_keys)
+        if all(not backend_key.startswith("comchain:") for backend_key in backend_keys):
+            return []
+
+        invoice_s = self.env["account.invoice"]
+        invoice_ids = invoice_s.search(
+            [
+                ("partner_id", "=", self.env.user.partner_id.id),
+                ("comchain_amount_to_credit", ">", 0),
+                ("type", "=", "out_invoice"),
+                ("state", "=", "paid"),
+            ],
+            order="date desc",
+        )
+        if invoice_ids:
+            for invoice in invoice_ids:
+                backend_account = invoice.partner_id._comchain_backend()
+                if len(backend_account) == 0:
+                    raise Exception(
+                        "No backend account found for user %r" % invoice.partner_id
+                    )
+                if len(backend_account) > 1:
+                    raise NotImplementedError(
+                        "More than one comchain backend account is not yet supported"
+                    )
+
+                res.append(
+                    {
+                        "credit_id": invoice.id,
+                        "amount": invoice.comchain_amount_to_credit,
+                        "date": int(invoice.create_date.timestamp()),
+                        "monujo_backend": [
+                            "comchain:%s"
+                            % self.env.user.company_id.comchain_currency_name,
+                            backend_account.comchain_id,
+                        ],
+                        "paid": True,
+                    }
+                )
+        return res
+
     def _validate_credit_request(self, invoice_ids):
         res = super(AccountInvoice, self)._get_credit_requests(invoice_ids)
         invoice_s = self.env["account.invoice"].sudo()

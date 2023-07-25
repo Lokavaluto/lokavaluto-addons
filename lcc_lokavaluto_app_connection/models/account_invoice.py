@@ -37,5 +37,8 @@ class AccountInvoice(models.Model):
         ### This method should be inherited in backends modules.###
         return []
 
+    def _get_pending_credit_requests(self, backend_keys):
+        return []
+
     def _validate_credit_request(self, invoice_ids):
         return []
