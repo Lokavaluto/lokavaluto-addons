@@ -29,11 +29,7 @@ class ResPartnerBackend(models.Model):
 
     @property
     def comchain_wallet_parsed(self):
-        return (
-            json.loads(self.comchain_wallet)
-            if self.comchain_wallet
-            else {}
-        )
+        return json.loads(self.comchain_wallet) if self.comchain_wallet else {}
 
     @property
     def comchain_backend_id(self):
