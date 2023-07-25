@@ -20,10 +20,8 @@ class AccountInvoice(models.Model):
                 "lcc_lokavaluto_app_connection.product_category_numeric_lcc"
             )
         except Exception as e:
-            categ = self.env["product.category"].search(
-                [("name", "=", "Numeric LCC")]
-            )
-        
+            categ = self.env["product.category"].search([("name", "=", "Numeric LCC")])
+
         if categ:
             lcc_numeric_products = self.invoice_line_ids.filtered(
                 lambda line: line.product_id.categ_id == categ
@@ -31,7 +29,6 @@ class AccountInvoice(models.Model):
             )
             if lcc_numeric_products:
                 self.has_numeric_lcc_products = True
-
 
     def _get_credit_requests(self, backend_keys):
         ### This method should be inherited in backends modules.###
