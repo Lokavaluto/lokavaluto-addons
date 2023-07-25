@@ -5,7 +5,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-ALLOWED_CHARS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`@!\"#$%&'()*+,-./:;<=>?[\\]^_{}~"
+ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`@!\"#$%&'()*+,-./:;<=>?[\\]^_{}~"
 
 
 def valid_password(password):
@@ -22,7 +22,10 @@ class ResUsers(models.Model):
             if valid_password(user.password):
                 super(ResUsers, user)._set_password()
                 continue
-            raise UserError(_('Password must contain only the following characters: %s') % ALLOWED_CHARS)
+            raise UserError(
+                _("Password must contain only the following characters: %s")
+                % ALLOWED_CHARS
+            )
 
     ## We need to override auth_signup logic here because, it
     ## invalidates the token before trying ``_set_password``
@@ -30,6 +33,8 @@ class ResUsers(models.Model):
     def signup(self, values, token=None):
         if "password" in values:
             if not valid_password(values["password"]):
-                raise UserError(_('Password must contain only the following characters: %s') % ALLOWED_CHARS)
+                raise UserError(
+                    _("Password must contain only the following characters: %s")
+                    % ALLOWED_CHARS
+                )
         return super(ResUsers, self).signup(values, token)
-

@@ -39,7 +39,9 @@ class ResPartner(models.Model):
         elif len(backends) == 1:
             return backends[0]
         else:
-            raise NotImplementedError("Multiple cyclos active backends are not supported yet")
+            raise NotImplementedError(
+                "Multiple cyclos active backends are not supported yet"
+            )
 
     def _cyclos_backend_json_data(self):
         """Prepare backend data to be sent by credentials requests"""
