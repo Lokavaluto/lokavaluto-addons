@@ -137,8 +137,9 @@ class ResPartner(models.Model):
             return backends
         return backends | {backend_id}
 
+    ## XXXvlab: currently not used ??
     @api.multi
-    def activateComchainUser(self, params):
+    def activate_comchain_user(self, params):
         self.ensure_one()
         backend_data = self._comchain_backend()
         backend_data.write(
@@ -151,7 +152,7 @@ class ResPartner(models.Model):
         )
 
     @api.multi
-    def comchainCreateOrder(self, comchain_address, amount):
+    def comchain_create_order(self, comchain_address, amount):
         order = self.env["sale.order"]
         line = self.env["sale.order.line"]
         comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain")

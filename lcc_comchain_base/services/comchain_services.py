@@ -80,7 +80,7 @@ class ComchainService(Component):
             partner_id = partner_obj.search(
                 [("lcc_backend_ids.comchain_id", "=", account.address)]
             )
-            partner_id.activateComchainUser(account)
+            partner_id.activate_comchain_user(account)
 
         return True
 
@@ -99,6 +99,6 @@ class ComchainService(Component):
         comchainCreditResponse = self.env.datamodels["comchain.credit.response"]
         comchain_response = comchainCreditResponse(partial=True)
         if comchain_address and amount:
-            new_order = partner.comchainCreateOrder(comchain_address, amount)
+            new_order = partner.comchain_create_order(comchain_address, amount)
             comchain_response.order_url = base_url + new_order.get_portal_url()
         return comchain_response

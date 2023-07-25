@@ -7,7 +7,7 @@
     <field eval="17" name="priority" />
     <field name="arch" type="xml">
       <xpath expr="//field[@name='lcc_backend_ids']" position="after">
-        <button name="addCyclosUser" string="Create new Cyclos Wallet" class="oe_highlight" type="object" attrs="{'invisible': [('is_main_profile','=',False)]}" />
+        <button name="add_cyclos_user" string="Create new Cyclos Wallet" class="oe_highlight" type="object" attrs="{'invisible': [('is_main_profile','=',False)]}" />
       </xpath>
     </field>
   </record>
