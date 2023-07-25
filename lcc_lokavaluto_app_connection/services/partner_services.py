@@ -62,6 +62,13 @@ class PartnerService(Component):
         return self.env["account.invoice"]._get_credit_requests(backend_keys)
 
     @restapi.method(
+        [(["/pending-topup"], "GET")],
+    )
+    def pending_topup(self):
+        backend_keys = request.params["backend_keys"]
+        return self.env["account.invoice"]._get_pending_credit_requests(backend_keys)
+
+    @restapi.method(
         [(["/validate-credit-request"], "POST")],
         input_param=Datamodel("partner.validate.credit.requests.param"),
     )
