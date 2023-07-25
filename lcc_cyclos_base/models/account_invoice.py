@@ -24,7 +24,7 @@ class AccountInvoice(models.Model):
                     ).mapped("price_subtotal")
                 )
                 if amount > 0:
-                    invoice.partner_id.action_credit_cyclos_account(amount)
+                    invoice.partner_id.action_cyclos_credit_account(amount)
                     invoice.write(
                         {
                             "cyclos_amount_credited": amount,

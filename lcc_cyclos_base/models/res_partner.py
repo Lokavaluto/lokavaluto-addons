@@ -74,7 +74,7 @@ class ResPartner(models.Model):
         backend_json_data = self._cyclos_backend_json_data()
         if backend and backend_json_data:
             backend.force_cyclos_password(password)
-            new_token = backend.create_cyclos_user_token(self.id, password)
+            new_token = backend.cyclos_create_user_token(self.id, password)
             if new_token:
                 for ua in backend_json_data[0]["accounts"]:
                     ua["token"] = new_token
@@ -142,15 +142,15 @@ class ResPartner(models.Model):
         return order_id
 
     @api.multi
-    def action_credit_cyclos_account(self, amount):
+    def action_cyclos_credit_account(self, amount):
         for record in self:
             backend_data = record._cyclos_backend()
             if backend_data.status != "active":
                 backend_data = record.parent_id._cyclos_backend()
-            backend_data.credit_cyclos_account(amount)
+            backend_data.cyclos_credit_account(amount)
 
     @api.multi
-    def add_cyclos_user(self):
+    def cyclos_add_user(self):
         for record in self:
             backend_obj = self.env["res.partner.backend"]
             group = (
