@@ -202,6 +202,50 @@ class PartnerService(Component):
         return {"count": len(rows), "rows": rows}
 
     @restapi.method(
+        [(["/get_recipient_by_uri"], "GET")],
+    )
+    def search_recipient_by_uri(self):
+        """
+        Search recipient by uri
+
+        """
+        recipient_id = request.params["data"]["rp"]
+        backend_keys = set(self.env.user.partner_id.backends()) & set(
+            request.params["backend_keys"]
+        )
+
+        backend_types = [key.split(":", 1)[0] for key in backend_keys]
+        domain = [
+            ("status", "=", "active"),
+            ('type', 'in', backend_types),
+            ("partner_id.active", "=", True),
+            ("partner_id.is_main_profile", "=", True),  ## only main profiles
+        ]
+        try:
+            recipients = self.env["res.partner.backend"].search(
+                [
+                    ("partner_id.id", "=", recipient_id),
+                    ("name", "=", request.params["data"]["rpb"]),
+                ]
+                + domain
+            )
+        except e:
+            raise MissingError("An error occured while searching recipient.", e)
+
+        if len(recipients) == 0:
+            raise MissingError("No recipient found given partner id.")
+        elif len(recipients) > 1:
+            raise MissingError("Too many recipients found given partner id.")
+
+        partner = recipients[0].partner_id
+        recipient = partner.lcc_profile_info()[0]
+        recipient["monujo_backends"] = partner._update_search_data(
+            [k for k in backend_keys if k.startswith("%s:" % recipients[0].type)]
+        )
+
+        return recipient
+
+    @restapi.method(
         [
             (
                 [
