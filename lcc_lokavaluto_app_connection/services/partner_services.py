@@ -92,18 +92,17 @@ class PartnerService(Component):
             except ValueError:
                 raise MissingError("Url not valid.")
         partners = self.env["res.partner"].search(domain)
-
-        if len(partners) == 1:
-            parser = self._get_partner_parser()
-            res = partners.public_profile_id.jsonify(parser)[0]
-            backend_keys = partner_info_get_param.backend_keys
-            if backend_keys:
-                res["monujo_backends"] = list(partners)[0]._update_search_data(
-                    backend_keys
-                )
-            return res
-        else:
+        if len(partners) == 0:
             raise MissingError("No partner found - please check your request")
+        partner = list(partners)[0]
+        parser = self._get_partner_parser()
+        res = partner.public_profile_id.jsonify(parser)
+        backend_keys = partner_info_get_param.backend_keys
+        if backend_keys:
+            res["monujo_backends"] = partner._update_search_data(
+                backend_keys
+            )
+        return res
 
     @restapi.method(
         [(["/partner_search", "/search"], "GET")],
