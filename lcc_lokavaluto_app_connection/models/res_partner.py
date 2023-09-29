@@ -134,12 +134,11 @@ class ResPartner(models.Model):
                 "mobile",
                 "email",
                 "phone",
-                "is_favorite",
-                "is_company",
-                "qr_url",
                 ("country_id", ["id", "name"]),
                 # ('state', ['id','name'])
             ])[0]
             record_info["id"] = record.id
+            record_info["is_favorite"] = record.is_favorite
+            record_info["public_name"] = record.public_name
             res.append(record_info)
         return res
