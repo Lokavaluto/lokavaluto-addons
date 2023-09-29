@@ -197,8 +197,6 @@ class PartnerService(Component):
             row["monujo_backends"] = partner._update_search_data(
                 [k for k in backend_keys if k.startswith("%s:" % recipient.type)]
             )
-            row["public_name"] = partner.public_name
-            row["is_favorite"] = partner.is_favorite
             rows.append(row)
 
         return {"count": len(rows), "rows": rows}
@@ -297,9 +295,7 @@ class PartnerService(Component):
         if backend_keys:
             for partner in recipients:
                 row = recipients.lcc_profile_info()[0]
-                row["public_name"] = partner.public_name
                 row["monujo_backends"] =  partner._update_search_data(backend_keys)
-                row["is_favorite"] = partner.is_favorite
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
 
