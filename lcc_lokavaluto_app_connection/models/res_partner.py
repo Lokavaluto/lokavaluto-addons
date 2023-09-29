@@ -120,3 +120,26 @@ class ResPartner(models.Model):
 
     def show_app_access_buttons(self):
         return False
+
+    @api.multi
+    def lcc_profile_info(self):
+        res = []
+        for record in self:
+            record_info = record.public_profile_id.jsonify([
+                "name",
+                "street",
+                "street2",
+                "zip",
+                "city",
+                "mobile",
+                "email",
+                "phone",
+                "is_favorite",
+                "is_company",
+                "qr_url",
+                ("country_id", ["id", "name"]),
+                # ('state', ['id','name'])
+            ])[0]
+            record_info["id"] = record.id
+            res.append(record_info)
+        return res

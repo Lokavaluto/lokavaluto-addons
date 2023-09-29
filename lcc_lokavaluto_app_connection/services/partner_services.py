@@ -70,39 +70,17 @@ class PartnerService(Component):
         return self.env["account.invoice"]._validate_credit_request(invoice_ids)
 
     @restapi.method(
-        [(["/<int:id>/get", "/<int:id>"], "GET")],
-        input_param=Datamodel("partner.info.get.param"),
+        [(["/<int:rpid>/get", "/<int:rpid>"], "GET")],
     )
-    def get(self, _id, partner_info_get_param):
-        """
-        Get partner's informations. If id == 0 return 'me'
-        """
-        website_url = partner_info_get_param.website_url
-        domain = [("active", "=", True)]
-        if _id is None:
-            _id = 0
-        if _id == 0:
-            _id = self.env.user.partner_id.id
-        domain.extend([("id", "=", _id)])
-        if website_url:
-            partner_id = website_url.split("-")[-1]
-            try:
-                partner_id = int(partner_id)
-                domain.extend([("id", "=", partner_id)])
-            except ValueError:
-                raise MissingError("Url not valid.")
-        partners = self.env["res.partner"].search(domain)
+    def get(self, rpid):
+        """Return profile information"""
+        partners = self.env["res.partner"].search([
+            ("active", "=", True),
+            ("id", "=", rpid or self.env.user.partner_id.id)
+        ])
         if len(partners) == 0:
             raise MissingError("No partner found - please check your request")
-        partner = list(partners)[0]
-        parser = self._get_partner_parser()
-        res = partner.public_profile_id.jsonify(parser)
-        backend_keys = partner_info_get_param.backend_keys
-        if backend_keys:
-            res["monujo_backends"] = partner._update_search_data(
-                backend_keys
-            )
-        return res
+        return partners[0].lcc_profile_info()[0]
 
     @restapi.method(
         [(["/partner_search", "/search"], "GET")],
@@ -212,16 +190,14 @@ class PartnerService(Component):
         _logger.debug("recipients: %s" % recipients)
 
         ## Group by partner
-        parser = self._get_partner_parser()
         rows = []
         for recipient in recipients:
             partner = recipient.partner_id
-            row = partner.public_profile_id.jsonify(parser)[0]
-            row["monujo_backends"] = partner._update_search_data([
-                k for k in backend_keys if k.startswith("%s:" % recipient.type)
-            ])
+            row = partner.lcc_profile_info()[0]
+            row["monujo_backends"] = partner._update_search_data(
+                [k for k in backend_keys if k.startswith("%s:" % recipient.type)]
+            )
             row["public_name"] = partner.public_name
-            row["id"] = partner.id
             row["is_favorite"] = partner.is_favorite
             rows.append(row)
 
@@ -318,22 +294,14 @@ class PartnerService(Component):
 
     def _get_formatted_recipients(self, recipients, backend_keys):
         rows = []
-        res = {"count": len(recipients), "rows": rows}
-        parser = self._get_partner_parser()
-        rows = recipients.mapped("public_profile_id").jsonify(parser)
         if backend_keys:
-            for row in rows:
-                partner_id = row["id"]
-                partner = self.env["res.partner"].search(
-                    [("public_profile_id", "=", partner_id)]
-                )
-                credentials = partner._update_search_data(backend_keys)
+            for partner in recipients:
+                row = recipients.lcc_profile_info()[0]
                 row["public_name"] = partner.public_name
-                row["monujo_backends"] = credentials
-                row["id"] = partner.id
+                row["monujo_backends"] =  partner._update_search_data(backend_keys)
                 row["is_favorite"] = partner.is_favorite
-        res = {"count": len(recipients), "rows": rows}
-        return res
+                rows.append(row)
+        return {"count": len(rows), "rows": rows}
 
     def _prepare_params(self, params):
         for key in ["country", "state"]:
@@ -343,26 +311,6 @@ class PartnerService(Component):
                     params["%s_id" % key] = val["id"]
         return params
 
-    def _get_partner_parser(self):
-        parser = [
-            "id",
-            "name",
-            "business_name",
-            "street",
-            "street2",
-            "zip",
-            "city",
-            "mobile",
-            "email",
-            "phone",
-            "is_favorite",
-            "is_company",
-            ("country_id", ["id", "name"]),
-            "qr_url",
-            "qr_content",
-            # ('state', ['id','name'])
-        ]
-        return parser
 
     ##########################################################
     # Request Validators
