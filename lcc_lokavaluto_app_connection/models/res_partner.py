@@ -124,8 +124,8 @@ class ResPartner(models.Model):
     @api.multi
     def lcc_profile_info(self):
         res = []
-        for record in self:
-            record_info = record.public_profile_id.jsonify([
+        for partner in self:
+            profile_info = partner.public_profile_id.jsonify([
                 "name",
                 "street",
                 "street2",
@@ -135,10 +135,11 @@ class ResPartner(models.Model):
                 "email",
                 "phone",
                 ("country_id", ["id", "name"]),
-                # ('state', ['id','name'])
             ])[0]
-            record_info["id"] = record.id
-            record_info["is_favorite"] = record.is_favorite
-            record_info["public_name"] = record.public_name
-            res.append(record_info)
+            profile_info.update({
+                "id": partner.id,
+                "is_favorite": partner.is_favorite,
+                "public_name": partner.public_name,
+            })
+            res.append(profile_info)
         return res
