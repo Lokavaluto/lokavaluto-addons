@@ -16,5 +16,13 @@
             <field name="type">consu</field>
         </record>
     </data>
-    
+    <data>
+        <record id="res_partner_safe_wallet" model="res.partner">
+            <field name="name">Safe Wallet</field>
+        </record>
+        <record id="res_partner_odoo_wallet" model="res.partner">
+            <field name="name">Odoo Wallet</field>
+        </record>
+    </data>
+
 </odoo>
