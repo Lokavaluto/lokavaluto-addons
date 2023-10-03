@@ -45,8 +45,17 @@ class PortalPrivateRegistration(CustomerPortal):
         return products
 
     def _get_selected_team_id(self, partner):
-        if len(request.env['res.company'].sudo().search([])) > 1:
-            return request.env["crm.team"].sudo().search([("local_group", "=", True), ("company_id", "=", partner.company_id.id)])
+        if len(request.env["res.company"].sudo().search([])) > 1:
+            return (
+                request.env["crm.team"]
+                .sudo()
+                .search(
+                    [
+                        ("local_group", "=", True),
+                        ("company_id", "=", partner.company_id.id),
+                    ]
+                )
+            )
         else:
             return request.env["crm.team"].sudo().search([("local_group", "=", True)])
 
@@ -123,7 +132,9 @@ class PortalPrivateRegistration(CustomerPortal):
         sale_order.company_id = main_partner.company_id.id
         sale_order.team_id = values["team_id"]
         values = {}
-        product = request.env["product.template"].sudo().browse(int(kwargs.get("product_id")))
+        product = (
+            request.env["product.template"].sudo().browse(int(kwargs.get("product_id")))
+        )
         values["member_product_id"] = product.id
         if product.dynamic_price and float(kwargs.get("total_membership", False)):
             values["total_membership"] = float(kwargs.get("total_membership"))

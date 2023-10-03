@@ -8,6 +8,7 @@ from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 
+
 class res_partner(models.Model):
     _inherit = "res.partner"
 
@@ -123,11 +124,14 @@ class res_partner(models.Model):
     )
     def _compute_public_name(self):
         for partner in self:
-            partner.public_name = partner.public_profile_id[
-                "business_name"
-                if partner.public_profile_id.is_company
-                else "display_name"
-            ] or partner.public_profile_id.name
+            partner.public_name = (
+                partner.public_profile_id[
+                    "business_name"
+                    if partner.public_profile_id.is_company
+                    else "display_name"
+                ]
+                or partner.public_profile_id.name
+            )
 
     @api.constrains("email")
     def _check_email_unique(self):
@@ -208,7 +212,7 @@ class res_partner(models.Model):
             "opening_time",
             "discount",
         ]
-        fields.extend(lcc_fields) 
+        fields.extend(lcc_fields)
         return fields
 
 

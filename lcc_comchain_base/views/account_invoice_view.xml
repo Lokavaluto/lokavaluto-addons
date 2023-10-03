@@ -3,12 +3,17 @@
 
     <record id="view_account_invoice_customer_conchain_form" model="ir.ui.view">
         <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="inherit_id" ref="account.invoice_form" />
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="before">
-                <div groups="account.group_account_invoice" class="alert alert-info" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('comchain_amount_to_credit','=',0)]}">
-                    You have <bold><field name="comchain_amount_to_credit"/></bold> numeric currency to credit for this customer. Please use mobile app to validate credit request.
-                </div>
+                <div groups="account.group_account_invoice" class="alert alert-info" role="alert"
+                    style="margin-bottom:0px;"
+                    attrs="{'invisible': [('comchain_amount_to_credit','=',0)]}"> You have <bold>
+                        <field name="comchain_amount_to_credit" />
+                    </bold>
+                    numeric currency to credit for this customer. Please use mobile app to validate
+                    credit request. </div>
+            </xpath>
             </xpath>
         </field>
     </record>

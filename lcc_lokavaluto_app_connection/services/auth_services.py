@@ -119,4 +119,3 @@ class AuthService(Component):
 
     def _validator_return_authenticate(self):
         return self.env["res.partner"]._validator_return_authenticate()
-

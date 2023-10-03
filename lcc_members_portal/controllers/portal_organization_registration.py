@@ -55,11 +55,19 @@ class PortalOrganizationRegistration(CustomerPortal):
         return product
 
     def _get_selected_team_id(self, partner):
-        if len(request.env['res.company'].sudo().search([])) > 1:
-            return request.env["crm.team"].sudo().search([("local_group", "=", True), ("company_id", "=", partner.company_id.id)])
+        if len(request.env["res.company"].sudo().search([])) > 1:
+            return (
+                request.env["crm.team"]
+                .sudo()
+                .search(
+                    [
+                        ("local_group", "=", True),
+                        ("company_id", "=", partner.company_id.id),
+                    ]
+                )
+            )
         else:
             return request.env["crm.team"].sudo().search([("local_group", "=", True)])
-
 
     @http.route(
         ["/my/organization_registration"],
@@ -112,7 +120,13 @@ class PortalOrganizationRegistration(CustomerPortal):
             )
             == "on",
             "accept_policy": data.get("accept_policy", "off") == "on",
-            "tag_ids": [(4, request.env.ref("lcc_members_portal.categ_oppor_application").id, None)],
+            "tag_ids": [
+                (
+                    4,
+                    request.env.ref("lcc_members_portal.categ_oppor_application").id,
+                    None,
+                )
+            ],
         }
 
         if float(data.get("total_membership", False)):
