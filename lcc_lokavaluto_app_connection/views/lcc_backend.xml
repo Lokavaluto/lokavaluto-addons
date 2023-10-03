@@ -31,4 +31,20 @@
             </tree>
         </field>
     </record>
+
+    <record id="lcc_backend_view_search" model="ir.ui.view">
+        <field name="name">lcc.backend.view.search</field>
+        <field name="model">res.partner.backend</field>
+        <field name="arch" type="xml">
+            <search string="Seach wallets">
+                <field name="name" string="Name" />
+                <field name="partner_id" string="Contact" />
+                <field name="type" string="Type" />
+                <filter domain="[('status','=','active')]" string="Active" name="active" />
+                <filter domain="[('status','=','to_confirm')]" string="To confirm" name="to_confirm" />
+                <filter domain="[('status','=','blocked')]" string="Blocked" name="blocked" />
+                <filter domain="[('status','=','inactive')]" string="Inactive" name="inactive" />
+            </search>
+        </field>
+    </record>
 </odoo>
