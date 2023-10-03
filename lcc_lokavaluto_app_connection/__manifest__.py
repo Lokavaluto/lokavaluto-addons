@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "12.0.2.1.4",
+    "version": "12.0.2.2.0",
     # any module necessary for this one to work correctly
     "depends": [
         "base",
@@ -23,6 +23,7 @@
     ],
     # always loaded
     "data": [
+        "security/backends_security.xml",
         "security/ir.model.access.csv",
         "views/res_partner.xml",
         "views/lcc_backend.xml",
