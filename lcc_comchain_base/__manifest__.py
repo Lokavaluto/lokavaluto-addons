@@ -70,7 +70,7 @@ mission is to support the collaborative development of Odoo features and ecosyst
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "12.0.2.0.3",
+    "version": "12.0.2.1.0",
     # any module necessary for this one to work correctly
     "depends": [
         "base",
