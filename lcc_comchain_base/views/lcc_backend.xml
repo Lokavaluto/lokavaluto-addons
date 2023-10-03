@@ -8,14 +8,15 @@
         <field name="priority">0</field>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='general_info']" position="after">
-                <group name="comchain_specific" string="Comchain specific" attrs="{'invisible': [('type','!=','comchain')]}">
-                    <field name="comchain_id" readonly="True" />
-                    <field name="comchain_wallet" readonly="True" />
-                    <field name="comchain_status" readonly="True" />
-                    <field name="comchain_type" readonly="True" />
-                    <field name="comchain_credit_min" readonly="True" />
-                    <field name="comchain_credit_max" readonly="True" />
-                    <field name="comchain_message_key" readonly="True" />
+                <group name="comchain_specific" string="Comchain specific"
+                    attrs="{'invisible': [('type','!=','comchain')]}">
+                    <field name="comchain_id" />
+                    <field name="comchain_wallet" />
+                    <field name="comchain_status" />
+                    <field name="comchain_type" />
+                    <field name="comchain_credit_min" />
+                    <field name="comchain_credit_max" />
+                    <field name="comchain_message_key" />
                 </group>
             </xpath>
         </field>

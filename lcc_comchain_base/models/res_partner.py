@@ -17,14 +17,9 @@ class ResPartnerBackend(models.Model):
     comchain_type = fields.Selection(
         [("0", "Personal"), ("1", "Company"), ("2", "Admin")],
         string="Type",
-        groups="lcc_comchain_base.group_comchain_manager",
     )
-    comchain_credit_min = fields.Float(
-        string="Min Credit limit", groups="lcc_comchain_base.group_comchain_manager"
-    )
-    comchain_credit_max = fields.Float(
-        string="Max Credit limit", groups="lcc_comchain_base.group_comchain_manager"
-    )
+    comchain_credit_min = fields.Float(string="Min Credit limit")
+    comchain_credit_max = fields.Float(string="Max Credit limit")
     comchain_message_key = fields.Char(string="Message keys")
 
     @property
