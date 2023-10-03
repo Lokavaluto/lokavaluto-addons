@@ -7,8 +7,10 @@
         <field eval="17" name="priority" />
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="in_mobile_app_button" type="object" class="oe_stat_button" icon="fa-map-pin" attrs="{'invisible': [('is_company','=',False)]}">
-                    <field name="in_mobile_app" widget="boolean_button" options='{
+                <button name="in_mobile_app_button" type="object" class="oe_stat_button"
+                    icon="fa-map-pin" attrs="{'invisible': [('is_company','=',False)]}">
+                    <field name="in_mobile_app" widget="boolean_button"
+                        options='{
                         "terminology": {
                             "string_true": "Published",
                             "hover_true": "Unpublished",
@@ -27,7 +29,8 @@
                                 string="the parent company" class="oe_link" />
                         </p>
                     </div>
-                    <field name="lcc_backend_ids" nolabel="1" readonly="0" attrs="{'invisible': [('is_main_profile','=',False)]}">
+                    <field name="lcc_backend_ids" nolabel="1" readonly="0"
+                        attrs="{'invisible': [('is_main_profile','=',False)]}">
                         <tree create="false" delete="false">
                             <field name="name" />
                             <field name="type" />
