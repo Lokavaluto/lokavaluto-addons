@@ -17,7 +17,7 @@
         id="lcc_backends_tree_menu"
         parent="membership.menu_marketing_config_association"
         sequence="99"
-        groups="base.group_no_one"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
         action="action_lcc_backends_tree_view" />
 
 </odoo>
