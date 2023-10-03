@@ -14,6 +14,12 @@
                     numeric currency to credit for this customer. Please use mobile app to validate
                     credit request. </div>
             </xpath>
+            <xpath expr="//page[@name='other_info']/group" position="inside">
+                <group name="credit_data" string="Monnaie numérique">
+                    <field name="comchain_amount_to_credit" string="A créditer" readonly="True" />
+                    <field name="comchain_amount_credited" string="Crédité" readonly="True" />
+                    <field name="comchain_transaction_number" string="Transaction #" readonly="True" />
+                </group>
             </xpath>
         </field>
     </record>

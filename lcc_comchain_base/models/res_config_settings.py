@@ -10,3 +10,31 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Currency Name",
     )
+    activate_automatic_topup = fields.Boolean(
+        related="company_id.activate_automatic_topup",
+        readonly=False,
+        string="Activate Automatic Topup",
+    )
+    safe_wallet_partner_id = fields.Many2one(
+        "res.partner",
+        related="company_id.safe_wallet_partner_id",
+        readonly=False,
+        string="Safe Wallet Partner",
+    )
+    odoo_wallet_partner_id = fields.Many2one(
+        "res.partner",
+        related="company_id.odoo_wallet_partner_id",
+        readonly=False,
+        string="Odoo Wallet Partner",
+    )
+    comchain_odoo_wallet_password = fields.Char(
+        related="company_id.comchain_odoo_wallet_password",
+        readonly=False,
+        string="Odoo wallet password",
+    )
+    message_from = fields.Char(
+        related="company_id.message_from", readonly=False, string="Message from"
+    )
+    message_to = fields.Char(
+        related="company_id.message_to", readonly=False, string="Message to"
+    )
