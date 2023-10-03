@@ -4,7 +4,8 @@
         <field name="name">res.config.settings.view.form.inherit.comchain</field>
         <field name="model">res.config.settings</field>
         <field name="priority" eval="99" />
-        <field name="inherit_id" ref="lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency" />
+        <field name="inherit_id"
+            ref="lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency" />
         <field name="arch" type="xml">
             <xpath expr="//div[@id='app_connection_settings']" position="after">
                 <h2>Comchain service configuration</h2>
