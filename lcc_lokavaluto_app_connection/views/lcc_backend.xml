@@ -23,7 +23,7 @@
         <field name="name">lcc.backend.view.tree</field>
         <field name="model">res.partner.backend</field>
         <field name="arch" type="xml">
-            <tree string="LCC Backends" create="0">
+            <tree string="LCC Backends">
                 <field name="name" />
                 <field name="partner_id" />
                 <field name="type" />
