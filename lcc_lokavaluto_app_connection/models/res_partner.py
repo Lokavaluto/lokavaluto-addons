@@ -90,21 +90,25 @@ class ResPartner(models.Model):
     def lcc_profile_info(self):
         res = []
         for partner in self:
-            profile_info = partner.public_profile_id.jsonify([
-                "name",
-                "street",
-                "street2",
-                "zip",
-                "city",
-                "mobile",
-                "email",
-                "phone",
-                ("country_id", ["id", "name"]),
-            ])[0]
-            profile_info.update({
-                "id": partner.id,
-                "is_favorite": partner.is_favorite,
-                "public_name": partner.public_name,
-            })
+            profile_info = partner.public_profile_id.jsonify(
+                [
+                    "name",
+                    "street",
+                    "street2",
+                    "zip",
+                    "city",
+                    "mobile",
+                    "email",
+                    "phone",
+                    ("country_id", ["id", "name"]),
+                ]
+            )[0]
+            profile_info.update(
+                {
+                    "id": partner.id,
+                    "is_favorite": partner.is_favorite,
+                    "public_name": partner.public_name,
+                }
+            )
             res.append(profile_info)
         return res

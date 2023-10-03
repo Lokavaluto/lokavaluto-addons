@@ -233,7 +233,7 @@ class Lead(models.Model):
     def _get_renewal_values_main_partner(self):
         values = {
             "name": self.company_name,
-            "business_name" : self.business_name,
+            "business_name": self.business_name,
         }
         for field_name in self._MAIN_PROFILE_FIELDS:
             values[field_name] = self._get_field_value(field_name)

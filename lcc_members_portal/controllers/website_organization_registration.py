@@ -41,8 +41,17 @@ class WebsiteOrganizationRegistration(http.Controller):
         return product
 
     def _get_selected_team_id(self):
-        if len(request.env['res.company'].sudo().search([])) > 1:
-            return request.env["crm.team"].sudo().search([("local_group", "=", True), ("company_id", "=", request.website.company_id.id)])
+        if len(request.env["res.company"].sudo().search([])) > 1:
+            return (
+                request.env["crm.team"]
+                .sudo()
+                .search(
+                    [
+                        ("local_group", "=", True),
+                        ("company_id", "=", request.website.company_id.id),
+                    ]
+                )
+            )
         else:
             return request.env["crm.team"].sudo().search([("local_group", "=", True)])
 
@@ -53,7 +62,6 @@ class WebsiteOrganizationRegistration(http.Controller):
         website=True,
     )
     def portal_organization_registration(self, access_token=None, redirect=None, **kw):
-
         product = self.get_organization_membership_product()
         titles = request.env["res.partner.title"].sudo().search([])
         countries = request.env["res.country"].sudo().search([])
@@ -94,7 +102,13 @@ class WebsiteOrganizationRegistration(http.Controller):
             )
             == "on",
             "accept_policy": data.get("accept_policy", "off") == "on",
-            "tag_ids": [(4, request.env.ref("lcc_members_portal.categ_oppor_application").id, None)],
+            "tag_ids": [
+                (
+                    4,
+                    request.env.ref("lcc_members_portal.categ_oppor_application").id,
+                    None,
+                )
+            ],
         }
         if float(data.get("total_membership", False)):
             values["total_membership"] = float(data.get("total_membership"))

@@ -59,7 +59,6 @@ class CustomCustomerPortal(CustomerPortal):  # Inherit in your custom class
         website=True,
     )
     def payment_token(self, order_id, pm_id=None, **kwargs):
-
         order = request.env["sale.order"].sudo().browse(order_id)
         if not order:
             return request.redirect("/my/orders")

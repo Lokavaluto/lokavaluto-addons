@@ -15,7 +15,6 @@ class AuthSignupHome(AuthSignupHome):
         return qcontext
 
     def do_signup(self, qcontext):
-
         if qcontext.get("firstname") or qcontext.get("lastname"):
             """Shared helper that creates a res.partner out of a token"""
             # Addition of the keys of the new fields
