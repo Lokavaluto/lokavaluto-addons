@@ -14,7 +14,33 @@ class ResPartner(models.Model):
     lcc_backend_ids = fields.One2many(
         "res.partner.backend", "partner_id", string="Local Currency Wallets"
     )
+    nb_wallets = fields.Integer(
+        "Nb Wallets", readonly=True, compute="_compute_nb_wallets"
+    )
+    nb_wallets_to_confirm = fields.Integer(
+        "Nb Wallets to confirm", readonly=True, compute="_compute_nb_wallets"
+    )
+    nb_wallets_inactive = fields.Integer(
+        "Nb Wallets inactive", readonly=True, compute="_compute_nb_wallets"
+    )
+    nb_wallets_blocked = fields.Integer(
+        "Nb Wallets blocked", readonly=True, compute="_compute_nb_wallets"
+    )
     app_exported_fields = []
+
+    @api.one
+    @api.depends("lcc_backend_ids")
+    def _compute_nb_wallets(self):
+        self.nb_wallets = len(self.lcc_backend_ids)
+        self.nb_wallets_to_confirm = len(
+            self.lcc_backend_ids.filtered(lambda x: x.status == "to_confirm")
+        )
+        self.nb_wallets_inactive = len(
+            self.lcc_backend_ids.filtered(lambda x: x.status == "inactive")
+        )
+        self.nb_wallets_blocked = len(
+            self.lcc_backend_ids.filtered(lambda x: x.status == "blocked")
+        )
 
     def _get_mobile_app_pro_domain(self, bounding_box, categories):
         if categories:
