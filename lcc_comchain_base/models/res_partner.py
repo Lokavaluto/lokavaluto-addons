@@ -71,17 +71,18 @@ class ResPartnerBackend(models.Model):
     @api.depends("name", "type", "comchain_status")
     def _compute_status(self):
         super(ResPartnerBackend, self)._compute_status()
-        if self.type == "comchain":
-            if self.comchain_status == "active":
-                self.status = "active"
-            elif self.comchain_status == "blocked":
-                self.status = "blocked"
-            elif self.comchain_status == "disabled":
-                self.status = "inactive"
-            elif self.comchain_status == "pending":
-                self.status = "to_confirm"
-            else:
-                self.status = ""
+        for record in self:
+            if record.type == "comchain":
+                if record.comchain_status == "active":
+                    record.status = "active"
+                elif record.comchain_status == "blocked":
+                    record.status = "blocked"
+                elif record.comchain_status == "disabled":
+                    record.status = "inactive"
+                elif record.comchain_status == "pending":
+                    record.status = "to_confirm"
+                else:
+                    record.status = ""
 
 
 class ResPartner(models.Model):
