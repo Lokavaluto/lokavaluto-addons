@@ -4,13 +4,6 @@ from odoo.addons.datamodel.core import Datamodel
 from odoo.addons.datamodel.fields import NestedModel
 
 
-class PartnerInfoGetParam(Datamodel):
-    _name = "partner.info.get.param"
-
-    website_url = fields.String(required=False, allow_none=True)
-    backend_keys = fields.List(fields.String())
-
-
 class PartnerCreditRequestsGetParam(Datamodel):
     _name = "partner.credit.requests.get.param"
 
