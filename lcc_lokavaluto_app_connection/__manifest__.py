@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "12.0.2.3.0",
+    "version": "12.0.2.4.0",
     # any module necessary for this one to work correctly
     "depends": [
         "base",
@@ -17,7 +17,6 @@
         "partner_favorite",
         "lcc_members",
         "lcc_members_portal",
-        "lcc_members_qr",
         "partner_profiles_portal",
         "membership",
     ],
