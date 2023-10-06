@@ -10,7 +10,6 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    in_mobile_app = fields.Boolean("In the mobile map", default=False)
     lcc_backend_ids = fields.One2many(
         "res.partner.backend", "partner_id", string="Local Currency Wallets"
     )
@@ -27,36 +26,6 @@ class ResPartner(models.Model):
         self.nb_wallets_to_confirm = len(self.lcc_backend_ids.filtered(lambda x: x.status == "to_confirm"))
         self.nb_wallets_inactive = len(self.lcc_backend_ids.filtered(lambda x: x.status == "inactive"))
         self.nb_wallets_blocked = len(self.lcc_backend_ids.filtered(lambda x: x.status == "blocked"))
-
-    def _get_mobile_app_pro_domain(self, bounding_box, categories):
-        if categories:
-            return [
-                ("in_mobile_app", "=", True),
-                ("is_company", "=", True),
-                ("industry_id", "in", categories),
-                ("partner_longitude", "!=", float()),
-                ("partner_latitude", "!=", float()),
-                ("partner_longitude", ">", float(bounding_box.minLon)),
-                ("partner_longitude", "<", float(bounding_box.maxLon)),
-                ("partner_latitude", ">", float(bounding_box.minLat)),
-                ("partner_latitude", "<", float(bounding_box.maxLat)),
-            ]
-        else:
-            return [
-                ("in_mobile_app", "=", True),
-                ("is_company", "=", True),
-                ("partner_longitude", "!=", float()),
-                ("partner_latitude", "!=", float()),
-                ("partner_longitude", ">", float(bounding_box.minLon)),
-                ("partner_longitude", "<", float(bounding_box.maxLon)),
-                ("partner_latitude", ">", float(bounding_box.minLat)),
-                ("partner_latitude", "<", float(bounding_box.maxLat)),
-            ]
-
-    def in_mobile_app_button(self):
-        """Inverse the value of the field ``in_mobile_app``
-        for the current instance."""
-        self.in_mobile_app = not self.in_mobile_app
 
     def _update_auth_data(self, password):
         return []
