@@ -65,7 +65,9 @@ class PartnerService(Component):
     )
     def pending_topup(self):
         backend_keys = request.params["backend_keys"]
-        return self.env["account.invoice"]._get_pending_credit_requests(backend_keys)
+        return self.env["account.invoice"]._get_pending_credit_requests(
+            backend_keys
+        ) + self.env["sale.order"]._get_top_up_requests(backend_keys)
 
     @restapi.method(
         [(["/validate-credit-request"], "POST")],

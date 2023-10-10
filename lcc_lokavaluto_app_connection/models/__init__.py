@@ -1,3 +1,4 @@
+from . import sale_order
 from . import res_partner_backend
 from . import res_partner
 from . import auth_api_key
