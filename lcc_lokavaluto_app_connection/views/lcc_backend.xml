@@ -10,6 +10,7 @@
                     <group name="general_info">
                         <group>
                             <field name="name" />
+                            <field name="partner_id" />
                             <field name="type" />
                             <field name="status" readonly="True" />
                         </group>
