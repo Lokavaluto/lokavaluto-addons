@@ -70,6 +70,38 @@ class PartnerService(Component):
         ) + self.env["sale.order"]._get_top_up_requests(backend_keys)
 
     @restapi.method(
+        [(["/remove-pending-topup"], "POST")],
+    )
+    def remove_pending_topup(self):
+        try:
+            order_id = request.params["order_id"]
+        except KeyError:
+            raise MissingError("value for 'order_id' not found")
+        try:
+            top_up_id = int(order_id)
+        except ValueError:
+            raise MissingError("value for 'order_id' should be an integer")
+
+        top_up = (
+            self.env["sale.order"]
+            .sudo()
+            .search(
+                [
+                    ("partner_id", "=", self.env.user.partner_id.id),
+                    ("state", "=", "sent"),
+                    ("id", "=", order_id),
+                ]
+            )
+        )
+        if len(top_up) == 0:
+            raise MissingError(
+                "No top-up found to cancel for given order_id (%r)" % order_id
+            )
+
+        top_up.write({"state": "cancel"})
+        return True
+
+    @restapi.method(
         [(["/validate-credit-request"], "POST")],
         input_param=Datamodel("partner.validate.credit.requests.param"),
     )
