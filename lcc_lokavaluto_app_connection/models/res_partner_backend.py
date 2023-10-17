@@ -12,6 +12,7 @@ class ResPartnerBackend(models.Model):
 
     type = fields.Selection([], string="Type", required=True)
     name = fields.Char("Name", required=True)
+    active = fields.Boolean(default=True, track_visibility="always")
     partner_public_name = fields.Char(
         "Partner Public Name",
         store=True,
@@ -27,6 +28,7 @@ class ResPartnerBackend(models.Model):
         string="Status",
         store=True,
         compute="_compute_status",
+        track_visibility="always",
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
 
