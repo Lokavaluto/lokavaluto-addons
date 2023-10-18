@@ -31,16 +31,7 @@ class SaleOrder(models.Model):
         for sale_order in top_up_requests:
             ## XXXvlab: all this code should be on the res.partner.backend ! And the
             ## following can be removed.
-            backend_account = sale_order.partner_id._cyclos_backend()
-            if len(backend_account) == 0:
-                raise Exception(
-                    "No backend account found for user %r" % sale_order.partner_id
-                )
-            if len(backend_account) > 1:
-                raise NotImplementedError(
-                    "More than one cyclos backend account is not yet supported"
-                )
-
+            backend_account = sale_order.partner_id.get_wallet("cyclos")
             amount = sum(
                 line.product_uom_qty
                 for line in sale_order.order_line
