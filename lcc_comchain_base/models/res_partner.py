@@ -14,23 +14,15 @@ class ResPartner(models.Model):
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
-        backend_data = self._comchain_backend()
+        backend_data = self.get_wallet("comchain")
         data.extend(backend_data.comchain_backend_accounts_data)
         return data
-
-    def _comchain_backend(self):
-        # We only support one backend per type for now
-        backend_data = self.env["res.partner.backend"]
-        for backend in self.lcc_backend_ids:
-            if backend.type == "comchain":
-                return backend
-        return backend_data
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
         _logger.debug("SEARCH: backend_keys = %s" % backend_keys)
         data = super(ResPartner, self)._update_search_data(backend_keys)
-        backend_data = self._comchain_backend()
+        backend_data = self.get_wallet("comchain")
         for backend_key in backend_keys:
             if backend_key.startswith("comchain:") and backend_data:
                 data[backend_key] = [backend_data.comchain_id]
@@ -40,14 +32,14 @@ class ResPartner(models.Model):
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        backend_data = self._comchain_backend()
+        backend_data = self.get_wallet("comchain")
         data.extend(backend_data.comchain_backend_accounts_data)
         return data
 
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
-        backend_data = self._comchain_backend()
+        backend_data = self.get_wallet("comchain")
         if not backend_data.comchain_id:
             return backends
         backend_id = backend_data.comchain_backend_id
@@ -60,7 +52,7 @@ class ResPartner(models.Model):
     @api.multi
     def activate_comchain_user(self, params):
         self.ensure_one()
-        backend_data = self._comchain_backend()
+        backend_data = self.get_wallet("comchain")
         backend_data.write(
             {
                 "comchain_status": "active",
@@ -107,16 +99,9 @@ class ResPartner(models.Model):
     @api.multi
     def action_comchain_credit_account(self, amount):
         for record in self:
-            backend_data = record._comchain_backend()
+            backend_data = record.get_wallet("comchain")
             if backend_data.status != "active":
-                backend_data = record.parent_id._comchain_backend()
-
-            if len(backend_data) == 0:
-                raise Exception("No backend account found for user %r" % record.name)
-            if len(backend_data) > 1:
-                raise NotImplementedError(
-                    "More than one comchain backend account is not yet supported"
-                )
+                backend_data = record.parent_id.get_wallet("comchain")
             res = backend_data.credit_wallet(amount)
             return res
 

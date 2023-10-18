@@ -32,15 +32,7 @@ class SaleOrder(models.Model):
         for sale_order in top_up_requests:
             ## XXXvlab: all this code should be on the res.partner.backend ! And the
             ## following can be removed.
-            backend_account = sale_order.partner_id._comchain_backend()
-            if len(backend_account) == 0:
-                raise Exception(
-                    "No backend account found for user %r" % sale_order.partner_id
-                )
-            if len(backend_account) > 1:
-                raise NotImplementedError(
-                    "More than one comchain backend account is not yet supported"
-                )
+            backend_account = sale_order.partner_id.get_wallet("comchain")
 
             amount = sum(
                 line.product_uom_qty
