@@ -79,15 +79,7 @@ class AccountInvoice(models.Model):
         )
         if invoice_ids:
             for invoice in invoice_ids:
-                backend_account = invoice.partner_id._comchain_backend()
-                if len(backend_account) == 0:
-                    raise Exception(
-                        "No backend account found for user %r" % invoice.partner_id
-                    )
-                if len(backend_account) > 1:
-                    raise NotImplementedError(
-                        "More than one comchain backend account is not yet supported"
-                    )
+                backend_account = invoice.partner_id.get_wallet("comchain")
                 res.append(
                     {
                         "credit_id": invoice.id,
@@ -120,16 +112,7 @@ class AccountInvoice(models.Model):
         )
         if invoice_ids:
             for invoice in invoice_ids:
-                backend_account = invoice.partner_id._comchain_backend()
-                if len(backend_account) == 0:
-                    raise Exception(
-                        "No backend account found for user %r" % invoice.partner_id
-                    )
-                if len(backend_account) > 1:
-                    raise NotImplementedError(
-                        "More than one comchain backend account is not yet supported"
-                    )
-
+                backend_account = invoice.partner_id.get_wallet("comchain")
                 res.append(
                     {
                         "credit_id": invoice.id,

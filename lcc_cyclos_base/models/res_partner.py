@@ -26,26 +26,9 @@ class ResPartner(models.Model):
         domain = parsed_uri.netloc
         return "cyclos:%s" % domain
 
-    def _cyclos_backend(self):
-        # We only support one backend per type for now
-        backend_data = self.env["res.partner.backend"]
-        backends = [
-            backend
-            for backend in self.lcc_backend_ids
-            if backend.type == "cyclos" and backend.status == "active"
-        ]
-        if len(backends) == 0:
-            return backend_data
-        elif len(backends) == 1:
-            return backends[0]
-        else:
-            raise NotImplementedError(
-                "Multiple cyclos active backends are not supported yet"
-            )
-
     def _cyclos_backend_json_data(self):
         """Prepare backend data to be sent by credentials requests"""
-        backend_data = self._cyclos_backend()
+        backend_data = self.get_wallet("cyclos")
         backend_id = self._cyclos_backend_id
         if not backend_id:  ## is backend available and configured on odoo
             return []
@@ -70,7 +53,7 @@ class ResPartner(models.Model):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
         # Update cyclos password with odoo one from authenticate session
-        backend = self._cyclos_backend()
+        backend = self.get_wallet("cyclos")
         backend_json_data = self._cyclos_backend_json_data()
         if backend and backend_json_data:
             backend.force_cyclos_password(password)
@@ -89,7 +72,7 @@ class ResPartner(models.Model):
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
-        backend_data = self._cyclos_backend()
+        backend_data = self.get_wallet("cyclos")
         data = super(ResPartner, self)._update_search_data(backend_keys)
         for backend_key in backend_keys:
             if backend_key.startswith("cyclos:") and backend_data.cyclos_id:
@@ -99,7 +82,7 @@ class ResPartner(models.Model):
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
-        if self._cyclos_backend().cyclos_id:
+        if self.get_wallet("cyclos").cyclos_id:
             cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
             remove = ["https://", "http://", "/api"]
             for value in remove:
@@ -145,9 +128,9 @@ class ResPartner(models.Model):
     @api.multi
     def action_cyclos_credit_account(self, amount):
         for record in self:
-            backend_data = record._cyclos_backend()
+            backend_data = record.get_wallet("cyclos")
             if backend_data.status != "active":
-                backend_data = record.parent_id._cyclos_backend()
+                backend_data = record.parent_id.get_wallet("cyclos")
             backend_data.cyclos_credit_account(amount)
 
     @api.multi
