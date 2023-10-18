@@ -51,7 +51,7 @@ class CyclosService(Component):
         )
         res = {}
         for partner in partner_ids:
-            backend_data = partner._cyclos_backend()
+            backend_data = partner.get_wallet("cyclos")
             res[backend_data.cyclos_id] = {
                 "partner_id": partner.id,
                 "public_name": partner.public_name,
