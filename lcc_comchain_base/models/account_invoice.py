@@ -1,11 +1,7 @@
-from pyc3l import Pyc3l
 from odoo import models, fields, api
 import logging
-import re
 
 _logger = logging.getLogger(__name__)
-
-pyc3l = Pyc3l()
 
 
 class AccountInvoice(models.Model):
@@ -65,36 +61,8 @@ class AccountInvoice(models.Model):
                 # The top up must be validated by an comchain admin
                 continue
 
-            odoo_wallet = pyc3l.Wallet.from_json(
-                company.odoo_wallet_partner_id.lcc_backend_ids[0].comchain_wallet
-            )
-            partner_wallet = invoice.partner_id._comchain_backend()
-            if len(partner_wallet) == 0:
-                raise Exception(
-                    "No backend account found for user %r" % invoice.partner_id
-                )
-            if len(partner_wallet) > 1:
-                raise NotImplementedError(
-                    "More than one comchain backend account is not yet supported"
-                )
-            odoo_wallet.unlock(company.comchain_odoo_wallet_password)
-            res = odoo_wallet.transferOnBehalfOf(
-                "0x%s" % company.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id,
-                "0x%s" % partner_wallet.comchain_id,
-                amount,
-                message_from=company.message_from,
-                message_to=company.message_to,
-            )
-            # Verify the Comchain transaction - res supposed to be the transaction hash
-            if not re.search("^0x[0-9a-f]{64,64}$", res, re.IGNORECASE):
-                raise Exception(
-                    "Comchain transaction failed: TransferOnBehalofOf response is not the expected hash"
-                )
-            transaction = pyc3l.Transaction(res)
-            if transaction.data["recieved"] != amount * 100:
-                raise Exception(
-                    "Comchain transaction failed: transaction is not valid."
-                )
+            # Start top up process
+            res = invoice.partner_id.action_comchain_credit_account(amount)
 
             # Transaction validated
             invoice.write(
