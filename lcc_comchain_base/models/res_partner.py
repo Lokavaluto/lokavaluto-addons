@@ -104,6 +104,22 @@ class ResPartner(models.Model):
             )
         return order_id
 
+    @api.multi
+    def action_comchain_credit_account(self, amount):
+        for record in self:
+            backend_data = record._comchain_backend()
+            if backend_data.status != "active":
+                backend_data = record.parent_id._comchain_backend()
+
+            if len(backend_data) == 0:
+                raise Exception("No backend account found for user %r" % record.name)
+            if len(backend_data) > 1:
+                raise NotImplementedError(
+                    "More than one comchain backend account is not yet supported"
+                )
+            res = backend_data.credit_wallet(amount)
+            return res
+
     def show_app_access_buttons(self):
         # For comchain the app access buttons on the portal are always displayed
         # as long as the comchain currency is defined,
