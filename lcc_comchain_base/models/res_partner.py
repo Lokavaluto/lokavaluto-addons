@@ -62,49 +62,6 @@ class ResPartner(models.Model):
             }
         )
 
-    @api.multi
-    def comchain_create_order(self, comchain_address, amount):
-        order = self.env["sale.order"]
-        line = self.env["sale.order.line"]
-        comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain")
-        _logger.debug("PARTNER IN SELF?: %s(%s)" % (self.name, self.id))
-        for partner in self:
-            # TODO: case with contact of a company ?
-            order_vals = {
-                "partner_id": partner.id,
-                "user_id": 2,  # OdooBot-s ID
-            }
-            order_vals = order.play_onchanges(order_vals, ["partner_id"])
-            _logger.debug("COMCHAIN ORDER: %s" % order_vals)
-            order_id = order.create(order_vals)
-            line_vals = {
-                "order_id": order_id.id,
-                "product_id": comchain_product.id,
-            }
-            line_vals = line.play_onchanges(line_vals, ["product_id"])
-            line_vals.update(
-                {
-                    "product_uom_qty": amount,
-                    "price_unit": 1,
-                    # TODO: Taxes ?
-                }
-            )
-            _logger.debug("COMCHAIN ORDER LINE: %s" % line_vals)
-            line.create(line_vals)
-            order_id.write(
-                {"state": "sent", "require_signature": False, "require_payment": True}
-            )
-        return order_id
-
-    @api.multi
-    def action_comchain_credit_account(self, amount):
-        for record in self:
-            backend_data = record.get_wallet("comchain")
-            if backend_data.status != "active":
-                backend_data = record.parent_id.get_wallet("comchain")
-            res = backend_data.credit_wallet(amount)
-            return res
-
     def show_app_access_buttons(self):
         # For comchain the app access buttons on the portal are always displayed
         # as long as the comchain currency is defined,
