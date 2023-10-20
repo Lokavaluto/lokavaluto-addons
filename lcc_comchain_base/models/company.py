@@ -10,7 +10,6 @@ class Company(models.Model):
         return message
 
     comchain_currency_name = fields.Char(string="Currency name")
-    activate_automatic_topup = fields.Boolean("Activate Automatic Topup")
     safe_wallet_partner_id = fields.Many2one(
         "res.partner", string="Safe Wallet Partner"
     )

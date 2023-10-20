@@ -1,9 +1,12 @@
 import json
+import logging
 import re
 from odoo import models, fields, api
 from pyc3l import Pyc3l
+from odoo.addons.lcc_lokavaluto_app_connection import http
 
 pyc3l = Pyc3l()
+_logger = logging.getLogger(__name__)
 
 
 class ResPartnerBackend(models.Model):
@@ -82,28 +85,86 @@ class ResPartnerBackend(models.Model):
                     record.status = ""
 
     def credit_wallet(self, amount=0):
+        """Send credit request to the financial backend"""
         self.ensure_one()
+        res = super(ResPartnerBackend, self).credit_wallet(amount)
+        if self.type != "comchain":
+            return res
+
         company = self.partner_id.company_id
         # Get Odoo wallet
-        odoo_wallet = pyc3l.Wallet.from_json(
-            company.odoo_wallet_partner_id.lcc_backend_ids[0].comchain_wallet
-        )
-        # Unlock Odoo wallet before sending a transaction
-        odoo_wallet.unlock(company.comchain_odoo_wallet_password)
-        # Send a transaction
-        res = odoo_wallet.transferOnBehalfOf(
-            "0x%s" % company.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id,
-            "0x%s" % self.comchain_id,
-            amount,
-            message_from=company.message_from,
-            message_to=company.message_to,
-        )
-        # Verify the Comchain transaction - res supposed to be the transaction hash
-        if not re.search("^0x[0-9a-f]{64,64}$", res, re.IGNORECASE):
-            raise Exception(
-                "Comchain transaction failed: TransferOnBehalofOf response is not the expected hash"
+        try:
+            odoo_wallet = pyc3l.Wallet.from_json(
+                company.odoo_wallet_partner_id.lcc_backend_ids[0].comchain_wallet
             )
-        transaction = pyc3l.Transaction(res)
+        except Exception as e:
+            _logger.error(http.format_last_exception())
+            return {
+                "success": False,
+                "response": "",
+                "error": "Couldn't load wallet from database: %s" % e,
+            }
+
+        # Unlock Odoo wallet before sending a transaction
+        try:
+            odoo_wallet.unlock(company.comchain_odoo_wallet_password)
+        except Exception as e:
+            _logger.error(http.format_last_exception())
+            return {
+                "success": False,
+                "response": "",
+                "error": "Failed to unlock wallet: %s" % e,
+            }
+
+        # Send a transaction
+        try:
+            response = odoo_wallet.transferOnBehalfOf(
+                "0x%s" % company.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id,
+                "0x%s" % self.comchain_id,
+                amount,
+                message_from=company.message_from,
+                message_to=company.message_to,
+            )
+        except Exception as e:
+            _logger.error(http.format_last_exception())
+            return {
+                "success": False,
+                "response": response,
+                "error": "Failed transfer on behalf transaction: %s" % e,
+            }
+
+        # Verify the Comchain transaction - res supposed to be the transaction hash
+        if not re.search("^0x[0-9a-f]{64,64}$", response, re.IGNORECASE):
+            return {
+                "success": False,
+                "response": response,
+                "error": "Comchain transaction failed: TransferOnBehalofOf response is not the expected hash",
+            }
+
+        transaction = pyc3l.Transaction(response)
         if transaction.data["recieved"] != amount * 100:
-            raise Exception("Comchain transaction failed: transaction is not valid.")
-        return res
+            return {
+                "success": False,
+                "response": response,
+                "error": "Order sent, but checking transaction record returned as an unexepected amount of '%s' received."
+                % transaction.data["recieved"],
+            }
+
+        # All checks performed
+        return {"success": True, "response": response, "error": ""}
+
+    def get_lcc_product(self):
+        product = super(ResPartnerBackend, self).get_lcc_product()
+        if self.type == "comchain":
+            product = self.env.ref("lcc_comchain_base.product_product_comchain")
+        return product
+
+    def get_wallet_data(self):
+        self.ensure_one()
+        data = super(ResPartnerBackend, self).get_wallet_data()
+        if self.type == "comchain":
+            data = [
+                "comchain:%s" % self.env.user.company_id.comchain_currency_name,
+                self.comchain_id,
+            ]
+        return data

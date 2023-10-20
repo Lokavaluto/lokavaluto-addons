@@ -1,4 +1,5 @@
 import logging
+from werkzeug.exceptions import NotFound
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest.components.service import to_int
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
@@ -34,8 +35,27 @@ class CyclosService(Component):
         CyclosCreditResponse = self.env.datamodels["cyclos.credit.response"]
         cyclos_response = CyclosCreditResponse(partial=True)
         if owner_id and amount:
-            new_order = partner.cyclos_create_order(owner_id, amount)
-            cyclos_response.order_url = base_url + new_order.get_portal_url()
+            # Retrieve the partner's wallet - Only one can match the filter
+            wallet_id = list(
+                filter(
+                    lambda x: x.cyclos_id == owner_id, partner.get_wallets("comchain")
+                )
+            )
+            if len(wallet_id) > 1:
+                raise Exception(
+                    "Several wallets found in Odoo, please contact your administrator."
+                )
+            if len(wallet_id) == 0:
+                raise NotFound("Wallet %s not found in Odoo" % owner_id)
+            data = {
+                "wallet_id": wallet_id[0].id,
+                "amount": amount,
+                "create_order": True,
+            }
+            credit_request = self.env["credit.request"].sudo().create(data)
+            cyclos_response.order_url = (
+                base_url + credit_request.order_id.get_portal_url()
+            )
         return cyclos_response
 
     @restapi.method(
