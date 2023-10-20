@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_lcc_form" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="credit_requests" string="Credit Request">
+                    <div class="alert alert-success" role="alert"
+                        attrs="{'invisible': [('global_lcc_amount_credited','=', 0)]}">
+                        <field name="global_lcc_amount_credited" readonly="True" /> units have been
+                        credited on <field name="partner_id" readonly="True" />'s wallet(s).</div>
+                    <div class="alert alert-warning" role="alert"
+                        attrs="{'invisible': [('global_lcc_amount_to_credit','=', 0)]}">
+                        <field name="global_lcc_amount_to_credit" readonly="True" /> units still to
+                        credit on <field name="partner_id" readonly="True" />'s wallet(s).</div>
+                    <field name="credit_request_ids" nolabel="1"
+                        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager">
+                        <tree create="false" delete="false">
+                            <field name="partner_id" />
+                            <field name="wallet_id" />
+                            <field name="amount" />
+                            <field name="state" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

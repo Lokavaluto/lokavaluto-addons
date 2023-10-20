@@ -38,7 +38,7 @@
         <field name="name">lcc.backend.view.search</field>
         <field name="model">res.partner.backend</field>
         <field name="arch" type="xml">
-            <search string="Seach wallets">
+            <search string="Search wallets">
                 <field name="name" string="Name" />
                 <field name="partner_id" string="Contact" />
                 <field name="type" string="Type" />
