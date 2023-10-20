@@ -13,11 +13,30 @@
         </field>
     </record>
 
+    <record id="action_credit_request" model="ir.actions.act_window">
+        <field name="name">Credit Requests</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">credit.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new credit request.
+            </p>
+        </field>
+    </record>
+
     <menuitem
         id="lcc_backends_tree_menu"
         parent="membership.menu_marketing_config_association"
         sequence="99"
         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
         action="action_lcc_backends_tree_view" />
+
+    <menuitem
+        id="credit_request_tree_menu"
+        parent="membership.menu_marketing_config_association"
+        sequence="99"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_credit_request" />
 
 </odoo>

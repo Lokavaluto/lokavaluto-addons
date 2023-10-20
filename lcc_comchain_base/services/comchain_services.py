@@ -1,5 +1,5 @@
 import logging
-
+from werkzeug.exceptions import NotFound
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
@@ -99,6 +99,26 @@ class ComchainService(Component):
         comchainCreditResponse = self.env.datamodels["comchain.credit.response"]
         comchain_response = comchainCreditResponse(partial=True)
         if comchain_address and amount:
-            new_order = partner.comchain_create_order(comchain_address, amount)
-            comchain_response.order_url = base_url + new_order.get_portal_url()
+            # Retrieve the partner's wallet - Only one is expected to match the filter
+            wallet_id = list(
+                filter(
+                    lambda x: x.comchain_id == comchain_address,
+                    partner.get_wallets("comchain"),
+                )
+            )
+            if len(wallet_id) > 1:
+                raise Exception(
+                    "Several wallets found in Odoo, please contact your administrator."
+                )
+            if len(wallet_id) == 0:
+                raise NotFound("Wallet %s not found in Odoo" % comchain_address)
+            data = {
+                "wallet_id": wallet_id[0].id,
+                "amount": amount,
+                "create_order": True,
+            }
+            credit_request = self.env["credit.request"].sudo().create(data)
+            comchain_response.order_url = (
+                base_url + credit_request.order_id.get_portal_url()
+            )
         return comchain_response

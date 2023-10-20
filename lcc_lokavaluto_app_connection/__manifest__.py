@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "12.0.2.9.0",
+    "version": "12.0.3.0.0",
     # any module necessary for this one to work correctly
     "depends": [
         "base",
@@ -24,8 +24,11 @@
     "data": [
         "security/backends_security.xml",
         "security/ir.model.access.csv",
+        "views/account_invoice.xml",
         "views/res_partner.xml",
+        "views/sale_order.xml",
         "views/lcc_backend.xml",
+        "views/credit_request.xml",
         "views/menu.xml",
         "views/portal_my_home.xml",
         "views/res_config_settings_view.xml",
