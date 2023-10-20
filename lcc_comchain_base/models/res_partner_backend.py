@@ -84,30 +84,56 @@ class ResPartnerBackend(models.Model):
                 else:
                     record.status = ""
 
-
     def credit_wallet(self, amount=0):
+        """Send credit request to the financial backend"""
         self.ensure_one()
-        company = self.partner_id.company_id
-        # Get Odoo wallet
-        odoo_wallet = pyc3l.Wallet.from_json(company.odoo_wallet_partner_id.lcc_backend_ids[0].comchain_wallet)
-        # Unlock Odoo wallet before sending a transaction
-        odoo_wallet.unlock(company.comchain_odoo_wallet_password)
-        # Send a transaction
-        res = odoo_wallet.transferOnBehalfOf(
-            "0x%s" % company.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id,
-            "0x%s" % self.comchain_id,
-            amount,
-            message_from=company.message_from,
-            message_to=company.message_to,
-        )
-        # Verify the Comchain transaction - res supposed to be the transaction hash
-        if not re.search("^0x[0-9a-f]{64,64}$", res, re.IGNORECASE ):
-            raise Exception(
-                    "Comchain transaction failed: TransferOnBehalofOf response is not the expected hash"
-                )
-        transaction = pyc3l.Transaction(res)
-        if transaction.data["recieved"] != amount * 100:
-            raise Exception(
-                "Comchain transaction failed: transaction is not valid."
+        res = super(ResPartnerBackend,self).credit_wallet(amount)
+        if self.type == "comchain":
+            company = self.partner_id.company_id
+            # Get Odoo wallet
+            odoo_wallet = pyc3l.Wallet.from_json(company.odoo_wallet_partner_id.lcc_backend_ids[0].comchain_wallet)
+            # Unlock Odoo wallet before sending a transaction
+            odoo_wallet.unlock(company.comchain_odoo_wallet_password)
+            # Send a transaction
+            response = odoo_wallet.transferOnBehalfOf(
+                "0x%s" % company.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id,
+                "0x%s" % self.comchain_id,
+                amount,
+                message_from=company.message_from,
+                message_to=company.message_to,
             )
+            # Verify the Comchain transaction - res supposed to be the transaction hash
+            is_success = True
+            error_message = ""
+            if not re.search("^0x[0-9a-f]{64,64}$", response, re.IGNORECASE ):
+                is_success = False
+                error_message = "Comchain transaction failed: TransferOnBehalofOf response is not the expected hash"
+            transaction = pyc3l.Transaction(response)
+            if transaction.data["recieved"] != amount * 100:
+                is_success = False
+                error_message = "Comchain transaction failed: transaction is not valid."
+
+            # All checks performed
+            res = {
+                "success": is_success,
+                "response": response,
+                "error": error_message
+            }
         return res
+
+    def get_lcc_product(self):
+        product = super(ResPartnerBackend,self).get_lcc_product()
+        if self.type == "comchain":
+            product = self.env.ref("lcc_comchain_base.product_product_comchain")
+        return product
+
+    def get_wallet_data(self):
+        self.ensure_one()
+        data = super(ResPartnerBackend,self).get_wallet_data()
+        if self.type == "comchain":
+            data = [ 
+                "comchain:%s"
+                % self.env.user.company_id.comchain_currency_name,
+                self.comchain_id,
+            ]
+        return data

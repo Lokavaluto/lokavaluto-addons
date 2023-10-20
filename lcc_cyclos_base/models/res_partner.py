@@ -92,48 +92,6 @@ class ResPartner(models.Model):
             return backends
 
     @api.multi
-    def cyclos_create_order(self, owner_id, amount):
-        order = self.env["sale.order"]
-        line = self.env["sale.order.line"]
-        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
-        _logger.debug("PARTNER IN SELF?: %s(%s)" % (self.name, self.id))
-        for partner in self:
-            # TODO: case with contact of a company ?
-            order_vals = {
-                "partner_id": partner.id,
-                "user_id": 2,  # OdooBot-s ID
-            }
-            order_vals = order.play_onchanges(order_vals, ["partner_id"])
-            _logger.debug("CYCLOS ORDER: %s" % order_vals)
-            order_id = order.create(order_vals)
-            line_vals = {
-                "order_id": order_id.id,
-                "product_id": cyclos_product.id,
-            }
-            line_vals = line.play_onchanges(line_vals, ["product_id"])
-            line_vals.update(
-                {
-                    "product_uom_qty": amount,
-                    "price_unit": 1,
-                    # TODO: Taxes ?
-                }
-            )
-            _logger.debug("CYCLOS ORDER LINE: %s" % line_vals)
-            line.create(line_vals)
-            order_id.write(
-                {"state": "sent", "require_signature": False, "require_payment": True}
-            )
-        return order_id
-
-    @api.multi
-    def action_cyclos_credit_account(self, amount):
-        for record in self:
-            backend_data = record.get_wallet("cyclos")
-            if backend_data.status != "active":
-                backend_data = record.parent_id.get_wallet("cyclos")
-            backend_data.cyclos_credit_account(amount)
-
-    @api.multi
     def cyclos_add_user(self):
         for record in self:
             backend_obj = self.env["res.partner.backend"]

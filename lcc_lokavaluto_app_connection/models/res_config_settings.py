@@ -21,3 +21,9 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Monujo iOS app URL",
     )
+
+    activate_automatic_topup = fields.Boolean(
+        related="company_id.activate_automatic_topup",
+        readonly=False,
+        string='Activate Automatic Topup'
+    )

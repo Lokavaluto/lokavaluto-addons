@@ -203,16 +203,42 @@ class ResPartnerBackend(models.Model):
             )
             _logger.debug("res: %s" % res.text)
 
-    def cyclos_credit_account(self, amount):
-        for record in self:
+    def credit_wallet(self, amount=0):
+        """Send credit request to the financial backend"""
+        self.ensure_one()
+        res = super(ResPartnerBackend,self).credit_wallet(amount)
+        if self.type == "cyclos":
             data = {
                 "amount": amount,
-                "description": "Credited by %s" % record.partner_id.company_id.name,
-                "subject": record.cyclos_id,
+                "description": "Credited by %s" % self.partner_id.company_id.name,
+                "subject": self.cyclos_id,
                 "type": "debit.toPro"
-                if record.partner_id.is_company
+                if self.partner_id.is_company
                 else "debit.toUser",
             }
             _logger.debug("data: %s" % data)
-            res = record._cyclos_rest_call("POST", "/system/payments", data=data)
-            _logger.debug("res: %s" % res)
+            response = self._cyclos_rest_call("POST", "/system/payments", data=data)
+            _logger.debug("response: %s" % response)
+            #TODO: need to check response
+            res = {
+                "success": True,
+                "response": response
+            }
+        return res
+
+    def get_lcc_product(self):
+        product = super(ResPartnerBackend,self).get_lcc_product()
+        if self.type == "cyclos":
+            product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
+        return product
+
+    def get_wallet_data(self):
+        self.ensure_one()
+        data = super(ResPartnerBackend,self).get_wallet_data()
+        if self.type == "cyclos":
+            data = [ 
+                "cyclos:cyclos",
+                self.cyclos_id,
+            ]
+        return data
+         

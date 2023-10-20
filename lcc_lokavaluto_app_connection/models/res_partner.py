@@ -46,6 +46,37 @@ class ResPartner(models.Model):
                 "Multiple %s active wallets are not supported yet" % type
             )
 
+    @api.multi
+    def create_numeric_lcc_order(self, wallet_id, amount):
+        order = self.env["sale.order"]
+        line = self.env["sale.order.line"]
+        lcc_product = wallet_id.get_lcc_product()
+        _logger.debug("PARTNER IN SELF?: %s(%s)" % (self.name, self.id))
+        for partner in self:
+            order_vals = {
+                "partner_id": partner.id,
+                "user_id": 2,  # OdooBot-s ID
+            }
+            order_vals = order.play_onchanges(order_vals, ["partner_id"])
+            _logger.debug("NUMERIC LCC ORDER: %s" % order_vals)
+            order_id = order.create(order_vals)
+            line_vals = {
+                "order_id": order_id.id,
+                "product_id": lcc_product.id,
+            }
+            line_vals = line.play_onchanges(line_vals, ["product_id"])
+            line_vals.update(
+                {
+                    "product_uom_qty": amount,
+                    "price_unit": 1,
+                }
+            )
+            _logger.debug("NUMERIC LCC ORDER LINE: %s" % line_vals)
+            line.create(line_vals)
+            order_id.write(
+                {"state": "sent", "require_signature": False, "require_payment": True}
+            )
+        return order_id
 
     def _update_auth_data(self, password):
         return []

@@ -7,7 +7,7 @@
         <field name="inherit_id"
             ref="lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='app_connection_settings']" position="after">
+            <xpath expr="//div[@id='backend_general_settings']" position="after">
                 <h2>Comchain service configuration</h2>
                 <div class="row mt16 o_settings_container" id="comchain_selection_settings">
                     <div class="col-12 col-lg-6 o_setting_box" id="comchain_currency_name">
@@ -20,46 +20,40 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-6 o_setting_box"
-                        id="comchain_activate_automatic_topup">
-                        <div class="o_setting_left_pane">
-                            <field name="activate_automatic_topup" />
-                        </div>
+                        id="comchain_activate_automatic_topup"
+                        attrs="{'invisible': [('activate_automatic_topup','=',False)]}">
+                        <div class="o_setting_left_pane" />
                         <div class="o_setting_right_pane">
-                            <label string="Automatic Top Up" for="activate_automatic_topup" />
+                            <!-- <div class="content-group"> -->
+                            <div>
+                                <label for="message_from" class="o_light_label" />
+                                <field name="message_from" />
+                            </div>
+                            <div>
+                                <label for="message_to" class="o_light_label" />
+                                <field name="message_to" />
+                            </div>
                             <div class="text-muted">
-                                Activate top up on Comchain without Admin validation.
+                                Select the partners linked to the Safe and Odoo wallets. The
+                                name of these partners will be displayed as the sender of the
+                                top-up.
                             </div>
-                            <div class="content-group"
-                                attrs="{'invisible': [('activate_automatic_topup','=',False)]}">
-                                <div>
-                                    <label for="message_from" class="o_light_label" />
-                                    <field name="message_from" />
-                                </div>
-                                <div>
-                                    <label for="message_to" class="o_light_label" />
-                                    <field name="message_to" />
-                                </div>
-                                <div class="text-muted">
-                                    Select the partners linked to the Safe and Odoo wallets. The
-                                    name of these partners will be displayed as the sender of the
-                                    top-up.
-                                </div>
-                                <div>
-                                    <label for="safe_wallet_partner_id" class="o_light_label" />
-                                    <field name="safe_wallet_partner_id"
-                                        placeholder="Select partner linked to safe wallet." />
-                                </div>
-                                <div>
-                                    <label for="odoo_wallet_partner_id" class="o_light_label" />
-                                    <field name="odoo_wallet_partner_id"
-                                        placeholder="Select partner linked to Odoo wallet." />
-                                </div>
-                                <div>
-                                    <label for="comchain_odoo_wallet_password" class="o_light_label" />
-                                    <field name="comchain_odoo_wallet_password" password="True" />
-                                </div>
+                            <div>
+                                <label for="safe_wallet_partner_id" class="o_light_label" />
+                                <field name="safe_wallet_partner_id"
+                                    placeholder="Select partner linked to safe wallet." />
+                            </div>
+                            <div>
+                                <label for="odoo_wallet_partner_id" class="o_light_label" />
+                                <field name="odoo_wallet_partner_id"
+                                    placeholder="Select partner linked to Odoo wallet." />
+                            </div>
+                            <div>
+                                <label for="comchain_odoo_wallet_password" class="o_light_label" />
+                                <field name="comchain_odoo_wallet_password" password="True" />
+                            </div>
 
-                            </div>
+                            <!-- </div> -->
                         </div>
                     </div>
                 </div>

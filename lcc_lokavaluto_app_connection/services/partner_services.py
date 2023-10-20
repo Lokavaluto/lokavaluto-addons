@@ -57,17 +57,18 @@ class PartnerService(Component):
         input_param=Datamodel("partner.credit.requests.get.param"),
     )
     def credit_requests(self, partner_credit_requests_get_param):
-        backend_keys = partner_credit_requests_get_param.backend_keys
-        return self.env["account.invoice"]._get_credit_requests(backend_keys)
+        credit_request_list = []
+        wallets = self.env["res.partner.backend"].get_wallets(partner_credit_requests_get_param.backend_keys)
+        for wallet in wallets:
+            credit_request_list = credit_request_list + wallet.get_pending_credit_requests()
+        return credit_request_list
 
     @restapi.method(
         [(["/pending-topup"], "GET")],
     )
     def pending_topup(self):
         backend_keys = request.params["backend_keys"]
-        return self.env["account.invoice"]._get_pending_credit_requests(
-            backend_keys
-        ) + self.env["sale.order"]._get_top_up_requests(backend_keys)
+        return backend_keys.get_pending_credit_requests()
 
     @restapi.method(
         [(["/remove-pending-topup"], "POST")],
@@ -82,23 +83,12 @@ class PartnerService(Component):
         except ValueError:
             raise MissingError("value for 'order_id' should be an integer")
 
-        top_up = (
-            self.env["sale.order"]
-            .sudo()
-            .search(
-                [
-                    ("partner_id", "=", self.env.user.partner_id.id),
-                    ("state", "=", "sent"),
-                    ("id", "=", order_id),
-                ]
-            )
-        )
-        if len(top_up) == 0:
+        credit_id = self.env["credit.request"].search([("order_id", "=", order_id)], limit=1)
+        if len(credit_id) != 1:
             raise MissingError(
                 "No top-up found to cancel for given order_id (%r)" % order_id
             )
-
-        top_up.write({"state": "cancel"})
+        credit_id.sudo().unlink()
         return True
 
     @restapi.method(
@@ -106,8 +96,10 @@ class PartnerService(Component):
         input_param=Datamodel("partner.validate.credit.requests.param"),
     )
     def validate_credit_requests(self, partner_credit_requests_get_param):
-        invoice_ids = partner_credit_requests_get_param.ids
-        return self.env["account.invoice"]._validate_credit_request(invoice_ids)
+        request_ids = partner_credit_requests_get_param.ids
+        requests = self.env["credit.request"].search([("id", "in", request_ids)])
+        requests.validate()
+        return True
 
     @restapi.method(
         [(["/<int:rpid>/get", "/<int:rpid>"], "GET")],

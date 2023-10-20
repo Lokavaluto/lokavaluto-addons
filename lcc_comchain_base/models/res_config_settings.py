@@ -10,11 +10,6 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Currency Name",
     )
-    activate_automatic_topup = fields.Boolean(
-        related="company_id.activate_automatic_topup",
-        readonly=False,
-        string='Activate Automatic Topup'
-    )
     safe_wallet_partner_id = fields.Many2one(
         'res.partner',
         related="company_id.safe_wallet_partner_id",

@@ -99,6 +99,14 @@ class ComchainService(Component):
         comchainCreditResponse = self.env.datamodels["comchain.credit.response"]
         comchain_response = comchainCreditResponse(partial=True)
         if comchain_address and amount:
-            new_order = partner.comchain_create_order(comchain_address, amount)
-            comchain_response.order_url = base_url + new_order.get_portal_url()
+            wallet_id = self.env["res.partner.backend"].search([("partner_id", "=", partner.id),("comchain_id", "=", comchain_address)], limit=1)[0]
+            if len(wallet_id) == 0:
+                raise Exception("Wallet %s not found in Odoo" % comchain_address)
+            data = {
+                "wallet_id": wallet_id.id,
+                "amount": amount,
+                "create_order": True
+            }
+            credit_request = self.env["credit.request"].sudo().create(data)
+            comchain_response.order_url = base_url + credit_request.order_id.get_portal_url()
         return comchain_response

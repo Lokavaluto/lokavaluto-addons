@@ -41,3 +41,50 @@ class ResPartnerBackend(models.Model):
         for record in self:
             if record.partner_id.public_profile_id:
                 record.partner_public_name = record.partner_id.public_profile_id.name
+
+    def get_lcc_product(self):
+        """Return the numeric lcc product to add in sale orders or invoices. 
+        Need to be overrided by financial backend add-ons"""
+        return None
+
+    def get_wallet_data(self):
+        """Returns wallet informations
+        Need to be overrided by financial backend add-ons"""
+        return []
+
+    def credit_wallet(self, amount=0):
+        """Send credit request to the financial backend"""
+        res = {
+            "success": False,
+            "response": "Nothing done - Please install financial backend Odoo add-on."
+        }
+        return res
+
+    def get_credit_requests(self):
+        """Return data on all the requests of the wallets"""
+        res = []
+        for wallet in self:
+            credit_requests = self.env["credit.request"].sudo().search(
+                [
+                    ("wallet_id", "=", wallet.id),
+                ]
+            )
+            if credit_requests:
+                for request in credit_requests:
+                    res.append(request.get_credit_request_data())
+        return res
+
+    def get_pending_credit_requests(self):
+        """Return data on all the pending requests of the wallets"""
+        res = []
+        for wallet in self:
+            credit_requests = self.env["credit.request"].sudo().search(
+                [
+                    ("wallet_id", "=", wallet.id),
+                    ("state", "in", ["pending","error"])
+                ]
+            )
+            if credit_requests:
+                for request in credit_requests:
+                    res.append(request.get_credit_request_data())
+        return res
