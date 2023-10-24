@@ -7,6 +7,9 @@
         <field name="arch" type="xml">
             <form string="LCC Backend" create="0">
                 <sheet string="LCC Backend">
+                    <button name="%(action_create_credit_request_wizard)d"
+                        string="New Credit Request"
+                        class="oe_highlight" type="action" />
                     <field name="active" invisible="True" />
                     <group name="general_info">
                         <group>
