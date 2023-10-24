@@ -24,6 +24,7 @@
     "data": [
         "security/backends_security.xml",
         "security/ir.model.access.csv",
+        "wizards/create_credit_request.xml",
         "views/account_invoice.xml",
         "views/res_partner.xml",
         "views/sale_order.xml",
