@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="lcc_backend_form_qr_view" model="ir.ui.view">
+        <field name="name">lcc.backend.qr.form.view</field>
+        <field name="model">res.partner.backend</field>
+        <field name="inherit_id" ref="lcc_lokavaluto_app_connection.lcc_backend_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='general_info']" position="before">
+                <button name="generate_qr" type="object" class="btn-box ml-3" icon="fa-qrcode">
+                    Generate new QR
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='status']" position="after">
+                <field name="qr" readonly="True" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
