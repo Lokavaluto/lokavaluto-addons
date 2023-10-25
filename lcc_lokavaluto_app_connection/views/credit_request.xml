@@ -39,6 +39,18 @@
                         <field name="transaction_data" />
                         <field name="error_message" attrs="{'invisible': [('state','!=','error')]}" />
                     </group>
+                    <div class="alert alert-danger" role="alert"
+                        attrs="{'invisible': [('state','!=','error')]}">
+                        <div>
+                            <strong>An error status doesn't always mean the credit request
+                                failed.</strong><br /> Before trying again to credit the wallet,
+                            please <strong>check on the transactions database that the request
+                                has not successed.</strong>
+                        </div>
+                        <button name="try_again"
+                            string="Try again"
+                            class="oe_highlight" type="object" />
+                    </div>
                 </sheet>
             </form>
         </field>
