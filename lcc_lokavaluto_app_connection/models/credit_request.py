@@ -133,3 +133,10 @@ class CreditRequest(models.Model):
         and needs to inform Odoo that the process has been performed with success."""
         for request in self:
             request.write({"state": "done"})
+
+    @api.multi
+    def try_again(self):
+        """Function available when the request is in error state, to send a new credit request."""
+        for request in self:
+            if request.state == "error":
+                request.write({"state": "pending"})
