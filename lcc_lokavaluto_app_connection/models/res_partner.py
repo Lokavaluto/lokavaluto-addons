@@ -41,18 +41,13 @@ class ResPartner(models.Model):
             self.lcc_backend_ids.filtered(lambda x: x.status == "blocked")
         )
 
-    def get_wallet(self, type):
+    def get_wallets(self, type):
         self.ensure_one()
         wallets = [backend for backend in self.lcc_backend_ids if backend.type == type]
-        if len(wallets) == 1:
-            return wallets[0]
-        elif len(wallets) == 0:
-            raise Exception("No wallet found for user %s" % self.name)
+        if len(wallets) > 0:
+            return wallets
         else:
-            # We only support one wallet per type for now
-            raise NotImplementedError(
-                "Multiple %s active wallets are not supported yet" % type
-            )
+            return None
 
     @api.multi
     def create_numeric_lcc_order(self, wallet_id, amount):

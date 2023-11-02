@@ -54,10 +54,12 @@ class SaleOrder(models.Model):
     @api.depends("credit_request_ids")
     def _compute_global_credit_status(self):
         status = "to_do"
-        if all(request.state == "done" for request in self.credit_request_ids):
-            self.global_credit_status = "done"
-        elif any(request.state == "done" for request in self.credit_request_ids):
-            self.global_credit_status = "on_going"
+        for request in self.credit_request_ids:
+            if request.state == "done":
+                status = "done"
+            elif request.state != "done" and status == "done":
+                status = "on_going"
+                break
         self.global_credit_status = status
 
     @api.one
