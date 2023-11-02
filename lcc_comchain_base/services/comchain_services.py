@@ -77,12 +77,12 @@ class ComchainService(Component):
         Activate comchain account on partners
 
         """
-        partner_obj = self.env["res.partner"]
+        wallet_obj = self.env["res.partner.backend"]
         for account in params.accounts:
-            partner_id = partner_obj.search(
-                [("lcc_backend_ids.comchain_id", "=", account.address)]
+            wallet_id = wallet_obj.search(
+                [("comchain_id", "=", account.address)], limit=1
             )
-            partner_id.activate_comchain_user(account)
+            wallet_id.activate(account)
 
         return True
 
