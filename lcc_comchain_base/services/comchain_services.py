@@ -76,13 +76,16 @@ class ComchainService(Component):
         Activate comchain account on partners
 
         """
-        partner_obj = self.env["res.partner"]
+        wallet_obj = self.env["res.partner.backend"]
         for account in params.accounts:
-            partner_id = partner_obj.search(
-                [("lcc_backend_ids.comchain_id", "=", account.address)]
-            )
-            partner_id.activate_comchain_user(account)
-
+            wallet_id = wallet_obj.search([("comchain_id", "=", account.address)])
+            if len(wallet_id) == 0:
+                raise NotFound("Wallet %s not found in Odoo" % account.address)
+            if len(wallet_id) > 1:
+                raise NotImplementedError(
+                    "Several wallets retrieved with same address. Please contact your administrator"
+                )
+            wallet_id.activate(account.type, account.credit_min, account.credit_max)
         return True
 
     @restapi.method(
