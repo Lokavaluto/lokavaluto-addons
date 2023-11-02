@@ -29,11 +29,12 @@ class ComchainService(Component):
         )
         res = {}
         for partner in partner_ids:
-            backend_data = partner.get_wallet("comchain")
-            res[backend_data.comchain_id] = {
-                "partner_id": partner.id,
-                "public_name": partner.public_name,
-            }
+            wallets = partner.get_wallets("comchain")
+            for wallet in wallets:
+                res[wallet.comchain_id] = {
+                    "partner_id": partner.id,
+                    "public_name": partner.public_name,
+                }
         return res
 
     @restapi.method(
@@ -45,9 +46,9 @@ class ComchainService(Component):
         Add comchain account details on partner
         """
         partner = self.env.user.partner_id
-        backend_data = partner.get_wallet("comchain")
-        if not backend_data.comchain_wallet:
-            backend_data.create(
+        wallets = partner.get_wallets("comchain")
+        if len(wallets) == 0:
+            self.env["res.partner.backend"].sudo().create(
                 {
                     "type": "comchain",
                     "name": "comchain:%s" % params.address,
@@ -106,10 +107,6 @@ class ComchainService(Component):
                     partner.get_wallets("comchain"),
                 )
             )
-            if len(wallet_id) > 1:
-                raise Exception(
-                    "Several wallets found in Odoo, please contact your administrator."
-                )
             if len(wallet_id) == 0:
                 raise NotFound("Wallet %s not found in Odoo" % comchain_address)
             data = {
