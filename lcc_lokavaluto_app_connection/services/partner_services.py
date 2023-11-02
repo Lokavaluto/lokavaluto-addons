@@ -68,7 +68,8 @@ class PartnerService(Component):
     )
     def pending_topup(self):
         backend_keys = request.params["backend_keys"]
-        return backend_keys.get_pending_credit_requests()
+        wallet = self.env["res.partner.backend"].search([("name", "=", backend_keys[0])], limit=1)
+        return wallet[0].get_pending_credit_requests()
 
     @restapi.method(
         [(["/remove-pending-topup"], "POST")],

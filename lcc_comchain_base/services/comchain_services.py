@@ -29,11 +29,13 @@ class ComchainService(Component):
         )
         res = {}
         for partner in partner_ids:
-            backend_data = partner.get_wallet("comchain")
-            res[backend_data.comchain_id] = {
-                "partner_id": partner.id,
-                "public_name": partner.public_name,
-            }
+            wallets = partner.get_wallets("comchain")
+            if wallets:
+                for wallet in wallets:
+                    res[wallet.comchain_id] = {
+                        "partner_id": partner.id,
+                        "public_name": partner.public_name,
+                    }
         return res
 
     @restapi.method(
@@ -45,9 +47,9 @@ class ComchainService(Component):
         Add comchain account details on partner
         """
         partner = self.env.user.partner_id
-        backend_data = partner.get_wallet("comchain")
-        if not backend_data.comchain_wallet:
-            backend_data.create(
+        wallets = partner.get_wallets("comchain")
+        if not wallets:
+            self.env["res.partner.backend"].sudo().create(
                 {
                     "type": "comchain",
                     "name": "comchain:%s" % params.address,

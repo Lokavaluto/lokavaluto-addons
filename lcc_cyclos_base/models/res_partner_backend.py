@@ -18,6 +18,31 @@ class ResPartnerBackend(models.Model):
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
+    @property
+    def cyclos_backend_json_data(self):
+        """Return normalized backend account's data"""
+        cyclos_server_url = self.env.user.company_id.cyclos_server_url
+        if not cyclos_server_url:
+            ## Cyclos financial backend is not configured in general settings
+            return []
+        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
+        data = {
+            "type": "cyclos",
+            "accounts": [],
+            "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
+            "max_credit_amount": getattr(cyclos_product, "sale_max_qty", 0),
+        }
+        if self.cyclos_id:
+            data["accounts"].append(
+                {
+                    "owner_id": self.cyclos_id,
+                    "url": cyclos_server_url,
+                    "active": self.status == "active",
+                }
+            )
+        return [data]
+
+
     @api.depends("name", "type", "cyclos_status")
     def _compute_status(self):
         super(ResPartnerBackend, self)._compute_status()

@@ -26,63 +26,54 @@ class ResPartner(models.Model):
         domain = parsed_uri.netloc
         return "cyclos:%s" % domain
 
-    def _cyclos_backend_json_data(self):
-        """Prepare backend data to be sent by credentials requests"""
-        backend_data = self.get_wallet("cyclos")
-        backend_id = self._cyclos_backend_id
-        if not backend_id:  ## is backend available and configured on odoo
-            return []
-        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
-        data = {
-            "type": backend_id,
-            "accounts": [],
-            "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
-            "max_credit_amount": getattr(cyclos_product, "sale_max_qty", 0),
-        }
-        if backend_data.cyclos_id:
-            data["accounts"].append(
-                {
-                    "owner_id": backend_data.cyclos_id,
-                    "url": self.env.user.company_id.cyclos_server_url,
-                    "active": backend_data.status == "active",
-                }
-            )
-        return [data]
-
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
         # Update cyclos password with odoo one from authenticate session
-        backend = self.get_wallet("cyclos")
-        backend_json_data = self._cyclos_backend_json_data()
-        if backend and backend_json_data:
-            backend.force_cyclos_password(password)
-            new_token = backend.cyclos_create_user_token(self.id, password)
-            if new_token:
-                for ua in backend_json_data[0]["accounts"]:
-                    ua["token"] = new_token
-        data.extend(backend_json_data)
+        wallets = self.get_wallets("cyclos")
+        if not wallets:
+            data.extend(self.env["res.partner.backend"].cyclos_backend_json_data)
+        if wallets:
+            for wallet in wallets:
+                wallet_json_data = wallet.cyclos_backend_json_data
+                if wallet and wallet_json_data:
+                    wallet.force_cyclos_password(password)
+                    new_token = wallet.cyclos_create_user_token(self.id, password)
+                    if new_token:
+                        for ua in wallet_json_data[0]["accounts"]:
+                            ua["token"] = new_token
+                data.extend(wallet_json_data)
         return data
 
     def _get_backend_credentials(self):
         self.ensure_one()
         data = super(ResPartner, self)._get_backend_credentials()
-        data.extend(self._cyclos_backend_json_data())
+        wallets = self.get_wallets("cyclos")
+        if not wallets:
+            return data
+        if wallets:
+            for wallet in wallets:
+                data.extend(wallet.cyclos_backend_json_data)
         return data
 
     def _update_search_data(self, backend_keys):
         self.ensure_one()
-        backend_data = self.get_wallet("cyclos")
         data = super(ResPartner, self)._update_search_data(backend_keys)
+        wallets = self.get_wallets("cyclos")
+        if not wallets:
+            return data
         for backend_key in backend_keys:
-            if backend_key.startswith("cyclos:") and backend_data.cyclos_id:
-                data[backend_key] = [backend_data.cyclos_id]
+            if backend_key.startswith("cyclos:") and wallets.cyclos_id:
+                data[backend_key] = [wallets[0].cyclos_id]
         return data
 
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
-        if self.get_wallet("cyclos").cyclos_id:
+        wallets = self.get_wallets("cyclos")
+        if not wallets:
+            return backends
+        if wallets[0].cyclos_id:
             cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
             remove = ["https://", "http://", "/api"]
             for value in remove:
