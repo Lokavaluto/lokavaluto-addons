@@ -57,7 +57,7 @@ class ResPartnerBackend(models.Model):
         Need to be overrided by financial backend add-ons"""
         return []
 
-    def credit_wallet(self):
+    def credit_wallet(self, amount):
         """Send credit request to the financial backend"""
         res = {
             "success": False,
