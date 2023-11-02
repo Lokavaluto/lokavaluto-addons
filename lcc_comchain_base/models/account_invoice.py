@@ -85,7 +85,7 @@ class AccountInvoice(models.Model):
                 ("type", "=", "out_invoice"),
                 ("state", "=", "paid"),
             ],
-            order="date desc",
+            order="create_date desc",
         )
         if invoice_ids:
             for invoice in invoice_ids:
