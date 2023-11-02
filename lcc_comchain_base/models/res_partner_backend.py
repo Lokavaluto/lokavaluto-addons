@@ -48,7 +48,7 @@ class ResPartnerBackend(models.Model):
         """Return normalized backend account's data"""
         backend_id = self.comchain_backend_id
         if not backend_id:
-            ## not present in wallet and not configured in general settings
+            ## Comchain financial backend is not configured in general settings
             return []
         comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain")
         data = {
@@ -83,6 +83,18 @@ class ResPartnerBackend(models.Model):
                     record.status = "to_confirm"
                 else:
                     record.status = ""
+
+    @api.multi
+    def activate(self, params):
+        self.ensure_one()
+        self.write(
+            {
+                "comchain_status": "active",
+                "comchain_type": "%s" % params.type,
+                "comchain_credit_min": params.credit_min,
+                "comchain_credit_max": params.credit_max,
+            }
+        )
 
     def credit_wallet(self, amount=0):
         """Send credit request to the financial backend"""
