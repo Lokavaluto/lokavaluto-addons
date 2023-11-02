@@ -57,19 +57,6 @@ class ResPartner(models.Model):
             return backends
         return backends | {backend_id}
 
-    @api.multi
-    def activate_comchain_user(self, params):
-        self.ensure_one()
-        wallets = self.get_wallets("comchain")
-        wallets[0].write(
-            {
-                "comchain_status": "active",
-                "comchain_type": "%s" % params.type,
-                "comchain_credit_min": params.credit_min,
-                "comchain_credit_max": params.credit_max,
-            }
-        )
-
     def show_app_access_buttons(self):
         # For comchain the app access buttons on the portal are always displayed
         # as long as the comchain currency is defined,
