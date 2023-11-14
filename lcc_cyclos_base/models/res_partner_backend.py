@@ -21,13 +21,10 @@ class ResPartnerBackend(models.Model):
     @property
     def cyclos_backend_json_data(self):
         """Return normalized backend account's data"""
-        backend_id = self._cyclos_backend_id
-        if not backend_id:
-            ## Cyclos financial backend is not configured in general settings
-            return []
+        cyclos_server_url = self.env.user.company_id.get_cyclos_server_domain()
         cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
         data = {
-            "type": backend_id,
+            "type": "%s:%s" % ("cyclos", cyclos_server_url),
             "accounts": [],
             "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
             "max_credit_amount": getattr(cyclos_product, "sale_max_qty", 0),
@@ -259,11 +256,9 @@ class ResPartnerBackend(models.Model):
             backend_key
         )
         if backend_key.startswith("cyclos:"):
-            cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
-            remove = ["https://", "http://", "/api"]
-            for value in remove:
-                cyclos_serveur_url = cyclos_serveur_url.replace(value, "")
-            name = backend_key.replace("@" + cyclos_serveur_url, "")
+            name = backend_key.replace(
+                "@" + self.env.user.company_id.get_cyclos_server_domain(), ""
+            )
         return name
 
     def get_wallet_data(self):
