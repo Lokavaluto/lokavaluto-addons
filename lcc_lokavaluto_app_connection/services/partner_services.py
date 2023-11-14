@@ -67,9 +67,11 @@ class PartnerService(Component):
         [(["/pending-topup"], "GET")],
     )
     def pending_topup(self):
-        backend_keys = request.params["backend_keys"]
-        wallet = self.env["res.partner.backend"].search([("name", "=", backend_keys[0])], limit=1)
-        return wallet[0].get_pending_credit_requests()
+        pending_topup_list = []
+        wallets = self.env["res.partner.backend"].get_wallets(request.params["backend_keys"])
+        for wallet in wallets:
+            pending_topup_list = pending_topup_list + wallet.get_opened_credit_requests() + wallet.get_pending_credit_requests()
+        return pending_topup_list
 
     @restapi.method(
         [(["/remove-pending-topup"], "POST")],

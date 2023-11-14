@@ -52,6 +52,22 @@ class ResPartnerBackend(models.Model):
         Need to be overrided by financial backend add-ons"""
         return None
 
+    @api.model
+    def translate_backend_key_in_wallet_name(self, backend_key):
+        return backend_key
+
+    @api.model
+    def get_wallets(self, backend_keys):
+        """Returns wallet objects list matching the backend_keys contents"""
+        wallets = []
+        Wallet = self.env["res.partner.backend"]
+        for backend_key in backend_keys:
+            wallet_name = Wallet.translate_backend_key_in_wallet_name(backend_key)
+            wallet = Wallet.search([("name", "=", wallet_name)])
+            if wallet:
+                wallets.append(wallet)
+        return wallets
+
     def get_wallet_data(self):
         """Returns wallet informations
         Need to be overrided by financial backend add-ons"""
@@ -72,6 +88,21 @@ class ResPartnerBackend(models.Model):
             credit_requests = self.env["credit.request"].sudo().search(
                 [
                     ("wallet_id", "=", wallet.id),
+                ]
+            )
+            if credit_requests:
+                for request in credit_requests:
+                    res.append(request.get_credit_request_data())
+        return res
+
+    def get_opened_credit_requests(self):
+        """Return data on all the opened requests of the wallets"""
+        res = []
+        for wallet in self:
+            credit_requests = self.env["credit.request"].sudo().search(
+                [
+                    ("wallet_id", "=", wallet.id),
+                    ("state", "=", "open")
                 ]
             )
             if credit_requests:
