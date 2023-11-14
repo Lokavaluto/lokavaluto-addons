@@ -253,6 +253,19 @@ class ResPartnerBackend(models.Model):
             product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
         return product
 
+    @api.model
+    def translate_backend_key_in_wallet_name(self, backend_key):
+        name = super(ResPartnerBackend, self).translate_backend_key_in_wallet_name(
+            backend_key
+        )
+        if backend_key.startswith("cyclos:"):
+            cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
+            remove = ["https://", "http://", "/api"]
+            for value in remove:
+                cyclos_serveur_url = cyclos_serveur_url.replace(value, "")
+            name = backend_key.replace("@" + cyclos_serveur_url, "")
+        return name
+
     def get_wallet_data(self):
         self.ensure_one()
         data = super(ResPartnerBackend, self).get_wallet_data()
