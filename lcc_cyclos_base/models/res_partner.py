@@ -74,11 +74,10 @@ class ResPartner(models.Model):
         if not wallets:
             return backends
         if wallets[0].cyclos_id:
-            cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
-            remove = ["https://", "http://", "/api"]
-            for value in remove:
-                cyclos_serveur_url = cyclos_serveur_url.replace(value, "")
-            return backends | {"%s:%s" % ("cyclos", cyclos_serveur_url)}
+            return backends | {
+                "%s:%s"
+                % ("cyclos", self.env.user.company_id.get_cyclos_server_domain())
+            }
         else:
             return backends
 

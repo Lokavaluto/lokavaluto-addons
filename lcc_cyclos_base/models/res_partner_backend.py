@@ -259,11 +259,9 @@ class ResPartnerBackend(models.Model):
             backend_key
         )
         if backend_key.startswith("cyclos:"):
-            cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
-            remove = ["https://", "http://", "/api"]
-            for value in remove:
-                cyclos_serveur_url = cyclos_serveur_url.replace(value, "")
-            name = backend_key.replace("@" + cyclos_serveur_url, "")
+            name = backend_key.replace(
+                "@" + self.env.user.company_id.get_cyclos_server_domain(), ""
+            )
         return name
 
     def get_wallet_data(self):
