@@ -13,19 +13,6 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    @property
-    def _cyclos_backend_id(self):
-        url = self.env.user.company_id.cyclos_server_url
-        if not url:
-            return False
-        parsed_uri = urlparse(url)
-        if (
-            not parsed_uri or not parsed_uri.netloc
-        ):  ## is backend available and configured on odoo
-            return False
-        domain = parsed_uri.netloc
-        return "cyclos:%s" % domain
-
     def _update_auth_data(self, password):
         self.ensure_one()
         data = super(ResPartner, self)._update_auth_data(password)
@@ -70,11 +57,10 @@ class ResPartner(models.Model):
         wallets = self.get_wallets("cyclos")
         for wallet in wallets:
             if wallet.cyclos_id:
-                cyclos_serveur_url = self.env.user.company_id.cyclos_server_url
-                remove = ["https://", "http://", "/api"]
-                for value in remove:
-                    cyclos_serveur_url = cyclos_serveur_url.replace(value, "")
-                    backends = backends | {"%s:%s" % ("cyclos", cyclos_serveur_url)}
+                backends = backends | {
+                    "%s:%s"
+                    % ("cyclos", self.env.user.company_id.get_cyclos_server_domain())
+                }
         return backends
 
     @api.multi
