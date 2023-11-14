@@ -52,6 +52,27 @@ class ResPartnerBackend(models.Model):
         Need to be overrided by financial backend add-ons"""
         return None
 
+    @api.model
+    def translate_backend_key_in_wallet_name(self, backend_key):
+        return backend_key
+
+    @api.model
+    def get_wallets(self, backend_keys):
+        """Returns wallet objects list matching the backend_keys contents"""
+        Wallet = self.env["res.partner.backend"]
+        return Wallet.search(
+            [
+                (
+                    "name",
+                    "in",
+                    [
+                        Wallet.translate_backend_key_in_wallet_name(backend_key)
+                        for backend_key in backend_keys
+                    ],
+                )
+            ]
+        )
+
     def get_wallet_data(self):
         """Returns wallet informations
         Need to be overrided by financial backend add-ons"""
@@ -64,6 +85,17 @@ class ResPartnerBackend(models.Model):
             "response": "Nothing done - Please install financial backend Odoo add-on.",
         }
         return res
+
+    def get_opened_credit_requests(self):
+        """Return data on all the opened requests of the wallets"""
+        CreditRequestSU = self.env["credit.request"].sudo()
+        return [
+            cr.get_credit_request_data()
+            for wallet in self
+            for cr in CreditRequestSU.search(
+                [("wallet_id", "=", wallet.id), ("state", "=", "open")]
+            )
+        ]
 
     def get_pending_credit_requests(self):
         """Return data on all the pending requests of the wallets"""
