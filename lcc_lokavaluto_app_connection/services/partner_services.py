@@ -382,7 +382,7 @@ class PartnerService(Component):
         rows = []
         if backend_keys:
             for partner in recipients:
-                row = recipients.lcc_profile_info()[0]
+                row = partner.lcc_profile_info()[0]
                 row["monujo_backends"] = partner._update_search_data(backend_keys)
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
