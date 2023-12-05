@@ -260,7 +260,9 @@ class ResPartnerBackend(models.Model):
     @api.model
     def translate_backend_key_in_wallet_name(self, backend_key):
         name = super(ResPartnerBackend,self).translate_backend_key_in_wallet_name(backend_key)
-        if backend_key.startswith("cyclos:"):
+        if backend_key == "cyclos":
+            name = "cyclos"
+        elif backend_key.startswith("cyclos:"):
             name = backend_key.replace("@"+self.env.user.company_id.get_cyclos_server_domain(), "")
         return name
 
