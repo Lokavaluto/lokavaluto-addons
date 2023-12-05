@@ -176,7 +176,9 @@ class ResPartnerBackend(models.Model):
         name = super(ResPartnerBackend, self).translate_backend_key_in_wallet_name(
             backend_key
         )
-        if backend_key.startswith("comchain:"):
+        if backend_key == "comchain:" + self.env.user.company_id.comchain_currency_name:
+            name = "comchain"
+        elif backend_key.startswith("comchain:"):
             name = backend_key
         return name
 

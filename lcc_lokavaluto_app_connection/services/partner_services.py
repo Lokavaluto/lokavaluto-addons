@@ -58,8 +58,15 @@ class PartnerService(Component):
     )
     def credit_requests(self, partner_credit_requests_get_param):
         credit_request_list = []
-        wallets = self.env["res.partner.backend"].get_wallets(
-            partner_credit_requests_get_param.backend_keys
+        backend_types = []
+        for backend_key in partner_credit_requests_get_param.backend_keys:
+            backend_types.append(
+                self.env["res.partner.backend"].translate_backend_key_in_wallet_name(
+                    backend_key
+                )
+            )
+        wallets = self.env["res.partner.backend"].search(
+            [("type", "in", backend_types)]
         )
         for wallet in wallets:
             credit_request_list = (
