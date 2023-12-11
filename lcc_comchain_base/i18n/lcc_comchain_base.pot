@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-11 21:24+0000\n"
-"PO-Revision-Date: 2023-12-11 21:24+0000\n"
+"POT-Creation-Date: 2023-12-11 21:23+0000\n"
+"PO-Revision-Date: 2023-12-11 21:23+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,12 +18,12 @@ msgstr ""
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid "<span class=\"o_form_label\">Comchain currency name</span>"
-msgstr "<span class=\"o_form_label\">Nom de la monnaie Comchain</span>"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_id
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,comchain_type:0
@@ -38,32 +38,32 @@ msgstr ""
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_status
 msgid "Comchain Status"
-msgstr "État Comchain"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid "Comchain service configuration"
-msgstr "Configuration de Comchain"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.lcc_backend_comchain_form_view
 msgid "Comchain specific"
-msgstr "Spécifique Comchain"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_company
 msgid "Companies"
-msgstr "Sociétés"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,comchain_type:0
 msgid "Company"
-msgstr "Société"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_config_settings
 msgid "Config Settings"
-msgstr "Paramètres de config"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_partner
@@ -73,85 +73,100 @@ msgstr ""
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_wallet
 msgid "Crypted json wallet"
-msgstr "Portefeuille JSON chiffré"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__comchain_currency_name
 msgid "Currency Name"
-msgstr "Nom de la monnaie"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__comchain_currency_name
 msgid "Currency name"
-msgstr "Nom de la monnaie"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_account_invoice
 msgid "Invoice"
-msgstr "Facture"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_credit_max
 msgid "Max Credit limit"
-msgstr "Crédit max"
+msgstr ""
+
+#. module: lcc_comchain_base
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__message_from
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__message_from
+msgid "Message from"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_message_key
 msgid "Message keys"
-msgstr "Clés de message"
+msgstr ""
+
+#. module: lcc_comchain_base
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__message_to
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__message_to
+msgid "Message to"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_credit_min
 msgid "Min Credit limit"
-msgstr "Crédit min"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:product.product,name:lcc_comchain_base.product_product_comchain
 #: model:product.template,name:lcc_comchain_base.product_product_comchain_product_template
 msgid "Numeric LCC (comchain)"
-msgstr "MLC Numérique (comchain)"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__odoo_wallet_partner_id
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__odoo_wallet_partner_id
 msgid "Odoo Wallet Partner"
-msgstr "Contact du portefeuille Odoo"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__comchain_odoo_wallet_password
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__comchain_odoo_wallet_password
 msgid "Odoo wallet password"
-msgstr "Mot de pass du portefeuille Odoo"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: selection:res.partner.backend,comchain_type:0
 msgid "Personal"
-msgstr "Personnel"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__safe_wallet_partner_id
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__safe_wallet_partner_id
 msgid "Safe Wallet Partner"
-msgstr "Portefeuille Coffre-fort"
+msgstr ""
+
+#. module: lcc_comchain_base
+#: model:ir.model,name:lcc_comchain_base.model_sale_order
+msgid "Sale Order"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid "Select partner linked to Odoo wallet."
-msgstr "Sélectionner le contact lié au portefeuille Odoo"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid "Select partner linked to safe wallet."
-msgstr "Sélectionner le contact lié au portefeuille Coffre-fort"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid "Select the partners linked to the Safe and Odoo wallets. The\n"
 "                                name of these partners will be displayed as the sender of the\n"
 "                                top-up."
-msgstr "Sélectionner les contacts liés aux portefeuilles Coffre-fort et Odoo. Les\n"
-"                                noms de ces contacts seront affichés comme source des\n"
-"                                chargements."
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_type
@@ -163,7 +178,7 @@ msgstr ""
 #: model:product.product,uom_name:lcc_comchain_base.product_product_comchain
 #: model:product.template,uom_name:lcc_comchain_base.product_product_comchain_product_template
 msgid "Unit(s)"
-msgstr "Unité(s)"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model:product.category,name:lcc_comchain_base.product_category_comchain
