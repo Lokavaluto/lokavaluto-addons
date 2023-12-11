@@ -6,14 +6,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-07 16:09+0000\n"
-"PO-Revision-Date: 2023-02-07 16:09+0000\n"
+"POT-Creation-Date: 2023-12-11 20:43+0000\n"
+"PO-Revision-Date: 2023-12-11 20:43+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_account_invoice_customer_lcc_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_order_lcc_form
+msgid "'s wallet(s)."
+msgstr " possède les portefeuilles suivants."
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid ". For any maintenance action\n"
+"                        concerning these wallets, please contact your currency manager."
+msgstr ". Pour une action de maintenance\n"
+"                        concernant ces portefeuilles, veuillez contact votre gestionnaire de portefeuille.""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
+msgid "<br/>\n"
+"                        <strong>Applications mobiles:</strong>\n"
+"                        <br/>"
+msgstr "<br/>\n"
+"                        <strong>Applications mobiles:</strong>\n"
+"                        <br/>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
@@ -31,19 +53,65 @@ msgid "<span class=\"o_form_label\">iOS app download URL</span>"
 msgstr "<span class=\"o_form_label\">Url de téléchargement IOS</span>"
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_form
+msgid "<strong>An error status doesn't always mean the credit request\n"
+"                                failed.</strong><br/> Before trying again to credit the wallet,\n"
+"                            please <strong>check on the transactions database that the request\n"
+"                                has not successed.</strong>"
+msgstr "<strong>Le statut Erreur ne signifie pas toujours que la demande de chargement\n"
+"                                a échoué.</strong><br/> Avant d'essayer à nouveau de recharger le portefeuille,\n"
+"                            veuillez <strong>vérifier dans la base de données de transactions que la requête\n"
+"                                a bien échoué.</strong>"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_auth_api_key
 msgid "API Key"
 msgstr "Clé API"
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
+msgid "Accès web"
+msgstr "Accès web"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__activate_automatic_topup
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__activate_automatic_topup
+msgid "Activate Automatic Topup"
+msgstr "Activer le rechargement automatique"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "Activate top up on Comchain without Admin validation."
+msgstr "Activer le rechargement Comchain sans la validation d'un administrateur."
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__active
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
 #: selection:res.partner.backend,status:0
 msgid "Active"
 msgstr "Actif"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__amount
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__amount
+msgid "Amount"
+msgstr "Montant"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "Automatic Top Up"
+msgstr "Rechargement automatique"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
 #: selection:res.partner.backend,status:0
 msgid "Blocked"
 msgstr "Bloqué"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.create_credit_request_wizard_view_form
+msgid "Cancel"
+msgstr "Annuler"
 
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,type:0
@@ -62,18 +130,59 @@ msgstr "Paramètres de config"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
 msgid "Contact"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_form
+msgid "Content"
+msgstr "Contenu"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.create_credit_request_wizard_view_form
+msgid "Create"
+msgstr "Créer"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_create_credit_request_wizard
+msgid "Create Credit Request"
+msgstr "Créer une demande de chargement"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.create_credit_request_wizard_view_form
+msgid "Create a credit request"
+msgstr "Créer une demande de chargement"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__create_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
 msgid "Created by"
 msgstr "Créé par"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__create_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_date
 msgid "Created on"
 msgstr "Créé le"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_account_invoice_customer_lcc_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_order_lcc_form
+msgid "Credit Request"
+msgstr "Demande de chargement"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_credit_request
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_invoice__credit_request_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_sale_order__credit_request_ids
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.credit_request_tree_menu
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_tree
+msgid "Credit Requests"
+msgstr "Demandes de chargement"
 
 #. module: lcc_lokavaluto_app_connection
 #: selection:res.partner.backend,type:0
@@ -91,9 +200,35 @@ msgid "Digital currency application configuration"
 msgstr "Configuration des applications de monnaie numérique"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__display_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:account.invoice,global_credit_status:0
+#: selection:credit.request,state:0
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_search
+#: selection:sale.order,global_credit_status:0
+msgid "Done"
+msgstr "Terminé"
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:credit.request,state:0
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_search
+msgid "Error"
+msgstr "Erreur"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__error_message
+msgid "Error Message"
+msgstr "Message d'erreur"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "Financial backend general configuration"
+msgstr "Configuration générale du moteur de transactions"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:product.product,name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
@@ -102,11 +237,20 @@ msgid "Generic Numeric LCC"
 msgstr "MLC Numérique générique"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_invoice__global_credit_status
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_sale_order__global_credit_status
+msgid "Global Credit Status"
+msgstr "État général des chargements"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_invoice__has_numeric_lcc_products
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_sale_order__has_numeric_lcc_products
 msgid "Has lcc numeric products"
 msgstr "A des produits de monnaie numérique"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__id
 msgid "ID"
 msgstr ""
@@ -118,12 +262,7 @@ msgid "If we store your payment information on our server, subscription payments
 msgstr "Si nous stockons vos informations de paiement sur notre serveur, les paiements d'adhésion seront fait automatiquement."
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__in_mobile_app
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__in_mobile_app
-msgid "In the mobile map"
-msgstr "Dans l'application mobile"
-
-#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
 #: selection:res.partner.backend,status:0
 msgid "Inactive"
 msgstr "Inactif"
@@ -132,6 +271,11 @@ msgstr "Inactif"
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_account_invoice
 msgid "Invoice"
 msgstr "Facture"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Ligne de facture"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_auth_api_key__key
@@ -144,9 +288,21 @@ msgid "LCC Backend"
 msgstr "Portefeuilles numériques"
 
 #. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
-msgid "LCC account related settings are managed on"
-msgstr "Paramètres liés aux compte MLC sont gérés sur"
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_tree
+msgid "LCC Backends"
+msgstr "Moteurs de transactions"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_invoice__global_lcc_amount_credited
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_sale_order__global_lcc_amount_credited
+msgid "LCC amount credited"
+msgstr "Montant crédité"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_invoice__global_lcc_amount_to_credit
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_sale_order__global_lcc_amount_to_credit
+msgid "LCC amount to credit"
+msgstr "Montant à créditer"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_lcc_backends_tree_view
@@ -155,16 +311,22 @@ msgid "LCC backends"
 msgstr "Portefeuilles numériques"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request____last_update
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__write_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Dernière modification par"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__write_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
@@ -175,12 +337,23 @@ msgid "Lead/Opportunity"
 msgstr "Piste/opportunité"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__lcc_backend_ids
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__lcc_backend_ids
-msgid "Local Currency Wallets"
-msgstr "Portefeuilles numériques"
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__invoice_id
+msgid "Linked Invoice"
+msgstr "Facture liée"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__order_id
+msgid "Linked Sale Order"
+msgstr "Bon de commande lié"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_form
+msgid "Linked documents"
+msgstr "Documents liés"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__lcc_backend_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__lcc_backend_ids
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
 msgid "Local Currency Wallets"
 msgstr "Portefeuilles numériques"
@@ -206,8 +379,38 @@ msgstr "URL de l'application Monujo pour web"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_auth_api_key__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__name
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
 msgid "Name"
 msgstr "Nom"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__nb_wallets
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__nb_wallets
+msgid "Nb Wallets"
+msgstr "Nb portefeuilles"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__nb_wallets_blocked
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__nb_wallets_blocked
+msgid "Nb Wallets blocked"
+msgstr "Nb portefeuilles bloqués"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__nb_wallets_inactive
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__nb_wallets_inactive
+msgid "Nb Wallets inactive"
+msgstr "Nb portefeuilles inactifs"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner__nb_wallets_to_confirm
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_users__nb_wallets_to_confirm
+msgid "Nb Wallets to confirm"
+msgstr "Nb portefeuilles à confirmer"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_form_view
+msgid "New Credit Request"
+msgstr "Nouvelle demande de chargement"
 
 #. module: lcc_lokavaluto_app_connection
 #: code:addons/lcc_lokavaluto_app_connection/services/partner_images_services.py:38
@@ -221,6 +424,19 @@ msgid "Numeric LCC"
 msgstr "MLC numérique"
 
 #. module: lcc_lokavaluto_app_connection
+#: selection:account.invoice,global_credit_status:0
+#: selection:sale.order,global_credit_status:0
+msgid "On going"
+msgstr "En cours"
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:credit.request,state:0
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_search
+msgid "Open"
+msgstr "Ouvert"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__partner_id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__partner_id
 msgid "Partner"
 msgstr "Partenaire"
@@ -234,7 +450,18 @@ msgstr "Nom public du contact"
 #: code:addons/lcc_lokavaluto_app_connection/controllers/portal.py:46
 #, python-format
 msgid "Pay & Confirm"
-msgstr "Payer et confirmer"
+msgstr "Payer & Confirmer"
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:credit.request,state:0
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_search
+msgid "Pending"
+msgstr "En attente"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
+msgid "Portefeuille numérique"
+msgstr "Portefeuille numérique"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_organization_registration_wallet
@@ -244,11 +471,35 @@ msgid "Refuse numeric wallet creation"
 msgstr "Refuser la création d'un portefeuille numérique"
 
 #. module: lcc_lokavaluto_app_connection
-#: code:addons/lcc_lokavaluto_app_connection/models/crm_lead.py:10
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_crm_lead__refuse_numeric_wallet_creation
+#: code:addons/lcc_lokavaluto_app_connection/models/crm_lead.py:11
 #, python-format
 msgid "Refuse the creation of a numeric wallet."
 msgstr "Refuser la création d'un portefeuille numérique."
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_form
+msgid "Response"
+msgstr "Réponse"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_sale_order
+msgid "Sale Order"
+msgstr "Bon de commande"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_search
+msgid "Search credit requests"
+msgstr "Chercher le demandes de chargement"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
+msgid "Search wallets"
+msgstr "Chercher les portefeuilles"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__state
+msgid "State"
+msgstr "État"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__status
@@ -267,7 +518,29 @@ msgid "To Confirm"
 msgstr "A confirmer"
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
+msgid "To confirm"
+msgstr "A confirmer"
+
+#. module: lcc_lokavaluto_app_connection
+#: selection:account.invoice,global_credit_status:0
+#: selection:sale.order,global_credit_status:0
+msgid "To do"
+msgstr "A faire"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__transaction_data
+msgid "Transaction Message"
+msgstr "Message de transaction"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_form
+msgid "Try again"
+msgstr "Ré-essayer"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__type
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_backend_view_search
 msgid "Type"
 msgstr ""
 
@@ -278,10 +551,58 @@ msgid "Unit(s)"
 msgstr "Unité(s)"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__wallet_id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__wallet_id
+msgid "Wallet"
+msgstr "Portefeuille"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:res.groups,name:lcc_lokavaluto_app_connection.group_wallet_accounts_manager
+msgid "Wallet accounts manager"
+msgstr "Gestionnaire de portefeuille"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:res.groups,name:lcc_lokavaluto_app_connection.group_wallet_full_manager
+msgid "Wallet_full_manager"
+msgstr "Gestionnaire du moteur de transaction"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid "blocked wallet(s)"
+msgstr "portfeuille(s) bloqué(s)"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_create_credit_request
+msgid "create Credit Request"
+msgstr "créer un demande de chargement"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_credit_request
+msgid "credit.request"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid "has"
+msgstr "a"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid "inactive wallet(s)."
+msgstr "portefeuille(s) inactif(s)"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:product.product,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc
 #: model:product.template,weight_uom_name:lcc_lokavaluto_app_connection.product_product_numeric_lcc_product_template
 msgid "kg"
 msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
+msgid "pending for\n"
+"                        activation."
+msgstr "En attente\n"
+"                        d'activation."
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner_backend
@@ -289,7 +610,22 @@ msgid "res.partner.backend"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_account_invoice_customer_lcc_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_order_lcc_form
+msgid "units have been\n"
+"                        credited on"
+msgstr "unités ont été\n"
+"                        créditée"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_account_invoice_customer_lcc_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_order_lcc_form
+msgid "unités encore à\n"
+"                        créditer"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
-msgid "the parent company"
-msgstr "la société parente"
+msgid "wallet(s)"
+msgstr "portefeuille(s)"
 
