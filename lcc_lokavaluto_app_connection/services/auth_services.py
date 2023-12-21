@@ -42,9 +42,18 @@ class AuthService(Component):
                     to_add = partner._update_auth_data(
                         request.httprequest.authorization.password
                     )
+                    lcc_profile_info = partner.lcc_profile_info()
+                    if len(lcc_profile_info) == 0:
+                        raise exceptions.UserError(
+                            "Invalid User %r (id: %d), related partner %r (id: %d) has no public profile.",
+                            current_user.login,
+                            current_user.id,
+                            partner.name,
+                            partner.id,
+                        )
                     response["prefetch"] = {
                         "backend_credentials": to_add,
-                        "partner": partner.lcc_profile_info()[0],
+                        "partner": lcc_profile_info[0],
                     }
 
                     if to_add:

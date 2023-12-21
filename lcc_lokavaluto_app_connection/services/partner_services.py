@@ -119,6 +119,12 @@ class PartnerService(Component):
         )
         if len(partners) == 0:
             raise MissingError("No partner found - please check your request")
+        if not partners[0].public_profile_id:
+            raise MissingError(
+                "Partner %r (id: %d) doesn't have a public profile",
+                partners[0].name, partners[0].id
+            )
+
         return partners[0].lcc_profile_info()[0]
 
     @restapi.method(
@@ -236,7 +242,10 @@ class PartnerService(Component):
         rows = []
         for recipient in recipients:
             partner = recipient.partner_id
-            row = partner.lcc_profile_info()[0]
+            lcc_profile_info = partner.lcc_profile_info()
+            if not lcc_profile_info:
+                continue
+            row = lcc_profile_info[0]
             row["monujo_backends"] = partner._update_search_data(
                 [k for k in backend_keys if k.startswith("%s:" % recipient.type)]
             )
@@ -382,7 +391,10 @@ class PartnerService(Component):
         rows = []
         if backend_keys:
             for partner in recipients:
-                row = partner.lcc_profile_info()[0]
+                lcc_profile_info = partner.lcc_profile_info()
+                if not lcc_profile_info:
+                    continue
+                row = lcc_profile_info[0]
                 row["monujo_backends"] = partner._update_search_data(backend_keys)
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
