@@ -120,6 +120,12 @@ class ResPartner(models.Model):
     def lcc_profile_info(self):
         res = []
         for partner in self:
+            if not partner.public_profile_id:
+                _logger.warning(
+                    "Partner %s (id: %d) has no public profile id. Skipping.",
+                    partner.name, partner.id
+                )
+                continue
             profile_info = partner.public_profile_id.jsonify(
                 [
                     "name",
@@ -141,4 +147,6 @@ class ResPartner(models.Model):
                 }
             )
             res.append(profile_info)
+        if not res and len(self) > 1:
+            _logger.warning("No public profile found for any of the partners.")
         return res
