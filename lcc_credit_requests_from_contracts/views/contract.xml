@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="contract_contract_form_view_inherit_credit_request" model="ir.ui.view">
+            <field name="name">contract.view.form.inherit.credit.request</field>
+            <field name="model">contract.contract</field>
+            <field name="inherit_id" ref="contract.contract_contract_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='recurring_invoices']" position="inside">
+                    <group name="credit_requests">
+                        <field name="partner_id" invisible="1" />
+                        <field name="create_credit_requests" />
+                        <field name="wallet_id" domain="[('partner_id','=', partner_id)]"
+                            attrs="{'invisible': [('create_credit_requests','=',False)]}" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
