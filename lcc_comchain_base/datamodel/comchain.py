@@ -28,10 +28,23 @@ class ComchainActivateInfo(Datamodel):
     recipient_id = fields.Integer(required=False)
 
 
+class ComchainDiscardInfo(Datamodel):
+    _name = "comchain.discard.info"
+
+    address = fields.String(required=True)
+    recipient_id = fields.Integer(required=True)
+
+
 class ComchainActivateList(Datamodel):
     _name = "comchain.activate.list"
 
     accounts = fields.List(NestedModel("comchain.activate.info"), required=True)
+
+
+class ComchainDiscardList(Datamodel):
+    _name = "comchain.discard.list"
+
+    accounts = fields.List(NestedModel("comchain.discard.info"), required=True)
 
 
 class ComchainAccountInfo(Datamodel):
