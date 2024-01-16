@@ -3,6 +3,7 @@ from werkzeug.exceptions import NotFound
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -91,6 +92,30 @@ class ComchainService(Component):
                     "Several wallets retrieved with same address. Please contact your administrator"
                 )
             wallet_id.activate(account.type, account.credit_min, account.credit_max)
+        return True
+
+    @restapi.method(
+        [(["/discard"], "POST")],
+        input_param=Datamodel("comchain.discard.list"),
+    )
+    def discard(self, params):
+        """Discard comchain accounts"""
+        wallet_obj = self.env["res.partner.backend"]
+        for account in params.accounts:
+            wallet_id = wallet_obj.search(
+                [
+                    ("comchain_id", "=", account.address),
+                    ("partner_id", "=", account.recipient_id),
+                ],
+                limit=2,
+            )
+            if len(wallet_id) == 0:
+                raise NotFound("Wallet %s not found in Odoo" % account.address)
+            if len(wallet_id) > 1:
+                raise NotImplementedError(
+                    "Several wallets retrieved with same address. Please contact your administrator"
+                )
+            wallet_id.write({"active": False})
         return True
 
     @restapi.method(
