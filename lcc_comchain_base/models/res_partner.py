@@ -3,6 +3,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class ResPartner(models.Model):
     """Inherits partner:
     - add comchain fields in the partner form
@@ -64,3 +65,8 @@ class ResPartner(models.Model):
         if self.env.user.company_id.comchain_currency_name:
             res = True
         return res
+
+    @api.one
+    def delete_comchain_user(self):
+        backend_data = self.get_wallets("comchain")[0]
+        backend_data.write({"active": False})

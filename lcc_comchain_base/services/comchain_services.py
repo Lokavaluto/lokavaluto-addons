@@ -3,6 +3,7 @@ import logging
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -84,6 +85,21 @@ class ComchainService(Component):
             )
             wallet_id.activate(account)
 
+        return True
+
+    @restapi.method(
+        [(["/discard"], "POST")],
+    )
+    def discard(self):
+        """
+        Discard comchain account on partners
+
+        """
+        partner_obj = self.env["res.partner"].sudo()
+
+        address = request.params["address"]
+        partner_id = partner_obj.search([("lcc_backend_ids.comchain_id", "=", address)])
+        partner_id.delete_comchain_user()
         return True
 
     @restapi.method(
