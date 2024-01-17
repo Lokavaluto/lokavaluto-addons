@@ -43,7 +43,7 @@ class CyclosService(Component):
         input_param=Datamodel("cyclos.partners.info"),
     )
     def contact(self, params):
-        """Return public name for contact matching comchain addresses"""
+        """Return public name for contact matching cyclos addresses"""
 
         partner = self.env["res.partner"]
         partner_ids = partner.search(
