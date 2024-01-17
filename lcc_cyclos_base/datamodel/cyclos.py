@@ -4,7 +4,7 @@ from odoo.addons.datamodel.core import Datamodel
 from odoo.addons.datamodel.fields import NestedModel
 
 
-class ComchainPartnersInfo(Datamodel):
+class CyclosPartnersInfo(Datamodel):
     _name = "cyclos.partners.info"
 
     addresses = fields.List(fields.String(), required=True)
