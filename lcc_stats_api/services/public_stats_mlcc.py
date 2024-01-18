@@ -8,6 +8,9 @@ from .build_stats import (
     build_currency_stats_from_invoices,
     CurrencyStats,
     currency_stats_validator,
+    PartnersStats,
+    build_currency_partners_stats,
+    partners_stats_validator,
 )
 from ..datamodel.stats_filter import StatsFilter
 
@@ -40,28 +43,21 @@ class PublicStatsMlccService(Component):
         Get MLCC public stats.
         """
 
+        # Get currency stats based on all invoices
         currency_stats: CurrencyStats = build_currency_stats_from_invoices(
             self.env["account.invoice"].sudo(), stats_filter=stats_filter
         )
 
-        domain_partners = [
-            ("membership_state", "!=", "none"),
-            ("is_main_profile", "=", True),
-        ]
-        partners = self.env["res.partner"].sudo().search(domain_partners)
-        individuals = len([p for p in partners if p.is_company == False])
-        companies = len(partners) - individuals
-        return MlccStats(
-            **currency_stats, nb_individuals=individuals, nb_companies=companies
+        # Get partners stats
+        partner_stats: PartnersStats = build_currency_partners_stats(
+            self.env["res.partner"].sudo(),
+            stats_filter,
         )
+        return MlccStats(**currency_stats, **partner_stats)
 
     ##########################################################
     # Validators
     ##########################################################
     def _validator_return_get(self):
-        res = {
-            **currency_stats_validator,
-            "nb_individuals": {"type": "integer", "required": True, "empty": False},
-            "nb_companies": {"type": "integer", "required": True, "empty": False},
-        }
+        res = {**currency_stats_validator, **partners_stats_validator}
         return res

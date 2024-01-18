@@ -54,6 +54,7 @@ class PrivateStatsPartnerService(Component):
                 f"{partner.name} not allowed to access data of partner ID {_id}"
             )
 
+        # Get currency stats based on partner's invoices
         currency_stats: CurrencyStats = build_currency_stats_from_invoices(
             self.env["account.invoice"], partner_id=_id, stats_filter=stats_filter
         )

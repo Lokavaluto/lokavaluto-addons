@@ -14,8 +14,6 @@
         "base_jsonify",
         "partner_favorite",
         "lcc_members",
-        "lcc_members_portal",
-        "lcc_members_qr",
         "partner_profiles_portal",
         "membership",
     ],

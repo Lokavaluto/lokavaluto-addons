@@ -18,6 +18,20 @@ currency_stats_validator = {
 }
 
 
+# Stats about partners participating to local currency
+class PartnersStats(TypedDict):
+    nb_individuals: int
+    nb_companies: int
+
+
+# validator for an API returning partners stats
+partners_stats_validator = {
+    "nb_individuals": {"type": "integer", "required": True, "empty": False},
+    "nb_companies": {"type": "integer", "required": True, "empty": False},
+}
+
+
+# Method to compute circulating currency
 def build_currency_stats_from_invoices(
     invoices_model, partner_id: int = None, stats_filter: StatsFilter = None
 ) -> CurrencyStats:
@@ -25,14 +39,18 @@ def build_currency_stats_from_invoices(
     Build stats about MLCC from invoices
     """
 
+    # Look for paid invoices with LCC products
     domain_invoices = [
         ("state", "=", "paid"),
         ("type", "in", ["out_invoice", "in_invoice"]),
         ("has_numeric_lcc_products", "=", True),
     ]
+
+    # Filter for a specific partner if specified
     if partner_id:
         domain_invoices.append(("partner_id", "=", partner_id))
 
+    # Filter date if specified
     if stats_filter and stats_filter.start_date:
         domain_invoices.append(("date_invoice", ">=", stats_filter.start_date))
 
@@ -53,3 +71,28 @@ def build_currency_stats_from_invoices(
         mlcc_to_eur=mlcc_to_eur,
         mlcc_circulating=eur_to_mlcc - mlcc_to_eur,
     )
+
+
+# Method to compute the number of partners participating in the currency
+def build_currency_partners_stats(
+    partners_model, stats_filter: StatsFilter = None
+) -> PartnersStats:
+    # Search active members only
+    domain_partners = [
+        ("membership_state", "!=", "none"),
+        ("is_main_profile", "=", True),
+        ("active", "=", True),
+    ]
+
+    # Filter membership date if specified
+    if stats_filter and stats_filter.start_date:
+        domain_partners.append(("membership_stop", ">=", stats_filter.start_date))
+    if stats_filter and stats_filter.end_date:
+        domain_partners.append(("membership_start", "<=", stats_filter.end_date))
+
+    partners = partners_model.search(domain_partners)
+
+    individuals = len([p for p in partners if p.is_company == False])
+    companies = len(partners) - individuals
+
+    return PartnersStats(nb_individuals=individuals, nb_companies=companies)
