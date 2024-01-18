@@ -43,9 +43,6 @@ def build_currency_stats_from_invoices(
     mlcc_to_eur = 0.00
     eur_to_mlcc = 0.00
     for invoice in invoices:
-        print(
-            f"looking at {invoice.number} with {invoice.amount_total} and type {invoice.type} and partner id {invoice.partner_id}"
-        )
         if invoice.type == "out_invoice":
             eur_to_mlcc += invoice.amount_total
         else:

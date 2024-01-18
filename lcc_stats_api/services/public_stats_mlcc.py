@@ -49,8 +49,6 @@ class PublicStatsMlccService(Component):
             ("is_main_profile", "=", True),
         ]
         partners = self.env["res.partner"].sudo().search(domain_partners)
-        for p in partners:
-            print(f"partner {p.name} {p.is_company} {p.membership_state}")
         individuals = len([p for p in partners if p.is_company == False])
         companies = len(partners) - individuals
         return MlccStats(
