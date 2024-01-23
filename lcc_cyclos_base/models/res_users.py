@@ -1,3 +1,5 @@
+import requests
+
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
@@ -38,3 +40,28 @@ class ResUsers(models.Model):
                     % ALLOWED_CHARS
                 )
         return super(ResUsers, self).signup(values, token)
+
+
+    ## OAuth in cyclos needs some specific calls (that are not implemented)
+    ## it requires:
+    ##  - POST
+    ##  - special header
+    @api.model
+    def _auth_oauth_rpc(self, endpoint, access_token):
+        return requests.post(endpoint, headers={'Authorization': 'Bearer %s' % access_token}, timeout=10).json()
+
+    ## Cyclos token is in 'token' not 'access_token'
+    @api.model
+    def auth_oauth(self, provider, params):
+        if not params.get('access_token'):
+            if params.get('token'):
+                params['access_token'] = params['token']
+        return super(ResUsers, self).auth_oauth(provider, params)
+
+    ## Cyclos returns 'preferred_username' instead of 'user_id'
+    @api.model
+    def _auth_oauth_validate(self, provider, access_token):
+        validation = super(ResUsers, self)._auth_oauth_validate(provider, access_token)
+        if not validation.get('user_id') and validation.get('preferred_username'):
+            validation['user_id'] = validation['preferred_username']
+        return validation
