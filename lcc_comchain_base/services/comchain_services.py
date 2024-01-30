@@ -78,7 +78,12 @@ class ComchainService(Component):
         """
         wallet_obj = self.env["res.partner.backend"]
         for account in params.accounts:
-            wallet_id = wallet_obj.search([("comchain_id", "=", account.address)])
+            domain = [
+                ("comchain_id", "=", account.address),
+            ]
+            if account.recipient_id:
+                domain.append(("partner_id", "=", account.recipient_id))
+            wallet_id = wallet_obj.search(domain, limit=2)
             if len(wallet_id) == 0:
                 raise NotFound("Wallet %s not found in Odoo" % account.address)
             if len(wallet_id) > 1:
