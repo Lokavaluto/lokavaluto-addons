@@ -25,6 +25,7 @@ class ComchainActivateInfo(Datamodel):
     type = fields.Integer(required=True)
     credit_min = fields.Float(required=True)
     credit_max = fields.Float(required=True)
+    recipient_id = fields.Integer(required=False)
 
 
 class ComchainActivateList(Datamodel):
