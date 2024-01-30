@@ -90,9 +90,9 @@ class ResPartnerBackend(models.Model):
         self.write(
             {
                 "comchain_status": "active",
-                "comchain_type": "%s" % params.type,
-                "comchain_credit_min": params.credit_min,
-                "comchain_credit_max": params.credit_max,
+                "comchain_type": "%s" % params["type"],
+                "comchain_credit_min": params["credit_min"],
+                "comchain_credit_max": params["credit_max"],
             }
         )
 

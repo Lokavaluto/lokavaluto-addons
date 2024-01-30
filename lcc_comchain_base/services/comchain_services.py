@@ -70,17 +70,28 @@ class ComchainService(Component):
 
     @restapi.method(
         [(["/activate"], "POST")],
-        input_param=Datamodel("comchain.activate.list"),
     )
-    def activate(self, params):
+    def activate(self):
         """
         Activate comchain account on partners
 
         """
+        accounts = request.params["accounts"]
         wallet_obj = self.env["res.partner.backend"]
-        for account in params.accounts:
+        for account in accounts:
+            try:
+                account["recipient_id"] = int(account["recipient_id"])
+            except ValueError:
+                raise ValueError(
+                    "Invalid 'recipient_id´: %r (should be a number)",
+                    account["recipient_id"],
+                )
             wallet_id = wallet_obj.search(
-                [("comchain_id", "=", account.address)], limit=1
+                [
+                    ("comchain_id", "=", account["address"]),
+                    ("partner_id", "=", account["recipient_id"]),
+                ],
+                limit=1,
             )
             wallet_id.activate(account)
 

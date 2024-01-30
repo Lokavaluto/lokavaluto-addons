@@ -18,15 +18,6 @@ class ComchainRegisterInfo(Datamodel):
     message_key = fields.String(required=True)
 
 
-class ComchainActivateInfo(Datamodel):
-    _name = "comchain.activate.info"
-
-    address = fields.String(required=True)
-    type = fields.Integer(required=True)
-    credit_min = fields.Float(required=True)
-    credit_max = fields.Float(required=True)
-
-
 class ComchainActivateList(Datamodel):
     _name = "comchain.activate.list"
 
