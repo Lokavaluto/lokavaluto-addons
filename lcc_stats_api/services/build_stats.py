@@ -74,21 +74,17 @@ def build_currency_stats_from_invoices(
 
 
 # Method to compute the number of partners participating in the currency
-def build_currency_partners_stats(
-    partners_model, stats_filter: StatsFilter = None
-) -> PartnersStats:
+def build_currency_partners_stats(partners_model) -> PartnersStats:
     # Search active members only
     domain_partners = [
-        ("membership_state", "!=", "none"),
+        (
+            "membership_state",
+            "in",
+            ["invoiced", "paid", "free"],
+        ),
         ("is_main_profile", "=", True),
         ("active", "=", True),
     ]
-
-    # Filter membership date if specified
-    if stats_filter and stats_filter.start_date:
-        domain_partners.append(("membership_stop", ">=", stats_filter.start_date))
-    if stats_filter and stats_filter.end_date:
-        domain_partners.append(("membership_start", "<=", stats_filter.end_date))
 
     partners = partners_model.search(domain_partners)
 

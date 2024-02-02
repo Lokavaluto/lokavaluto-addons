@@ -50,8 +50,7 @@ class PublicStatsMlccService(Component):
 
         # Get partners stats
         partner_stats: PartnersStats = build_currency_partners_stats(
-            self.env["res.partner"].sudo(),
-            stats_filter,
+            self.env["res.partner"].sudo()
         )
         return MlccStats(**currency_stats, **partner_stats)
 
