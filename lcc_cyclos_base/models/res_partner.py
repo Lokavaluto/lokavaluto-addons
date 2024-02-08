@@ -13,44 +13,6 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    def _update_auth_data(self, password):
-        self.ensure_one()
-        data = super(ResPartner, self)._update_auth_data(password)
-        # Update cyclos password with odoo one from authenticate session
-        wallets = self.get_wallets("cyclos")
-        if len(wallets) == 0:
-            data.extend(self.env["res.partner.backend"].cyclos_backend_json_data)
-        for wallet in wallets:
-            wallet_json_data = wallet.cyclos_backend_json_data
-            if wallet and wallet_json_data:
-                wallet.force_cyclos_password(password)
-                new_token = wallet.cyclos_create_user_token(self.id, password)
-                if new_token:
-                    for ua in wallet_json_data[0]["accounts"]:
-                        ua["token"] = new_token
-            data.extend(wallet_json_data)
-        return data
-
-    def _get_backend_credentials(self):
-        self.ensure_one()
-        data = super(ResPartner, self)._get_backend_credentials()
-        wallets = self.get_wallets("cyclos")
-        if len(wallets) == 0:
-            data.extend(self.env["res.partner.backend"].cyclos_backend_json_data)
-        for wallet in wallets:
-            data.extend(wallet.cyclos_backend_json_data)
-        return data
-
-    def _update_search_data(self, backend_keys):
-        self.ensure_one()
-        data = super(ResPartner, self)._update_search_data(backend_keys)
-        wallets = self.get_wallets("cyclos")
-        for wallet in wallets:
-            for backend_key in backend_keys:
-                if backend_key.startswith("cyclos:") and wallets.cyclos_id:
-                    data[backend_key] = [wallet.cyclos_id]
-        return data
-
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
