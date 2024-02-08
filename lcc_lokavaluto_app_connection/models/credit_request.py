@@ -111,22 +111,6 @@ class CreditRequest(models.Model):
                 }
             record.write(vals)
 
-    def get_credit_request_data(self):
-        self.ensure_one()
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        return {
-            "credit_id": self.id,
-            "order_id": self.order_id.id if self.order_id else 0,
-            "order_url": base_url + self.order_id.get_portal_url()
-            if self.order_id
-            else "",
-            "amount": self.amount,
-            "date": int(self.create_date.timestamp()),
-            "name": self.partner_id.name,
-            "monujo_backend": self.wallet_id.get_wallet_data(),
-            "paid": self.state != "open",
-        }
-
     @api.multi
     def validate(self):
         """Function to use when another software is in charge of the top up process,
