@@ -25,7 +25,7 @@ class ResPartnerBackend(models.Model):
         if not cyclos_server_url:
             ## Cyclos financial backend is not configured in general settings
             return []
-        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
+        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos").sudo()
         data = {
             "type": "cyclos",
             "accounts": [],

@@ -49,7 +49,7 @@ class PartnerService(Component):
         This method is used to authenticate and get the token for the user on mobile app.
         """
         partner = self.env.user.partner_id
-        response = partner._get_backend_credentials()
+        response = self._get_backend_credentials(partner)
         return response
 
     @restapi.method(
@@ -247,8 +247,9 @@ class PartnerService(Component):
         for recipient in recipients:
             partner = recipient.partner_id
             row = partner.lcc_profile_info()[0]
-            row["monujo_backends"] = partner._update_search_data(
-                [k for k in backend_keys if k.startswith("%s:" % recipient.type)]
+            row["monujo_backends"] = self._update_search_data(
+                partner,
+                [k for k in backend_keys if k.startswith("%s:" % recipient.type)],
             )
             rows.append(row)
 
@@ -292,8 +293,9 @@ class PartnerService(Component):
 
         partner = recipients[0].partner_id
         recipient = partner.lcc_profile_info()[0]
-        recipient["monujo_backends"] = partner._update_search_data(
-            [k for k in backend_keys if k.startswith("%s:" % recipients[0].type)]
+        recipient["monujo_backends"] = self._update_search_data(
+            partner,
+            [k for k in backend_keys if k.startswith("%s:" % recipients[0].type)],
         )
 
         return recipient
@@ -393,7 +395,7 @@ class PartnerService(Component):
         if backend_keys:
             for partner in recipients:
                 row = partner.lcc_profile_info()[0]
-                row["monujo_backends"] = partner._update_search_data(backend_keys)
+                row["monujo_backends"] = self._update_search_data(partner, backend_keys)
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
 
@@ -404,6 +406,12 @@ class PartnerService(Component):
                 if val.get("id"):
                     params["%s_id" % key] = val["id"]
         return params
+
+    def _update_search_data(self, partner, backend_keys):
+        return {}
+
+    def _get_backend_credentials(self, partner):
+        return []
 
     def _get_credit_requests(self, wallet, status):
         """Return data on all the opened requests of the wallets"""

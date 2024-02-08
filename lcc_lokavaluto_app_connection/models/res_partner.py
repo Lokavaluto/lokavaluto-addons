@@ -85,15 +85,6 @@ class ResPartner(models.Model):
             )
         return order_id
 
-    def _update_auth_data(self, password):
-        return []
-
-    def _get_backend_credentials(self):
-        return []
-
-    def _update_search_data(self, backend_keys):
-        return {}
-
     def backends(self):
         return set()
 
