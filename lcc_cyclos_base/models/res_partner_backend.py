@@ -22,7 +22,7 @@ class ResPartnerBackend(models.Model):
     def cyclos_backend_json_data(self):
         """Return normalized backend account's data"""
         cyclos_server_url = self.env.user.company_id.get_cyclos_server_domain()
-        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
+        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos").sudo()
         data = {
             "type": "%s:%s" % ("cyclos", cyclos_server_url),
             "accounts": [],

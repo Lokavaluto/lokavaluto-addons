@@ -11,40 +11,6 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    def _update_auth_data(self, password):
-        self.ensure_one()
-        data = super(ResPartner, self)._update_auth_data(password)
-        wallets = self.get_wallets("comchain")
-        if len(wallets) == 0:
-            data.extend(self.env["res.partner.backend"].comchain_backend_accounts_data)
-        if wallets:
-            for wallet in wallets:
-                data.extend(wallet.comchain_backend_accounts_data)
-        return data
-
-    def _update_search_data(self, backend_keys):
-        self.ensure_one()
-        _logger.debug("SEARCH: backend_keys = %s" % backend_keys)
-        data = super(ResPartner, self)._update_search_data(backend_keys)
-        wallets = self.get_wallets("comchain")
-        for wallet in wallets:
-            if wallet.comchain_id:
-                for backend_key in backend_keys:
-                    if backend_key.startswith("comchain:"):
-                        data[backend_key] = [wallet.comchain_id]
-        _logger.debug("SEARCH: data %s" % data)
-        return data
-
-    def _get_backend_credentials(self):
-        self.ensure_one()
-        data = super(ResPartner, self)._get_backend_credentials()
-        wallets = self.get_wallets("comchain")
-        if len(wallets) == 0:
-            data.extend(self.env["res.partner.backend"].comchain_backend_accounts_data)
-        for wallet in wallets:
-            data.extend(wallet.comchain_backend_accounts_data)
-        return data
-
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
