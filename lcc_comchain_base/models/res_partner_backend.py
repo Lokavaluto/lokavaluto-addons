@@ -50,7 +50,7 @@ class ResPartnerBackend(models.Model):
         if not backend_id:
             ## Comchain financial backend is not configured in general settings
             return []
-        comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain")
+        comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain").sudo()
         data = {
             "type": backend_id,
             "accounts": [],

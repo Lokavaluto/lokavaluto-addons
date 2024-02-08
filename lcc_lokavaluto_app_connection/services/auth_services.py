@@ -39,8 +39,8 @@ class AuthService(Component):
                 _logger.debug("USER: %s" % current_user)
                 if current_user:
                     partner = current_user.partner_id
-                    to_add = partner._update_auth_data(
-                        request.httprequest.authorization.password
+                    to_add = self._update_auth_data(
+                        partner, request.httprequest.authorization.password
                     )
                     response["prefetch"] = {
                         "backend_credentials": to_add,
@@ -107,6 +107,10 @@ class AuthService(Component):
         if error:
             return {"error": error, "status": "Error"}
         return {"status": "OK"}
+
+    # Privates functions
+    def _update_auth_data(self, partner, password):
+        return []
 
     # Validator
     def _validator_authenticate(self):
