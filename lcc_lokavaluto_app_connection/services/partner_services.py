@@ -69,7 +69,9 @@ class PartnerService(Component):
             [("type", "in", backend_types)]
         )
         for wallet in wallets:
-            credit_request_list += wallet.get_pending_credit_requests()
+            credit_request_list += self._get_credit_requests(
+                wallet, ["pending", "error"]
+            )
         return credit_request_list
 
     @restapi.method(
@@ -81,9 +83,8 @@ class PartnerService(Component):
             request.params["backend_keys"]
         )
         for wallet in wallets:
-            pending_topup_list += (
-                wallet.get_opened_credit_requests()
-                + wallet.get_pending_credit_requests()
+            pending_topup_list += self._get_credit_requests(
+                wallet, ["open", "pending", "error"]
             )
         return pending_topup_list
 
@@ -403,6 +404,29 @@ class PartnerService(Component):
                 if val.get("id"):
                     params["%s_id" % key] = val["id"]
         return params
+
+    def _get_credit_requests(self, wallet, status):
+        """Return data on all the opened requests of the wallets"""
+        CreditRequestSU = self.env["credit.request"].sudo()
+        return [
+            self._get_credit_request_data(cr)
+            for cr in CreditRequestSU.search(
+                [("wallet_id", "=", wallet.id), ("state", "in", status)]
+            )
+        ]
+
+    def _get_credit_request_data(self, cr):
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        return {
+            "credit_id": cr.id,
+            "order_id": cr.order_id.id if cr.order_id else 0,
+            "order_url": base_url + cr.order_id.get_portal_url() if cr.order_id else "",
+            "amount": cr.amount,
+            "date": int(cr.create_date.timestamp()),
+            "name": cr.partner_id.name,
+            "monujo_backend": cr.wallet_id.get_wallet_data(),
+            "paid": cr.state != "open",
+        }
 
     ##########################################################
     # Request Validators

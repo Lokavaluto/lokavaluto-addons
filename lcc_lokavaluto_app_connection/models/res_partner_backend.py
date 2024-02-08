@@ -85,25 +85,3 @@ class ResPartnerBackend(models.Model):
             "response": "Nothing done - Please install financial backend Odoo add-on.",
         }
         return res
-
-    def get_opened_credit_requests(self):
-        """Return data on all the opened requests of the wallets"""
-        CreditRequestSU = self.env["credit.request"].sudo()
-        return [
-            cr.get_credit_request_data()
-            for wallet in self
-            for cr in CreditRequestSU.search(
-                [("wallet_id", "=", wallet.id), ("state", "=", "open")]
-            )
-        ]
-
-    def get_pending_credit_requests(self):
-        """Return data on all the pending requests of the wallets"""
-        CreditRequestSU = self.env["credit.request"].sudo()
-        return [
-            cr.get_credit_request_data()
-            for wallet in self
-            for cr in CreditRequestSU.search(
-                [("wallet_id", "=", wallet.id), ("state", "in", ["pending", "error"])]
-            )
-        ]
