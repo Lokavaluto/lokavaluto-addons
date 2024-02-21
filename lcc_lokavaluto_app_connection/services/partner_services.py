@@ -419,7 +419,8 @@ class PartnerService(Component):
         return [
             self._get_credit_request_data(cr)
             for cr in CreditRequestSU.search(
-                [("wallet_id", "=", wallet.id), ("state", "in", status)]
+                [("wallet_id", "=", wallet.id), ("state", "in", status)],
+                order="create_date desc",
             )
         ]
 
