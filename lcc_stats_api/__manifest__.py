@@ -3,7 +3,7 @@
     "summary": "REST Odoo Backend for getting stats about local complementary currency",
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
-    "category": "Website",
+    "category": "False",
     "version": "12.0.1.0.0",
     # any module necessary for this one to work correctly
     "depends": [

@@ -4,22 +4,15 @@ from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
-from .build_stats import (
-    build_currency_stats_from_invoices,
-    CurrencyStats,
-    currency_stats_validator,
-    PartnersStats,
-    build_currency_partners_stats,
-    partners_stats_validator,
-)
 from ..datamodel.stats_filter import StatsFilter
+from ..models.account_invoice import CurrencyStats
+from ..models.res_partner import PartnersStats
 
 _logger = logging.getLogger(__name__)
 
 
-class MlccStats(CurrencyStats):
-    nb_individuals: int
-    nb_companies: int
+class MlccStats(CurrencyStats, PartnersStats):
+    pass
 
 
 class PublicStatsMlccService(Component):
@@ -44,19 +37,11 @@ class PublicStatsMlccService(Component):
         """
 
         # Get currency stats based on all invoices
-        currency_stats: CurrencyStats = build_currency_stats_from_invoices(
-            self.env["account.invoice"].sudo(), stats_filter=stats_filter
+        currency_stats: CurrencyStats = (
+            self.env["account.invoice"].sudo().get_mlcc_stats(stats_filter)
         )
 
         # Get partners stats
-        partner_stats: PartnersStats = build_currency_partners_stats(
-            self.env["res.partner"].sudo()
-        )
-        return MlccStats(**currency_stats, **partner_stats)
+        partner_stats: PartnersStats = self.env["res.partner"].sudo().get_mlcc_stats()
 
-    ##########################################################
-    # Validators
-    ##########################################################
-    def _validator_return_get(self):
-        res = {**currency_stats_validator, **partners_stats_validator}
-        return res
+        return MlccStats(**currency_stats, **partner_stats)

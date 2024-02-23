@@ -1,17 +1,11 @@
 import logging
 
-from odoo.exceptions import AccessError
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
-from odoo.http import request
 
-from .build_stats import (
-    CurrencyStats,
-    build_currency_stats_from_invoices,
-    currency_stats_validator,
-)
 from ..datamodel.stats_filter import StatsFilter
+from ..models.account_invoice import CurrencyStats
 
 _logger = logging.getLogger(__name__)
 
@@ -26,54 +20,50 @@ class PrivateStatsPartnerService(Component):
         Get private statistics of a local currency partner.
     """
 
-    # The following method are 'public' and can be called from the controller.
-
     @restapi.method(
-        [(["/<int:id>/get", "/<int:id>"], "GET")],
+        [(["/get", "/"], "GET")],
         input_param=Datamodel("stats.filter"),
     )
-    def get(self, _id, stats_filter: StatsFilter) -> CurrencyStats:
+    def get(self, stats_filter: StatsFilter) -> CurrencyStats:
         """
         Get a partner MLCC stats.
         """
 
-        # Check that user is accessing its own data
-        user_api_key = request.httprequest.headers["Api-Key"]
-        user = (
-            self.env["auth.api.key"]
-            .sudo()
-            .search([("key", "=", user_api_key)], limit=1)
-        )
-        partner = (
-            self.env["res.partner"]
-            .sudo()
-            .search([("odoo_user_id", "=", user.user_id.id)])
-        )
-        if _id != partner.id and _id != partner.public_profile_id.id:
-            raise AccessError(
-                f"{partner.name} not allowed to access data of partner ID {_id}"
-            )
+        # # Check that user is accessing its own data
+        # user_api_key = request.httprequest.headers["Api-Key"]
+        # user = (
+        #     self.env["auth.api.key"]
+        #     .sudo()
+        #     .search([("key", "=", user_api_key)], limit=1)
+        # )
+        # partner = (
+        #     self.env["res.partner"]
+        #     .sudo()
+        #     .search([("odoo_user_id", "=", user.user_id.id)])
+        # )
+        # if id != partner.id and id != partner.public_profile_id.id:
+        #     raise AccessError(
+        #         f"{partner.name} not allowed to access data of partner ID {id}"
+        #     )
 
         # Get currency stats based on partner's invoices
-        currency_stats: CurrencyStats = build_currency_stats_from_invoices(
-            self.env["account.invoice"], partner_id=_id, stats_filter=stats_filter
+        currency_stats: CurrencyStats = self.env["account.invoice"].get_mlcc_stats(
+            stats_filter
         )
 
         return currency_stats
 
     ##########################################################
-    # Validators
+    # Swagger Validators
     ##########################################################
-    def _validator_return_get(self):
-        res = {
-            **currency_stats_validator,
-        }
-        return res
 
+    # We override the Swagger method that will display params for this component's routes
     def _get_openapi_default_parameters(self):
+        # For each private route in this class, we retrieve the params specified at route level
         defaults = super(
             PrivateStatsPartnerService, self
         )._get_openapi_default_parameters()
+        # We append to existing params another one related to private endpoint: API-KEY
         defaults.append(
             {
                 "name": "API-KEY",

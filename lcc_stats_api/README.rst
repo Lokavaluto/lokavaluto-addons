@@ -33,6 +33,7 @@ Images
 Contributors
 ------------
 
+* Johan Le Baut <https://github.com/jojolb>
 * Stéphan SAINLEGER <https://github.com/stephansainleger>
 * Nicolas JEUDY <https://github.com/njeudy>
 * Lokavaluto Teams
