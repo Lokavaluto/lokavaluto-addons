@@ -29,23 +29,6 @@ class PrivateStatsPartnerService(Component):
         Get a partner MLCC stats.
         """
 
-        # # Check that user is accessing its own data
-        # user_api_key = request.httprequest.headers["Api-Key"]
-        # user = (
-        #     self.env["auth.api.key"]
-        #     .sudo()
-        #     .search([("key", "=", user_api_key)], limit=1)
-        # )
-        # partner = (
-        #     self.env["res.partner"]
-        #     .sudo()
-        #     .search([("odoo_user_id", "=", user.user_id.id)])
-        # )
-        # if id != partner.id and id != partner.public_profile_id.id:
-        #     raise AccessError(
-        #         f"{partner.name} not allowed to access data of partner ID {id}"
-        #     )
-
         # Get currency stats based on partner's invoices
         currency_stats: CurrencyStats = self.env["account.invoice"].get_mlcc_stats(
             stats_filter
