@@ -21,6 +21,17 @@ class MembershipInvoice(models.TransientModel):
     )
 
     def membership_invoice(self):
+        #add team_id to contact
         values = {"team_id": self.team_id.id}
         self.env["res.partner"].browse(self._context.get("active_ids")).write(values)
-        return super(MembershipInvoice, self).membership_invoice()
+        res = super(MembershipInvoice, self).membership_invoice()
+        #add team_id to the created invoices
+        invoice_ids = None
+        for d in res['domain']:
+            if d[0] == 'id' and d[1] == 'in':
+                invoice_ids = d[2]
+                if invoice_ids:
+                    self.env['account.invoice'].browse(invoice_ids).write({
+                    'team_id':self.team_id.id
+                    })
+        return res
