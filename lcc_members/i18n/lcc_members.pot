@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 13:41+0000\n"
-"PO-Revision-Date: 2023-05-16 13:41+0000\n"
+"POT-Creation-Date: 2024-03-07 10:14+0000\n"
+"PO-Revision-Date: 2024-03-07 10:14+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -108,13 +108,14 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:108
-#: code:addons/lcc_members/models/res_partner.py:114
+#: code:addons/lcc_members/models/res_partner.py:109
 #, python-format
 msgid "Accept LCC Policy"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:92
+#: code:addons/lcc_members/models/res_partner.py:93
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 #, python-format
@@ -123,10 +124,29 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:95
+#: code:addons/lcc_members/models/res_partner.py:96
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 #, python-format
 msgid "Accept digital currency"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_digital_currency
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_digital_currency
+msgid "Accepte la monnaie numérique"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_coupons
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_coupons
+msgid "Accepte les coupons"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__accept_policy
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__accept_policy
+msgid "Accepter les Conditions Générales d'Utilisation"
 msgstr ""
 
 #. module: lcc_members
@@ -139,6 +159,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 msgid "Activity..."
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__detailed_activity
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__detailed_activity
+msgid "Activités détaillées"
 msgstr ""
 
 #. module: lcc_members
@@ -174,6 +200,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:14
+#: code:addons/lcc_members/models/res_partner.py:15
 #, python-format
 msgid "Business Name"
 msgstr ""
@@ -184,6 +211,24 @@ msgid "Classification (to find easily pro. in the directory)"
 msgstr ""
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__legal_activity_code
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__legal_activity_code
+msgid "Code légal d'activité (APE en France)"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__private_comment
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__private_comment
+msgid "Commentaire Privé / interne"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_comment
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__member_comment
+msgid "Commentaire de l'adhérent"
+msgstr ""
+
+#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "Commercial Name..."
 msgstr ""
@@ -191,6 +236,12 @@ msgstr ""
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "Commercial name"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__currency_exchange_office
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__currency_exchange_office
+msgid "Comptoir de change"
 msgstr ""
 
 #. module: lcc_members
@@ -212,12 +263,14 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:74
+#: code:addons/lcc_members/models/res_partner.py:75
 #, python-format
 msgid "Convention agreement"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:68
+#: code:addons/lcc_members/models/res_partner.py:69
 #, python-format
 msgid "Convention specific agreement"
 msgstr ""
@@ -236,6 +289,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:79
+#: code:addons/lcc_members/models/res_partner.py:80
 #, python-format
 msgid "Currency exchange office"
 msgstr ""
@@ -243,6 +297,12 @@ msgstr ""
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "Customers"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_signature_date
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_signature_date
+msgid "Date de signature de la convetion"
 msgstr ""
 
 #. module: lcc_members
@@ -258,6 +318,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:59
+#: code:addons/lcc_members/models/res_partner.py:60
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 #, python-format
@@ -294,9 +355,20 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:152
-#: code:addons/lcc_members/models/res_partner.py:166
+#: code:addons/lcc_members/models/res_partner.py:156
 #, python-format
 msgid "Email '%s' is already in use."
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__is_volunteer
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__is_volunteer
+msgid "Est bénévole"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_crm_team__local_group
+msgid "Est un groupe local"
 msgstr ""
 
 #. module: lcc_members
@@ -306,9 +378,15 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:137
-#: code:addons/lcc_members/models/res_partner.py:151
+#: code:addons/lcc_members/models/res_partner.py:141
 #, python-format
 msgid "Field contains multiple email addresses. This is not supported."
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__opening_time
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__opening_time
+msgid "Horaires d'ouverture"
 msgstr ""
 
 #. module: lcc_members
@@ -351,16 +429,24 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:62
+#: code:addons/lcc_members/models/res_partner.py:63
 #, python-format
 msgid "Is volunteer"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:56
+#: code:addons/lcc_members/models/res_partner.py:57
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_structure_lcc
 #, python-format
 msgid "Itinerant"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__itinerant
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__itinerant
+msgid "Itinérant"
 msgstr ""
 
 #. module: lcc_members
@@ -392,11 +478,6 @@ msgid "Legal name or street"
 msgstr ""
 
 #. module: lcc_members
-#: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
-msgid "Business namet"
-msgstr ""
-
-#. module: lcc_members
 #: model:ir.model.fields,field_description:lcc_members.field_membership_invoice__team_id
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
@@ -422,12 +503,14 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:25
+#: code:addons/lcc_members/models/res_partner.py:26
 #, python-format
 msgid "Member comment"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:29
+#: code:addons/lcc_members/models/res_partner.py:30
 #, python-format
 msgid "Member's type"
 msgstr ""
@@ -464,6 +547,12 @@ msgid "Membership lines"
 msgstr ""
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__keywords
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__keywords
+msgid "Mots clés"
+msgstr ""
+
+#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "My Contacts"
 msgstr ""
@@ -486,12 +575,24 @@ msgid "Name"
 msgstr ""
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_member_type__name
+msgid "Nom"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__business_name
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__business_name
+msgid "Nom commercial"
+msgstr ""
+
+#. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.members_search_view
 msgid "None/Canceled/Old/Waiting"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:53
+#: code:addons/lcc_members/models/res_partner.py:54
 #, python-format
 msgid "Opening Time"
 msgstr ""
@@ -539,13 +640,21 @@ msgid "Portal User Config"
 msgstr ""
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__reasons_choosing_mlc
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__reasons_choosing_mlc
+msgid "Pourquoi j'ai choisi la monnaie locale ?"
+msgstr ""
+
+#. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:65
+#: code:addons/lcc_members/models/res_partner.py:66
 #, python-format
 msgid "Private comment"
 msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:22
+#: code:addons/lcc_members/models/res_partner.py:23
 #, python-format
 msgid "Professional phone"
 msgstr ""
@@ -568,9 +677,15 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:106
-#: code:addons/lcc_members/models/res_partner.py:112
+#: code:addons/lcc_members/models/res_partner.py:107
 #, python-format
 msgid "Refuse the creation of a numeric wallet."
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__refuse_numeric_wallet_creation
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__refuse_numeric_wallet_creation
+msgid "Refuser la création d'un portefeuille numérique."
 msgstr ""
 
 #. module: lcc_members
@@ -586,6 +701,12 @@ msgstr ""
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_home_profile_lcc_menu
 msgid "Reset password"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__convention_specific_agreement
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__convention_specific_agreement
+msgid "Règle spécifiques de convention"
 msgstr ""
 
 #. module: lcc_members
@@ -658,6 +779,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:41
+#: code:addons/lcc_members/models/res_partner.py:42
 #, python-format
 msgid "To renew"
 msgstr ""
@@ -665,6 +787,18 @@ msgstr ""
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_invoices_lcc
 msgid "Total amount"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__member_type_id
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__member_type_id
+msgid "Type d'adhérent"
+msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__phone_pro
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__phone_pro
+msgid "Téléphone Professionnel"
 msgstr ""
 
 #. module: lcc_members
@@ -678,8 +812,14 @@ msgid "Vendors"
 msgstr ""
 
 #. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__want_newsletter_subscription
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__want_newsletter_subscription
+msgid "Veux souscrire à l'Infolettre"
+msgstr ""
+
+#. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:103
-#: code:addons/lcc_members/models/res_partner.py:109
+#: code:addons/lcc_members/models/res_partner.py:104
 #, python-format
 msgid "Want Newsletters Subscription"
 msgstr ""
@@ -691,6 +831,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:16
+#: code:addons/lcc_members/models/res_partner.py:17
 #, python-format
 msgid "Why did I choose local currency"
 msgstr ""
@@ -707,6 +848,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:35
+#: code:addons/lcc_members/models/res_partner.py:36
 #, python-format
 msgid "convention signature date"
 msgstr ""
@@ -718,6 +860,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:50
+#: code:addons/lcc_members/models/res_partner.py:51
 #, python-format
 msgid "keywords"
 msgstr ""
@@ -729,6 +872,7 @@ msgstr ""
 
 #. module: lcc_members
 #: code:addons/lcc_members/models/res_partner.py:44
+#: code:addons/lcc_members/models/res_partner.py:45
 #, python-format
 msgid "legal activity code (ex. APE in France)"
 msgstr ""
@@ -742,3 +886,10 @@ msgstr ""
 #: model:ir.model,name:lcc_members.model_member_type
 msgid "member.type"
 msgstr ""
+
+#. module: lcc_members
+#: model:ir.model.fields,field_description:lcc_members.field_res_partner__to_renew
+#: model:ir.model.fields,field_description:lcc_members.field_res_users__to_renew
+msgid "à renouveler"
+msgstr ""
+
