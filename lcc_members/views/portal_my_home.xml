@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_profile_lcc_menu" name="Portal My Home: Profile LCC Menu"
+        inherit_id="partner_profiles_portal.portal_my_home_profile_menu" priority="40">
+        <xpath expr="//div[@name='profiles_management']" position="inside">
+            <div id="reset_password">
+                <a t-attf-href="/web/reset_password">
+                    <button class="btn btn-primary mb8">Reset password</button>
+                </a>
+            </div>
+        </xpath>
+    </template>
+</odoo>

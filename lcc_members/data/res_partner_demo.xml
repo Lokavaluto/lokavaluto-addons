@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+        Main Company 
+    -->
+    <record id="base.main_partner" model="res.partner">
+        <field name="name">My LCC</field>
+        <field name="company_name">MyLCC</field>
+        <field name="email">info@mylcc.org</field>
+        <field name="website">www.mylcc.org</field>
+    </record>
+
+    <!-- 
+        Odoo Admin 
+    -->
+    <record id="base.partner_admin" model="res.partner">
+        <field name="name">Admin LCC</field>
+        <field name="company_name">MyLCC</field>
+        <field name="email">admin@mylcc.org</field>
+    </record>
+    <record id="base.partner_root" model="res.partner">
+        <field name="email">root@mylcc.org</field>
+    </record>
+
+    <!-- 
+        Internal users - Volunteers 
+    -->
+    <record id="base.partner_demo" model="res.partner">
+        <!-- Marc Demo -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="company_name">MyLCC</field>
+        <field name="email">mark.demo@mylcc.org</field>
+        <field name="is_volunteer" eval="True" />
+        <field name="member_type_id" ref="member_type_1" />
+    </record>
+    <record id="base.res_partner_address_1" model="res.partner">
+        <!-- Willie Burke -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="is_volunteer" eval="True" />
+        <field name="member_type_id" ref="member_type_1" />
+    </record>
+
+
+    <!-- 
+        Portal user - LCC Members 
+    -->
+    <record id="base.partner_demo_portal" model="res.partner">
+        <!-- Joel Willis -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="is_volunteer" eval="False" />
+        <field name="member_type_id" ref="member_type_1" />
+    </record>
+    <record id="base.res_partner_address_2" model="res.partner">
+        <!-- Ron Gibson -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="is_volunteer">0</field>
+        <field name="member_type_id" ref="member_type_1" />
+    </record>
+    <record id="base.res_partner_address_5" model="res.partner">
+        <!-- Edwin Hansen -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="is_volunteer" eval="False" />
+        <field name="member_type_id" ref="member_type_1" />
+    </record>
+    <record id="base.res_partner_address_7" model="res.partner">
+        <!-- Billy Fox -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="is_volunteer" eval="False" />
+        <field name="member_type_id" ref="member_type_1" />
+    </record>
+
+
+    <!-- 
+        Simple partners - Companies
+    -->
+    <record id="base.res_partner_1" model="res.partner">
+        <!-- Wood Corner -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="reasons_choosing_mlc">To preserve the environment</field>
+        <field name="detailed_activity">Manufacture the best tables</field>
+        <field name="phone_pro">0654123587</field>
+        <field name="member_type_id" ref="member_type_2" />
+        <field name="opening_time">From 08:00am to 05:00pm</field>
+        <field name="itinerant" eval="False" />
+        <field name="currency_exchange_office" eval="True" />
+    </record>
+
+    <record id="base.res_partner_2" model="res.partner">
+        <!-- Deco Addict -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="reasons_choosing_mlc">To encourage local economy</field>
+        <field name="detailed_activity">Make your home beautiful</field>
+        <field name="phone_pro">0568749685</field>
+        <field name="member_type_id" ref="member_type_2" />
+        <field name="opening_time">From 08:00am to 05:00pm except Wednesday</field>
+        <field name="itinerant" eval="True" />
+        <field name="currency_exchange_office" eval="False" />
+    </record>
+
+    <record id="base.res_partner_3" model="res.partner">
+        <!-- Gemini Furniture -->
+        <field name="customer" eval="True" />
+        <field name="free_member" eval="True" />
+        <field name="reasons_choosing_mlc">To fight against neoliberalism</field>
+        <field name="detailed_activity">Restore any type of furnitures</field>
+        <field name="phone_pro">0548796832</field>
+        <field name="member_type_id" ref="member_type_3" />
+        <field name="opening_time">Everyday, all the time</field>
+        <field name="itinerant" eval="False" />
+        <field name="currency_exchange_office" eval="False" />
+    </record>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="membership_line_view_tree" model="ir.ui.view">
+        <field name="name">membership.line.view.tree</field>
+        <field name="model">membership.membership_line</field>
+        <field name="arch" type="xml">
+            <tree string="Membership lines">
+                <field name="partner" />
+                <field name="account_invoice_id" />
+                <field name="date" />
+                <field name="date_to" />
+                <field name="member_price" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="membership_line_view_form" model="ir.ui.view">
+        <field name="name">membership_line.view.form</field>
+        <field name="model">membership.membership_line</field>
+        <field name="arch" type="xml">
+            <form string="Membership line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner" />
+                            <field name="membership_id" />
+                            <field name="date_from" />
+                            <field name="date_to" />
+                            <field name="company_id" />
+                            <field name="category_id" />
+                        </group>
+                        <group>
+                            <field name="account_invoice_line" />
+                            <field name="account_invoice_id" />
+                            <field name="date" />
+                            <field name="member_price" />
+                            <field name="state" />
+                            <field name="date_cancel" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

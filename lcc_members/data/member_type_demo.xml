@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="member_type_1" model="member_type">
+        <field name="name">Person</field>
+    </record>
+    <record id="member_type_2" model="member_type">
+        <field name="name">Company</field>
+    </record>
+    <record id="member_type_3" model="member_type">
+        <field name="name">Association</field>
+    </record>
+    <record id="member_type_4" model="member_type">
+        <field name="name">Local Authority</field>
+    </record>
+</odoo>
