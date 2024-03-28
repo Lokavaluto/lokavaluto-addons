@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+    <record id="action_type_adherent_form_view" model="ir.actions.act_window">
+      <field name="name">Membership Type</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">member.type</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p>
+          <br />
+        </p>
+      </field>
+    </record>
+
+    <record id="action_membership_line_tree_view" model="ir.actions.act_window">
+      <field name="name">Membership Lines</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">membership.membership_line</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p>
+          <br />
+        </p>
+      </field>
+    </record>
+
+    <menuitem name="Configuration"
+      id="membership.menu_marketing_config_association"
+      parent="membership.menu_association"
+      sequence="100" />
+
+    <menuitem name="Member Types"
+      id="action_membership_type_tree_view_menu"
+      parent="membership.menu_marketing_config_association"
+      sequence="2"
+      action="action_type_adherent_form_view"
+    />
+
+    <menuitem name="Membership lines"
+      id="action_membership_line_menu"
+      parent="membership.menu_marketing_config_association"
+      sequence="3"
+      groups="base.group_no_one"
+      action="action_membership_line_tree_view" />
+
+    <menuitem name="Contact Tags"
+      id="action_membership_category_form"
+      parent="membership.menu_marketing_config_association"
+      sequence="4"
+      action="base.action_partner_category_form" />
+
+    <menuitem name="Sectors of Activity"
+      id="action_membership_industry_menu"
+      parent="membership.menu_marketing_config_association"
+      sequence="5"
+      action="base.res_partner_industry_action" />
+
+  </data>
+</odoo>
