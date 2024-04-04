@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="credit_request_view_tree" model="ir.ui.view">
+        <field name="name">credit.request.view.tree</field>
+        <field name="model">credit.request</field>
+        <field name="arch" type="xml">
+            <tree string="Credit Requests" default_order="create_date desc">
+                <field name="create_date" />
+                <field name="partner_id" />
+                <field name="wallet_id" />
+                <field name="amount" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="credit_request_view_form" model="ir.ui.view">
+        <field name="name">credit.request.view.form</field>
+        <field name="model">credit.request</field>
+        <field name="arch" type="xml">
+            <form string="Credit Request">
+                <header>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group name="content" string="Content">
+                        <field name="partner_id" />
+                        <field name="wallet_id" />
+                        <field name="amount" />
+                        <field name="create_date" />
+                    </group>
+                    <group name="documents" string="Linked documents">
+                        <field name="invoice_id" />
+                        <field name="order_id" />
+                    </group>
+                    <group name="response" string="Response"
+                        attrs="{'invisible': [('state','in',['open','pending'])]}">
+                        <field name="transaction_data" />
+                        <field name="error_message" attrs="{'invisible': [('state','!=','error')]}" />
+                    </group>
+                    <div class="alert alert-danger" role="alert"
+                        attrs="{'invisible': [('state','!=','error')]}">
+                        <div>
+                            <strong>An error status doesn't always mean the credit request
+                                failed.</strong><br /> Before trying again to credit the wallet,
+                            please <strong>check on the transactions database that the request
+                                has not successed.</strong>
+                        </div>
+                        <button name="try_again"
+                            string="Try again"
+                            class="oe_highlight" type="object" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="credit_request_view_search" model="ir.ui.view">
+        <field name="name">credit.request.view.search</field>
+        <field name="model">credit.request</field>
+        <field name="arch" type="xml">
+            <search string="Search credit requests">
+                <field name="partner_id" />
+                <field name="wallet_id" />
+                <field name="amount" />
+                <field name="state" />
+                <filter domain="[('state','=','open')]" string="Open" name="open" />
+                <filter domain="[('state','=','pending')]" string="Pending" name="pending" />
+                <filter domain="[('state','=','error')]" string="Error" name="error" />
+                <filter domain="[('state','=','done')]" string="Done" name="done" />
+            </search>
+        </field>
+    </record>
+</odoo>
