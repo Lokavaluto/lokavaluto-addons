@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="lcc_backend_form_view" model="ir.ui.view">
+        <field name="name">lcc.backend.form.view</field>
+        <field name="model">res.partner.backend</field>
+        <field name="priority">0</field>
+        <field name="arch" type="xml">
+            <form string="LCC Backend" create="0">
+                <sheet string="LCC Backend">
+                    <button name="%(action_create_credit_request_wizard)d"
+                        string="New Credit Request"
+                        class="oe_highlight" type="action"
+                        groups="lcc_lokavaluto_app_connection.group_wallet_full_manager" />
+                    <field name="active" invisible="True" />
+                    <group name="general_info">
+                        <group>
+                            <field name="name" />
+                            <field name="partner_id" />
+                            <field name="type" />
+                            <field name="status" readonly="True" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="lcc_backend_view_tree" model="ir.ui.view">
+        <field name="name">lcc.backend.view.tree</field>
+        <field name="model">res.partner.backend</field>
+        <field name="arch" type="xml">
+            <tree string="LCC Backends">
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="type" />
+                <field name="status" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="lcc_backend_view_search" model="ir.ui.view">
+        <field name="name">lcc.backend.view.search</field>
+        <field name="model">res.partner.backend</field>
+        <field name="arch" type="xml">
+            <search string="Search wallets">
+                <field name="name" string="Name" />
+                <field name="partner_id" string="Contact" />
+                <field name="type" string="Type" />
+                <filter domain="[('status','=','active')]" string="Active" name="active" />
+                <filter domain="[('status','=','to_confirm')]" string="To confirm" name="to_confirm" />
+                <filter domain="[('status','=','blocked')]" string="Blocked" name="blocked" />
+                <filter domain="[('status','=','inactive')]" string="Inactive" name="inactive" />
+            </search>
+        </field>
+    </record>
+</odoo>
