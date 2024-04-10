@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="product_category_comchain" model="product.category">
+            <field name="parent_id" ref="lcc_lokavaluto_app_connection.product_category_numeric_lcc" />
+            <field name="name">comchain</field>
+        </record>
+        <record id="product_product_comchain" model="product.product">
+            <field name="list_price">1.0</field>
+            <field name="standard_price">1.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit" />
+            <field name="uom_po_id" ref="uom.product_uom_unit" />
+            <field name="name">Numeric LCC (comchain)</field>
+            <field name="description_sale" eval="False" />
+            <field name="categ_id" ref="lcc_comchain_base.product_category_comchain" />
+            <field name="type">consu</field>
+        </record>
+    </data>
+    <data>
+        <record id="res_partner_safe_wallet" model="res.partner">
+            <field name="name">Safe Wallet</field>
+        </record>
+        <record id="res_partner_odoo_wallet" model="res.partner">
+            <field name="name">Odoo Wallet</field>
+        </record>
+    </data>
+
+</odoo>
