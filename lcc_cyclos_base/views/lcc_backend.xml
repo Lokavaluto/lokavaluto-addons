@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="lcc_backend_cyclos_form_view" model="ir.ui.view">
+        <field name="name">lcc.backend.cyclos.form.view</field>
+        <field name="model">res.partner.backend</field>
+        <field name="inherit_id" ref="lcc_lokavaluto_app_connection.lcc_backend_form_view" />
+        <field name="priority">0</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='general_info']" position="after">
+                <group name="cyclos_specific" string="Cyclos specific" attrs="{'invisible': [('type','!=','cyclos')]}">
+                    <field name="cyclos_id" readonly="True" />
+                    <field name="cyclos_status" readonly="True" />
+                    <field name="cyclos_create_response" readonly="True" />
+                </group>
+                <footer>
+                    <button name="cyclos_validate_user" type="object" string="Validate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','!=','pending')]}" />
+                    <button name="cyclos_activate_user" type="object" string="Activate Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','active')]}" />
+                    <button name="cyclos_block_user" type="object" string="Block Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','blocked')]}" />
+                    <button name="cyclos_disable_user" type="object" string="Disable Cyclos Wallet" class="oe_highlight" attrs="{'invisible': ['|',('type','!=','cyclos'),('cyclos_status','=','disabled')]}" />
+                </footer>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
