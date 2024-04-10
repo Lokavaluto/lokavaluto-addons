@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="lcc_cyclos_partner_form" model="ir.ui.view">
+    <field name="name">lcc_cyclos_partner_form</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="lcc_lokavaluto_app_connection.lcc_partner_app" />
+    <field eval="17" name="priority" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='lcc_backend_ids']" position="after">
+        <button name="cyclos_add_user" string="Create new Cyclos Wallet" class="oe_highlight"
+          type="object" attrs="{'invisible': [('is_main_profile','=',False)]}"
+          group="group_wallet_accounts_manager" />
+      </xpath>
+    </field>
+  </record>
+</odoo>

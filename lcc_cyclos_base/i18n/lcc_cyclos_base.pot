@@ -1,0 +1,180 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* lcc_cyclos_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-11 21:20+0000\n"
+"PO-Revision-Date: 2023-12-11 21:20+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
+msgid "<span class=\"o_form_label\">Cyclos server Login</span>"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
+msgid "<span class=\"o_form_label\">Cyclos server Password</span>"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
+msgid "<span class=\"o_form_label\">Cyclos server URL</span>"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_backend_cyclos_form_view
+msgid "Activate Cyclos Wallet"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_backend_cyclos_form_view
+msgid "Block Cyclos Wallet"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_company__cyclos_client_token
+msgid "Client token auth for cyclos server"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model,name:lcc_cyclos_base.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model,name:lcc_cyclos_base.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model,name:lcc_cyclos_base.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_cyclos_partner_form
+msgid "Create new Cyclos Wallet"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:product.category,name:lcc_cyclos_base.product_category_cyclos
+#: selection:res.partner.backend,type:0
+msgid "Cyclos"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_status
+msgid "Cyclos Status"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_create_response
+msgid "Cyclos create response"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_id
+msgid "Cyclos id"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.res_config_settings_view_form_cyclos
+msgid "Cyclos service configuration"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_backend_cyclos_form_view
+msgid "Cyclos specific"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_backend_cyclos_form_view
+msgid "Disable Cyclos Wallet"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model,name:lcc_cyclos_base.model_account_invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_company__cyclos_server_login
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_config_settings__cyclos_server_login
+msgid "Login for cyclos server"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:product.product,name:lcc_cyclos_base.product_product_cyclos
+#: model:product.template,name:lcc_cyclos_base.product_product_cyclos_product_template
+msgid "Numeric LCC (Cyclos)"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_company__cyclos_server_password
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_config_settings__cyclos_server_password
+msgid "Password for cyclos server"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: code:addons/lcc_cyclos_base/models/res_users.py:26
+#: code:addons/lcc_cyclos_base/models/res_users.py:37
+#, python-format
+msgid "Password must contain only the following characters: %s"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model,name:lcc_cyclos_base.model_sale_order
+msgid "Sale Order"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__type
+msgid "Type"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:product.product,uom_name:lcc_cyclos_base.product_product_cyclos
+#: model:product.template,uom_name:lcc_cyclos_base.product_product_cyclos_product_template
+msgid "Unit(s)"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_company__cyclos_server_url
+msgid "Url for cyclos server"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_config_settings__cyclos_server_url
+msgid "Url for cyclos serveur"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model,name:lcc_cyclos_base.model_res_users
+msgid "Users"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model_terms:ir.ui.view,arch_db:lcc_cyclos_base.lcc_backend_cyclos_form_view
+msgid "Validate Cyclos Wallet"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:product.product,weight_uom_name:lcc_cyclos_base.product_product_cyclos
+#: model:product.template,weight_uom_name:lcc_cyclos_base.product_product_cyclos_product_template
+msgid "kg"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model,name:lcc_cyclos_base.model_res_partner_backend
+msgid "res.partner.backend"
+msgstr ""
+
