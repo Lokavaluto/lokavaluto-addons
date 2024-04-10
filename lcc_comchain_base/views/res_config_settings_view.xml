@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_comchain" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.comchain</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="99" />
+        <field name="inherit_id"
+            ref="lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='backend_general_settings']" position="after">
+                <h2>Comchain service configuration</h2>
+                <div class="row mt16 o_settings_container" id="comchain_selection_settings">
+                    <div class="col-12 col-lg-6 o_setting_box" id="comchain_currency_name">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Comchain currency name</span>
+                            <div class="text-muted">
+                                <field name="comchain_currency_name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box"
+                        id="comchain_activate_automatic_topup"
+                        attrs="{'invisible': [('activate_automatic_topup', '=', False)]}">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <div>
+                                <label for="message_from" class="o_light_label" />
+                                <field name="message_from" />
+                            </div>
+                            <div>
+                                <label for="message_to" class="o_light_label" />
+                                <field name="message_to" />
+                            </div>
+                            <div class="text-muted">
+                                Select the partners linked to the Safe and Odoo wallets. The
+                                name of these partners will be displayed as the sender of the
+                                top-up.
+                            </div>
+                            <div>
+                                <label for="safe_wallet_partner_id" class="o_light_label" />
+                                <field name="safe_wallet_partner_id"
+                                    placeholder="Select partner linked to safe wallet." />
+                            </div>
+                            <div>
+                                <label for="odoo_wallet_partner_id" class="o_light_label" />
+                                <field name="odoo_wallet_partner_id"
+                                    placeholder="Select partner linked to Odoo wallet." />
+                            </div>
+                            <div>
+                                <label for="comchain_odoo_wallet_password" class="o_light_label" />
+                                <field name="comchain_odoo_wallet_password" password="True" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
