@@ -1,0 +1,97 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* l10n_fr_lcc_members
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-09 13:44+0000\n"
+"PO-Revision-Date: 2022-05-09 13:44+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "<strong>Invoice Date:</strong>"
+msgstr "<strong>Date de la facture :</strong>"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "<strong>Receipt Date:</strong>"
+msgstr "<strong>Date du reçu:</strong>"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Cancelled Invoice"
+msgstr "Facture annulée"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Cancelled Receipt"
+msgstr "Reçu annulé"
+
+#. module: l10n_fr_lcc_members
+#: model:ir.model,name:l10n_fr_lcc_members.model_res_partner
+msgid "Contact"
+msgstr "Contact"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Credit Note"
+msgstr "Avoir"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Draft Invoice"
+msgstr "Facture en brouillon"
+
+#. module: l10n_fr_lcc_members
+#: code:addons/l10n_fr_lcc_members/models/account_invoice.py:17
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+#, python-format
+msgid "Draft Receipt"
+msgstr "Reçu Brouillon"
+
+#. module: l10n_fr_lcc_members
+#: model:ir.model,name:l10n_fr_lcc_members.model_account_invoice
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: l10n_fr_lcc_members
+#: model:ir.model,name:l10n_fr_lcc_members.model_account_journal
+msgid "Journal"
+msgstr "Journal"
+
+#. module: l10n_fr_lcc_members
+#: model:ir.model.fields,field_description:l10n_fr_lcc_members.field_account_bank_statement_import_journal_creation__is_receipt
+#: model:ir.model.fields,field_description:l10n_fr_lcc_members.field_account_journal__is_receipt
+msgid "Print Receipt"
+msgstr "Imprimer un reçu"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Receipt"
+msgstr "Reçu"
+
+#. module: l10n_fr_lcc_members
+#: code:addons/l10n_fr_lcc_members/models/account_invoice.py:20
+#, python-format
+msgid "Receipt - %s"
+msgstr "Reçu - %s"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Vendor Bill"
+msgstr "Facture fournisseur"
+
+#. module: l10n_fr_lcc_members
+#: model_terms:ir.ui.view,arch_db:l10n_fr_lcc_members.report_invoice_document_inherit_sale
+msgid "Vendor Credit Note"
+msgstr "Avoir de fournisseur"
+
