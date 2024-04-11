@@ -1,0 +1,52 @@
+# l10n_fr_lcc_members
+
+Module add some default setup for french lcc company
+
+## Installation
+
+Just install l10n_fr_lcc_members, all dependencies will be installed by default.
+
+## Configuration
+
+No configuration needed on this addon.
+
+## Usage
+
+Details TODO
+
+## Known issues / Roadmap
+
+## Bug Tracker
+
+Bugs are tracked on `GitHub Issues
+<https://github.com/Lokavaluto/lokavaluto-addons/issues>`_. In case of trouble, please
+check there if your issue has already been reported. If you spotted it first,
+help us smashing it by providing a detailed and welcomed feedback.
+
+## Credits
+
+### Images
+
+* Lokavaluto: `Icon <https://lokavaluto.fr/web/image/res.company/1/logo?unique=f3db262>`_.
+
+### Contributors
+
+* Boris GALET <https://github.com/b0g>
+* Stéphan SAINLEGER <https://github.com/stephansainleger>
+* Nicolas JEUDY <https://github.com/njeudy>
+* Lokavaluto Teams
+
+### Funders
+
+The development of this module has been financially supported by:
+
+* Lokavaluto (https://lokavaluto.fr)
+* Mycéliandre (https://myceliandre.fr)
+* Elabore (https://elabore.coop)
+
+### Maintainer
+
+This module is maintained by LOKAVALUTO.
+
+LOKAVALUTO, is a nonprofit organization whose
+mission is to support the collaborative development of Odoo features and ecosystem for local complementary currency organizations.
