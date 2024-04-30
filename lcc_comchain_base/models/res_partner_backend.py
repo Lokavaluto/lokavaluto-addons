@@ -155,7 +155,7 @@ class ResPartnerBackend(models.Model):
             }
 
         transaction = pyc3l.Transaction(response)
-        if transaction.data["recieved"] != amount * 100:
+        if transaction.data["recieved"] != round(amount * 100):
             return {
                 "success": False,
                 "response": response,
