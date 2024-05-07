@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_column_width" name="Portal My Home: Column width" inherit_id="portal.portal_layout" priority="40">
+        <xpath expr="//div[hasclass('justify-content-between')]//div[1]" position="attributes">
+            <attribute name="t-attf-class">col-12 col-md col-lg-8</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_registration_menu" name="Portal My Home: Registration Menu" inherit_id="partner_profiles_portal.portal_my_home_profile_menu" priority="40">
+        <xpath expr="//div[hasclass('o_portal_my_details')]" position="inside">
+            <br />
+            <h4>Registration options</h4>
+            <hr class="mt-1 mb-0" />
+            <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled'" class="mb8">
+                <span>
+                    <b>Membership state: </b>
+                    <i>Non-member</i>
+                </span>
+            </div>
+            <div t-if="user_id.partner_id.membership_state == 'old'" class="mb8">
+                <span>
+                    <b>Membership state: </b>
+                    <i>Old member</i>
+                </span>
+            </div>
+            <div t-if="user_id.partner_id.membership_state == 'waiting' or user_id.partner_id.membership_state == 'invoiced'" class="mb8">
+                <span>
+                    <b>Membership state: </b>
+                    <i>Pending membership</i>
+                </span>
+            </div>
+            <div t-if="user_id.partner_id.membership_state == 'free' or user_id.partner_id.membership_state == 'paid'" class="mb8">
+                <span>
+                    <b>Membership state: </b>
+                    <i>Up to date member</i>
+                </span>
+            </div>
+            <div t-if="not user_id.partner_id.is_company">
+                <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled' or user_id.partner_id.membership_state == 'old'">
+                    <a t-attf-href="/my/private_registration">
+                        <button class="btn btn-primary mb8">
+                            Register as a person
+                        </button>
+                    </a>
+                </div>
+                <a t-attf-href="/my/organization_registration">
+                    <button class="btn btn-primary mb8">
+                        Apply for your structure membership
+                    </button>
+                </a>
+                <a t-attf-href="/my/affiliation_request">
+                    <button class="btn btn-primary mb8">
+                        Ask for an affiliation
+                    </button>
+                </a>
+            </div>
+            <div t-if="user_id.partner_id.is_company">
+                <div t-if="user_id.partner_id.membership_state == 'none' or user_id.partner_id.membership_state == 'canceled' or user_id.partner_id.membership_state == 'old'">
+                    <a t-attf-href="/my/organization_renewal">
+                        <button class="btn btn-primary mb32">
+                            Renew subscription
+                            <span class="fa fa-arrow-right" />
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

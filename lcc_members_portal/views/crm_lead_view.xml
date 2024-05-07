@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_oppor_view_form_lcc_registration" model="ir.ui.view">
+        <field name="name">crm.oppor.form.lcc.registration</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="lead_type" invisible="1" />
+                <field name="application_accepted" invisible="1" />
+                <field name="application_refused" invisible="1" />
+                <field name="affiliation_accepted" invisible="1" />
+                <field name="affiliation_refused" invisible="1" />
+                <field name="renewal_accepted" invisible="1" />
+                <field name="renewal_refused" invisible="1" />
+                <button name="action_validate_organization_application"
+                    string="Validate Application" type="object" class="oe_highlight"
+                    attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'membership_web_application'), '|', ('application_accepted', '=', True), ('application_refused', '=', True)]}" />
+                <button name="action_refuse_organization_application" string="Refuse Application"
+                    type="object" class="oe_highlight"
+                    attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'membership_web_application'), '|', ('application_refused', '=', True), ('application_accepted', '=', True)]}" />
+                <button name="action_validate_affiliation_request" string="Validate Affiliation"
+                    type="object" class="oe_highlight"
+                    attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'affiliation_request'), '|', ('affiliation_accepted', '=', True), ('affiliation_refused', '=', True)]}" />
+                <button name="action_refuse_affiliation_request" string="Refuse Affiliation"
+                    type="object" class="oe_highlight"
+                    attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'affiliation_request'), '|', ('affiliation_refused', '=', True), ('affiliation_accepted', '=', True)]}" />
+                <button name="action_validate_renewal_request" string="Validate Renewal"
+                    type="object" class="oe_highlight"
+                    attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'renewal_request'), '|', ('renewal_accepted', '=', True), ('renewal_refused', '=', True)]}" />
+                <button name="action_refuse_renewal_request" string="Refuse Renewal" type="object"
+                    class="oe_highlight"
+                    attrs="{'invisible': ['|', ('active','=',False), '|', ('lead_type', '!=', 'renewal_request'), '|', ('renewal_refused', '=', True), ('renewal_accepted', '=', True)]}" />
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <div attrs="{'invisible': [('application_accepted', '=', False )]}"
+                    class="bg-success">
+                    <p>
+                        Application accepted
+                    </p>
+                </div>
+                <div attrs="{'invisible': [('application_refused', '=', False )]}" class="bg-danger">
+                    <p>
+                        Application refused
+                    </p>
+                </div>
+                <div attrs="{'invisible': [('affiliation_accepted', '=', False )]}"
+                    class="bg-success">
+                    <p>
+                        Affiliation accepted
+                    </p>
+                </div>
+                <div attrs="{'invisible': [('affiliation_refused', '=', False )]}" class="bg-danger">
+                    <p>
+                        Affiliation refused
+                    </p>
+                </div>
+                <div attrs="{'invisible': [('renewal_accepted', '=', False )]}" class="bg-success">
+                    <p>
+                        Renewal accepted
+                    </p>
+                </div>
+                <div attrs="{'invisible': [('renewal_refused', '=', False )]}" class="bg-danger">
+                    <p>
+                        Renewal refused
+                    </p>
+                </div>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="organisation_registration" string="Organisation Registration"
+                    attrs="{'invisible': [('lead_type','!=','membership_web_application')]}">
+                    <group>
+                        <group string="Organization Contact Information">
+                            <field name="company_name" />
+                            <field name="business_name" />
+                            <label for="street" string="Address" />
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..."
+                                    class="o_address_street" />
+                                <field name="street2" placeholder="Street 2..."
+                                    class="o_address_street" />
+                                <field name="city" placeholder="City" class="o_address_city" />
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                    options='{"no_open": True}' />
+                                <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                                <field name="country_id" placeholder="Country"
+                                    class="o_address_country"
+                                    options='{"no_open": True, "no_create": True}' />
+                            </div>
+                            <field name="company_email" />
+                            <field name="phone" />
+                            <field name="website" widget="url"
+                                placeholder="e.g. https://www.odoo.com" />
+                        </group>
+                        <group name="organization_description" string="Organization Description">
+                            <field name="website_description" />
+                        </group>
+                        <group name="organization_information" string="Organization Information">
+                            <field name="industry_id" />
+                            <field name="detailed_activity" />
+                            <field name="reasons_choosing_mlc" />
+                            <field name="opening_time" />
+                            <field name="discount" />
+                            <field name="accept_digital_currency" />
+                            <field name="accept_coupons" />
+                            <field name="itinerant" />
+                        </group>
+                        <group name="membership_information" string="Membership Information">
+                            <field name="team_id" string="Local Group" />
+                            <field name="membership_product_id"
+                                options="{'create': false, 'create_edit': false}"
+                                attrs="{'required': [('lead_type', '=', 'membership_web_application')]}" />
+                            <field name="total_membership" />
+                            <field name="refuse_numeric_wallet_creation" />
+                            <field name="want_newsletter_subscription" />
+                            <field name="accept_policy" />
+                            <field name="invoice_url"
+                                attrs="{'invisible': [('application_accepted', '=', False)]}"
+                                widget='url' />
+                        </group>
+                        <group name="organization_contact" string="Organization's Contact">
+                            <field name="from_website" invisible="1" />
+                            <field name="contact_name" />
+                            <field name="function" />
+                            <field name="email_pro" widget="email" />
+                            <field name="phone_pro" widget="phone" />
+                            <field name="mobile" invisible="1" />
+                        </group>
+                        <group name="registration_candidate_message" string="Candidate message">
+                            <field name="message_from_candidate" />
+                        </group>
+                    </group>
+                </page>
+                <page name="renewal_request" string="Renewal Request"
+                    attrs="{'invisible': [('lead_type','!=','renewal_request')]}">
+                    <group>
+                        <group string="Organization Contact Information">
+                            <field name="company_name" />
+                            <field name="business_name" />
+                            <label for="street" string="Address" />
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..."
+                                    class="o_address_street" />
+                                <field name="street2" placeholder="Street 2..."
+                                    class="o_address_street" />
+                                <field name="city" placeholder="City" class="o_address_city" />
+                                <field name="state_id" class="o_address_state" placeholder="State"
+                                    options='{"no_open": True}' />
+                                <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                            </div>
+                            <field name="company_email" />
+                            <field name="phone" />
+                            <field name="website" widget="url"
+                                placeholder="e.g. https://www.odoo.com" />
+                        </group>
+                        <group name="organization_description" string="Organization Description">
+                            <field name="website_description" />
+                        </group>
+                        <group name="organization_information" string="Organization Information">
+                            <field name="industry_id" />
+                            <field name="detailed_activity" />
+                            <field name="opening_time" />
+                            <field name="discount" />
+                            <field name="accept_digital_currency" />
+                            <field name="accept_coupons" />
+                            <field name="itinerant" />
+                        </group>
+                        <group name="membership_information" string="Membership Information">
+                            <field name="membership_product_id"
+                                options="{'create': false, 'create_edit': false}"
+                                attrs="{'required': [('lead_type', '=', 'renewal_request')]}" />
+                            <field name="total_membership" />
+                            <field name="want_newsletter_subscription" />
+                            <field name="accept_policy" />
+                            <field name="invoice_url"
+                                attrs="{'invisible': [('renewal_accepted', '=', False)]}"
+                                widget='url' />
+                        </group>
+                        <group name="registration_candidate_message" string="Candidate message">
+                            <field name="message_from_candidate" />
+                        </group>
+                    </group>
+                </page>
+                <page name="affiliation_request" string="Affiliation Request"
+                    attrs="{'invisible': [('lead_type','!=','affiliation_request')]}">
+                    <group name="company_affiliation">
+                        <field name="company_name" string="Organization requested" />
+                        <field name="affiliated_company" widget="res_partner_many2one"
+                            options="{'no_quick_create': True, 'no_create_edit' : True}" />
+                    </group>
+                    <group name="affiliation_details">
+                        <group name="affiliation_contact" string="Organization's Contact">
+                            <field name="contact_name" />
+                            <field name="function" />
+                            <field name="phone_pro" widget="phone" />
+                        </group>
+                        <group name="access_rights" string="Access Rights">
+                            <field name="edit_structure_profiles" />
+                        </group>
+                        <group name="affiliation_candidate_message" string="Candidate message">
+                            <field name="message_from_candidate" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="crm_opportunity_lcc_filter">
+        <field name="name">crm.opportunity.lcc.filter</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter" />
+        <field name="arch" type="xml">
+            <filter name="open_opportunities" position="after">
+                <separator />
+                <filter string="New applications" name="new_applications"
+                    domain="[('lead_type', '=', 'membership_web_application')]" />
+                <filter string="Renewals" name="renewals"
+                    domain="[('lead_type', '=', 'renewal_request')]" />
+                <filter string="Affiliations" name="affiliations"
+                    domain="[('lead_type', '=', 'affiliation_request')]" />
+            </filter>
+        </field>
+    </record>
+</odoo>
