@@ -1,0 +1,957 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* lcc_members_portal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-07 16:37+0000\n"
+"PO-Revision-Date: 2023-03-07 16:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_details_lcc
+msgid "<small>- Modification causes log out. Sign in just after!</small>"
+msgstr "<small>- Une reconnexion sera demandée après la modification de ce champs.</small>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Non-member</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Non adhérent</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Old member</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Ancien adhérent</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Pending membership</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Adhésion en cours</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "<span>\n"
+"                    <b>Membership state: </b>\n"
+"                    <i>Up to date member</i>\n"
+"                </span>"
+msgstr "<span>\n"
+"                    <b>État d'adhésion : </b>\n"
+"                    <i>Adhésion à jour</i>\n"
+"                </span>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Any additional information?"
+msgstr "Avez-vous des informations complémentaires à nous transmettre?"
+
+#. module: lcc_members_portal
+#: model:crm.lead.tag,name:lcc_members_portal.categ_oppor_affiliation
+msgid "AFFILIATION"
+msgstr ""
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:77
+#, python-format
+msgid "Accept LCC Policy"
+msgstr "Accepter les Conditions Générales d'Utilisation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Accept Policy"
+msgstr "Accepter les Conditions Générales d'Utilisation"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:69
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+#, python-format
+msgid "Accept coupons"
+msgstr "Accepte les coupons"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:68
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+#, python-format
+msgid "Accept digital currency"
+msgstr "Accepte la monnaie numérique"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Access Rights"
+msgstr "Droits d'accès"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+msgid "Access rights"
+msgstr "Droits d'accès"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Activity..."
+msgstr "Activités..."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Address"
+msgstr "Adresse"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__affiliated_company
+msgid "Affiliated organization"
+msgstr "Organisation affiliée"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__affiliation_accepted
+msgid "Affiliation Accepted"
+msgstr "Affiliation Acceptée"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__affiliation_refused
+msgid "Affiliation Refused"
+msgstr "Affiliation Réfusée"
+
+#. module: lcc_members_portal
+#: selection:crm.lead,lead_type:0
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+msgid "Affiliation Request"
+msgstr "Demande d'Affiliation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+msgid "Affiliation Request Form"
+msgstr "Formulaire de requête d'affiliation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request_saved
+msgid "Affiliation Request Saved"
+msgstr "Demande d'affiliation enregistrée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request_saved
+msgid "Affiliation Request sent"
+msgstr "Requête d'affiliation envoyée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Affiliation accepted"
+msgstr "Affiliation acceptée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Affiliation refused"
+msgstr "Affiliation refusée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_opportunity_lcc_filter
+msgid "Affiliations"
+msgstr "Demandes d'affiliation"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__application_accepted
+msgid "Application Accepted"
+msgstr "Adhésion Acceptée"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__application_refused
+msgid "Application Refused"
+msgstr "Adhésion Refusée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Application accepted"
+msgstr "Adhésion acceptée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Application refused"
+msgstr "Adhésion refusée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "Apply for your structure membership"
+msgstr "Candidater pour l'adhésion de votre structure"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "Ask for an affiliation"
+msgstr "Demander une affiliation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration_saved
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request_saved
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration_saved
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal_saved
+msgid "Back to Home page <span class=\"fa fa-long-arrow-right\"/>"
+msgstr "Retour à l'accueil <span class=\"fa fa-long-arrow-right\"/>"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:60
+#, python-format
+msgid "Business Name"
+msgstr "Nom commercial"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Candidate message"
+msgstr "Message du candidat"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "City"
+msgstr "Ville"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:59
+#, python-format
+msgid "Commercial Company Name"
+msgstr "Nom commercial"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Commercial Name"
+msgstr "Nom commercial"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:58
+#, python-format
+msgid "Company Name"
+msgstr "Nom de la société"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Contact information"
+msgstr "Coordonnées"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Country"
+msgstr "Pays"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Country..."
+msgstr "Pays..."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Description"
+msgstr ""
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:64
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+#, python-format
+msgid "Detailed activity"
+msgstr "Activités détaillées"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:67
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+#, python-format
+msgid "Discount"
+msgstr "Promotion"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:62
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+#, python-format
+msgid "Email"
+msgstr "Courriel"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:71
+#, python-format
+msgid "Email Pro"
+msgstr "Email pro"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__email_pro
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Email pro"
+msgstr ""
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "First Name"
+msgstr "Prénom"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__from_website
+msgid "From Website"
+msgstr "Depuis le site web"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Gender"
+msgstr "Genre"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+msgid "I wish to manage the organization profiles"
+msgstr "Je souhaite gérer les informations de ma structure"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:91
+#, python-format
+msgid "Invoice link"
+msgstr "Lien vers la facture"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:70
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+#, python-format
+msgid "Itinerant"
+msgstr "Itinérant"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:72
+#, python-format
+msgid "Job Position"
+msgstr "Poste Occupé"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Job position"
+msgstr "Poste occupé"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Last Name"
+msgstr "Nom de famille"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__lead_type
+msgid "Lead Type"
+msgstr "Type d'opportunité"
+
+#. module: lcc_members_portal
+#: model:ir.model,name:lcc_members_portal.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Piste/opportunité"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Legal Name"
+msgstr "Nom légal"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Local Group"
+msgstr "Groupe Local"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Local group"
+msgstr "Groupe Local"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Local group..."
+msgstr "Groupe Local..."
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:63
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+#, python-format
+msgid "Main activity"
+msgstr "Activité principale"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:79
+#, python-format
+msgid "Manage the structure's profiles"
+msgstr "Gère les informations de la structure"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Membership Information"
+msgstr "Informations d'adhésion"
+
+#. module: lcc_members_portal
+#: selection:crm.lead,lead_type:0
+msgid "Membership Web Application"
+msgstr "Demande d'adhésion"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:84
+#, python-format
+msgid "Membership amount"
+msgstr "Montant de l'adhésion"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Membership information"
+msgstr "Information d'adhésion"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:88
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#, python-format
+msgid "Membership product"
+msgstr "Article d'adhésion"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:85
+#, python-format
+msgid "Message from the candidate"
+msgstr "Message du l'adhérent"
+
+#. module: lcc_members_portal
+#: selection:crm.lead,lead_type:0
+msgid "Miscellenaous"
+msgstr "Divers"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Mobile"
+msgstr "Portable"
+
+#. module: lcc_members_portal
+#: model:crm.lead.tag,name:lcc_members_portal.categ_oppor_application
+msgid "NEW APPLICATION"
+msgstr "NOUVELLE CANDIDATURE"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Name"
+msgstr "Nom"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_opportunity_lcc_filter
+msgid "New applications"
+msgstr "Nouvelles candidatures"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:66
+#, python-format
+msgid "Opening Time"
+msgstr "Horaires d'ouverture"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Opening time"
+msgstr "Horaires d'ouverture"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+msgid "Organisation Name"
+msgstr "Nom de l'organisation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Organisation Registration"
+msgstr "Adhésion de structure"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Organization Contact Information"
+msgstr "Informations de contact pour l'organisation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Organization Contact information"
+msgstr "Information du contact de la structure"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Organization Description"
+msgstr "Description de l'organisation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Organization Information"
+msgstr "Informations de l'organisation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal_saved
+msgid "Organization Renewal"
+msgstr "Renouvellement d'une organisation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Organization information"
+msgstr "Information sur la structure"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Organization registration Form"
+msgstr "Formulaire d'adhésion de structure"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+msgid "Organization renewal Form"
+msgstr "Formulaire de renouvellement d'adhésion"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Organization requested"
+msgstr "Organisation demandée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Organization's Contact"
+msgstr "Contact de l'organisation"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/controllers/auth_signup.py:39
+#, python-format
+msgid "Passwords do not match; please retype them."
+msgstr "Les mots de passe ne correspondent pas, veuillez ré-essayer."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:73
+#, python-format
+msgid "Phone Pro"
+msgstr "Téléphone Professionnel"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+msgid "Please check your information, and change what needs to be changed."
+msgstr "Merci de vérifier les informations et de corriger le nécessaire."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration_saved
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Private Registration"
+msgstr "Adhésion particulier"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Private registration Form"
+msgstr "Formumaire d'adhésion des particuliers"
+
+#. module: lcc_members_portal
+#: model:ir.model,name:lcc_members_portal.model_product_template
+msgid "Product Template"
+msgstr "Modèle d'article"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Product..."
+msgstr "Produit..."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+msgid "Professional email"
+msgstr "Email profesionnel"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Professional phone"
+msgstr "Téléphone Professionnel"
+
+#. module: lcc_members_portal
+#: model:crm.lead.tag,name:lcc_members_portal.categ_oppor_renewal
+msgid "RENEWAL"
+msgstr "RENOUVELLEMENT"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Refuse Affiliation"
+msgstr "Refuser l'affiliation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Refuse Application"
+msgstr "Refuser l'adhésion"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Refuse Renewal"
+msgstr "Refuser le renouvellement"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "Register as a person"
+msgstr "Adhésion personnelle"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Registration fee amount"
+msgstr "Montant de l'adhésion"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "Registration options"
+msgstr "Options d'adhésion"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration_saved
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration_saved
+msgid "Registration sent"
+msgstr "Demande d'adhésion envoyée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_my_home_registration_menu
+msgid "Renew subscription\n"
+"                            <span class=\"fa fa-arrow-right\"/>"
+msgstr "Renouveler l'adhésion\n"
+"                            <span class=\"fa fa-arrow-right\"/>"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__renewal_accepted
+msgid "Renewal Accepted"
+msgstr "Renouvellement accepté"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_crm_lead__renewal_refused
+msgid "Renewal Refused"
+msgstr "Renouvellement refusé"
+
+#. module: lcc_members_portal
+#: selection:crm.lead,lead_type:0
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Renewal Request"
+msgstr "Renouvellement"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Renewal accepted"
+msgstr "Renouvellement accepté"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Renewal refused"
+msgstr "Renouvellement refusé"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal_saved
+msgid "Renewal request sent"
+msgstr "Demande de renouvellement envoyée"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_opportunity_lcc_filter
+msgid "Renewals"
+msgstr "Renouvellements"
+
+#. module: lcc_members_portal
+#: model:ir.model,name:lcc_members_portal.model_sale_order
+msgid "Sale Order"
+msgstr "Bon de commande"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "State"
+msgstr "État"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Street"
+msgstr "Rue"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Street 2"
+msgstr "Rue 2"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Street 2..."
+msgstr "Rue 2 ..."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Street..."
+msgstr "Rue.."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Submit<span class=\"fa fa-long-arrow-right\"/>"
+msgstr "Envoyer<span class=\"fa fa-long-arrow-right\"/>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Subscribe to our newsletters"
+msgstr "S'inscrire à l'Infolettre"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Subscription reason"
+msgstr "Raison de l'inscription"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration_saved
+msgid "Thanks for applying! <br/> Your membership application has been saved\n"
+"                            and will be assessed by our team. <br/> You will be contacted soon. <br/>"
+msgstr "Merci pour votre demande !<br/>Votre demande d'adhésion a bien été prise en compte,\n"
+"                            et sera traitée par notre équipe.<br/>Vous serez contacté rapidement.<br/>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration_saved
+msgid "Thanks for applying! <br/> Your membership application has been saved and\n"
+"                        will be assessed by our team. <br/> You will be contacted soon. <br/>"
+msgstr "Merci pour votre demande !<br/>Votre demande d'adhésion a bien été prise en compte,\n"
+"                            et sera traitée par notre équipe.<br/>Vous serez contacté rapidement.<br/>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal_saved
+msgid "Thanks for renewing your membership! <br/> Your will receive soon a email\n"
+"                        with a link to complete the renewing process. <br/>"
+msgstr "Merci pour votre renouvellement !<br/>Vous recevrez rapidement un email\n"
+"                        avec le lien pour compléter la procédure de renouvellement.<br/>"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request_saved
+msgid "Thanks for your request! <br/>\n"
+"                        <br/> Your affiliation request has been\n"
+"                        saved and will be assessed by our team. <br/> You will be contacted soon. <br/>"
+msgstr "Merci pour votre demande !<br/>\n"
+"                        <br/> Votre demande d'affiliation a bien été prise en compte,\n"
+"                        et sera traitée par notre équipe.<br/> Vous serez contacté rapidement.<br/>"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/controllers/auth_signup.py:37
+#, python-format
+msgid "The form was not properly filled in."
+msgstr "Le formulaire n'a pas été rempli correctement"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/sale_order.py:23
+#, python-format
+msgid "The given combination does not exist therefore it cannot be added to cart. No membership product found !:\n"
+"                    Please verify that membership product exist and is checked as 'use in portal'\n"
+"                    "
+msgstr "Nous ne trouvons pas d'information permettant de valider votre panier. Pas de produit d'adhésion trouvé !:\n"
+"                    Merci de vérifier que les produits d'adhésion sont crées, et sont cochés \"use in portal\"\n"
+"                    "
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+msgid "Title..."
+msgstr "Titre..."
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_product_product__dynamic_price
+#: model:ir.model.fields,field_description:lcc_members_portal.field_product_template__dynamic_price
+msgid "Use dynamic price ?"
+msgstr "Prix en conscience"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_product_product__portal_organization_registration_product
+#: model:ir.model.fields,field_description:lcc_members_portal.field_product_template__portal_organization_registration_product
+msgid "Use for portal organization registration"
+msgstr "Utilisé pour l'adhésion pro via la portail"
+
+#. module: lcc_members_portal
+#: model:ir.model.fields,field_description:lcc_members_portal.field_product_product__portal_private_registration_product
+#: model:ir.model.fields,field_description:lcc_members_portal.field_product_template__portal_private_registration_product
+msgid "Use for portal private registration"
+msgstr "Utilisé pour l'adhésion Particulier dans le portail"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Validate Affiliation"
+msgstr "Valider l'affiliation"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Validate Application"
+msgstr "Valider la demande"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "Validate Renewal"
+msgstr "Valider le renouvellement"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:75
+#, python-format
+msgid "Want Newsletters Subscription"
+msgstr "Veux souscrire à l'Infolettre"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Website"
+msgstr "Site Web"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:61
+#, python-format
+msgid "Website Description"
+msgstr "Description sur le site WEB"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "What is your organization?"
+msgstr "Quelle est votre structure ?"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Who are you?"
+msgstr "Qui êtes-vous ?"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:65
+#, python-format
+msgid "Why did I choose local currency"
+msgstr "Pourquoi j'ai choisi la monnaie locale ?"
+
+#. module: lcc_members_portal
+#: code:addons/lcc_members_portal/models/crm_lead.py:294
+#, python-format
+msgid "You must indicate an Affiliated Organization in order to link it to the user.\n"
+"\n"
+"If the organization doesn't exist in Odoo, please refuse the affiliation request\n"
+" and ask the user to make its organization apply for membership."
+msgstr "Vous devez indiquer une Organisation affiliée pour faire le lien avec l'utilisateur.\n"
+"\n"
+"Si l'organisation n'existe pas dans Odoo, veuillez refuser la demande d'affiliation\n"
+" et demander à l'utilisateur de faire adhérer son organisation."
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.auth_signup_lcc_fields
+msgid "Your Firstname"
+msgstr "Votre prénom"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.auth_signup_lcc_fields
+msgid "Your Lastname"
+msgstr "Votre nom"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_affiliation_request
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+msgid "Your position in the organisation"
+msgstr "Votre fonction dans la structure"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "ZIP"
+msgstr "Code postal"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_organization_renewal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.portal_private_registration
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.website_organization_registration
+msgid "Zip / Postal Code"
+msgstr "Code postal"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.auth_signup_lcc_fields
+msgid "e.g. Doe"
+msgstr "ex: Doe"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.auth_signup_lcc_fields
+msgid "e.g. John"
+msgstr "ex: John"
+
+#. module: lcc_members_portal
+#: model_terms:ir.ui.view,arch_db:lcc_members_portal.crm_oppor_view_form_lcc_registration
+msgid "e.g. https://www.odoo.com"
+msgstr "e.x. https://www.odoo.com"
+

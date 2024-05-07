@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_affiliation_request" name="Portal: Affiliation Request">
+        <t t-call="portal.portal_layout">
+            <!-- <t t-set="breadcrumbs_searchbar" t-value="True" /> -->
+            <t t-set="additional_title">Affiliation Request</t>
+            <form action="/affiliation/send_request" method="post">
+                <div class="oe_structure" id="oe_structure_portal_affiliation_request_1" />
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <br />
+                <h3>Affiliation Request Form</h3>
+                <br />
+                <h4>What is your organization?</h4>
+                <div class="row">
+                    <div
+                        t-attf-class="form-group #{error.get('company_name') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="company_name">Organisation Name</label>
+                        <label class="text-danger"> *</label>
+                        <input type="text" name="company_name"
+                            t-attf-class="form-control #{error.get('company_name') and 'is-invalid' or ''}"
+                            t-att-value="company_name" required="True" />
+                    </div>
+                </div>
+                <br />
+                <h4>Your position in the organisation</h4>
+                <div class="row">
+                    <div
+                        t-attf-class="form-group #{error.get('function') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="function">Job position</label>
+                        <label class="text-danger"> *</label>
+                        <input type="text" name="function"
+                            t-attf-class="form-control #{error.get('function') and 'is-invalid' or ''}"
+                            t-att-value="function" required="True" />
+                    </div>
+                    <div
+                        t-attf-class="form-group #{error.get('phone_pro') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="phone_pro">Professional phone</label>
+                        <input type="text" name="phone_pro"
+                            t-attf-class="form-control #{error.get('phone_pro') and 'is-invalid' or ''}"
+                            t-att-value="phone_pro" />
+                    </div>
+                </div>
+                <br />
+                <h4>Access rights</h4>
+                <div class="row">
+                    <div>
+                        <div
+                            t-attf-class="form-group #{(error.get('manage_main_profile') or error.get('accept_digital_currency')) and 'o_has_error' or ''} col-xl-12">
+                            <input type="checkbox" name="manage_structure_profiles"
+                                t-att-checked="manage_main_profile" />
+                            <label class="col-form-label" for="manage_structure_profiles">
+                                I wish to manage the organization profiles</label>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <h4>Any additional information?</h4>
+                <div class="row">
+                    <div
+                        t-attf-class="form-group #{error.get('message_from_candidate') and 'o_has_error' or ''} col-xl-12">
+                        <textarea rows="4" name="message_from_candidate"
+                            t-attf-class="form-control #{error.get('message_from_candidate') and 'is-invalid' or ''}"
+                            t-att-value="message_from_candidate" />
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <br />
+                    <button type="submit" class="btn btn-primary float-right mb32 ">Submit<span
+                            class="fa fa-long-arrow-right" />
+                    </button>
+                </div>
+                <div class="oe_structure" id="oe_structure_portal_affiliation_request_2" />
+            </form>
+        </t>
+    </template>
+
+
+    <template id="portal_affiliation_request_saved" name="Portal: Affiliation Request Saved">
+        <t t-call="portal.portal_layout">
+            <!-- <t t-set="breadcrumbs_searchbar" t-value="True" /> -->
+            <t t-set="additional_title">Affiliation Request Saved</t>
+            <form action="/my/home" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <br />
+                <h3>Affiliation Request sent</h3>
+                <div>
+                    <p> Thanks for your request! <br />
+                        <br /> Your affiliation request has been
+                        saved and will be assessed by our team. <br /> You will be contacted soon. <br />
+                    </p>
+                </div>
+                <div class="clearfix">
+                    <br />
+                    <button type="submit"
+                        class="btn btn-primary float-right mb32 ">Back to Home page <span
+                            class="fa fa-long-arrow-right" />
+                    </button>
+                </div>
+            </form>
+        </t>
+    </template>
+</odoo>
