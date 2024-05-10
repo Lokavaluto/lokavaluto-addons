@@ -85,6 +85,17 @@ class NewRestApiDispatcher(http.RestApiDispatcher):
             return http.wrapJsonException(http.Unauthorized(http.ustr(exception)), extra_info=extra_info)
         return super().handle_error(exception)
 
+    ##
+    ## For querystring parameter when in GET methods, we need to parse the
+    ## query string and update the request.params with the parsed values.
+    ##
+    def pre_dispatch(self, rule, args):
+        res = super().pre_dispatch(rule, args)
+        if self.request.httprequest.method == "GET":
+            self.request.params.update(
+                pyquerystring.parse(self.request.httprequest.query_string.decode("utf-8"))
+            )
+        return res
 
 http.RestApiDispatcher = NewRestApiDispatcher
 
