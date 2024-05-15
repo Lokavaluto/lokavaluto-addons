@@ -1,0 +1,156 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lcc_fss_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-11 10:24+0000\n"
+"PO-Revision-Date: 2024-06-11 10:24+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lcc_fss_base
+#: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
+msgid "Alors"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__annual_sales
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__annual_sales
+msgid "Annual Sales (€)"
+msgstr "Chiffre d’affaires annuel (€)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__annual_sales_year
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__annual_sales_year
+msgid "Annual sales year"
+msgstr "Année du chiffre d’affaires"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__arrival_date_territory
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__arrival_date_territory
+msgid "Arrival Date in the territory"
+msgstr "Date d’arrivée sur le territoire"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__birth_year
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__birth_year
+msgid "Birth Year"
+msgstr "Année de naissance"
+
+#. module: lcc_fss_base
+#: model:ir.model,name:lcc_fss_base.model_res_partner
+msgid "Contact"
+msgstr "Contact"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__contribution
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__contribution
+msgid "Contribution of point of sales (€/month)"
+msgstr "Cotisation du point de vente (€/mois)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__employer_id
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__employer_id
+msgid "Employer"
+msgstr "Employeur"
+
+#. module: lcc_fss_base
+#: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
+msgid "FSS Point of sale informations"
+msgstr "Informations pour la SSA"
+
+#. module: lcc_fss_base
+#: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
+msgid "FSS data to compute credit amount"
+msgstr "Données nécessaires pour calculer la cotisation SSA"
+
+#. module: lcc_fss_base
+#: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
+msgid "FSS experimentation evaluation data"
+msgstr "Données nécessaires pour évaluer l’expérimentation SSA"
+
+#. module: lcc_fss_base
+#: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
+msgid "Household composition"
+msgstr "Composition du foyer"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__housing_status
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__housing_status
+msgid "Housing Status"
+msgstr "Statut d'occupation du logement"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__monthly_household_income
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__monthly_household_income
+msgid "Monthly Household Income (€)"
+msgstr "Revenus mensuels du foyer (€)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_composition_adults
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_composition_adults
+msgid "Number of Adults (+18 years)"
+msgstr "Nombre d’adultes (+18 ans)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_composition_children
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_composition_children
+msgid "Number of Children (-14 years)"
+msgstr "Nombre d’enfants (-14 ans)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_composition_teens
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_composition_teens
+msgid "Number of Teens (14-18 years)"
+msgstr "Nombre d’adolescents (14-18 ans)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__housing_status__other
+msgid "Other"
+msgstr "Autre"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__housing_status__owner_with_credit
+msgid "Owner with Credit"
+msgstr "Propriétaire avec crédit"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__housing_status__owner_no_credit
+msgid "Owner without Credit"
+msgstr "Propriétaire sans crédit"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__reference_tax_income
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__reference_tax_income
+msgid "Reference tax income (€)"
+msgstr "Revenu fiscal de référence (€)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__socio_professional_category
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__socio_professional_category
+msgid "Socio-Professional Category"
+msgstr "Catégorie socio-professionnelle"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__subscription_date
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__subscription_date
+msgid "Subscription Date"
+msgstr "Date du conventionnement"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__housing_status__tenant
+msgid "Tenant"
+msgstr "Locataire"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__third_party_payer
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__third_party_payer
+msgid "Third Party Payer"
+msgstr "Tiers payeur"
