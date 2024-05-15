@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="lcc_fss_form_view" model="ir.ui.view">
+            <field name="name">LCC FSS Members Form View</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority">99</field>
+            <field name="arch" type="xml">
+                <!-- ################### -->
+                <!-- MAIN DISPLAY UPDATE -->
+                <!-- ################### -->
+                <xpath expr="//field[@name='website']" position="replace" />
+                <xpath expr="//field[@name='currency_exchange_office']" position="replace" />
+                <xpath expr="//field[@name='title']" position="replace" />
+                <xpath expr="//field[@name='function']" position="replace" />
+                <xpath expr="//field[@name='gender']" position="replace" />
+
+                <!-- ################ -->
+                <!-- NOTEBOOK UPDATES -->
+                <!-- ################ -->
+
+                <!-- page Personnal Information -->
+                <xpath expr="//page[@name='personal_information_page']" position='inside'>
+                    <group name="fss_data_credit" 
+                        string="FSS data to compute credit amount "
+                        attrs="{'invisible': [('is_company', '=', True)]}" >
+                        <field name="monthly_household_income" />
+                        <field name="reference_tax_income" />
+                    </group> 
+                    <group string="Household composition"
+                        attrs="{'invisible': [('is_company', '=', True)]}">  
+                        <field name="household_composition_adults" />
+                        <field name="household_composition_teens" />
+                        <field name="household_composition_children" />
+                    </group>
+                    <group name="fss_third_party" attrs="{'invisible': [('is_company', '=', True)]}">
+                        <field name="employer_id"  />
+                        <field name="third_party_payer" />
+                    </group>
+                    <group name="fss_experimentation_evaluation_data"
+                        string="FSS experimentation evaluation data"
+                        attrs="{'invisible': [('is_company', '=', True)]}" >
+                        <field name="gender" />
+                        <field name="birth_year" />
+                        <field name="arrival_date_territory" />
+                        <field name="socio_professional_category" />
+                        <field name="housing_status" widget="radio" />        
+                    </group>
+                    <group name="fss_pos_data" 
+                        string="FSS Point of sale informations" 
+                        attrs="{'invisible': [('is_company', '=', False)]}">
+                        <field name="subscription_date" />
+                        <field name="annual_sales" />
+                        <field name="annual_sales_year" />
+                        <field name="contribution" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
