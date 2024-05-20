@@ -70,7 +70,7 @@ class PartnerService(Component):
         )
         for wallet in wallets:
             credit_request_list += self._get_credit_requests(
-                wallet, ["pending", "error"]
+                wallet, ["pending"]
             )
         return credit_request_list
 
