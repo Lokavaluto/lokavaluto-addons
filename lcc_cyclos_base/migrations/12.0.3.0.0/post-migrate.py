@@ -33,7 +33,7 @@ def migrate(env, version):
             "partner_id": partner_id.id,
             "wallet_id": wallet.id,
             "invoice_id": invoice[0],
-            "create_order": False,
+            "no_order": True,
         }
         env["credit.request"].create(values)
 
