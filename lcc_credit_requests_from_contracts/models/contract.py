@@ -13,7 +13,7 @@ class ContractContract(models.Model):
             "partner_id": invoice.partner_id.id,
             "wallet_id": self.wallet_id.id,
             "invoice_id": invoice.id,
-            "create_order": False,
+            "no_order": True,
         }
         return values
 

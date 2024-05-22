@@ -36,12 +36,15 @@ class CreditRequest(models.Model):
             raise UserError("Credit resquest can't be created with a null amount.")
         create_order = vals.pop("create_order", False)
         res = super(CreditRequest, self).create(vals)
+
+        if vals.get("no_order", False):
+            return res
+
         # Create Sale Order to get credit request payment
-        if create_order:
-            new_order = res.partner_id.create_numeric_lcc_order(
-                res.wallet_id, res.amount
-            )
-            res.order_id = new_order.id
+        new_order = res.partner_id.create_numeric_lcc_order(
+            res.wallet_id, res.amount
+        )
+        res.order_id = new_order.id
         return res
 
     def write(self, vals):
