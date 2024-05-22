@@ -47,7 +47,6 @@ class CyclosService(Component):
             data = {
                 "wallet_id": wallet_id[0].id,
                 "amount": amount,
-                "create_order": True,
             }
             credit_request = self.env["credit.request"].sudo().create(data)
             cyclos_response.order_url = (

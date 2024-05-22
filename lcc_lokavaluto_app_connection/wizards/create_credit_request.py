@@ -21,7 +21,6 @@ class CreateCreditRequest(models.TransientModel):
         values = {
             "wallet_id": self.wallet_id.id,
             "amount": self.amount,
-            "create_order": True,
         }
         credit_request_id = self.env["credit.request"].create(values)
         view = self.env.ref("lcc_lokavaluto_app_connection.credit_request_view_form")
