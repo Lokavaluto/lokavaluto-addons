@@ -45,6 +45,19 @@ class ResPartnerBackend(models.Model):
             return False
         return "%s:%s" % ("comchain", currency_name)
 
+    def _update_search_data(self, backend_keys):
+        _logger.debug("SEARCH: backend_keys = %s" % backend_keys)
+        data = super(ResPartnerBackend, self)._update_search_data(backend_keys)
+        for wallet in self:
+            if wallet.type != "comchain":
+                continue
+            if wallet.comchain_id:
+                for backend_key in backend_keys:
+                    if backend_key.startswith("comchain:"):
+                        data[backend_key] = [wallet.comchain_id]
+        _logger.debug("SEARCH: data %s" % data)
+        return data
+
     @property
     def comchain_backend_accounts_data(self):
         """Return normalized backend account's data"""
@@ -68,6 +81,33 @@ class ResPartnerBackend(models.Model):
                     "active": self.status == "active",
                 }
             )
+
+        company = self.partner_id.company_id
+        safe_wallet_partner = company.safe_wallet_partner_id
+
+        if safe_wallet_partner:
+
+            safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
+            if safe_wallet_profile_info:
+                if len(safe_wallet_profile_info) > 1:
+                    raise ValueError("Safe partner has more than one public profile")
+
+                ## Safe wallet is configured and has a public profile
+                data["safe_wallet_recipient"] = safe_wallet_profile_info[0]
+
+                monujo_backends = safe_wallet_partner.lcc_backend_ids._update_search_data(
+                    [self.comchain_backend_id]
+                )
+                if len(monujo_backends) > 1:
+                    raise ValueError("Safe partner has more than one wallet")
+                data["safe_wallet_recipient"]["monujo_backends"] = monujo_backends
+
+            else:
+                _logger.error(
+                    "Safe wallet %s has no public profile",
+                    safe_wallet_partner.name,
+                )
+
         return [data]
 
     @api.depends("name", "type", "comchain_status")
