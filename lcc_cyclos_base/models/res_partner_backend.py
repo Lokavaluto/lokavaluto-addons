@@ -18,6 +18,16 @@ class ResPartnerBackend(models.Model):
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
+    def _update_search_data(self, backend_keys):
+        data = super(ResPartnerBackend, self)._update_search_data(backend_keys)
+        for wallet in self: 
+            if wallet.type != "cyclos":
+                continue
+            for backend_key in backend_keys:
+                if backend_key.startswith("cyclos:") and wallet.cyclos_id:
+                    data[backend_key] = [wallet.cyclos_id]
+        return data
+
     @property
     def cyclos_backend_json_data(self):
         """Return normalized backend account's data"""

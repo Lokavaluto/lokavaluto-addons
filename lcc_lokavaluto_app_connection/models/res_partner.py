@@ -42,7 +42,7 @@ class ResPartner(models.Model):
 
     def get_wallets(self, type):
         self.ensure_one()
-        wallets = [backend for backend in self.lcc_backend_ids if backend.type == type]
+        wallets = [wallet for wallet in self.lcc_backend_ids if wallet.type == type]
         if len(wallets) > 0:
             if len(wallets) > 1:
                 raise NotImplementedError(

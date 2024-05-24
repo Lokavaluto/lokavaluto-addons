@@ -33,6 +33,9 @@ class ResPartnerBackend(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
 
+    def _update_search_data(self, backend_keys):
+        return {}
+
     @api.depends("name", "type")
     def _compute_status(self):
         pass
