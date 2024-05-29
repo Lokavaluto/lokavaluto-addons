@@ -31,6 +31,6 @@
     "installable": True,
     # Install this module automatically if all dependency have been previously
     # and independently installed.  Used for synergetic or glue modules.
-    "auto_install": False,
+    "auto_install": True,
     "application": False,
 }
