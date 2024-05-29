@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class ContractContract(models.Model):
@@ -11,18 +11,21 @@ class ContractContract(models.Model):
         values = {
             "amount": invoice.amount_total,
             "partner_id": invoice.partner_id.id,
-            "wallet_id": self.wallet_id.id,
+            "wallet_id": invoice.contract_id.wallet_id.id,
             "invoice_id": invoice.id,
             "no_order": True,
         }
         return values
 
+    def _prepare_invoice(self, date_invoice, journal=None):
+        invoice_vals = super()._prepare_invoice(date_invoice, journal)
+        invoice_vals['contract_id'] = self.id
+        return invoice_vals
+
     def _recurring_create_invoice(self, date_ref=False):
         invoices = super()._recurring_create_invoice(date_ref)
-        if not (self.create_credit_requests and self.wallet_id):
-            return invoices
         for invoice in invoices:
-            if invoice.has_numeric_lcc_products:
+            if invoice.has_numeric_lcc_products and invoice.contract_id.create_credit_requests:
                 values = self._prepare_credit_request_values(invoice)
                 self.env["credit.request"].create(values)
         return invoices
