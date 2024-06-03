@@ -25,7 +25,7 @@ class Company(models.Model):
                 "Cyclos URL %r in Odoo configuration is not a valid url"
                 % url
             )
-        if not re.search("^[a-z0-9-]+(\.[a-z0-9-]+)*$", parsed_uri.netloc.lower()):
+        if not re.search("^[a-z0-9-]+(\.[a-z0-9-]+)*(:[0-9]+)?$", parsed_uri.netloc.lower()):
             raise ValueError(
                 "domain %r in Odoo URL %r configuration is not valid"
                 % (parsed_uri.netloc, url)
