@@ -1,6 +1,5 @@
 import re
 from urllib.parse import urlparse
-from xml.dom import SyntaxErr
 from werkzeug.exceptions import NotFound
 from odoo import models, fields
 
@@ -19,10 +18,16 @@ class Company(models.Model):
         self.ensure_one()
         url = self.cyclos_server_url
         if not url:
-            return NotFound("Cyclos URL in Odoo configiration is empty.")
+            raise NotFound("Cyclos URL in Odoo configuration is empty")
         parsed_uri = urlparse(url)
         if not parsed_uri or not parsed_uri.netloc:
-            return SyntaxErr("Cyclos URL in Odoo configiration is not valid.")
+            raise SyntaxError(
+                "Cyclos URL %r in Odoo configuration is not a valid url"
+                % url
+            )
         if not re.search("^[a-z0-9-]+(\.[a-z0-9-]+)*$", parsed_uri.netloc.lower()):
-            raise SyntaxErr("Cyclos URL in Odoo configiration is not valid.")
+            raise SyntaxError(
+                "domain %r in Odoo URL %r configuration is not valid"
+                % (parsed_uri.netloc, url)
+            )
         return parsed_uri.netloc
