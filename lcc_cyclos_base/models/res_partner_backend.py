@@ -268,3 +268,13 @@ class ResPartnerBackend(models.Model):
                 self.cyclos_id,
             ]
         return data
+
+    def get_wallet_balance(self):
+        self.ensure_one()
+        record._cyclos_rest_call()
+        res = record._cyclos_rest_call("GET", "accounts/%s/status" % record.cyclos_id)
+        _logger.debug("res: %s" % res)
+        data_res = json.loads(res.text)
+        balance = data_res.get("balance", "")
+
+        return balance
