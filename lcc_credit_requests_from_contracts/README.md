@@ -22,7 +22,7 @@ detailed and welcomed feedback.
 
 ### Contributors
 
-* Boris Gallet - `Email<mailto:boris.gallet@elabore.coop>` - `Github<https://github.com/g0b>`
+* Boris Gallet - `Email<mailto:boris.gallet@elabore.coop>` - `Github<https://github.com/b0g>`
 * Stéphan Sainléger - `Email<mailto:stephan.sainleger@elabore.coop>` - `Github<https://github.com/stephansainleger>`
 
 ### Funders

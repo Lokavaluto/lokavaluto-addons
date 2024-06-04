@@ -87,3 +87,12 @@ class ResPartnerBackend(models.Model):
             "response": "Nothing done - Please install financial backend Odoo add-on.",
         }
         return res
+
+    def get_wallet_balance(self):
+        """Returns wallet balance
+        Need to be overrided by financial backend add-ons"""
+        res = {
+            "success": False,
+            "response": "No data - Please install financial backend Odoo add-on."
+        }
+        return res
