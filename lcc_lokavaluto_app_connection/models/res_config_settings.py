@@ -27,3 +27,8 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Activate Automatic Topup",
     )
+
+    digital_currency_product_id = fields.Many2one('product.product',
+        related="company_id.digital_currency_product_id",
+        readonly=False,
+        string='Digital Currency Product')

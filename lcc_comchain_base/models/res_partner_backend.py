@@ -50,12 +50,12 @@ class ResPartnerBackend(models.Model):
         if not backend_id:
             ## Comchain financial backend is not configured in general settings
             return []
-        comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain").sudo()
+        product = self.get_lcc_product()
         data = {
             "type": backend_id,
             "accounts": [],
-            "min_credit_amount": getattr(comchain_product, "sale_min_qty", 0),
-            "max_credit_amount": getattr(comchain_product, "sale_max_qty", 0),
+            "min_credit_amount": getattr(product, "sale_min_qty", 0),
+            "max_credit_amount": getattr(product, "sale_max_qty", 0),
         }
         wallet = self.comchain_wallet_parsed
         if wallet:
@@ -165,11 +165,11 @@ class ResPartnerBackend(models.Model):
         # All checks performed
         return {"success": True, "response": response, "error": ""}
 
-    def get_lcc_product(self):
-        product = super(ResPartnerBackend, self).get_lcc_product()
-        if self.type == "comchain":
-            product = self.env.ref("lcc_comchain_base.product_product_comchain")
-        return product
+    # def get_lcc_product(self):
+    #     product = super(ResPartnerBackend, self).get_lcc_product()
+    #     if self.type == "comchain":
+    #         product = self.env.ref("lcc_comchain_base.product_product_comchain")
+    #     return product
 
     @api.model
     def translate_backend_key_in_wallet_name(self, backend_key):

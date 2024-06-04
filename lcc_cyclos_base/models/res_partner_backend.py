@@ -22,12 +22,12 @@ class ResPartnerBackend(models.Model):
     def cyclos_backend_json_data(self):
         """Return normalized backend account's data"""
         cyclos_server_url = self.env.user.company_id.get_cyclos_server_domain()
-        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos").sudo()
+        product = self.get_lcc_product()
         data = {
             "type": "%s:%s" % ("cyclos", cyclos_server_url),
             "accounts": [],
-            "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
-            "max_credit_amount": getattr(cyclos_product, "sale_max_qty", 0),
+            "min_credit_amount": getattr(product, "sale_min_qty", 0),
+            "max_credit_amount": getattr(product, "sale_max_qty", 0),
         }
         if self.cyclos_id:
             data["accounts"].append(
@@ -240,11 +240,11 @@ class ResPartnerBackend(models.Model):
         res = {"success": True, "response": response}
         return res
 
-    def get_lcc_product(self):
-        product = super(ResPartnerBackend, self).get_lcc_product()
-        if self.type == "cyclos":
-            product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
-        return product
+    # def get_lcc_product(self):
+    #     product = super(ResPartnerBackend, self).get_lcc_product()
+    #     if self.type == "cyclos":
+    #         product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
+    #     return product
 
     @api.model
     def translate_backend_key_in_wallet_name(self, backend_key):

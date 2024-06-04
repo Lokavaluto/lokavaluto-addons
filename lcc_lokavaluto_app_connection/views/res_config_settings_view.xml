@@ -43,6 +43,20 @@
                     <h2>Financial backend general configuration</h2>
                     <div class="row mt16 o_settings_container" id="backend_general_settings">
                         <div class="col-12 col-lg-6 o_setting_box"
+                            id="digital_currency_product">
+                            <div class="o_setting_left_pane">
+                                <field name="digital_currency_product_id" />
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label string="Digital currency product"
+                                    for="digital_currency_product_id" />
+                                <div class="text-muted">
+                                    Define the product to use for digital currency operations.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box"
                             id="activate_automatic_topup">
                             <div class="o_setting_left_pane">
                                 <field name="activate_automatic_topup" />

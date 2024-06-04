@@ -47,9 +47,8 @@ class ResPartnerBackend(models.Model):
         raise UserError("You can't delete a numeric wallet. Please archive it instead.")
 
     def get_lcc_product(self):
-        """Return the numeric lcc product to add in sale orders or invoices.
-        Need to be overrided by financial backend add-ons"""
-        return None
+        """Return the numeric lcc product to add in sale orders or invoices."""
+        return self.env.partner_id.company_id.digital_currency_product_id
 
     @api.model
     def translate_backend_key_in_wallet_name(self, backend_key):
