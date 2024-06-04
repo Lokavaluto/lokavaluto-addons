@@ -3,6 +3,7 @@ import json
 from urllib.parse import urlparse
 from requests.auth import HTTPBasicAuth
 from odoo import models, fields, api
+from odoo.addons.lcc_lokavaluto_app_connection import tools
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -268,3 +269,25 @@ class ResPartnerBackend(models.Model):
                 self.cyclos_id,
             ]
         return data
+
+    def get_wallet_balance(self):
+        self.ensure_one()
+        res = ""
+        try :
+            res = self._cyclos_rest_call("GET", "/%s/accounts" % self.cyclos_id)
+            _logger.debug("res: %s" % res)
+        except Exception as e:
+            _logger.error(tools.format_last_exception())
+            return {
+                "success": False,
+                "response": "",
+                "error_message": "Failed to get wallet balance: %s" % e,
+            }
+        
+        data_res = json.loads(res.text)
+        balance = float(data_res[0].get("status", {}).get("balance", ""))
+
+        return {
+            "success": True,
+            "response": balance
+        }

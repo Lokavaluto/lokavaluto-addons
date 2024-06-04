@@ -191,3 +191,21 @@ class ResPartnerBackend(models.Model):
                 self.comchain_id,
             ]
         return data
+
+    def get_wallet_balance(self):
+        self.ensure_one()
+        wallet = pyc3l.Wallet.from_json(self.comchain_wallet)
+        try:
+            balance = wallet.nantBalance
+        except Exception as e:
+            _logger.error(tools.format_last_exception())
+            return {
+                "success": False,
+                "response": "",
+                "error_message": "Failed to get wallet balance: %s" % e,
+            }
+  
+        return {
+            "success": True,
+            "response": balance
+        }

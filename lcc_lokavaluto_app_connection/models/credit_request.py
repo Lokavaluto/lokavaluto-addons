@@ -30,12 +30,16 @@ class CreditRequest(models.Model):
     transaction_data = fields.Char("Transaction Message")
     error_message = fields.Char("Error Message")
 
+    limit_credit_aggregation = fields.Boolean("Limit credit aggregation")
+    max_credit_amount = fields.Float("Maximum amount of credit allowed")
+
     @api.model
     def create(self, vals):
         if vals.get("amount", False) == 0.0:
             raise UserError("Credit resquest can't be created with a null amount.")
         no_order = vals.pop("no_order", False)
         res = super(CreditRequest, self).create(vals)
+
 
         if no_order:
             return res
@@ -86,29 +90,61 @@ class CreditRequest(models.Model):
                 request.invoice_id.unlink()
         return super(CreditRequest, self).unlink()
 
+    def compute_amount_to_credit(self):
+        """ Compute correct amount function of wallet balance
+        if limited credit aggregation """ 
+
+        self.ensure_one()
+        amount = self.amount
+        if amount == 0 or not self.wallet_id:
+            return {
+                "error": True,
+                "error_message": "Missing information in the credit request (amount or Wallet)"
+                }
+        if self.limit_credit_aggregation : 
+            wallet_balance_data = self.wallet_id.get_wallet_balance()
+            if not wallet_balance_data.get("success", False): 
+                return {
+                    "error": True, 
+                    "error_message": wallet_balance_data.get(
+                        "error_message",
+                        "Error when trying to get wallet balance")
+                }
+            amount = min(self.max_credit_amount - wallet_balance_data.get("response"), self.amount)
+            if amount < 0 : 
+                return {
+                    "error": True,
+                    "error_message": "Wallet balance above the Max credit amount allowed"
+                    }
+        return { "amount": amount, "error" : False }
+
     def credit_wallet(self):
         """Send credit order to the wallet."""
         for record in self:
             # Check if we have the needed data to perform the top up process
-            if record.amount == 0 or not record.wallet_id:
-                raise Exception(
-                    "Missing information in the credit request - Top up cancelled."
-                )
-
-            # Ask wallet to perform top up process
-            res = record.wallet_id.credit_wallet(record.amount)
-
-            # Update request status
-            if res.get("success", False):
-                vals = {
-                    "state": "done",
-                    "transaction_data": res.get("response", ""),
-                }
-            else:
+            amount_data = record.compute_amount_to_credit()
+          
+            if not amount_data.get("error", False ):            
+                # Ask wallet to perform top up process
+                res = record.wallet_id.credit_wallet(amount_data.get("amount"))
+    
+                # Update request status
+                if res.get("success", False):
+                    vals = {
+                        "state": "done",
+                        "transaction_data": res.get("response", ""),
+                        "amount": amount_data.get("amount")
+                    }
+                else:
+                    vals = {
+                        "state": "error",
+                        "transaction_data": res.get("response", ""),
+                        "error_message": res.get("error", "No error message received."),
+                    }
+            else : 
                 vals = {
                     "state": "error",
-                    "transaction_data": res.get("response", ""),
-                    "error_message": res.get("error", "No error message received."),
+                    "error_message": amount_data.get("error_message", "Error defining amount to credit")
                 }
             record.write(vals)
 

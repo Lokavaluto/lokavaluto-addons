@@ -10,8 +10,16 @@
                     <group name="credit_requests">
                         <field name="partner_id" invisible="1" />
                         <field name="create_credit_requests" />
-                        <field name="wallet_id" domain="[('partner_id','=', partner_id)]"
+                        <field name="wallet_id" domain="[('partner_id','=', partner_id)]" 
                             attrs="{'invisible': [('create_credit_requests','=',False)]}" />
+                        <field name="different_credit_request_amount" 
+                             attrs="{'invisible': [('create_credit_requests','=',False)]}" />
+                        <field name="credit_request_amount" 
+                            attrs="{'invisible': [('different_credit_request_amount','=',False)]}"/>
+                        <field name="limit_credit_aggregation" 
+                            attrs="{'invisible': [('different_credit_request_amount','=',False)]}"/>
+                        <field name="max_credit_amount" 
+                            attrs="{'invisible': [('limit_credit_aggregation','=',False),('different_credit_request_amount','=',False)]}"/>
                     </group>
                 </xpath>
             </field>

@@ -6,14 +6,21 @@ class ContractContract(models.Model):
 
     create_credit_requests = fields.Boolean("Create Credit Requests")
     wallet_id = fields.Many2one("res.partner.backend", string="Wallet to credit")
+    different_credit_request_amount = fields.Boolean("Different credit request amount")
+    credit_request_amount = fields.Float(String="Credit request amount")
+    limit_credit_aggregation = fields.Boolean("Limit credit aggregation")
+    max_credit_amount = fields.Float("Maximum amount of credit allowed")
 
     def _prepare_credit_request_values(self, invoice):
+        self.ensure_one()
         values = {
-            "amount": invoice.amount_total,
+            "amount": self.credit_request_amount if self.different_credit_request_amount else invoice.amount_total,
             "partner_id": invoice.partner_id.id,
             "wallet_id": invoice.contract_id.wallet_id.id,
             "invoice_id": invoice.id,
             "no_order": True,
+            "limit_credit_aggregation": self.limit_credit_aggregation,
+            "max_credit_amount": self.max_credit_amount
         }
         return values
 
