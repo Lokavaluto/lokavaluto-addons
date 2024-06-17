@@ -13,6 +13,9 @@ class AccountInvoice(models.Model):
     credit_request_ids = fields.One2many(
         "credit.request", "invoice_id", string="Credit Requests"
     )
+    debit_request_ids = fields.One2many(
+        "debit.request", "debit_move_id", string="Credit Requests"
+    )
     global_credit_status = fields.Selection(
         [
             ("todo", "To do"),
@@ -28,6 +31,12 @@ class AccountInvoice(models.Model):
     )
     global_lcc_amount_to_credit = fields.Float(
         string="LCC amount to credit", compute="_compute_global_lcc_amounts"
+    )
+    digital_currency_invoice_type = fields.Selection([
+        ('none', 'None'),
+        ('credit', 'Credit'),
+        ('debit', 'Debit')
+    ], string='Digital Currency Invoice Type', compute="_compute_digital_currency_invoice_type"
     )
 
     @api.depends("credit_request_ids")
@@ -60,6 +69,19 @@ class AccountInvoice(models.Model):
             if lcc_numeric_products:
                 self.has_numeric_lcc_products = True
 
+    def _compute_debit_request_ids(self):
+        for move in self:
+            move.debit_request_ids = self.env["debit.request"].search(["|", ("debit_move_id", "=", move.id), ("commission_move_id", "=", move.id)])
+
+    @api.depends("debit_request_ids", "credit_request_ids")
+    def _compute_digital_currency_invoice_type(self):
+        if self.debit_request_ids:
+            self.digital_currency_invoice_type = "debit"
+        elif self.credit_request_ids:
+            self.digital_currency_invoice_type = "credit"
+        else:
+            self.digital_currency_invoice_type = "none"
+
     def _invoice_paid_hook(self):
         res = super(AccountInvoice, self)._invoice_paid_hook()
         for invoice in self.filtered(lambda move: move.is_invoice() and move.is_sale_document() and move.has_numeric_lcc_products):
@@ -69,7 +91,22 @@ class AccountInvoice(models.Model):
                     continue
                 # Set the state in "pending" to launch the top up process
                 request.write({"state": "pending"})
+        for invoice in self.filtered(lambda move: move.is_invoice() and move.is_purchase_document() and move.has_numeric_lcc_products):
+            for request in invoice.debit_request_ids:
+                # Set the state in "paid" and update the global request status
+                request.write({"debit_move_state": "paid"})
+                request.compute_state()
         return res
+
+    def _post(self, soft=True):
+        # OVERRIDE
+        posted = super()._post(soft)
+        for invoice in posted.filtered(lambda move: move.is_invoice() and move.is_purchase_document() and move.has_numeric_lcc_products):
+            for request in invoice.debit_request_ids:
+                # Set the state in "posted" and update the global request status
+                request.write({"debit_move_state": "posted"})
+                request.compute_state()
+        return posted
 
 
 class AccountInvoiceLine(models.Model):
