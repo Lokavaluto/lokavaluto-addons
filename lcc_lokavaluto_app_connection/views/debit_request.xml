@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="debit_request_view_tree" model="ir.ui.view">
+        <field name="name">debit.request.view.tree</field>
+        <field name="model">debit.request</field>
+        <field name="arch" type="xml">
+            <tree string="Debit Requests" default_order="transaction_timestamp desc">
+                <field name="transaction_timestamp" />
+                <field name="partner_id" />
+                <field name="wallet_id" />
+                <field name="amount" />
+                <field name="state" decoration-info="state in ['draft', 'received', 'invoiced']"
+                    decoration-success="state == 'paid'" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="debit_request_view_form" model="ir.ui.view">
+        <field name="name">debit.request.view.form</field>
+        <field name="model">debit.request</field>
+        <field name="arch" type="xml">
+            <form string="Debit Request">
+                <header>
+                    <button name="create_invoices"
+                        string="Create Invoices"
+                        class="oe_highlight" type="object" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,received,invoiced,paid" />
+                </header>
+                <sheet>
+                    <group name="content" string="Content">
+                        <field name="partner_id" />
+                        <field name="wallet_id" />
+                        <field name="amount" />
+                        <field name="transaction_id" />
+                        <field name="transaction_timestamp" />
+                    </group>
+                    <group name="documents" string="Linked documents">
+                        <field name="debit_move_id" />
+                        <field name="debit_move_state" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="debit_request_view_search" model="ir.ui.view">
+        <field name="name">debit.request.view.search</field>
+        <field name="model">debit.request</field>
+        <field name="arch" type="xml">
+            <search string="Search debit requests">
+                <field name="partner_id" />
+                <field name="wallet_id" />
+                <field name="amount" />
+                <field name="state" />
+                <filter domain="[('state','=','draft')]" string="Draft" name="draft" />
+                <filter domain="[('state','=','received')]" string="Received" name="received" />
+                <filter domain="[('state','=','invoiced')]" string="Invoiced" name="invoiced" />
+                <filter domain="[('state','=','paid')]" string="Paid" name="paid" />
+                <filter domain="[('state','=','cancelled')]" string="Cancelled" name="cancelled" />
+
+            </search>
+        </field>
+    </record>
+</odoo>

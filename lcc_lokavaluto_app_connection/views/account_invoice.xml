@@ -6,9 +6,9 @@
         <field name="inherit_id" ref="account.view_move_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <field name="has_numeric_lcc_products" invisible="1" />
+                <field name="digital_currency_invoice_type" invisible="1" />
                 <page name="credit_requests" string="Credit Request"
-                    attrs="{'invisible': [('has_numeric_lcc_products', '=', False)]}">
+                    attrs="{'invisible': [('digital_currency_invoice_type', '!=', 'credit')]}">
                     <div class="alert alert-success" role="alert"
                         attrs="{'invisible': [('global_lcc_amount_credited', '=', 0)]}">
                         <field name="global_lcc_amount_credited" readonly="True" /> units have been
@@ -18,6 +18,18 @@
                         <field name="global_lcc_amount_to_credit" readonly="True" /> units still to
                         credit on <field name="partner_id" readonly="True" />'s wallet(s).</div>
                     <field name="credit_request_ids" nolabel="1"
+                        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager">
+                        <tree create="false" delete="false">
+                            <field name="partner_id" />
+                            <field name="wallet_id" />
+                            <field name="amount" />
+                            <field name="state" />
+                        </tree>
+                    </field>
+                </page>
+                <page name="debit_requests" string="Debit Request"
+                    attrs="{'invisible': [('digital_currency_invoice_type', '!=', 'debit')]}">
+                    <field name="debit_request_ids" nolabel="1"
                         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager">
                         <tree create="false" delete="false">
                             <field name="partner_id" />
