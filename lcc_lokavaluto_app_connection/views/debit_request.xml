@@ -35,10 +35,11 @@
                         <field name="amount" />
                         <field name="transaction_id" />
                         <field name="transaction_timestamp" />
+			<field name="commission_rule_id" />
                     </group>
                     <group name="documents" string="Linked documents">
                         <field name="debit_move_id" />
-                        <field name="debit_move_state" />
+                        <field name="commission_move_id" />
                     </group>
                 </sheet>
             </form>

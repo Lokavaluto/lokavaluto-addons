@@ -49,11 +49,30 @@ class DebitRequest(models.Model):
         string="Debit Invoice State",
         default="draft",
     )
+    commission_rule_id = fields.Many2one(
+        "commission.rule",
+        string="Commission Rule",
+    )
+    commission_move_id = fields.Many2one("account.move", string="Commission Invoice")
+    commission_move_state = fields.Selection(
+        [
+            ("draft", "Draft"),
+            ("posted", "Posted"),
+            ("paid", "Paid"),
+            ("cancelled", "Cancelled"),
+        ],
+        string="Commission Invoice State",
+        default="draft",
+    )
 
     @api.model
     def create(self, vals):
         res = super(DebitRequest, self).create(vals)
         for request in res:
+            if request.wallet_id:
+                request.commission_rule_id = (
+                    request.wallet_id.get_wallet_commission_rule()
+                )
             try:
                 if request.is_ready_to_invoice():
                     request.create_invoices()
@@ -61,6 +80,16 @@ class DebitRequest(models.Model):
                 # Missing data in not critical at creation step.
                 pass
         return res
+
+    def write(self, vals):
+        if vals.get("wallet_id") and not vals.get("commission_rule_id"):
+            vals["commission_rule_id"] = (
+                self.env["res.partner.backend"]
+                .browse(vals["wallet_id"])
+                .get_wallet_commission_rule()
+                .id
+            )
+        return super(DebitRequest, self).write(vals)
 
     def unlink(self):
         for request in self:
@@ -78,20 +107,63 @@ class DebitRequest(models.Model):
                         "You can't delete a debit request linked with a posted or paid invoice."
                     )
                 request.debit_move_id.unlink()
+            if request.commission_move_id:
+                if request.commission_move_id.state != "draft":
+                    raise UserError(
+                        "You can't delete a debit request linked with a posted or paid invoice."
+                    )
+                request.commission_move_id.unlink()
         return super(DebitRequest, self).unlink()
 
     def compute_state(self):
         for request in self:
             if not request.debit_move_id:
+                request.state = "draft"
                 continue
-            if request.debit_move_state == "draft":
-                request.state = "received"
-            if request.debit_move_state == "posted":
-                request.state = "invoiced"
-            if request.debit_move_state == "paid":
-                request.state = "paid"
-            if request.debit_move_id.state == "cancelled":
+
+            if not request.commission_move_id:
+                # If there is no commission invoice, the debit invoice status defines the request status.
+                request.state = self._convert_status(request.debit_move_state)
+                continue
+
+            if request.debit_move_state == "cancelled":
+                # Debit move cancellation means there is no debit to perform, then all the process is cancelled.
                 request.state = "cancelled"
+                continue
+
+            if request.commission_move_state == "cancelled":
+                # If the commission invoice is cancelled, we do not consider it anymore for the request status.
+                request.state = self._convert_status(request.debit_move_state)
+                continue
+
+            if (
+                request.debit_move_state == "draft"
+                or request.commission_move_state == "draft"
+            ):
+                # If any of the invoices is in Draft, the request is still considered as "received"
+                request.state = self._convert_status("draft")
+                continue
+
+            if (
+                request.debit_move_state == "posted"
+                or request.commission_move_state == "posted"
+            ):
+                request.state = self._convert_status("posted")
+                continue
+
+            if (
+                request.debit_move_state == "paid"
+                or request.commission_move_state == "paid"
+            ):
+                request.state = self._convert_status("paid")
+
+    def _convert_status(self, status):
+        if status == "draft":
+            return "received"
+        if status == "posted":
+            return "invoiced"
+        if status == "paid":
+            return "paid"
 
     def is_ready_to_invoice(self):
         self.ensure_one()
@@ -109,6 +181,7 @@ class DebitRequest(models.Model):
 
     def create_invoices(self):
         self.create_debit_invoices()
+        self.create_commission_invoices()
 
     def create_debit_invoices(self):
         for request in self:
@@ -134,5 +207,37 @@ class DebitRequest(models.Model):
             "product_id": product_id.id,
             "quantity": self.amount,
             "price_unit": product_id.standard_price,
+        }
+        return invoice_line_values
+
+    def create_commission_invoices(self):
+        for request in self:
+            if not self.commission_rule_id:
+                continue
+            self.is_ready_to_invoice()
+            # get invoices data
+            commission_invoice_data = request._get_commission_invoice_data()
+            # create invoices
+            invoice = self.env["account.move"].create(commission_invoice_data)
+            request.commission_move_id = invoice.id
+
+    def _get_commission_invoice_data(self):
+        self.ensure_one()
+        return {
+            "move_type": "out_invoice",
+            "partner_id": self.partner_id.id,
+            "invoice_line_ids": [(0, 0, self._get_commission_invoice_line_values())],
+        }
+
+    def _get_commission_invoice_line_values(self):
+        self.ensure_one()
+        product_id = self.env.user.company_id.commission_product_id
+        commission_amount = self.commission_rule_id.calculate_commission_amount(
+            self.amount
+        )
+        invoice_line_values = {
+            "product_id": product_id.id,
+            "quantity": 1,
+            "price_unit": commission_amount,
         }
         return invoice_line_values

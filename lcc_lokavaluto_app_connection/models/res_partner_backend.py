@@ -1,7 +1,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-
+from odoo.tools.safe_eval import safe_eval
 import logging
+
 
 _logger = logging.getLogger(__name__)
 
@@ -96,3 +97,15 @@ class ResPartnerBackend(models.Model):
             "response": "No data - Please install financial backend Odoo add-on.",
         }
         return res
+
+    def get_wallet_commission_rule(self):
+        self.ensure_one()
+        rules = self.env["commission.rule"].search([("active", "=", True)])
+        for rule in rules:
+            # Get all the wallet matching the rule
+            wallets = self.search(safe_eval(rule.wallet_domain))
+            # Check if current wallet (self) is in the matching wallets
+            if wallets.filtered(lambda x: x.id == self.id):
+                # First rule matched is returned
+                return rule
+        return None
