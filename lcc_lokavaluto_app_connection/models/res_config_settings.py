@@ -27,3 +27,9 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Activate Automatic Topup",
     )
+
+    commission_product_id = fields.Many2one(
+        "product.product",
+        related="company_id.commission_product_id",
+        readonly=False,
+        string="Commission Product")

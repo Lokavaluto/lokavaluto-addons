@@ -42,6 +42,17 @@ class DebitRequest(models.Model):
         string='Debit Invoice State',
         default="draft",
     )
+    commission_move_id = fields.Many2one("account.move", string="Commission Invoice")
+    commission_move_state = fields.Selection(
+        [
+            ('draft', 'Draft'),
+            ('posted', 'Posted'),
+            ('paid', 'Paid'),
+            ('cancelled', 'Cancelled'),
+        ],
+        string='Commission Invoice State',
+        default="draft",
+    )
 
     @api.model
     def create(self, vals):
@@ -75,15 +86,44 @@ class DebitRequest(models.Model):
     def compute_state(self):
         for request in self:
             if not request.debit_move_id:
+                request.state = "draft"
                 continue
-            if request.debit_move_state == "draft":
-                request.state = "received"
-            if request.debit_move_state == "posted":
-                request.state = "invoiced"
-            if request.debit_move_state == "paid":
-                request.state = "paid"
-            if request.debit_move_id.state == "cancelled":
+
+            if not request.commission_move_id:
+                # If there is no commission invoice, the debit invoice status defines the request status.
+                request.state = self._convert_status(request.debit_move_state)
+                continue
+
+            if request.debit_move_state == "cancelled":
+                # Debit move cancellation means there is no debit to perform, then all the process is cancelled.
                 request.state = "cancelled"
+                continue
+
+            if request.commission_move_state == "cancelled":
+                # If the commission invoice is cancelled, we do not consider it anymore for the request status.
+                request.state = self._convert_status(request.debit_move_state)
+                continue
+
+            if request.debit_move_state == "draft" or request.commission_move_state == "draft":
+                # If any of the invoices is in Draft, the request is still considered as "received"
+                request.state = self._convert_status("draft")
+                continue
+
+            if request.debit_move_state == "posted" or request.commission_move_state == "posted":
+                request.state = self._convert_status("posted")
+                continue
+
+            if request.debit_move_state == "paid" or request.commission_move_state == "paid":
+                request.state = self._convert_status("paid")
+
+
+    def _convert_status(self, status):
+        if status == "draft":
+            return "received"
+        if status == "posted":
+            return "invoiced"
+        if status == "paid":
+            return "paid"
 
     def is_ready_to_invoice(self, raise_error=False):
         self.ensure_one()
@@ -101,6 +141,7 @@ class DebitRequest(models.Model):
     
     def create_invoices(self):
         self.create_debit_invoices()
+        self.create_commission_invoices()
 
     def create_debit_invoices(self):
         for request in self:
@@ -126,5 +167,34 @@ class DebitRequest(models.Model):
             'product_id': product_id.id,
             'quantity': self.amount,
             'price_unit': product_id.standard_price,
+        }
+        return invoice_line_values
+
+    def create_commission_invoices(self):
+        for request in self:
+            self.is_ready_to_invoice(raise_error=True)
+            # get invoices data
+            commission_invoice_data = request._get_commission_invoice_data()
+            # create invoices
+            invoice = self.env['account.move'].create(commission_invoice_data)
+            request.commission_move_id = invoice.id
+
+    def _get_commission_invoice_data(self):
+        self.ensure_one()
+        return {
+                'move_type': "out_invoice",
+                'partner_id': self.partner_id.id,
+                'invoice_line_ids': [(0, 0, self._get_commission_invoice_line_values())]
+            }
+
+    def _get_commission_invoice_line_values(self):
+        self.ensure_one()
+        product_id = self.env.user.company_id.commission_product_id
+        rule = self.wallet_id.get_wallet_commission_rule()
+        commission_amount = rule.calculate_commission_amount(self.amount)
+        invoice_line_values = {
+            'product_id': product_id.id,
+            'quantity': 1,
+            'price_unit': commission_amount,
         }
         return invoice_line_values
