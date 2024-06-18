@@ -13,8 +13,8 @@ class AccountInvoice(models.Model):
     credit_request_ids = fields.One2many(
         "credit.request", "invoice_id", string="Credit Requests"
     )
-    debit_request_ids = fields.One2many(
-        "debit.request", "debit_move_id", string="Credit Requests"
+    debit_request_ids = fields.Many2many(
+        "debit.request", compute="_compute_debit_request_ids", string="Debit Requests"
     )
     global_credit_status = fields.Selection(
         [
@@ -100,6 +100,10 @@ class AccountInvoice(models.Model):
                     continue
                 # Set the state in "pending" to launch the top up process
                 request.write({"state": "pending"})
+            for request in invoice.debit_request_ids:
+                # Set the state in "paid" and update the global request status
+                request.write({"commission_move_state": "paid"})
+                request.compute_state()
         for invoice in self.filtered(
             lambda move: move.is_invoice()
             and move.is_purchase_document()
