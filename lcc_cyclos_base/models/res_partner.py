@@ -69,10 +69,12 @@ class ResPartner(models.Model):
                 ],
             }
             try:
-                res = backend_obj._cyclos_rest_call("POST", "/users", data=data)
+                res = self.env.user.company_id.cyclos_rest_call(
+                    "POST", "/users", data=data
+                )
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 422:
-                    msg = backend_obj._build_cyclos_error_message(e)
+                    msg = self.env.user.company_id.build_cyclos_error_message(e)
                     if msg != "":
                         raise ValueError(
                             "Cyclos serveur complained about:\n%s" % "\n".join(msg),

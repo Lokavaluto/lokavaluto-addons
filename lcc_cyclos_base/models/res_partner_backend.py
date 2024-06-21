@@ -1,7 +1,5 @@
 import requests
 import json
-from urllib.parse import urlparse
-from requests.auth import HTTPBasicAuth
 from odoo import models, fields, api
 from odoo.addons.lcc_lokavaluto_app_connection import tools
 import logging
@@ -68,61 +66,11 @@ class ResPartnerBackend(models.Model):
                 else:
                     rec.status = ""
 
-    def _build_cyclos_error_message(self, e):
-        json_error = e.response.json()
-        msg = ""
-        if json_error.get("code") == "validation":
-            if json_error.get("propertyErrors"):
-                error = json_error.get("propertyErrors")
-            elif json_error.get("generalErrors"):
-                error = json_error.get("generalErrors")
-            msg = ["  - %s: %s" % (k, ", ".join(v)) for k, v in error.items()]
-        return msg
-
-    def _cyclos_rest_call(
-        self, method, entrypoint, data={}, api_login=False, api_password=False
-    ):
-        headers = {"Content-type": "application/json", "Accept": "text/plain"}
-        requests.packages.urllib3.disable_warnings()
-        if not api_login:
-            api_login = self.env.user.company_id.cyclos_server_login
-        if not api_password:
-            api_password = self.env.user.company_id.cyclos_server_password
-        api_url = "%s%s" % (self.env.user.company_id.cyclos_server_url, entrypoint)
-        res = requests.request(
-            method.lower(),
-            api_url,
-            auth=HTTPBasicAuth(api_login, api_password),
-            verify=False,
-            data=json.dumps(data),
-            headers=headers,
-        )
-        try:
-            res.raise_for_status()
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 404:
-                raise Exception("404 when trying to reach cyclos on %s" % api_url)
-            try:
-                json_output = e.response.json()
-                _logger.debug(e.response.json())
-            except ValueError as e:
-                raise Exception("Non-json output from cyclos on %s" % api_url)
-                _logger.debug(e.response.text)
-
-            if e.response.status_code == 422:
-                msg = self._build_cyclos_error_message(e)
-                if msg != "":
-                    raise ValueError(
-                        "Cyclos serveur complained about:\n%s" % "\n".join(msg),
-                        e.response,
-                    )
-            raise
-        return res
-
     def cyclos_validate_user(self):
+        company_id = self.env.user.company_id
         for record in self:
             if record.cyclos_status == "pending":
-                res = record._cyclos_rest_call(
+                res = company_id.cyclos_rest_call(
                     "POST", "/%s/registration/validate" % record.cyclos_id
                 )
                 _logger.debug("res: %s" % res.text)
@@ -136,13 +84,16 @@ class ResPartnerBackend(models.Model):
                     )
 
     def cyclos_activate_user(self):
+        company_id = self.env.user.company_id
         for record in self:
             if record.cyclos_status != "active":
                 data = {"status": "active", "comment": "Activated by Odoo"}
-                record._cyclos_rest_call(
+                company_id.cyclos_rest_call(
                     "POST", "/%s/status" % record.cyclos_id, data=data
                 )
-                res = record._cyclos_rest_call("GET", "/%s/status" % record.cyclos_id)
+                res = company_id.cyclos_rest_call(
+                    "GET", "/%s/status" % record.cyclos_id
+                )
                 _logger.debug("res: %s" % res)
                 data_res = json.loads(res.text)
                 record.write(
@@ -152,13 +103,16 @@ class ResPartnerBackend(models.Model):
                 )
 
     def cyclos_block_user(self):
+        company_id = self.env.user.company_id
         for record in self:
             if record.cyclos_status != "blocked":
                 data = {"status": "blocked", "comment": "Blocked by Odoo"}
-                record._cyclos_rest_call(
+                company_id.cyclos_rest_call(
                     "POST", "/%s/status" % record.cyclos_id, data=data
                 )
-                res = record._cyclos_rest_call("GET", "/%s/status" % record.cyclos_id)
+                res = company_id.cyclos_rest_call(
+                    "GET", "/%s/status" % record.cyclos_id
+                )
                 _logger.debug("res: %s" % res)
                 data_res = json.loads(res.text)
                 record.write(
@@ -168,13 +122,16 @@ class ResPartnerBackend(models.Model):
                 )
 
     def cyclos_disable_user(self):
+        company_id = self.env.user.company_id
         for record in self:
             if record.cyclos_status != "disabled":
                 data = {"status": "disabled", "comment": "Disabled by Odoo"}
-                record._cyclos_rest_call(
+                company_id.cyclos_rest_call(
                     "POST", "/%s/status" % record.cyclos_id, data=data
                 )
-                res = record._cyclos_rest_call("GET", "/%s/status" % record.cyclos_id)
+                res = company_id.cyclos_rest_call(
+                    "GET", "/%s/status" % record.cyclos_id
+                )
                 _logger.debug("res: %s" % res)
                 data_res = json.loads(res.text)
                 record.write(
@@ -184,6 +141,7 @@ class ResPartnerBackend(models.Model):
                 )
 
     def force_cyclos_password(self, password):
+        company_id = self.env.user.company_id
         for record in self:
             # TODO: need to stock password type id from cyclos API and replace -4307382460900696903
             data = {
@@ -193,7 +151,7 @@ class ResPartnerBackend(models.Model):
                 "forceChange": False,
             }
             try:
-                record._cyclos_rest_call(
+                company_id.cyclos_rest_call(
                     "POST",
                     "/%s/passwords/%s/change"
                     % (record.cyclos_id, "-4307382460900696903"),
@@ -211,8 +169,9 @@ class ResPartnerBackend(models.Model):
 
     def cyclos_create_user_token(self, api_login, api_password):
         self.ensure_one()
+        company_id = self.env.user.company_id
         for record in self:
-            res = record._cyclos_rest_call(
+            res = company_id.cyclos_rest_call(
                 "POST",
                 "/auth/session",
                 data={"timeoutInSeconds": 90000},
@@ -224,8 +183,9 @@ class ResPartnerBackend(models.Model):
             return data.get("sessionToken", False)
 
     def cyclos_remove_user_token(self, api_login, api_password):
+        company_id = self.env.user.company_id
         for record in self:
-            res = record._cyclos_rest_call(
+            res = company_id.cyclos_rest_call(
                 "DELETE",
                 "/auth/session",
                 api_login=api_login,
@@ -247,7 +207,9 @@ class ResPartnerBackend(models.Model):
             "type": "debit.toPro" if self.partner_id.is_company else "debit.toUser",
         }
         _logger.debug("data: %s" % data)
-        response = self._cyclos_rest_call("POST", "/system/payments", data=data)
+        response = self.env.user.company_id.cyclos_rest_call(
+            "POST", "/system/payments", data=data
+        )
         _logger.debug("response: %s" % response)
         # TODO: need to check response
         res = {"success": True, "response": response}
