@@ -84,33 +84,42 @@ class AccountInvoice(models.Model):
 
     def _invoice_paid_hook(self):
         res = super(AccountInvoice, self)._invoice_paid_hook()
-        for invoice in self.filtered(lambda move: move.is_invoice() and move.is_sale_document() and move.has_numeric_lcc_products):
+        for invoice in self:
+            if not invoice.is_invoice():
+                continue
+
             for request in invoice.credit_request_ids:
                 # Only the opened request are concerned
                 if request.state != "open":
                     continue
                 # Set the state in "pending" to launch the top up process
                 request.write({"state": "pending"})
+
             for request in invoice.debit_request_ids:
                 # Set the state in "paid" and update the global request status
-                request.write({"commission_move_state": "paid"})
-                request.compute_state()
-        for invoice in self.filtered(lambda move: move.is_invoice() and move.is_purchase_document() and move.has_numeric_lcc_products):
-            for request in invoice.debit_request_ids:
-                # Set the state in "paid" and update the global request status
-                request.write({"debit_move_state": "paid"})
+                if invoice.is_sale_document():
+                    state_value = {"commission_move_state": "paid"}
+                if invoice.is_purchase_document():
+                    state_value = {"debit_move_state": "paid"}
+                request.write(state_value)
                 request.compute_state()
         return res
 
-    def _post(self, soft=True):
+    def action_post(self):
         # OVERRIDE
-        posted = super()._post(soft)
-        for invoice in posted.filtered(lambda move: move.is_invoice() and move.is_purchase_document() and move.has_numeric_lcc_products):
+        res = super(AccountInvoice, self).action_post()
+        for invoice in self:
+            if not invoice.is_invoice():
+                continue
+
             for request in invoice.debit_request_ids:
-                # Set the state in "posted" and update the global request status
-                request.write({"debit_move_state": "posted"})
+                if invoice.is_sale_document():
+                    state_value = {"commission_move_state": "posted"}
+                if invoice.is_purchase_document():
+                    state_value = {"debit_move_state": "posted"}
+                request.write(state_value)
                 request.compute_state()
-        return posted
+        return res
 
 
 class AccountInvoiceLine(models.Model):

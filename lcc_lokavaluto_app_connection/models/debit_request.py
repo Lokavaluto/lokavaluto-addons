@@ -142,6 +142,7 @@ class DebitRequest(models.Model):
     def create_invoices(self):
         self.create_debit_invoices()
         self.create_commission_invoices()
+        self.compute_state()
 
     def create_debit_invoices(self):
         for request in self:
