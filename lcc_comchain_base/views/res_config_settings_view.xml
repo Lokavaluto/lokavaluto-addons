@@ -10,12 +10,18 @@
             <xpath expr="//div[@id='backend_general_settings']" position="after">
                 <h2>Comchain service configuration</h2>
                 <div class="row mt16 o_settings_container" id="comchain_selection_settings">
-                    <div class="col-12 col-lg-6 o_setting_box" id="comchain_currency_name">
+                    <div class="col-12 col-lg-6 o_setting_box" id="comchain_settingss">
                         <div class="o_setting_left_pane" />
                         <div class="o_setting_right_pane">
                             <span class="o_form_label">Comchain currency name</span>
                             <div class="text-muted">
                                 <field name="comchain_currency_name" />
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Comchain Last block checked</span>
+                            <div class="text-muted">
+                                <field name="last_block_checked_nb" />
                             </div>
                         </div>
                     </div>
