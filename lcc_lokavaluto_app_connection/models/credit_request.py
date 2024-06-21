@@ -55,7 +55,7 @@ class CreditRequest(models.Model):
         for request in self:
             if request.state == "pending":
                 # The top up has been paid, the credit process can start
-                if request.partner_id.company_id.activate_automatic_topup:
+                if self.env.user.company_id.activate_automatic_topup:
                     request.credit_wallet()
         return res
 
