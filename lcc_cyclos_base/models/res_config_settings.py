@@ -21,3 +21,9 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Password for cyclos server",
     )
+
+    cyclos_date_last_reconversion_check = fields.Datetime(
+        related="company_id.cyclos_date_last_reconversion_check",
+        readonly=False,
+        string="Last reconversion date on Cyclos",
+    )
