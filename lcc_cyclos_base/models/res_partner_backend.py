@@ -32,10 +32,13 @@ class ResPartnerBackend(models.Model):
     @property
     def cyclos_backend_json_data(self):
         """Return normalized backend account's data"""
-        cyclos_server_url = self.env.user.company_id.get_cyclos_server_domain()
+        backend_key = "%s:%s" % (
+            "cyclos",
+            self.env.user.company_id.get_cyclos_server_domain(),
+        )
         cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos").sudo()
         data = {
-            "type": "%s:%s" % ("cyclos", cyclos_server_url),
+            "type": backend_key,
             "accounts": [],
             "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
             "max_credit_amount": getattr(cyclos_product, "sale_max_qty", 0),
@@ -48,6 +51,33 @@ class ResPartnerBackend(models.Model):
                     "active": self.status == "active",
                 }
             )
+
+        company = self.partner_id.company_id
+        safe_wallet_partner = company.cyclos_debit_wallet_partner
+
+        if safe_wallet_partner:
+            safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
+            if safe_wallet_profile_info:
+                if len(safe_wallet_profile_info) > 1:
+                    raise ValueError("Safe partner has more than one public profile")
+
+                ## Safe wallet is configured and has a public profile
+                data["safe_wallet_recipient"] = safe_wallet_profile_info[0]
+
+                monujo_backends = (
+                    safe_wallet_partner.lcc_backend_ids._update_search_data(
+                        [backend_key]
+                    )
+                )
+                if len(monujo_backends) > 1:
+                    raise ValueError("Safe partner has more than one wallet")
+                data["safe_wallet_recipient"]["monujo_backends"] = monujo_backends
+
+            else:
+                _logger.error(
+                    "Safe wallet %s has no public profile",
+                    safe_wallet_partner.name,
+                )
         return [data]
 
     @api.depends("name", "type", "cyclos_status")
