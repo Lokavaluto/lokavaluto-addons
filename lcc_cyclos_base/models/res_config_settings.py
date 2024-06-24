@@ -22,6 +22,13 @@ class ResConfigSettings(models.TransientModel):
         string="Password for cyclos server",
     )
 
+    cyclos_debit_wallet_partner = fields.Many2one(
+        "res.partner",
+        related="company_id.cyclos_debit_wallet_partner",
+        readonly=False,
+        string="Cyclos Debit Wallet Partner"
+    )
+
     cyclos_date_last_reconversion_check = fields.Datetime(
         related="company_id.cyclos_date_last_reconversion_check",
         readonly=False,

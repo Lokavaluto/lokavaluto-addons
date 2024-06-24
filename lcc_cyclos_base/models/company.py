@@ -22,6 +22,10 @@ class Company(models.Model):
 
     cyclos_server_password = fields.Char(string="Password for cyclos server")
 
+    cyclos_debit_wallet_partner = fields.Many2one(
+        "res.partner", string="Cyclos Debit Wallet Partner"
+    )
+
     cyclos_date_last_reconversion_check = fields.Datetime('Last reconversion date on Cyclos')
 
     def get_cyclos_server_domain(self):

@@ -37,6 +37,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="cyclos_debit_wallet">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Cyclos Debit Wallet Partner</span>
+                            <div class="text-muted">
+                                <field name="cyclos_debit_wallet_partner" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12 col-lg-6 o_setting_box" id="cyclos_reconversion_last_check">
                         <div class="o_setting_left_pane" />
                         <div class="o_setting_right_pane">
