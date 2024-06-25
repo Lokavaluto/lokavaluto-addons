@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="lcc_backend_comchain_form_view" model="ir.ui.view">
-        <field name="name">lcc.backend.comchain.form.view</field>
+    <record id="wallet_comchain_form_view" model="ir.ui.view">
+        <field name="name">wallet.comchain.form.view</field>
         <field name="model">res.partner.backend</field>
-        <field name="inherit_id" ref="lcc_lokavaluto_app_connection.lcc_backend_form_view" />
+        <field name="inherit_id" ref="lcc_lokavaluto_app_connection.wallet_form_view" />
         <field name="priority">0</field>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='general_info']" position="after">

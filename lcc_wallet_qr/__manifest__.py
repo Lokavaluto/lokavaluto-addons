@@ -12,7 +12,7 @@
     ],
     # always loaded
     "data": [
-        "views/lcc_backend.xml",
+        "views/wallet.xml",
         "data/res_partner_backend_data.xml",
     ],
     # only loaded in demonstration mode
