@@ -44,6 +44,7 @@ class ResPartnerBackend(models.Model):
                     "owner_id": self.cyclos_id,
                     "url": self.env.user.company_id.cyclos_server_url,
                     "active": self.status == "active",
+                    "reconversion": self.is_reconversion_allowed,
                 }
             )
 
