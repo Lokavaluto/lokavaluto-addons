@@ -29,6 +29,11 @@
                         statusbar_visible="draft,received,invoiced,paid" />
                 </header>
                 <sheet>
+                    <div class="alert alert-danger" role="alert"
+                        attrs="{'invisible': [('is_reconversion_allowed','=',True)]}">
+                        Reconversion rules indicate that reconversions are presumed NOT ALLOWED on
+                        the selected wallet.</div>
+                    <field name="is_reconversion_allowed" invisible="True" />
                     <group name="content" string="Content">
                         <field name="partner_id" />
                         <field name="wallet_id" />

@@ -8,3 +8,4 @@ from . import res_config_settings
 from . import credit_request
 from . import debit_request
 from . import commission_rule
+from . import reconversion_rule

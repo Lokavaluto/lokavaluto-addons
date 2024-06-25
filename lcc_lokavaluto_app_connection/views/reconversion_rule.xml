@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="reconversion_rule_view_tree" model="ir.ui.view">
+        <field name="name">reconversion.rule.view.tree</field>
+        <field name="model">reconversion.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Reconversion Rules">
+                <field name="name" />
+                <field name="wallet_domain" />
+                <field name="is_reconversion_allowed" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="reconversion_rule_view_form" model="ir.ui.view">
+        <field name="name">reconversion.rule.view.form</field>
+        <field name="model">reconversion.rule</field>
+        <field name="arch" type="xml">
+            <form string="Reconversion Rule">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}" />
+                    <field name="active" invisible="True" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group name="domain" string="Wallet Domain">
+                        <field
+                            name="wallet_domain"
+                            widget="domain"
+                            options='{"model": "res.partner.backend"}' />
+                    </group>
+                    <group name="authorisation" string="Authorisation">
+                        <field name="is_reconversion_allowed" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="reconversion_rule_view_search" model="ir.ui.view">
+        <field name="name">reconversion.rule.view.search</field>
+        <field name="model">reconversion.rule</field>
+        <field name="arch" type="xml">
+            <search string="Search reconversion rules">
+                <field name="name" />
+                <field name="wallet_domain" />
+                <filter domain="[('active','=',True)]" string="Active" name="active" />
+                <filter domain="[('active','=',False)]" string="Archived" name="archived" />
+                <separator />
+                <filter domain="[('is_reconversion_allowed','=',True)]" string="Reconversion ON"
+                    name="reconversion_on" />
+                <filter domain="[('is_reconversion_allowed','=',False)]" string="Reconversion OFF"
+                    name="reconversion_off" />
+            </search>
+        </field>
+    </record>
+</odoo>

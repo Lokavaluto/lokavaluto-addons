@@ -12,6 +12,7 @@
                         class="oe_highlight" type="action"
                         groups="lcc_lokavaluto_app_connection.group_wallet_full_manager" />
                     <field name="active" invisible="True" />
+                    <field name="is_reconversion_allowed" invisible="True" />
                     <group name="general_info">
                         <group>
                             <field name="name" />
@@ -20,6 +21,12 @@
                             <field name="status" readonly="True" />
                         </group>
                     </group>
+                    <div class="alert alert-success" role="alert"
+                        attrs="{'invisible': [('is_reconversion_allowed','=',False)]}">
+                        Reconversions are allowed on this wallet.</div>
+                    <div class="alert alert-danger" role="alert"
+                        attrs="{'invisible': [('is_reconversion_allowed','=',True)]}">
+                        Reconversions are NOT allowed on this wallet.</div>
                 </sheet>
             </form>
         </field>
@@ -50,6 +57,13 @@
                 <filter domain="[('status','=','to_confirm')]" string="To confirm" name="to_confirm" />
                 <filter domain="[('status','=','blocked')]" string="Blocked" name="blocked" />
                 <filter domain="[('status','=','inactive')]" string="Inactive" name="inactive" />
+                <!-- <separator />
+                <filter domain="[('is_reconversion_allowed','=',True)]"
+                    string="Reconversion ON"
+                    name="reconversion_on" />
+                <filter domain="[('is_reconversion_allowed','=',False)]"
+                    string="Reconversion OFF"
+                    name="reconversion_off" /> -->
             </search>
         </field>
     </record>
