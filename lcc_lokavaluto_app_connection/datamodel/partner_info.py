@@ -8,6 +8,10 @@ class PartnerCreditRequestsGetParam(Datamodel):
 
     backend_keys = fields.List(fields.String())
 
+class PartnerReconversions(Datamodel):
+    _name = "partner.reconversions"
+
+    transactions = fields.List(fields.String())
 
 class PartnerSearchInfo(Datamodel):
     _name = "partner.search.info"

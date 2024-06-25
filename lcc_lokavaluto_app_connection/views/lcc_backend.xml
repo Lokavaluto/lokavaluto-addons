@@ -57,13 +57,6 @@
                 <filter domain="[('status','=','to_confirm')]" string="To confirm" name="to_confirm" />
                 <filter domain="[('status','=','blocked')]" string="Blocked" name="blocked" />
                 <filter domain="[('status','=','inactive')]" string="Inactive" name="inactive" />
-                <!-- <separator />
-                <filter domain="[('is_reconversion_allowed','=',True)]"
-                    string="Reconversion ON"
-                    name="reconversion_on" />
-                <filter domain="[('is_reconversion_allowed','=',False)]"
-                    string="Reconversion OFF"
-                    name="reconversion_off" /> -->
             </search>
         </field>
     </record>

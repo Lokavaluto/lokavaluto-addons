@@ -120,6 +120,26 @@ class PartnerService(Component):
         return True
 
     @restapi.method(
+        [(["/reconversions"], "POST")],
+        input_param=Datamodel("partner.reconversions"),
+    )
+    def reconversions(self, params):
+        """Return the reconversions status for transactions matching Odoo debit requests.
+        Possible values in the dictionnary: the matching debit_request state
+        If no debit request matching the transactions (too many or no requests found), the transaction is not returned.
+        """
+        txs_list = params.transactions
+        res = {}
+        DebitRequest = self.env["debit.request"]
+        for tx_id in txs_list:
+            debit_requests = DebitRequest.search(["transaction_id", '=', tx_id])
+            if len(debit_requests) != 1:
+                _logger.error("Impossible to match a debit request for transaction %s: %s requests found" % (tx_id, len(debit_requests)))
+                continue
+            res[tx_id] = debit_requests[0].state
+        return res
+
+    @restapi.method(
         [(["/<int:rpid>/get", "/<int:rpid>"], "GET")],
     )
     def get(self, rpid):
