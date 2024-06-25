@@ -19,7 +19,7 @@
         "security/ir_rule.xml",
         "views/res_config_settings_view.xml",
         "views/res_partner_view.xml",
-        "views/lcc_backend.xml",
+        "views/wallet.xml",
         "data/cyclos_data.xml",
     ],
     'assets': {

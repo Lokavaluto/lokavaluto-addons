@@ -17,7 +17,7 @@
     "data": [
         "security/ir_rule.xml",
         "views/res_config_settings_view.xml",
-        "views/lcc_backend.xml",
+        "views/wallet.xml",
         "data/comchain_data.xml",
     ],
     # only loaded in demonstration mode
