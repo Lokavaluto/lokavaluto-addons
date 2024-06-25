@@ -14,7 +14,6 @@
         "base_rest_datamodel",
         "jsonifier",
         "lcc_members",
-        "membership",
         "onchange_helper",
         "partner_favorite",
         "partner_profiles_portal",
