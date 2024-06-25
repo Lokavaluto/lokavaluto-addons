@@ -1,5 +1,5 @@
 from . import sale_order
-from . import res_partner_backend
+from . import wallet
 from . import res_partner
 from . import auth_api_key
 from . import account_invoice

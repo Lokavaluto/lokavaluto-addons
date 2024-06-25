@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="lcc_backend_form_view" model="ir.ui.view">
-        <field name="name">lcc.backend.form.view</field>
+    <record id="wallet_form_view" model="ir.ui.view">
+        <field name="name">wallet.form.view</field>
         <field name="model">res.partner.backend</field>
         <field name="priority">0</field>
         <field name="arch" type="xml">
-            <form string="LCC Backend" create="0">
-                <sheet string="LCC Backend">
+            <form string="Digital Currency Wallet" create="0">
+                <sheet string="Digital Currency Wallet">
                     <button name="%(action_create_credit_request_wizard)d"
                         string="New Credit Request"
                         class="oe_highlight" type="action"
@@ -32,11 +32,11 @@
         </field>
     </record>
 
-    <record id="lcc_backend_view_tree" model="ir.ui.view">
-        <field name="name">lcc.backend.view.tree</field>
+    <record id="wallet_view_tree" model="ir.ui.view">
+        <field name="name">wallet.view.tree</field>
         <field name="model">res.partner.backend</field>
         <field name="arch" type="xml">
-            <tree string="LCC Backends">
+            <tree string="Digital Currency Wallet">
                 <field name="name" />
                 <field name="partner_id" />
                 <field name="type" />
@@ -45,8 +45,8 @@
         </field>
     </record>
 
-    <record id="lcc_backend_view_search" model="ir.ui.view">
-        <field name="name">lcc.backend.view.search</field>
+    <record id="wallet_view_search" model="ir.ui.view">
+        <field name="name">wallet.view.search</field>
         <field name="model">res.partner.backend</field>
         <field name="arch" type="xml">
             <search string="Search wallets">

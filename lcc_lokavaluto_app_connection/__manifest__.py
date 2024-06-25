@@ -27,7 +27,7 @@
         "views/account_invoice.xml",
         "views/res_partner.xml",
         "views/sale_order.xml",
-        "views/lcc_backend.xml",
+        "views/wallet.xml",
         "views/credit_request.xml",
         "views/debit_request.xml",
         "views/commission_rule.xml",
