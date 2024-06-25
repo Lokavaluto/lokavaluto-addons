@@ -77,6 +77,7 @@ class ResPartnerBackend(models.Model):
                     "wallet": wallet,
                     "message_key": self.comchain_message_key,
                     "active": self.status == "active",
+                    "reconversion": self.is_reconversion_allowed,
                 }
             )
 
