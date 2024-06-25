@@ -34,6 +34,7 @@ class ResPartnerBackend(models.Model):
         tracking=True,
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    is_reconversion_allowed = fields.Boolean('Is Reconversion Allowed?', readonly=True, compute="_compute_is_reconversion_allowed")
 
     def _update_search_data(self, backend_keys):
         return {}
@@ -110,3 +111,18 @@ class ResPartnerBackend(models.Model):
                 # First rule matched is returned
                 return rule
         return None
+
+    def _compute_is_reconversion_allowed(self):
+        for record in self:
+            all_rules = self.env["reconversion.rule"].search([("active", "=", True)])
+            # For now the reconversions are not allowed for this wallet
+            record.is_reconversion_allowed = False
+            for rule in all_rules:
+                # Get all the wallet matching the rule
+                wallets = self.search(safe_eval(rule.wallet_domain))
+                # Check if current wallet (self) is in the matching wallets
+                if wallets.filtered(lambda x: x.id == record.id):
+                    # As soon as one rule allows the reconversion, we don't need to check the others.
+                    if rule.is_reconversion_allowed:
+                        record.is_reconversion_allowed = True
+                        break

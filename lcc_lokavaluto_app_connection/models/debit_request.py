@@ -54,6 +54,8 @@ class DebitRequest(models.Model):
         default="draft",
     )
 
+    is_reconversion_allowed = fields.Boolean(related="wallet_id.is_reconversion_allowed", readonly=True)
+
     @api.model
     def create(self, vals):
         res = super(DebitRequest, self).create(vals)
