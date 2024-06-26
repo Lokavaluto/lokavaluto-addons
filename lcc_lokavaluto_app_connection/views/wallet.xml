@@ -6,11 +6,13 @@
         <field name="priority">0</field>
         <field name="arch" type="xml">
             <form string="Digital Currency Wallet" create="0">
-                <sheet string="Digital Currency Wallet">
+                <header>
                     <button name="%(action_create_credit_request_wizard)d"
                         string="New Credit Request"
                         class="oe_highlight" type="action"
                         groups="lcc_lokavaluto_app_connection.group_wallet_full_manager" />
+                </header>
+                <sheet string="Digital Currency Wallet">
                     <field name="active" invisible="True" />
                     <field name="is_reconversion_allowed" invisible="True" />
                     <group name="general_info">
