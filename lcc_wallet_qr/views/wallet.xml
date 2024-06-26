@@ -5,7 +5,7 @@
         <field name="model">res.partner.backend</field>
         <field name="inherit_id" ref="lcc_lokavaluto_app_connection.wallet_form_view" />
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='general_info']" position="before">
+            <xpath expr="//header" position="inside">
                 <button name="generate_qr" type="object" class="btn-box ml-3" icon="fa-qrcode">
                     Generate new QR
                 </button>
