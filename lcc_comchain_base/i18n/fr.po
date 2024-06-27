@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-27 08:13+0000\n"
-"PO-Revision-Date: 2024-06-27 08:13+0000\n"
+"POT-Creation-Date: 2024-06-27 08:59+0000\n"
+"PO-Revision-Date: 2024-06-27 08:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,8 +22,23 @@ msgstr "<span class=\"o_form_label\">Dernier bloc Comchain vérifié</span>"
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
+msgid "<span class=\"o_form_label\">Comchain Odoo wallet</span>"
+msgstr "<span class=\"o_form_label\">PPortefeuille Comchain Odoo</span>"
+
+#. module: lcc_comchain_base
+#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
+msgid "<span class=\"o_form_label\">Comchain Safe wallet</span>"
+msgstr "<span class=\"o_form_label\">Portefeuille Comchain Coffre-Fort</span>"
+
+#. module: lcc_comchain_base
+#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid "<span class=\"o_form_label\">Comchain currency name</span>"
 msgstr "<span class=\"o_form_label\">Nom de la monnaie Comchain</span>"
+
+#. module: lcc_comchain_base
+#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
+msgid "<span class=\"o_form_label\">Comchain top-up messages</span>"
+msgstr "<span class=\"o_form_label\">Messages de recharge Comchain</span>"
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_id
@@ -164,13 +179,21 @@ msgstr "Sélectionner le contact lié au portefeuille Coffre-fort"
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
 msgid ""
-"Select the partners linked to the Safe and Odoo wallets. The\n"
-"                                name of these partners will be displayed as the sender of the\n"
-"                                top-up."
+"Select the partner linked to the Safe wallet.\n"
+"                                This wallet will be used for top up and reconversion\n"
+"                                processes."
 msgstr ""
-"Sélectionner les contacts liés aux portefeuilles Coffre-fort et Odoo. Les\n"
-"                                noms de ces contacts seront affichés comme source des\n"
-"                                chargements."
+"Sélectionner le contact lié au portefeuille Coffre-Fort.\n"
+"                                Ce porteeuille sera utilisé pour les chargements et les reconversions."
+
+#. module: lcc_comchain_base
+#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
+msgid ""
+"Select the partners linked to the Odoo wallet, that has the\n"
+"                                delegation to perform top-ups from the safe wallet."
+msgstr ""
+"Sélectionner le contact lié au portefeuille de Odoo, qui a la\n"
+"                                procuration pour réaliser des chargements depuis le portefeuille Coffre-fort."
 
 #. module: lcc_comchain_base
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_type
