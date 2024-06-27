@@ -27,7 +27,7 @@ msgid ""
 ". For any maintenance action\n"
 "                        concerning these wallets, please contact your currency manager."
 msgstr ". Pour une action de maintenance\n"
-"                        concernant ces portefeuilles, veuillez contacter votre gestionnaire de portefeuille.""
+"                        concernant ces portefeuilles, veuillez contacter votre gestionnaire de portefeuille."
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
