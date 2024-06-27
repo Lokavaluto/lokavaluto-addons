@@ -1,19 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* lcc_comchain_base
+# 	* lcc_comchain_base
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-11 21:23+0000\n"
-"PO-Revision-Date: 2023-12-11 21:23+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2024-06-27 08:13+0000\n"
+"PO-Revision-Date: 2024-06-27 08:13+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: lcc_comchain_base
+#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
+msgid "<span class=\"o_form_label\">Comchain Last block checked</span>"
+msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
@@ -26,12 +31,12 @@ msgid "Address"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: selection:res.partner.backend,comchain_type:0
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__comchain_type__2
 msgid "Admin"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: selection:res.partner.backend,type:0
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__type__comchain
 msgid "Comchain"
 msgstr ""
 
@@ -46,7 +51,7 @@ msgid "Comchain service configuration"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.lcc_backend_comchain_form_view
+#: model_terms:ir.ui.view,arch_db:lcc_comchain_base.wallet_comchain_form_view
 msgid "Comchain specific"
 msgstr ""
 
@@ -56,7 +61,7 @@ msgid "Companies"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: selection:res.partner.backend,comchain_type:0
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__comchain_type__1
 msgid "Company"
 msgstr ""
 
@@ -86,8 +91,9 @@ msgid "Currency name"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model:ir.model,name:lcc_comchain_base.model_account_invoice
-msgid "Invoice"
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__last_block_checked_nb
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__last_block_checked_nb
+msgid "Last Block Checked Nb"
 msgstr ""
 
 #. module: lcc_comchain_base
@@ -118,7 +124,6 @@ msgid "Min Credit limit"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model:product.product,name:lcc_comchain_base.product_product_comchain
 #: model:product.template,name:lcc_comchain_base.product_product_comchain_product_template
 msgid "Numeric LCC (comchain)"
 msgstr ""
@@ -136,7 +141,7 @@ msgid "Odoo wallet password"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: selection:res.partner.backend,comchain_type:0
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__comchain_type__0
 msgid "Personal"
 msgstr ""
 
@@ -144,11 +149,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_company__safe_wallet_partner_id
 #: model:ir.model.fields,field_description:lcc_comchain_base.field_res_config_settings__safe_wallet_partner_id
 msgid "Safe Wallet Partner"
-msgstr ""
-
-#. module: lcc_comchain_base
-#: model:ir.model,name:lcc_comchain_base.model_sale_order
-msgid "Sale Order"
 msgstr ""
 
 #. module: lcc_comchain_base
@@ -163,7 +163,8 @@ msgstr ""
 
 #. module: lcc_comchain_base
 #: model_terms:ir.ui.view,arch_db:lcc_comchain_base.res_config_settings_view_form_comchain
-msgid "Select the partners linked to the Safe and Odoo wallets. The\n"
+msgid ""
+"Select the partners linked to the Safe and Odoo wallets. The\n"
 "                                name of these partners will be displayed as the sender of the\n"
 "                                top-up."
 msgstr ""
@@ -175,24 +176,6 @@ msgid "Type"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model:product.product,uom_name:lcc_comchain_base.product_product_comchain
-#: model:product.template,uom_name:lcc_comchain_base.product_product_comchain_product_template
-msgid "Unit(s)"
-msgstr ""
-
-#. module: lcc_comchain_base
-#: model:product.category,name:lcc_comchain_base.product_category_comchain
-msgid "comchain"
-msgstr ""
-
-#. module: lcc_comchain_base
-#: model:product.product,weight_uom_name:lcc_comchain_base.product_product_comchain
-#: model:product.template,weight_uom_name:lcc_comchain_base.product_product_comchain_product_template
-msgid "kg"
-msgstr ""
-
-#. module: lcc_comchain_base
 #: model:ir.model,name:lcc_comchain_base.model_res_partner_backend
 msgid "res.partner.backend"
 msgstr ""
-
