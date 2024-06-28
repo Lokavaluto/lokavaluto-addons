@@ -127,16 +127,21 @@ class ResPartnerBackend(models.Model):
                     record.status = ""
 
     @api.multi
-    def activate(self, type, credit_min=0, credit_max=0):
-        self.ensure_one()
-        self.write(
-            {
-                "comchain_status": "active",
-                "comchain_type": "%s" % type,
-                "comchain_credit_min": credit_min,
-                "comchain_credit_max": credit_max,
-            }
-        )
+    def activate(self, data):
+        if self.type == "comchain":
+            self.ensure_one()
+            self.write(
+                {
+                    "comchain_status": "active",
+                    "comchain_type": "%s" % data["type"],
+                    "comchain_credit_min": data["credit_min"],
+                    "comchain_credit_max": data["credit_max"],
+                }
+            )
+            for arg in ["type", "credit_min", "credit_max"]:
+                del(data[arg])
+        return super(ResPartnerBackend, self).activate(data)
+
 
     def credit_wallet(self, amount=0):
         """Send credit request to the financial backend"""
