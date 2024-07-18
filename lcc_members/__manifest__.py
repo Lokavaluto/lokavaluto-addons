@@ -53,7 +53,6 @@
         "views/portal_my_home.xml",
         "views/portal_structure_profile.xml",
         "views/res_partner_view.xml",
-        "views/res_users_views.xml",
         "views/website_partner_view.xml",
         "wizard/membership_invoice_views.xml",
     ],
