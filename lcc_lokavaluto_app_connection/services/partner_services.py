@@ -280,7 +280,7 @@ class PartnerService(Component):
             if not lcc_profile_info:
                 continue
             row = lcc_profile_info[0]
-            row["monujo_backends"] = partner.lcc_backends_ids._update_search_data(
+            row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
                 [k for k in backend_keys if k.startswith("%s:" % recipient.type)],
             )
             rows.append(row)
