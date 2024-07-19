@@ -1,0 +1,54 @@
+name: "🚀 deploy CI"
+on:
+  push:
+    branches:
+      - demo
+      - test
+      - dev1
+      - dev2
+      - dev3
+    paths-ignore:
+      - 'README*'
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get code
+        uses: actions/checkout@v2
+
+      ## XXXvlab: contrary two what was expected from ltfp in mirror
+      ## mode, this setup is highly inefficient: because through sftp,
+      ## lftp is not able to set correctly dates so it just delete and
+      ## rewrite everything on the other end.  We need to change that
+      ## with ``rclone`` solution I guess if we don't want to change
+      ## ``sftp`` protocol.
+      - name: "📂 SFTP Sync files"
+        uses: swillner/sftp-sync-action@v1.0
+        with:
+          server: ${{ github.ref_name }}.lokavaluto.fr
+          port: 10322
+          user: monujo
+          user_private_key: ${{ secrets.sftp_private_key }}
+          host_public_key:
+          local: ./
+          remote: /lokavaluto-addons
+          mirror_options: "--exclude-glob=.git*/ --verbose"
+      ## This part is to ensure that we can trigger actions after
+      ## the sync occured on the destination host.
+      - name: 🔨 Prepare last-updated
+        run: |
+          mkdir last-updated
+          date > last-updated/done
+      - name: "📂 SFTP Send last-updated"
+        uses: swillner/sftp-sync-action@v1.0
+        with:
+          server: ${{ github.ref_name }}.lokavaluto.fr
+          port: 10322
+          user: monujo
+          user_private_key: ${{ secrets.sftp_private_key }}
+          host_public_key:
+          local: ./last-updated
+          remote: /lokavaluto-addons.updated
+          mirror_options: "--verbose"
