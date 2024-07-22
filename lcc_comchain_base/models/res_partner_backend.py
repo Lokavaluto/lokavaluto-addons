@@ -222,7 +222,6 @@ class ResPartnerBackend(models.Model):
                     )
                 else:
                     break
-            time.sleep(0.5)
             retry += 1
             if retry >= 10:
                 return {
@@ -230,6 +229,7 @@ class ResPartnerBackend(models.Model):
                     "response": response,
                     "error": "Max retry reached to get transaction info (10 retries)",
                 }
+            time.sleep(0.5)
 
         if received != round(amount * 100):
             return {
