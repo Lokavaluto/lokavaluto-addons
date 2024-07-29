@@ -215,6 +215,20 @@ class res_partner(models.Model):
         fields.extend(lcc_fields)
         return fields
 
+    def get_all_members_of_associate_member(self, associate_member_id):
+        """
+        param : a member id
+
+        if member is define somewhere as associate_member, return all members where my member in param is the associate_member
+
+        return : list of members (res.partner)
+        """
+
+        members = self.env["res.partner"].search(
+                        [("associate_member", "=", associate_member_id)]
+                    )
+
+        return members
 
 class PartnerImage(models.Model):
     _name = "partner.image"
