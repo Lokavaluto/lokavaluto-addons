@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="manager_action_pos_config_kanban" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.config</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new PoS
+            </p><p>
+                Configure at least one Point of Sale.
+            </p>
+        </field>
+    </record>
+    <!-- menu parent -->
+    <menuitem id="manager_menu_pos" name="Point of sale Managers" sequence="1"/>
+    <!-- sous menus -->
+    <menuitem id="manager_menu_pos_dashboard" action="manager_action_pos_config_kanban" parent="manager_menu_pos" name="Dashboard" sequence="1"/>
+</odoo>
