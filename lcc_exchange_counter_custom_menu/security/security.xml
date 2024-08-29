@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ir rules for POS operators -->
+        <record id="operator_rule_pos_config_multi_company" model="ir.rule">
+            <field name="name">Operator Point Of Sale Config</field>
+            <field name="model_id" ref="point_of_sale.model_pos_config" />
+            <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+            <field name="domain_force">[('employee_ids.user_id.id','=',user.id)]</field>
+        </record>
+        <!-- ir rules for POS managers -->
+        <record id="manager_rule_pos_config_multi_company" model="ir.rule">
+            <field name="name">Manager Point Of Sale Config</field>
+            <field name="model_id" ref="point_of_sale.model_pos_config" />
+            <field name="groups" eval="[(4, ref('point_of_sale.group_pos_manager'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

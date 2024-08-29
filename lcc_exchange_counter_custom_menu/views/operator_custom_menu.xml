@@ -17,5 +17,5 @@
     <!-- menu parent -->
     <menuitem id="operator_menu_pos" name="Point of sale Operators" sequence="1"/>
     <!-- sous menus -->
-    <menuitem id="operator_menu_pos_dashboard" action="operator_action_pos_config_kanban" parent="operator_menu_pos" name="Dashboard" sequence="1"/>
+    <menuitem id="operator_menu_pos_dashboard" action="operator_action_pos_config_kanban" parent="operator_menu_pos" name="POS Operator Dashboard" sequence="1"/>
 </odoo>
