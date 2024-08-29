@@ -1,21 +1,35 @@
 <?xml version="1.0"?>
 <odoo>
+    <!-- POS -->
     <record id="manager_action_pos_config_kanban" model="ir.actions.act_window">
-        <field name="name">Dashboard</field>
+        <field name="name">Point of sale Manager Dashboard</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pos.config</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain"></field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create a new PoS
-            </p><p>
-                Configure at least one Point of Sale.
-            </p>
-        </field>
     </record>
-    <!-- menu parent -->
-    <menuitem id="manager_menu_pos" name="Point of sale Managers" sequence="1"/>
-    <!-- sous menus -->
-    <menuitem id="manager_menu_pos_dashboard" action="manager_action_pos_config_kanban" parent="manager_menu_pos" name="Dashboard" sequence="1"/>
+
+    <!-- INVENTAIRE -->
+    <record id="manager_inventory_action" model="ir.actions.act_window">
+        <field name="name">Inventory Overview</field>
+        <field name="res_model">stock.picking.type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+
+    <!-- TABLEAU DE BORD -->
+    <record id="ir_actions_dashboard_action" model="ir.actions.client">
+        <field name="name">Dashboards</field>
+        <field name="tag">action_spreadsheet_dashboard</field>
+    </record>
+
+    <!-- MENU  -->
+    <menuitem id="manager_menu_pos" name="Point of sale Manager" sequence="1" />
+    <menuitem id="manager_menu_pos_dashboard" action="manager_action_pos_config_kanban"
+        parent="manager_menu_pos" name="POS Manager Dashboard" sequence="1" />
+    <menuitem id="manager_menu_inventory" action="manager_inventory_action"
+        parent="manager_menu_pos" name="Inventory Manager Overview" sequence="1" />
+    <menuitem id="spreadsheet_dashboard_menu_dashboard" action="ir_actions_dashboard_action"
+        parent="manager_menu_pos" name="Dashboards" sequence="1" />
+
 </odoo>
