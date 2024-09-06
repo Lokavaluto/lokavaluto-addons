@@ -9,7 +9,7 @@
       <xpath expr="//field[@name='lcc_backend_ids']" position="after">
         <button name="cyclos_add_user" string="Create new Cyclos Wallet" class="oe_highlight"
           type="object" attrs="{'invisible': [('is_main_profile','=',False)]}"
-          group="group_wallet_accounts_manager" />
+          groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager" />
       </xpath>
     </field>
   </record>
