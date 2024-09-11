@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_fss_base",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "author": "Elabore",
     "website": "https://elabore.coop",
     "maintainer": "Boris Gallet",
@@ -27,6 +27,7 @@
     # always loaded
     "data": [
         "views/res_partner_view.xml",
+        "views/portal_my_home.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],
