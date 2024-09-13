@@ -12,6 +12,12 @@ Installation
 Just install lcc_lokavaluto_app_connection, all dependencies
 will be installed by default.
 
+Utilisation
+============
+
+You can choose to allow sending allocation to individuals or not
+Go to "Settings">"Digital Currency">"allow credit request only to company"
+
 Known issues / Roadmap
 ======================
 

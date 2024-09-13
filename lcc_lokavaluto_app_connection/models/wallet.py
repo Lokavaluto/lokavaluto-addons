@@ -65,6 +65,7 @@ class ResPartnerBackend(models.Model):
     def get_wallets(self, backend_keys):
         """Returns wallet objects list matching the backend_keys contents"""
         Wallet = self.env["res.partner.backend"]
+
         return Wallet.search(
             [
                 (

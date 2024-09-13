@@ -63,6 +63,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6 o_setting_box"
+                            id="allow_payments_only_to_companies">
+                            <div class="o_setting_left_pane">
+                                <field name="allow_payments_only_to_companies" />
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label string="Allow payments only to companies"
+                                    for="allow_payments_only_to_companies" />
+                                <div class="text-muted">
+                                    Allow payments only to companies
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </xpath>

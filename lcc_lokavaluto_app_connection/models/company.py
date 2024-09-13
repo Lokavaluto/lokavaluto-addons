@@ -11,7 +11,7 @@ class Company(models.Model):
     monujo_ios_app_url = fields.Char(string="Monujo iOS app URL")
     activate_automatic_topup = fields.Boolean("Activate Automatic Topup")
     commission_product_id = fields.Many2one("product.product", string="Commission Product")
-
+    allow_payments_only_to_companies = fields.Boolean(string="Allow payments only to companies")
 
     def _cron_import_new_digital_currency_debit_requests(self):
         """Create the debit requests in Odoo for all the debit
