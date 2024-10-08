@@ -192,6 +192,10 @@ class PartnerService(Component):
         )
         order = _recipient_order_normalize(order)
         website_url = recipients_search_info.website_url
+
+        if self.env.company.allow_payments_only_to_companies == True:
+            domain.extend([('partner_id.is_company','=',True)])
+
         if value:
             domain.extend(
                 [
