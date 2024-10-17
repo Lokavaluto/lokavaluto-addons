@@ -69,9 +69,7 @@ class PartnerService(Component):
             [("type", "in", backend_types)]
         )
         for wallet in wallets:
-            credit_request_list += self._get_credit_requests(
-                wallet, ["pending", "error"]
-            )
+            credit_request_list += self._get_credit_requests(wallet, ["pending"])
         return credit_request_list
 
     @restapi.method(
