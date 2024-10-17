@@ -1,7 +1,9 @@
 import json
 import logging
 import re
+import time
 from odoo import models, fields, api
+from pyc3l.ApiHandling import APIError
 from pyc3l import Pyc3l
 from odoo.addons.lcc_lokavaluto_app_connection import tools
 
@@ -200,12 +202,34 @@ class ResPartnerBackend(models.Model):
             }
 
         transaction = pyc3l.Transaction(response)
-        if transaction.data["recieved"] != round(amount * 100):
+
+        retry = 0
+        while True:
+            try:
+                received = transaction.data["recieved"]
+                break
+            except APIError as e:
+                if not e.args[0].startswith("API Call failed without message"):
+                    _logger.error(tools.format_last_exception())
+                    return {
+                        "success": False,
+                        "response": response,
+                        "error": "Failure when trying to get transaction info: %s" % e,
+                    }
+            retry += 1
+            if retry >= 10:
+                return {
+                    "success": False,
+                    "response": response,
+                    "error": "Max retry reached to get transaction info (10 retries)",
+                }
+            time.sleep(0.5)
+        if received != round(amount * 100):
             return {
                 "success": False,
                 "response": response,
                 "error": "Order sent, but checking transaction record returned as an unexepected amount of '%s' received."
-                % transaction.data["recieved"],
+                % received,
             }
 
         # All checks performed
