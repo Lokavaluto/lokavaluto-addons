@@ -205,9 +205,9 @@ class ResPartnerBackend(models.Model):
 
         retry = 0
         while True:
+            tx_data = None
             try:
-                received = transaction.data["recieved"]
-                break
+                tx_data = transaction.data
             except APIError as e:
                 if not e.args[0].startswith("API Call failed without message"):
                     _logger.error(tools.format_last_exception())
@@ -216,6 +216,14 @@ class ResPartnerBackend(models.Model):
                         "response": response,
                         "error": "Failure when trying to get transaction info: %s" % e,
                     }
+            if tx_data is not None:
+                received = tx_data.get("recieved")
+                if received is None:
+                    _logger.error(
+                        "Received incomplete transaction data. Missing 'recieved' field."
+                    )
+                else:
+                    break
             retry += 1
             if retry >= 10:
                 return {
