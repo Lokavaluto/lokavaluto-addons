@@ -88,3 +88,7 @@ class ResPartnerBackend(models.Model):
             "response": "Nothing done - Please install financial backend Odoo add-on.",
         }
         return res
+
+    @api.multi
+    def activate(self, data): 
+        return

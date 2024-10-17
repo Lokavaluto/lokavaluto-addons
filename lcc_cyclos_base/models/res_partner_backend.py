@@ -283,3 +283,8 @@ class ResPartnerBackend(models.Model):
                 self.cyclos_id,
             ]
         return data
+
+    def activate(self, data):
+        if self.type != "cyclos":
+            return super(ResPartnerBackend, self).activate(data)
+        raise NotImplementedError()

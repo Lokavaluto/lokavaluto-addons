@@ -388,6 +388,32 @@ class PartnerService(Component):
         else:
             return self.set_favorite(_id)
 
+    @restapi.method(
+        [(["/account_activate"], "POST")],
+    )
+    def account_activate(self):
+        """
+        Activate account on partners
+
+        """
+        wallet_obj = self.env["res.partner.backend"]
+        for account in request.params["accounts"]:
+            domain = [
+                ("name", "=", account["account_id"]),
+            ]
+            if account["recipient_id"]:
+                domain.append(("partner_id", "=", account["recipient_id"]))
+            wallet_id = wallet_obj.search(domain, limit=2)
+            if len(wallet_id) == 0:
+                raise NotFound("Wallet %s not found in Odoo" % account["account_id"])
+            if len(wallet_id) > 1:
+                raise NotImplementedError(
+                    "Several wallets retrieved with same address. Please contact your administrator"
+                )
+            wallet_id.activate(account["data"])
+        return True
+
+
     ##########################################################
     # Private methods
     ##########################################################
