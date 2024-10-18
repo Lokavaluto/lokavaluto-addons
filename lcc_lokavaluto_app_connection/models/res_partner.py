@@ -119,7 +119,8 @@ class ResPartner(models.Model):
             if not partner.public_profile_id:
                 _logger.warning(
                     "Partner %s (id: %d) has no public profile id. Skipping.",
-                    partner.name, partner.id
+                    partner.name,
+                    partner.id,
                 )
                 continue
             profile_info = partner.public_profile_id.jsonify(

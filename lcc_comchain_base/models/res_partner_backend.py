@@ -14,7 +14,9 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    type = fields.Selection(selection_add=[("comchain", "Comchain")], ondelete={'comchain': 'cascade'})
+    type = fields.Selection(
+        selection_add=[("comchain", "Comchain")], ondelete={"comchain": "cascade"}
+    )
     comchain_id = fields.Char(string="Address")
     comchain_wallet = fields.Text(string="Crypted json wallet")
     comchain_status = fields.Char(string="Comchain Status")
@@ -63,7 +65,9 @@ class ResPartnerBackend(models.Model):
         if not backend_id:
             ## Comchain financial backend is not configured in general settings
             return []
-        comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain").sudo()
+        comchain_product = self.env.ref(
+            "lcc_comchain_base.product_product_comchain"
+        ).sudo()
         data = {
             "type": backend_id,
             "accounts": [],
@@ -84,7 +88,6 @@ class ResPartnerBackend(models.Model):
         safe_wallet_partner = company.safe_wallet_partner_id
 
         if safe_wallet_partner:
-
             safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
             if safe_wallet_profile_info:
                 if len(safe_wallet_profile_info) > 1:
@@ -93,8 +96,10 @@ class ResPartnerBackend(models.Model):
                 ## Safe wallet is configured and has a public profile
                 data["safe_wallet_recipient"] = safe_wallet_profile_info[0]
 
-                monujo_backends = safe_wallet_partner.lcc_backend_ids._update_search_data(
-                    [self.comchain_backend_id]
+                monujo_backends = (
+                    safe_wallet_partner.lcc_backend_ids._update_search_data(
+                        [self.comchain_backend_id]
+                    )
                 )
                 if len(monujo_backends) > 1:
                     raise ValueError("Safe partner has more than one wallet")
@@ -244,8 +249,5 @@ class ResPartnerBackend(models.Model):
                 "response": "",
                 "error_message": "Failed to get wallet balance: %s" % e,
             }
-  
-        return {
-            "success": True,
-            "response": balance
-        }
+
+        return {"success": True, "response": balance}

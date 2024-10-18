@@ -4,6 +4,7 @@ from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 from odoo.http import request
 from odoo.exceptions import UserError
 
+
 class AuthSignupHome(AuthSignupHome):
     def get_auth_signup_qcontext(self):
         qcontext = super(AuthSignupHome, self).get_auth_signup_qcontext()

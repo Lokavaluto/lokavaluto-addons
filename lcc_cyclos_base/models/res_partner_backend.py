@@ -14,14 +14,16 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    type = fields.Selection(selection_add=[("cyclos", "Cyclos")], ondelete={'cyclos': 'cascade'})
+    type = fields.Selection(
+        selection_add=[("cyclos", "Cyclos")], ondelete={"cyclos": "cascade"}
+    )
     cyclos_create_response = fields.Text(string="Cyclos create response")
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
     def _update_search_data(self, backend_keys):
         data = super(ResPartnerBackend, self)._update_search_data(backend_keys)
-        for wallet in self: 
+        for wallet in self:
             if wallet.type != "cyclos":
                 continue
             for backend_key in backend_keys:
@@ -53,7 +55,7 @@ class ResPartnerBackend(models.Model):
     @api.depends("name", "type", "cyclos_status")
     def _compute_status(self):
         super(ResPartnerBackend, self)._compute_status()
-        for rec in self: 
+        for rec in self:
             if rec.type == "cyclos":
                 if rec.cyclos_status == "active":
                     rec.status = "active"
@@ -283,7 +285,7 @@ class ResPartnerBackend(models.Model):
     def get_wallet_balance(self):
         self.ensure_one()
         res = ""
-        try :
+        try:
             res = self._cyclos_rest_call("GET", "/%s/accounts" % self.cyclos_id)
             _logger.debug("res: %s" % res)
         except Exception as e:
@@ -293,11 +295,8 @@ class ResPartnerBackend(models.Model):
                 "response": "",
                 "error_message": "Failed to get wallet balance: %s" % e,
             }
-        
+
         data_res = json.loads(res.text)
         balance = float(data_res[0].get("status", {}).get("balance", ""))
 
-        return {
-            "success": True,
-            "response": balance
-        }
+        return {"success": True, "response": balance}

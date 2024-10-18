@@ -27,7 +27,7 @@ class PortalOrganizationAffiliation(CustomerPortal):
             values,
             "my_affiliation_request_history",
             False,
-            **kwargs
+            **kwargs,
         )
 
     @http.route(

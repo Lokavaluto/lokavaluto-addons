@@ -22,9 +22,9 @@
         "views/lcc_backend.xml",
         "data/cyclos_data.xml",
     ],
-    'assets': {
-        'web.assets_frontend': [
-            'lcc_cyclos_base/static/src/scss/signup.scss',
+    "assets": {
+        "web.assets_frontend": [
+            "lcc_cyclos_base/static/src/scss/signup.scss",
         ],
     },
     # only loaded in demonstration mode

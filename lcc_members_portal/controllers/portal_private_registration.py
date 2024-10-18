@@ -34,7 +34,7 @@ class PortalPrivateRegistration(CustomerPortal):
             values,
             "my_private_registration_history",
             False,
-            **kwargs
+            **kwargs,
         )
 
     def get_private_membership_products(self):
@@ -104,15 +104,23 @@ class PortalPrivateRegistration(CustomerPortal):
         for field in self._EXTRA_FIELDS:
             if data.get(field):
                 values[field] = data.pop(field)
-        values.update({
-            "lastname": values["lastname"].upper(),
-            "firstname": values["firstname"].title(),
-            "zip": values.pop("zipcode", ""),
-            "refuse_numeric_wallet_creation": data.get("refuse_numeric_wallet_creation", "off") == "on",
-            "want_newsletter_subscription": data.get("want_newsletter_subscription", "off") == "on",
-            "accept_policy": data.get("accept_policy", "off") == "on"
-        })
-        values["name"] = values["firstname"] + " " + values["lastname"]       
+        values.update(
+            {
+                "lastname": values["lastname"].upper(),
+                "firstname": values["firstname"].title(),
+                "zip": values.pop("zipcode", ""),
+                "refuse_numeric_wallet_creation": data.get(
+                    "refuse_numeric_wallet_creation", "off"
+                )
+                == "on",
+                "want_newsletter_subscription": data.get(
+                    "want_newsletter_subscription", "off"
+                )
+                == "on",
+                "accept_policy": data.get("accept_policy", "off") == "on",
+            }
+        )
+        values["name"] = values["firstname"] + " " + values["lastname"]
         return values
 
     @http.route(

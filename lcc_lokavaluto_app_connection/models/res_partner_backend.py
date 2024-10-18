@@ -93,6 +93,6 @@ class ResPartnerBackend(models.Model):
         Need to be overrided by financial backend add-ons"""
         res = {
             "success": False,
-            "response": "No data - Please install financial backend Odoo add-on."
+            "response": "No data - Please install financial backend Odoo add-on.",
         }
         return res

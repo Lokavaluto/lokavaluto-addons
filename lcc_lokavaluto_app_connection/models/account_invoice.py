@@ -62,7 +62,11 @@ class AccountInvoice(models.Model):
 
     def _invoice_paid_hook(self):
         res = super(AccountInvoice, self)._invoice_paid_hook()
-        for invoice in self.filtered(lambda move: move.is_invoice() and move.is_sale_document() and move.has_numeric_lcc_products):
+        for invoice in self.filtered(
+            lambda move: move.is_invoice()
+            and move.is_sale_document()
+            and move.has_numeric_lcc_products
+        ):
             for request in invoice.credit_request_ids:
                 # Only the opened request are concerned
                 if request.state != "open":

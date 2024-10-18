@@ -132,7 +132,8 @@ class PartnerService(Component):
         if not partners[0].public_profile_id:
             raise MissingError(
                 "Partner %r (id: %d) doesn't have a public profile",
-                partners[0].name, partners[0].id
+                partners[0].name,
+                partners[0].id,
             )
 
         return partners[0].lcc_profile_info()[0]
@@ -402,7 +403,9 @@ class PartnerService(Component):
         if backend_keys:
             for partner in recipients:
                 row = partner.lcc_profile_info()[0]
-                row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(backend_keys)
+                row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
+                    backend_keys
+                )
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
 
