@@ -21,7 +21,7 @@ class res_partner(models.Model):
     )
     phone_pro = fields.Char(
         string=_("Professional phone"), required=False, translate=False, readonly=False
-    ) ## TODO: delete this field as it is now in function or public profiles
+    )  ## TODO: delete this field as it is now in function or public profiles
     member_type_id = fields.Many2one(
         "member.type",
         string=_("Member's type"),

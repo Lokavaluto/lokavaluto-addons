@@ -38,7 +38,7 @@ class PortalOrganizationRenewal(CustomerPortal):
             values,
             "my_organization_registration_history",
             False,
-            **kwargs
+            **kwargs,
         )
 
     def get_organization_membership_product(self):
@@ -101,9 +101,9 @@ class PortalOrganizationRenewal(CustomerPortal):
         if float(data.get("total_membership", False)):
             values["total_membership"] = float(data.get("total_membership"))
         else:
-            values[
-                "total_membership"
-            ] = self.get_organization_membership_product().list_price
+            values["total_membership"] = (
+                self.get_organization_membership_product().list_price
+            )
 
         for field in self._ORGANIZATION_RENEWAL_FIELDS:
             if data.get(field):

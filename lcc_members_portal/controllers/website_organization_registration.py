@@ -97,7 +97,10 @@ class WebsiteOrganizationRegistration(http.Controller):
             == "on",
             "from_website": True,
             "itinerant": data.get("itinerant", "off") == "on",
-            "refuse_numeric_wallet_creation": data.get("refuse_numeric_wallet_creation", "off") == "on",
+            "refuse_numeric_wallet_creation": data.get(
+                "refuse_numeric_wallet_creation", "off"
+            )
+            == "on",
             "want_newsletter_subscription": data.get(
                 "want_newsletter_subscription", "off"
             )
@@ -114,9 +117,9 @@ class WebsiteOrganizationRegistration(http.Controller):
         if float(data.get("total_membership", False)):
             values["total_membership"] = float(data.get("total_membership"))
         else:
-            values[
-                "total_membership"
-            ] = self.get_organization_membership_product().list_price
+            values["total_membership"] = (
+                self.get_organization_membership_product().list_price
+            )
         for field in self._ORGANIZATION_REGISTRATION_FIELDS:
             if data.get(field):
                 values[field] = data.pop(field)
@@ -138,9 +141,9 @@ class WebsiteOrganizationRegistration(http.Controller):
         # Create a new lead
         values = self._compute_web_form_data(kwargs)
         lead = request.env["crm.lead"].sudo().create(values)
-        lead.team_id = request.env["crm.team"].browse(kwargs.pop(
-            "team_id"
-        ))  # TODO: see remark above concerning team_id
+        lead.team_id = request.env["crm.team"].browse(
+            kwargs.pop("team_id")
+        )  # TODO: see remark above concerning team_id
         return request.render(
             "lcc_members_portal.website_organization_registration_saved", {}
         )

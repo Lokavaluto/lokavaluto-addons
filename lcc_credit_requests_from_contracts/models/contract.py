@@ -14,25 +14,30 @@ class ContractContract(models.Model):
     def _prepare_credit_request_values(self, invoice):
         self.ensure_one()
         values = {
-            "amount": self.credit_request_amount if self.different_credit_request_amount else invoice.amount_total,
+            "amount": self.credit_request_amount
+            if self.different_credit_request_amount
+            else invoice.amount_total,
             "partner_id": invoice.partner_id.id,
             "wallet_id": invoice.contract_id.wallet_id.id,
             "invoice_id": invoice.id,
             "no_order": True,
             "limit_credit_aggregation": self.limit_credit_aggregation,
-            "max_credit_amount": self.max_credit_amount
+            "max_credit_amount": self.max_credit_amount,
         }
         return values
 
     def _prepare_invoice(self, date_invoice, journal=None):
         invoice_vals = super()._prepare_invoice(date_invoice, journal)
-        invoice_vals['contract_id'] = self.id
+        invoice_vals["contract_id"] = self.id
         return invoice_vals
 
     def _recurring_create_invoice(self, date_ref=False):
         invoices = super()._recurring_create_invoice(date_ref)
         for invoice in invoices:
-            if invoice.has_numeric_lcc_products and invoice.contract_id.create_credit_requests:
+            if (
+                invoice.has_numeric_lcc_products
+                and invoice.contract_id.create_credit_requests
+            ):
                 values = self._prepare_credit_request_values(invoice)
                 self.env["credit.request"].create(values)
         return invoices

@@ -14,8 +14,8 @@
     "depends": [
         "base",
         "hr_professional_category",
-       # "lcc_credit_requests_from_contracts",
-       # "lcc_lokavaluto_app_connection",
+        # "lcc_credit_requests_from_contracts",
+        # "lcc_lokavaluto_app_connection",
         "lcc_members",
         "lcc_members_portal",
         "partner_contact_gender",

@@ -1,4 +1,3 @@
-
 try:
     import qrcode
 except ImportError:
@@ -9,7 +8,7 @@ except ImportError:
     base64 = None
 from io import BytesIO
 
-from odoo import models, fields, api,_
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
