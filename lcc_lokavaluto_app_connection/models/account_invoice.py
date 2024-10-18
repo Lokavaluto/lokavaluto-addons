@@ -13,8 +13,14 @@ class AccountInvoice(models.Model):
     credit_request_ids = fields.One2many(
         "credit.request", "invoice_id", string="Credit Requests"
     )
+    has_credit_requests = fields.Boolean(
+        compute="_compute_has_credit_requests", store=False
+    )
     debit_request_ids = fields.Many2many(
         "debit.request", compute="_compute_debit_request_ids", string="Debit Requests"
+    )
+    has_debit_requests = fields.Boolean(
+        compute="_compute_has_debit_requests", store=False
     )
     global_credit_status = fields.Selection(
         [
@@ -32,17 +38,22 @@ class AccountInvoice(models.Model):
     global_lcc_amount_to_credit = fields.Float(
         string="LCC amount to credit", compute="_compute_global_lcc_amounts"
     )
-    digital_currency_invoice_type = fields.Selection(
-        [("none", "None"), ("credit", "Credit"), ("debit", "Debit")],
-        string="Digital Currency Invoice Type",
-        compute="_compute_digital_currency_invoice_type",
-    )
 
     @api.depends("credit_request_ids")
     def _compute_global_credit_status(self):
         self.global_credit_status = status(
             r.state == "done" for r in self.credit_request_ids
         )
+
+    @api.depends("credit_request_ids")
+    def _compute_has_credit_requests(self):
+        for record in self:
+            record.has_credit_requests = bool(record.credit_request_ids)
+
+    @api.depends("debit_request_ids")
+    def _compute_has_debit_requests(self):
+        for record in self:
+            record.has_debit_requests = bool(record.debit_request_ids)
 
     @api.depends("credit_request_ids")
     def _compute_global_lcc_amounts(self):
@@ -77,15 +88,6 @@ class AccountInvoice(models.Model):
                     ("commission_move_id", "=", move.id),
                 ]
             )
-
-    @api.depends("debit_request_ids", "credit_request_ids")
-    def _compute_digital_currency_invoice_type(self):
-        if self.debit_request_ids:
-            self.digital_currency_invoice_type = "debit"
-        elif self.credit_request_ids:
-            self.digital_currency_invoice_type = "credit"
-        else:
-            self.digital_currency_invoice_type = "none"
 
     def _invoice_paid_hook(self):
         res = super(AccountInvoice, self)._invoice_paid_hook()
