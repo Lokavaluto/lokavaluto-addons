@@ -150,7 +150,7 @@ class ResPartnerBackend(models.Model):
         if self.type != "comchain":
             return res
 
-        company = self.partner_id.company_id
+        company = self.env.user.company_id
         # Get Odoo wallet
         try:
             odoo_wallet = pyc3l.Wallet.from_json(
