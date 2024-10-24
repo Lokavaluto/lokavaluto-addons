@@ -13,6 +13,15 @@ class AccountInvoice(models.Model):
     credit_request_ids = fields.One2many(
         "credit.request", "invoice_id", string="Credit Requests"
     )
+    has_credit_requests = fields.Boolean(
+        compute="_compute_has_credit_requests", store=False
+    )
+    debit_request_ids = fields.Many2many(
+        "debit.request", compute="_compute_debit_request_ids", string="Debit Requests"
+    )
+    has_debit_requests = fields.Boolean(
+        compute="_compute_has_debit_requests", store=False
+    )
     global_credit_status = fields.Selection(
         [
             ("todo", "To do"),
@@ -35,6 +44,16 @@ class AccountInvoice(models.Model):
         self.global_credit_status = status(
             r.state == "done" for r in self.credit_request_ids
         )
+
+    @api.depends("credit_request_ids")
+    def _compute_has_credit_requests(self):
+        for record in self:
+            record.has_credit_requests = bool(record.credit_request_ids)
+
+    @api.depends("debit_request_ids")
+    def _compute_has_debit_requests(self):
+        for record in self:
+            record.has_debit_requests = bool(record.debit_request_ids)
 
     @api.depends("credit_request_ids")
     def _compute_global_lcc_amounts(self):
@@ -60,15 +79,57 @@ class AccountInvoice(models.Model):
             if lcc_numeric_products:
                 self.has_numeric_lcc_products = True
 
+    def _compute_debit_request_ids(self):
+        for move in self:
+            move.debit_request_ids = self.env["debit.request"].search(
+                [
+                    "|",
+                    ("debit_move_id", "=", move.id),
+                    ("commission_move_id", "=", move.id),
+                ]
+            )
+
     def _invoice_paid_hook(self):
         res = super(AccountInvoice, self)._invoice_paid_hook()
-        for invoice in self.filtered(lambda move: move.is_invoice() and move.is_sale_document() and move.has_numeric_lcc_products):
+        for invoice in self:
+            if not invoice.is_invoice():
+                continue
+
             for request in invoice.credit_request_ids:
                 # Only the opened request are concerned
                 if request.state != "open":
                     continue
                 # Set the state in "pending" to launch the top up process
                 request.write({"state": "pending"})
+
+            for request in invoice.debit_request_ids:
+                # Set the state in "paid" and update the global request status
+                if invoice.is_sale_document():
+                    state_value = {"commission_move_state": "paid"}
+                elif invoice.is_purchase_document():
+                    state_value = {"debit_move_state": "paid"}
+                else:
+                    continue
+                request.write(state_value)
+                request.compute_state()
+        return res
+
+    def action_post(self):
+        # OVERRIDE
+        res = super(AccountInvoice, self).action_post()
+        for invoice in self:
+            if not invoice.is_invoice():
+                continue
+
+            for request in invoice.debit_request_ids:
+                if invoice.is_sale_document():
+                    state_value = {"commission_move_state": "posted"}
+                elif invoice.is_purchase_document():
+                    state_value = {"debit_move_state": "posted"}
+                else:
+                    continue
+                request.write(state_value)
+                request.compute_state()
         return res
 
 

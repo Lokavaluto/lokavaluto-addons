@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="action_lcc_backends_tree_view" model="ir.actions.act_window">
-        <field name="name">LCC backends</field>
+    <record id="action_wallet_view" model="ir.actions.act_window">
+        <field name="name">Wallets</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner.backend</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p>
-                <br />
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new wallet.
+                </p>
             </p>
         </field>
     </record>
@@ -25,18 +27,81 @@
         </field>
     </record>
 
-    <menuitem
-        id="lcc_backends_tree_menu"
-        parent="membership.menu_marketing_config_association"
-        sequence="99"
-        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
-        action="action_lcc_backends_tree_view" />
+    <record id="action_debit_request" model="ir.actions.act_window">
+        <field name="name">Debit Requests</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">debit.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new debit request.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_reconversion_rule" model="ir.actions.act_window">
+        <field name="name">Reconversion Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">reconversion.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new reconversion rule.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_commission_rule" model="ir.actions.act_window">
+        <field name="name">Commission Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commission.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new commission rule.
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Digital currencies" id="menu_digital_currencies" sequence="15"
+        web_icon="lcc_lokavaluto_app_connection,static/description/icon.png" />
 
     <menuitem
-        id="credit_request_tree_menu"
-        parent="membership.menu_marketing_config_association"
-        sequence="99"
+        id="wallets_menu"
+        parent="lcc_lokavaluto_app_connection.menu_digital_currencies"
+        sequence="10"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_wallet_view" />
+
+    <menuitem
+        id="credit_requests_menu"
+        parent="lcc_lokavaluto_app_connection.menu_digital_currencies"
+        sequence="20"
         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
         action="action_credit_request" />
+
+    <menuitem
+        id="debit_requests_menu"
+        parent="lcc_lokavaluto_app_connection.menu_digital_currencies"
+        sequence="30"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_debit_request" />
+
+    <menuitem name="Configuration" id="menu_config_digital_currency"
+        parent="lcc_lokavaluto_app_connection.menu_digital_currencies" sequence="999" />
+
+    <menuitem
+        id="reconversion_rule_menu"
+        parent="lcc_lokavaluto_app_connection.menu_config_digital_currency"
+        sequence="99"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_reconversion_rule" />
+
+    <menuitem
+        id="commission_rule_menu"
+        parent="lcc_lokavaluto_app_connection.menu_config_digital_currency"
+        sequence="99"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_commission_rule" />
 
 </odoo>

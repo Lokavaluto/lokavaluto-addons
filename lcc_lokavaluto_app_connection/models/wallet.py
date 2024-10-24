@@ -1,7 +1,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-
+from odoo.tools.safe_eval import safe_eval
 import logging
+
 
 _logger = logging.getLogger(__name__)
 
@@ -32,6 +33,11 @@ class ResPartnerBackend(models.Model):
         tracking=True,
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    is_reconversion_allowed = fields.Boolean(
+        "Is Reconversion Allowed?",
+        readonly=True,
+        compute="_compute_is_reconversion_allowed",
+    )
 
     def _update_search_data(self, backend_keys):
         return {}
@@ -93,6 +99,30 @@ class ResPartnerBackend(models.Model):
         Need to be overrided by financial backend add-ons"""
         res = {
             "success": False,
-            "response": "No data - Please install financial backend Odoo add-on."
+            "response": "No data - Please install financial backend Odoo add-on.",
         }
         return res
+
+    def get_wallet_commission_rule(self):
+        self.ensure_one()
+        rules = self.env["commission.rule"].search([("active", "=", True)])
+        for rule in rules:
+            # Get all the wallet matching the rule
+            wallets = self.search(safe_eval(rule.wallet_domain))
+            # Check if current wallet (self) is in the matching wallets
+            if wallets.filtered(lambda x: x.id == self.id):
+                # First rule matched is returned
+                return rule
+        return None
+
+    def _compute_is_reconversion_allowed(self):
+        all_rules = self.env["reconversion.rule"].search([("active", "=", True)])
+        for record in self:
+            # For now the reconversions are not allowed for this wallet
+            record.is_reconversion_allowed = False
+            if any(
+                self.search(safe_eval(rule.wallet_domain) + [("id", "=", record.id)])
+                and rule.is_reconversion_allowed
+                for rule in all_rules
+            ):
+                record.is_reconversion_allowed = True

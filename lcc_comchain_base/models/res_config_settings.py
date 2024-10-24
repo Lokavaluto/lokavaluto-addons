@@ -33,3 +33,9 @@ class ResConfigSettings(models.TransientModel):
     message_to = fields.Char(
         related="company_id.message_to", readonly=False, string="Message to"
     )
+
+    last_block_checked_nb = fields.Integer(
+        related="company_id.last_block_checked_nb",
+        readonly=False,
+        string="Last Block Checked Nb",
+    )

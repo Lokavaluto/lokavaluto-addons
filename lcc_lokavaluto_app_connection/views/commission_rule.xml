@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="commission_rule_view_tree" model="ir.ui.view">
+        <field name="name">commission.rule.view.tree</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Rules">
+                <field name="name" />
+                <field name="wallet_domain" />
+                <field name="calculation_rule" />
+                <field name="calculation_value" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="commission_rule_view_form" model="ir.ui.view">
+        <field name="name">commission.rule.view.form</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <form string="Commission Rule">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}" />
+                    <field name="active" invisible="True" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group name="domain" string="Wallet Domain">
+                        <field
+                            name="wallet_domain"
+                            widget="domain"
+                            options='{"model": "res.partner.backend"}' />
+                    </group>
+                    <group name="calculation" string="Calculation process">
+                        <field name="calculation_rule" />
+                        <field name="calculation_value" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="commission_rule_view_search" model="ir.ui.view">
+        <field name="name">commission.rule.view.search</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <search string="Search commission rules">
+                <field name="name" />
+                <field name="wallet_domain" />
+                <filter domain="[('active','=',True)]" string="Active" name="active" />
+                <filter domain="[('active','=',False)]" string="Archived" name="archived" />
+                <separator />
+                <field name="calculation_rule" />
+                <filter domain="[('calculation_rule','=','fix')]" string="Fix rules" name="fix" />
+                <filter domain="[('calculation_rule','=','percentage')]" string="Percentage rules"
+                    name="percentage" />
+            </search>
+        </field>
+    </record>
+</odoo>

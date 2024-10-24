@@ -1,5 +1,6 @@
 import traceback
 
+
 def status(reqs):
     """Return 'todo', 'done' or 'ongoing' depending if all reqs are
     not done, all done or some done.

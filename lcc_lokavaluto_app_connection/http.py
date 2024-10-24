@@ -19,6 +19,7 @@ except (ImportError, IOError) as err:
 ## CORS Middleware patching
 ##
 
+
 def CORSMiddleware(original_app):
     """Add Cross-origin resource sharing headers to every request."""
 
@@ -61,6 +62,7 @@ def CORSMiddleware(original_app):
             raise
         _logger.debug("OK: %r", res)
         return res
+
     return __call__
 
 
@@ -68,7 +70,6 @@ root.__class__.__call__ = CORSMiddleware(root.__class__.__call__)
 
 
 class NewRestApiDispatcher(http.RestApiDispatcher):
-
     ##
     ## Ensuring that AccessDenied are translated to 401 (Unauthorized) and
     ## not Forbidden.
@@ -80,7 +81,9 @@ class NewRestApiDispatcher(http.RestApiDispatcher):
     def handle_error(self, exception):
         if isinstance(exception, (AccessDenied,)):
             extra_info = getattr(exception, "rest_json_info", None)
-            return http.wrapJsonException(http.Unauthorized(http.ustr(exception)), extra_info=extra_info)
+            return http.wrapJsonException(
+                http.Unauthorized(http.ustr(exception)), extra_info=extra_info
+            )
         return super().handle_error(exception)
 
     ##
@@ -91,9 +94,11 @@ class NewRestApiDispatcher(http.RestApiDispatcher):
         res = super().pre_dispatch(rule, args)
         if self.request.httprequest.method == "GET":
             self.request.params.update(
-                pyquerystring.parse(self.request.httprequest.query_string.decode("utf-8"))
+                pyquerystring.parse(
+                    self.request.httprequest.query_string.decode("utf-8")
+                )
             )
         return res
 
-http.RestApiDispatcher = NewRestApiDispatcher
 
+http.RestApiDispatcher = NewRestApiDispatcher

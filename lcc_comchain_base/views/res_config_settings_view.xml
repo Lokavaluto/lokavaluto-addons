@@ -19,28 +19,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6 o_setting_box"
-                        id="comchain_activate_automatic_topup"
+                    <div class="col-12 col-lg-6 o_setting_box" id="comchain_block_checked">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Comchain Last block checked</span>
+                            <div class="text-muted">
+                                <field name="last_block_checked_nb" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="comchain_safe_wallet">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Comchain Safe wallet</span>
+                            <div class="text-muted">
+                                Select the partner linked to the Safe wallet.
+                                This wallet will be used for top up and reconversion
+                                processes.
+                            </div>
+                            <div>
+                                <field name="safe_wallet_partner_id"
+                                    placeholder="Select partner linked to safe wallet." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="comchain_odoo_wallet"
                         attrs="{'invisible': [('activate_automatic_topup', '=', False)]}">
                         <div class="o_setting_left_pane" />
                         <div class="o_setting_right_pane">
-                            <div>
-                                <label for="message_from" class="o_light_label" />
-                                <field name="message_from" />
-                            </div>
-                            <div>
-                                <label for="message_to" class="o_light_label" />
-                                <field name="message_to" />
-                            </div>
+                            <span class="o_form_label">Comchain Odoo wallet</span>
                             <div class="text-muted">
-                                Select the partners linked to the Safe and Odoo wallets. The
-                                name of these partners will be displayed as the sender of the
-                                top-up.
-                            </div>
-                            <div>
-                                <label for="safe_wallet_partner_id" class="o_light_label" />
-                                <field name="safe_wallet_partner_id"
-                                    placeholder="Select partner linked to safe wallet." />
+                                Select the partners linked to the Odoo wallet, that has the
+                                delegation to perform top-ups from the safe wallet.
                             </div>
                             <div>
                                 <label for="odoo_wallet_partner_id" class="o_light_label" />
@@ -48,8 +58,24 @@
                                     placeholder="Select partner linked to Odoo wallet." />
                             </div>
                             <div>
-                                <label for="comchain_odoo_wallet_password" class="o_light_label" />
+                                <label for="comchain_odoo_wallet_password"
+                                    class="o_light_label" />
                                 <field name="comchain_odoo_wallet_password" password="True" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="comchain_top_up_messages"
+                        attrs="{'invisible': [('activate_automatic_topup', '=', False)]}">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Comchain top-up messages</span>
+                            <div>
+                                <label for="message_from" class="o_light_label" />
+                                <field name="message_from" />
+                            </div>
+                            <div>
+                                <label for="message_to" class="o_light_label" />
+                                <field name="message_to" />
                             </div>
                         </div>
                     </div>

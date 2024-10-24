@@ -19,9 +19,7 @@ class AuthService(Component):
     """
 
     # The following method are 'public' and can be called from the controller.
-    @restapi.method(
-        [(["/authenticate"], "POST")],
-        cors="*"    )
+    @restapi.method([(["/authenticate"], "POST")], cors="*")
     def authenticate(self, **params):
         """
         This method is used to authenticate and get the token for the user on mobile app.
@@ -77,9 +75,7 @@ class AuthService(Component):
                 response["status"] = "Error"
         return response
 
-    @restapi.method(
-        [(["/signup"], "POST")],
-        cors="*"    )
+    @restapi.method([(["/signup"], "POST")], cors="*")
     def signup(self):
         """Trigger odoo Sign-up process
 
@@ -104,9 +100,7 @@ class AuthService(Component):
         """Return True if public sign-up is enabled"""
         return request.env["res.users"]._get_signup_invitation_scope() == "b2c"
 
-    @restapi.method(
-        [(["/can_reset_password"], "GET")],
-        cors="*"    )
+    @restapi.method([(["/can_reset_password"], "GET")], cors="*")
     def can_reset_password(self):
         return (
             request.env["ir.config_parameter"]
@@ -114,9 +108,7 @@ class AuthService(Component):
             .get_param("auth_signup.reset_password")
         ) == "True"
 
-    @restapi.method(
-        [(["/reset_password"], "POST")],
-        cors="*"    )
+    @restapi.method([(["/reset_password"], "POST")], cors="*")
     def reset_password(self):
         """Request password reset email"""
 

@@ -54,6 +54,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="commission_product">
+                            <div class="o_setting_left_pane" />
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Commission Product</span>
+                                <div class="text-muted">
+                                    <field name="commission_product_id" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </xpath>

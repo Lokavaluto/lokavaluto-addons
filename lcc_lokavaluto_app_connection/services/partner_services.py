@@ -69,9 +69,7 @@ class PartnerService(Component):
             [("type", "in", backend_types)]
         )
         for wallet in wallets:
-            credit_request_list += self._get_credit_requests(
-                wallet, ["pending", "error"]
-            )
+            credit_request_list += self._get_credit_requests(wallet, ["pending"])
         return credit_request_list
 
     @restapi.method(
@@ -120,6 +118,29 @@ class PartnerService(Component):
         return True
 
     @restapi.method(
+        [(["/reconversions"], "POST")],
+        input_param=Datamodel("partner.reconversions"),
+    )
+    def reconversions(self, params):
+        """Return the reconversions status for transactions matching Odoo debit requests.
+        Possible values in the dictionnary: the matching debit_request state
+        If no debit request matching the transactions (too many or no requests found), the transaction is not returned.
+        """
+        txs_list = params.transactions
+        res = {}
+        DebitRequest = self.env["debit.request"]
+        for tx_id in txs_list:
+            debit_requests = DebitRequest.search(["transaction_id", "=", tx_id])
+            if len(debit_requests) != 1:
+                _logger.error(
+                    "Impossible to match a debit request for transaction %s: %s requests found"
+                    % (tx_id, len(debit_requests))
+                )
+                continue
+            res[tx_id] = debit_requests[0].state
+        return res
+
+    @restapi.method(
         [(["/<int:rpid>/get", "/<int:rpid>"], "GET")],
     )
     def get(self, rpid):
@@ -132,7 +153,8 @@ class PartnerService(Component):
         if not partners[0].public_profile_id:
             raise MissingError(
                 "Partner %r (id: %d) doesn't have a public profile",
-                partners[0].name, partners[0].id
+                partners[0].name,
+                partners[0].id,
             )
 
         return partners[0].lcc_profile_info()[0]
@@ -256,7 +278,7 @@ class PartnerService(Component):
             if not lcc_profile_info:
                 continue
             row = lcc_profile_info[0]
-            row["monujo_backends"] = partner.lcc_backends_ids._update_search_data(
+            row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
                 [k for k in backend_keys if k.startswith("%s:" % recipient.type)],
             )
             rows.append(row)
@@ -402,7 +424,9 @@ class PartnerService(Component):
         if backend_keys:
             for partner in recipients:
                 row = partner.lcc_profile_info()[0]
-                row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(backend_keys)
+                row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
+                    backend_keys
+                )
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
 

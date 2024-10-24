@@ -1,4 +1,3 @@
-
 from marshmallow import fields
 
 from odoo.addons.datamodel.core import Datamodel

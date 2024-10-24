@@ -1,7 +1,9 @@
 import json
 import logging
 import re
+import time
 from odoo import models, fields, api
+from pyc3l.ApiHandling import APIError
 from pyc3l import Pyc3l
 from odoo.addons.lcc_lokavaluto_app_connection import tools
 
@@ -14,7 +16,9 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    type = fields.Selection(selection_add=[("comchain", "Comchain")], ondelete={'comchain': 'cascade'})
+    type = fields.Selection(
+        selection_add=[("comchain", "Comchain")], ondelete={"comchain": "cascade"}
+    )
     comchain_id = fields.Char(string="Address")
     comchain_wallet = fields.Text(string="Crypted json wallet")
     comchain_status = fields.Char(string="Comchain Status")
@@ -63,7 +67,9 @@ class ResPartnerBackend(models.Model):
         if not backend_id:
             ## Comchain financial backend is not configured in general settings
             return []
-        comchain_product = self.env.ref("lcc_comchain_base.product_product_comchain").sudo()
+        comchain_product = self.env.ref(
+            "lcc_comchain_base.product_product_comchain"
+        ).sudo()
         data = {
             "type": backend_id,
             "accounts": [],
@@ -77,6 +83,7 @@ class ResPartnerBackend(models.Model):
                     "wallet": wallet,
                     "message_key": self.comchain_message_key,
                     "active": self.status == "active",
+                    "reconversion": self.is_reconversion_allowed,
                 }
             )
 
@@ -84,7 +91,6 @@ class ResPartnerBackend(models.Model):
         safe_wallet_partner = company.safe_wallet_partner_id
 
         if safe_wallet_partner:
-
             safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
             if safe_wallet_profile_info:
                 if len(safe_wallet_profile_info) > 1:
@@ -93,8 +99,10 @@ class ResPartnerBackend(models.Model):
                 ## Safe wallet is configured and has a public profile
                 data["safe_wallet_recipient"] = safe_wallet_profile_info[0]
 
-                monujo_backends = safe_wallet_partner.lcc_backend_ids._update_search_data(
-                    [self.comchain_backend_id]
+                monujo_backends = (
+                    safe_wallet_partner.lcc_backend_ids._update_search_data(
+                        [self.comchain_backend_id]
+                    )
                 )
                 if len(monujo_backends) > 1:
                     raise ValueError("Safe partner has more than one wallet")
@@ -142,7 +150,7 @@ class ResPartnerBackend(models.Model):
         if self.type != "comchain":
             return res
 
-        company = self.partner_id.company_id
+        company = self.env.user.company_id
         # Get Odoo wallet
         try:
             odoo_wallet = pyc3l.Wallet.from_json(
@@ -194,12 +202,42 @@ class ResPartnerBackend(models.Model):
             }
 
         transaction = pyc3l.Transaction(response)
-        if transaction.data["recieved"] != amount * 100:
+
+        retry = 0
+        while True:
+            tx_data = None
+            try:
+                tx_data = transaction.data
+            except APIError as e:
+                if not e.args[0].startswith("API Call failed without message"):
+                    _logger.error(tools.format_last_exception())
+                    return {
+                        "success": False,
+                        "response": response,
+                        "error": "Failure when trying to get transaction info: %s" % e,
+                    }
+            if tx_data is not None:
+                received = tx_data.get("recieved")
+                if received is None:
+                    _logger.error(
+                        "Received incomplete transaction data. Missing 'recieved' field."
+                    )
+                else:
+                    break
+            retry += 1
+            if retry >= 10:
+                return {
+                    "success": False,
+                    "response": response,
+                    "error": "Max retry reached to get transaction info (10 retries)",
+                }
+            time.sleep(0.5)
+        if received != round(amount * 100):
             return {
                 "success": False,
                 "response": response,
                 "error": "Order sent, but checking transaction record returned as an unexepected amount of '%s' received."
-                % transaction.data["recieved"],
+                % received,
             }
 
         # All checks performed
@@ -234,6 +272,10 @@ class ResPartnerBackend(models.Model):
 
     def get_wallet_balance(self):
         self.ensure_one()
+        res = super(ResPartnerBackend, self).get_wallet_balance()
+        if self.type != "comchain":
+            return res
+
         wallet = pyc3l.Wallet.from_json(self.comchain_wallet)
         try:
             balance = wallet.nantBalance
@@ -244,8 +286,5 @@ class ResPartnerBackend(models.Model):
                 "response": "",
                 "error_message": "Failed to get wallet balance: %s" % e,
             }
-  
-        return {
-            "success": True,
-            "response": balance
-        }
+
+        return {"success": True, "response": balance}
