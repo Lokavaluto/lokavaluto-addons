@@ -272,6 +272,10 @@ class ResPartnerBackend(models.Model):
 
     def get_wallet_balance(self):
         self.ensure_one()
+        res = super(ResPartnerBackend, self).get_wallet_balance()
+        if self.type != "comchain":
+            return res
+
         wallet = pyc3l.Wallet.from_json(self.comchain_wallet)
         try:
             balance = wallet.nantBalance

@@ -277,7 +277,9 @@ class ResPartnerBackend(models.Model):
 
     def get_wallet_balance(self):
         self.ensure_one()
-        res = ""
+        res = super(ResPartnerBackend, self).get_wallet_balance()
+        if self.type != "cyclos":
+            return res
         try:
             res = self._cyclos_rest_call("GET", "/%s/accounts" % self.cyclos_id)
             _logger.debug("res: %s" % res)
