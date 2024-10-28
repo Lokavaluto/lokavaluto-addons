@@ -146,9 +146,14 @@ class res_partner(models.Model):
         if (
             (not self.is_company)
             and self.firstname
-            and self.firstname != self.firstname.capitalize()
+            and self.firstname != self.capitalize_first_letter(self.firstname)
         ):
-            self.firstname = self.firstname.capitalize()
+            self.firstname = self.capitalize_first_letter(self.firstname)
+
+    def capitalize_first_letter(self, string: str):
+        if string:
+            string = string[0].upper() + string[1:]
+        return string
 
     def _membership_state(self):
         res = super(res_partner, self)._membership_state()
