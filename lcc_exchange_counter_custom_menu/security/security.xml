@@ -1,19 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
-        <!-- ir rules for POS operators -->
+
+    <data noupdate="0">
+
+        <!-- GROUPS Rôle-->
+        <!-- Création du rôle utilisateur "Opérateurs de comptoir de change" -->
+        <record id="group_exchange_counter_operators" model="res.groups">
+            <field name="name">Exchange counter operators</field>
+            <field name="category_id" ref="base_user_role.ir_module_category_role"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('point_of_sale.group_pos_user'))]"/>
+        </record>
+
+        <!-- GROUPS Rôle-->
+        <!-- Création du rôle utilisateur "Managers de comptoir de change" -->
+        <record id="group_exchange_counter_managers" model="res.groups">
+            <field name="name">Exchange counter managers</field>
+            <field name="category_id" ref="base_user_role.ir_module_category_role"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('point_of_sale.group_pos_manager')),(4, ref('stock.group_stock_user'))]"/>
+        </record>
+
+        <!-- REGLES POUR LE POS -->
+        <!-- IR RULES pour le groupe "point de vente / utilisateur"-->
+        <!-- ne pas permettre de voir les points de vente pour lesquels l'utilisateur n'est pas employé-->
         <record id="operator_rule_pos_config_multi_company" model="ir.rule">
             <field name="name">Operator Point Of Sale Config</field>
             <field name="model_id" ref="point_of_sale.model_pos_config" />
-            <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+            <field name="groups" eval="[(4, ref('group_exchange_counter_managers')),(4, ref('group_exchange_counter_operators'))]"/>
             <field name="domain_force">[('employee_ids.user_id.id','=',user.id)]</field>
         </record>
-        <!-- ir rules for POS managers -->
-        <record id="manager_rule_pos_config_multi_company" model="ir.rule">
-            <field name="name">Manager Point Of Sale Config</field>
-            <field name="model_id" ref="point_of_sale.model_pos_config" />
-            <field name="groups" eval="[(4, ref('point_of_sale.group_pos_manager'))]"/>
-            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+
+        <!-- REGLES POUR L'APP INVENTAIRE -->
+        <!-- ir rules for Exchange counter managers -->
+        <record id="stock_picking_filter_by_pos" model="ir.rule">
+            <field name="name">Inventory Stock Picking : Exchange counter manager Config</field>
+            <field name="model_id" ref="stock.model_stock_picking" />
+            <field name="groups" eval="[(4, ref('group_exchange_counter_managers'))]"/>
+            <field name="domain_force">['|',
+                ('location_id.pos_id.employee_ids.user_id.id','=',user.id),
+                ('location_dest_id.pos_id.employee_ids.user_id.id','=',user.id)]
+            </field>
         </record>
+        <!-- <record id="stock_picking_filter_by_pos" model="ir.rule">
+            <field name="name">Inventory Stock Move Line : Exchange counter manager Config</field>
+            <field name="model_id" ref="stock.model_stock_move_line" />
+            <field name="groups" eval="[(4, ref('group_exchange_counter_managers'))]"/>
+            <field name="domain_force">['|',
+                ('location_id.pos_id.employee_ids.user_id.id','=',user.id),
+                ('location_dest_id.pos_id.employee_ids.user_id.id','=',user.id)]
+            </field>
+        </record> -->
+        <!-- <record model="ir.rule" id="stock_picking filter_by_pos">
+            <field name="name">stock_picking filter_by_pos</field>
+            <field name="model_id" search="[('model','=','stock.picking')]" model="ir.model"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record> -->
+        <!-- <record id="stock_picking_rule_by_pos 2" model="ir.rule">
+            <field name="name">stock_picking filter_by_pos 2</field> -->
+            <!-- <field name="model_id" search="[('model','=','stock.picking')]" model="ir.model"/> -->
+            <!-- <field name="model_id" ref="stock.model_stock_picking" />
+            <field name="domain_force">[('location_id.pos_id.employee_ids.user_id.id','=',user.id)]</field>
+        </record> -->
     </data>
 </odoo>

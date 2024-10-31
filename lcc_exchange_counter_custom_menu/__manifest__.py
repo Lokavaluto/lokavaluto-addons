@@ -12,7 +12,7 @@
     "summary": "Create customs menu for POS operators and managers",
     # any module necessary for this one to work correctly
     "depends": [
-        "base","point_of_sale","pos_hr",
+        "base","point_of_sale","pos_hr","stock","base_user_role"
     ],
     "qweb": [],
     "external_dependencies": {
@@ -23,6 +23,7 @@
         "security/security.xml",
         "views/operator_custom_menu.xml",
         "views/manager_custom_menu.xml",
+        "views/stock_location_view_pos_inherit.xml",        
     ],
     # only loaded in demonstration mode
     "demo": [],
