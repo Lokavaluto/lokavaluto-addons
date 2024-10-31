@@ -31,6 +31,7 @@
 
         <!-- REGLES POUR L'APP INVENTAIRE -->
         <!-- ir rules for Exchange counter managers -->
+        <!-- Transferts -->
         <record id="stock_picking_filter_by_pos" model="ir.rule">
             <field name="name">Inventory Stock Picking : Exchange counter manager Config</field>
             <field name="model_id" ref="stock.model_stock_picking" />
@@ -40,25 +41,25 @@
                 ('location_dest_id.pos_id.employee_ids.user_id.id','=',user.id)]
             </field>
         </record>
-        <!-- <record id="stock_picking_filter_by_pos" model="ir.rule">
-            <field name="name">Inventory Stock Move Line : Exchange counter manager Config</field>
+        <!-- Mouvements de stock -->
+        <record id="stock_move_filter_by_pos" model="ir.rule">
+            <field name="name">Inventory Stock Move : Exchange counter manager Config</field>
+            <field name="model_id" ref="stock.model_stock_move" />
+            <field name="groups" eval="[(4, ref('group_exchange_counter_managers'))]"/>
+            <field name="domain_force">['|',
+                ('location_id.pos_id.employee_ids.user_id.id','=',user.id),
+                ('location_dest_id.pos_id.employee_ids.user_id.id','=',user.id)]
+            </field>
+        </record>
+        <!-- Historique des mouvements de stock -->
+        <record id="stock_move_line_filter_by_pos" model="ir.rule">
+            <field name="name">Inventory Stock Move History : Exchange counter manager Config</field>
             <field name="model_id" ref="stock.model_stock_move_line" />
             <field name="groups" eval="[(4, ref('group_exchange_counter_managers'))]"/>
             <field name="domain_force">['|',
                 ('location_id.pos_id.employee_ids.user_id.id','=',user.id),
                 ('location_dest_id.pos_id.employee_ids.user_id.id','=',user.id)]
             </field>
-        </record> -->
-        <!-- <record model="ir.rule" id="stock_picking filter_by_pos">
-            <field name="name">stock_picking filter_by_pos</field>
-            <field name="model_id" search="[('model','=','stock.picking')]" model="ir.model"/>
-            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        </record> -->
-        <!-- <record id="stock_picking_rule_by_pos 2" model="ir.rule">
-            <field name="name">stock_picking filter_by_pos 2</field> -->
-            <!-- <field name="model_id" search="[('model','=','stock.picking')]" model="ir.model"/> -->
-            <!-- <field name="model_id" ref="stock.model_stock_picking" />
-            <field name="domain_force">[('location_id.pos_id.employee_ids.user_id.id','=',user.id)]</field>
-        </record> -->
+        </record>
     </data>
 </odoo>
