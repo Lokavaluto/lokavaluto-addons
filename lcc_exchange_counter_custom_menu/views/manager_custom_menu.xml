@@ -10,11 +10,47 @@
     </record>
 
     <!-- INVENTAIRE -->
-    <record id="manager_inventory_action" model="ir.actions.act_window">
+    <record id="manager_inventory_action_picking" model="ir.actions.act_window">
         <field name="name">Inventory Overview</field>
         <field name="res_model">stock.picking.type</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_mode">kanban,form</field>
+    </record>
+    <record id="manager_inventory_action_move" model="ir.actions.act_window">
+        <field name="name">Stock Moves</field>
+        <field name="res_model">stock.move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_id" ref="stock.view_move_tree" />
+        <field name="search_view_id" ref="stock.view_move_search" />
+        <field name="context">{'search_default_done': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No stock move found
+            </p>
+            <p>
+                This menu gives you the full traceability of inventory
+                operations on a specific product. You can filter on the product
+                to see all the past or future movements for the product.
+            </p>
+        </field>
+    </record>
+    <record id="manager_inventory_action_move_line" model="ir.actions.act_window">
+        <field name="name">Moves History</field>
+        <field name="res_model">stock.move.line</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,pivot,form</field>
+        <field name="view_id" ref="stock.view_move_line_tree" />
+        <field name="context">{'search_default_done': 1, 'create': 0}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                There's no product move yet
+            </p>
+            <p>
+                This menu gives you the full traceability of inventory operations on a specific
+                product.
+                You can filter on the product to see all the past movements for the product.
+            </p>
+        </field>
     </record>
 
     <!-- TABLEAU DE BORD -->
@@ -25,11 +61,19 @@
 
     <!-- MENU  -->
     <menuitem id="manager_menu_pos" name="Point of sale Manager" sequence="1" />
-    <menuitem id="manager_menu_pos_dashboard" action="manager_action_pos_config_kanban"
-        parent="manager_menu_pos" name="POS Manager Dashboard" sequence="1" />
-    <menuitem id="manager_menu_inventory" action="manager_inventory_action"
-        parent="manager_menu_pos" name="Inventory Manager Overview" sequence="1" />
-    <menuitem id="spreadsheet_dashboard_menu_dashboard" action="ir_actions_dashboard_action"
-        parent="manager_menu_pos" name="Dashboards" sequence="1" />
 
+    <menuitem id="manager_menu_pos_dashboard" action="manager_action_pos_config_kanban"
+        parent="manager_menu_pos" name="POS Manager Dashboard" sequence="2" />
+
+    <menuitem id="manager_menu_inventory" action="manager_inventory_action_picking"
+        parent="manager_menu_pos" name="Inventory Manager Overview" sequence="3" />
+
+    <menuitem id="spreadsheet_dashboard_menu_dashboard" action="ir_actions_dashboard_action"
+        parent="manager_menu_pos" name="Dashboards" sequence="4" />
+
+    <menuitem id="stock_move_menu" action="manager_inventory_action_move"
+        parent="manager_menu_pos" name="Stock Move" sequence="5" />
+
+    <menuitem id="stock_move_line_menu" action="manager_inventory_action_move_line"
+        parent="manager_menu_pos" sequence="6" />
 </odoo>
