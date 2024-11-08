@@ -7,7 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <field name="has_credit_requests" invisible="1" />
-                <field name="has_debit_requests" invisible="1" />
+                <field name="has_reconversion_related_debit_requests" invisible="1" />
+                <field name="has_commission_related_debit_requests" invisible="1" />
                 <page name="credit_requests" string="Credit Request"
                     attrs="{'invisible': [('has_credit_requests', '=', False)]}">
                     <div class="alert alert-success" role="alert"
@@ -29,8 +30,19 @@
                     </field>
                 </page>
                 <page name="debit_requests" string="Debit Request"
-                    attrs="{'invisible': [('has_debit_requests', '=', False)]}">
-                    <field name="debit_request_ids" nolabel="1"
+                    attrs="{'invisible': [('has_reconversion_related_debit_requests', '=', False), ('has_commission_related_debit_requests', '=', False)]}">
+                    <field name="reconversion_related_debit_request_ids" nolabel="1"
+			attrs="{'invisible': [('has_reconversion_related_debit_requests', '=', False)]}"
+                        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager">
+                        <tree create="false" delete="false">
+                            <field name="partner_id" />
+                            <field name="wallet_id" />
+                            <field name="amount" />
+                            <field name="state" />
+                        </tree>
+                    </field>
+		    <field name="commission_related_debit_request_ids" nolabel="1"
+			attrs="{'invisible': [('has_commission_related_debit_requests', '=', False)]}"
                         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager">
                         <tree create="false" delete="false">
                             <field name="partner_id" />
