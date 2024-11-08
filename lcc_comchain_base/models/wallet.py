@@ -83,14 +83,13 @@ class ResPartnerBackend(models.Model):
                     "wallet": wallet,
                     "message_key": self.comchain_message_key,
                     "active": self.status == "active",
-                    "reconversion": self.is_reconversion_allowed,
                 }
             )
 
         company = self.env.user.company_id
         safe_wallet_partner = company.safe_wallet_partner_id
 
-        if safe_wallet_partner:
+        if safe_wallet_partner and self.is_reconversion_allowed:
             safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
             if safe_wallet_profile_info:
                 if len(safe_wallet_profile_info) > 1:

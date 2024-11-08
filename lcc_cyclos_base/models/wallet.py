@@ -49,14 +49,13 @@ class ResPartnerBackend(models.Model):
                     "owner_id": self.cyclos_id,
                     "url": self.env.user.company_id.cyclos_server_url,
                     "active": self.status == "active",
-                    "reconversion": self.is_reconversion_allowed,
                 }
             )
 
         company = self.env.user.company_id
         safe_wallet_partner = company.cyclos_debit_wallet_partner
 
-        if safe_wallet_partner:
+        if safe_wallet_partner and self.is_reconversion_allowed:
             safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
             if safe_wallet_profile_info:
                 if len(safe_wallet_profile_info) > 1:
