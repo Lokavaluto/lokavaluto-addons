@@ -10,6 +10,7 @@ class CommissionRule(models.Model):
 
     name = fields.Char("Name")
     active = fields.Boolean(default=True)
+    sequence = fields.Integer()
     wallet_domain = fields.Char("Wallet Domain")
 
     calculation_rule = fields.Selection(

@@ -6,7 +6,8 @@
         <field name="model">commission.rule</field>
         <field name="arch" type="xml">
             <tree string="Commission Rules">
-                <field name="name" />
+	        <field name="sequence" widget="handle"/>
+	        <field name="name" />
                 <field name="wallet_domain" />
                 <field name="calculation_rule" />
                 <field name="calculation_value" />

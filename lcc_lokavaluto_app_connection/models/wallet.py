@@ -105,7 +105,7 @@ class ResPartnerBackend(models.Model):
 
     def get_wallet_commission_rule(self):
         self.ensure_one()
-        rules = self.env["commission.rule"].search([("active", "=", True)])
+        rules = self.env["commission.rule"].search([("active", "=", True)], order="sequence")
         for rule in rules:
             # Get all the wallet matching the rule
             wallets = self.search(safe_eval(rule.wallet_domain))
