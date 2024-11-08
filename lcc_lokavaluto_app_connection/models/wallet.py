@@ -105,15 +105,17 @@ class ResPartnerBackend(models.Model):
 
     def get_wallet_commission_rule(self):
         self.ensure_one()
-        rules = self.env["commission.rule"].search([("active", "=", True)], order="sequence")
-        for rule in rules:
-            # Get all the wallet matching the rule
-            wallets = self.search(safe_eval(rule.wallet_domain))
-            # Check if current wallet (self) is in the matching wallets
-            if wallets.filtered(lambda x: x.id == self.id):
-                # First rule matched is returned
-                return rule
-        return None
+        rules = self.env["commission.rule"].search(
+            [("active", "=", True)], order="sequence"
+        )
+        return next(
+            (
+                rule
+                for rule in rules
+                if self.search(safe_eval(rule.wallet_domain) + ("id", "=", self.id))
+            ),
+            None,
+        )
 
     def _compute_is_reconversion_allowed(self):
         all_rules = self.env["reconversion.rule"].search([("active", "=", True)])
