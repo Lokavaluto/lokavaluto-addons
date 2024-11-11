@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     # any module necessary for this one to work correctly
     "depends": [
         "auth_api_key",
