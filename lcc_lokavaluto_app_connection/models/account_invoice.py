@@ -45,6 +45,13 @@ class AccountInvoice(models.Model):
         string="LCC amount to credit", compute="_compute_global_lcc_amounts"
     )
 
+    partner_name = fields.Char(compute='_compute_partner_name', string="Partner Name")      
+
+    @api.depends('partner_id')
+    def _compute_partner_name(self):
+        for record in self:
+            record.partner_name = record.partner_id.name if record.partner_id else ''
+
     @api.depends("credit_request_ids")
     def _compute_global_credit_status(self):
         self.global_credit_status = status(
