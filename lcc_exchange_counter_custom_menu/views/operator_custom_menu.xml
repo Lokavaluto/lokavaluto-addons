@@ -14,8 +14,14 @@
             </p>
         </field>
     </record>
-    <!-- menu parent -->
-    <menuitem id="operator_menu_pos" name="Point of sale Operators" sequence="1"/>
-    <!-- sous menus -->
-    <menuitem id="operator_menu_pos_dashboard" action="operator_action_pos_config_kanban" parent="operator_menu_pos" name="POS Operator Dashboard" sequence="1"/>
+ 
+    <!-- MENUS POUR L'OPERATEUR DE COMPTOIR DE CHANGE-->
+    <menuitem name="Comptoir de Change (operateurices)"
+        id="cdc_operator_menu_root"
+        parent="base.menu_custom">
+        <!-- MENUS POS -->
+        <menuitem id="exchange_counter_operator_pos" name="Comptoir de Change">
+            <menuitem id="operator_menu_pos_config" action="operator_action_pos_config_kanban"/>
+        </menuitem>
+    </menuitem>
 </odoo>
