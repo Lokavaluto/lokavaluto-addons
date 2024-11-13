@@ -2,7 +2,7 @@
 <odoo>
     <!-- POS -->
     <record id="manager_action_pos_config_kanban" model="ir.actions.act_window">
-        <field name="name">Point of sale Manager Dashboard</field>
+        <field name="name">Tableau de bord</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pos.config</field>
         <field name="view_mode">kanban,tree,form</field>
@@ -11,13 +11,13 @@
 
     <!-- INVENTAIRE -->
     <record id="manager_inventory_action_picking" model="ir.actions.act_window">
-        <field name="name">Inventory Overview</field>
+        <field name="name">Vue d'ensemble</field>
         <field name="res_model">stock.picking.type</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_mode">kanban,form</field>
     </record>
     <record id="manager_inventory_action_move" model="ir.actions.act_window">
-        <field name="name">Stock Moves</field>
+        <field name="name">Transferts</field>
         <field name="res_model">stock.move</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_id" ref="stock.view_move_tree" />
@@ -35,7 +35,7 @@
         </field>
     </record>
     <record id="manager_inventory_action_move_line" model="ir.actions.act_window">
-        <field name="name">Moves History</field>
+        <field name="name">Historique des mouvements de stocks</field>
         <field name="res_model">stock.move.line</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_mode">tree,kanban,pivot,form</field>
@@ -53,27 +53,36 @@
         </field>
     </record>
 
-    <!-- TABLEAU DE BORD -->
-    <record id="ir_actions_dashboard_action" model="ir.actions.client">
-        <field name="name">Dashboards</field>
-        <field name="tag">action_spreadsheet_dashboard</field>
+    <record id="manager_inventory_action_stock_quant" model="ir.actions.act_window">
+        <field name="context">{'search_default_productgroup':1}</field>
+        <field name="domain">[]</field>
+        <field name="name">Stock actuel</field>
+        <field name="res_model">stock.quant</field>
+        <field name="view_id" ref="stock.view_stock_quant_tree"/> 
     </record>
 
-    <!-- MENU  -->
-    <menuitem id="manager_menu_pos" name="Point of sale Manager" sequence="1" />
+    <record id="manager_inventory_action_stock_quant_editable" model="ir.actions.act_window" > <!-- Used in dashboard -->
+        <field name="name">Stock actuel MODIFIABLE</field>
+        <field name="context">{'search_default_productgroup':1, 'inventory_mode':True}</field>
+        <field name="res_model">stock.quant</field>
+        <field name="view_id" ref="stock.view_stock_quant_tree_editable"/>
+    </record>
 
-    <menuitem id="manager_menu_pos_dashboard" action="manager_action_pos_config_kanban"
-        parent="manager_menu_pos" name="POS Manager Dashboard" sequence="2" />
-
-    <menuitem id="manager_menu_inventory" action="manager_inventory_action_picking"
-        parent="manager_menu_pos" name="Inventory Manager Overview" sequence="3" />
-
-    <menuitem id="spreadsheet_dashboard_menu_dashboard" action="ir_actions_dashboard_action"
-        parent="manager_menu_pos" name="Dashboards" sequence="4" />
-
-    <menuitem id="stock_move_menu" action="manager_inventory_action_move"
-        parent="manager_menu_pos" name="Stock Move" sequence="5" />
-
-    <menuitem id="stock_move_line_menu" action="manager_inventory_action_move_line"
-        parent="manager_menu_pos" sequence="6" />
+    <!-- MENUS POUR LE MANAGER DE COMPTOIR DE CHANGE-->
+    <menuitem name="Comptoir de Change (manager)"
+    id="cdc_manager_menu_root"
+    parent="base.menu_custom">
+        <!-- MENUS POS -->
+        <menuitem id="exchange_counter_manager_pos" name="Comptoir de Change">
+            <menuitem id="manager_menu_pos_config" action="manager_action_pos_config_kanban"/>
+        </menuitem>
+        <!-- MENUS INVENTAIRE -->
+        <menuitem id="exchange_counter_manager_inventaire" name="Inventaire">
+            <menuitem id="manager_menu_stock_picking" action="manager_inventory_action_picking"/>
+            <menuitem id="manager_menu_stock_move" action="manager_inventory_action_move"/>
+            <menuitem id="manager_menu_stock_move_line" action="manager_inventory_action_move_line"/>
+            <menuitem id="manager_menu_stock_quant" action="manager_inventory_action_stock_quant"/>
+            <menuitem id="manager_menu_stock_quant_editable" action="manager_inventory_action_stock_quant_editable"/>
+        </menuitem>
+    </menuitem>
 </odoo>

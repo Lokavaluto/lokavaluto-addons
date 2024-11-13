@@ -6,7 +6,7 @@
         <!-- GROUPS Rôle-->
         <!-- Création du rôle utilisateur "Opérateurs de comptoir de change" -->
         <record id="group_exchange_counter_operators" model="res.groups">
-            <field name="name">Exchange counter operators</field>
+            <field name="name">Opérateur·rice·s de comptoir de change</field>
             <field name="category_id" ref="base_user_role.ir_module_category_role"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('point_of_sale.group_pos_user'))]"/>
         </record>
@@ -14,7 +14,7 @@
         <!-- GROUPS Rôle-->
         <!-- Création du rôle utilisateur "Managers de comptoir de change" -->
         <record id="group_exchange_counter_managers" model="res.groups">
-            <field name="name">Exchange counter managers</field>
+            <field name="name">Manager de comptoir de change</field>
             <field name="category_id" ref="base_user_role.ir_module_category_role"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('point_of_sale.group_pos_manager')),(4, ref('stock.group_stock_user'))]"/>
         </record>
@@ -59,6 +59,14 @@
             <field name="domain_force">['|',
                 ('location_id.pos_id.employee_ids.user_id.id','=',user.id),
                 ('location_dest_id.pos_id.employee_ids.user_id.id','=',user.id)]
+            </field>
+        </record>
+        <!-- Quantité en stock -->
+        <record id="stock_quant_filter_by_pos" model="ir.rule">
+            <field name="name">Stock Quant : Exchange counter manager Config</field>
+            <field name="model_id" ref="stock.model_stock_quant" />
+            <field name="groups" eval="[(4, ref('group_exchange_counter_managers'))]" />
+            <field name="domain_force">[('location_id.pos_id.employee_ids.user_id.id','=',user.id)]
             </field>
         </record>
     </data>
