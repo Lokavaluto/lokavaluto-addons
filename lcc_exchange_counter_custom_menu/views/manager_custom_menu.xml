@@ -61,11 +61,10 @@
         <field name="view_id" ref="stock.view_stock_quant_tree"/> 
     </record>
 
-    <record id="manager_inventory_action_stock_quant_editable" model="ir.actions.act_window" > <!-- Used in dashboard -->
-        <field name="name">Stock actuel MODIFIABLE</field>
-        <field name="context">{'search_default_productgroup':1, 'inventory_mode':True}</field>
+    <record id="manager_inventory_action_stock_ajustement" model="ir.actions.act_window" >
+        <field name="name">Ajustements de stock</field>
         <field name="res_model">stock.quant</field>
-        <field name="view_id" ref="stock.view_stock_quant_tree_editable"/>
+        <field name="view_id" ref="stock.view_stock_quant_tree_inventory_editable"/>                      
     </record>
 
     <!-- MENUS POUR LE MANAGER DE COMPTOIR DE CHANGE-->
@@ -82,7 +81,7 @@
             <menuitem id="manager_menu_stock_move" action="manager_inventory_action_move"/>
             <menuitem id="manager_menu_stock_move_line" action="manager_inventory_action_move_line"/>
             <menuitem id="manager_menu_stock_quant" action="manager_inventory_action_stock_quant"/>
-            <menuitem id="manager_menu_stock_quant_editable" action="manager_inventory_action_stock_quant_editable"/>
+            <menuitem id="manager_menu_stock_inventory_ajustement" action="manager_inventory_action_stock_ajustement"/>
         </menuitem>
     </menuitem>
 </odoo>
