@@ -23,7 +23,8 @@
         "security/security.xml",
         "views/operator_custom_menu.xml",
         "views/manager_custom_menu.xml",
-        "views/stock_location_view_pos_inherit.xml",        
+        "views/stock_location_views.xml",        
+        "views/stock_quant_views.xml",        
     ],
     # only loaded in demonstration mode
     "demo": [],
