@@ -26,6 +26,12 @@
         "views/stock_location_views.xml",        
         "views/stock_quant_views.xml",        
     ],
+    "assets": {
+        "point_of_sale.assets": [
+            "lcc_exchange_counter_custom_menu/static/src/xml/**/*.xml",
+            "lcc_exchange_counter_custom_menu/static/src/js/**/*.js",
+        ]
+    },
     # only loaded in demonstration mode
     "demo": [],
     "js": [],
