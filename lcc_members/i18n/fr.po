@@ -655,7 +655,7 @@ msgstr "Certains contacts représentent des postes / fonctions et non des person
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.lcc_members_form_view
 msgid "Subcription number"
-msgstr "Numero d'adhésion"
+msgstr "Numéro d'adhésion"
 
 #. module: lcc_members
 #: model_terms:ir.ui.view,arch_db:lcc_members.portal_my_details_profiles_lcc
@@ -787,3 +787,12 @@ msgstr "Statut de l'adhérent"
 #: model:ir.model,name:lcc_members.model_member_type
 msgid "member.type"
 msgstr "Type d'adhérent"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_model_data__reference
+#: model:ir.model.fields,field_description:base.field_res_partner__ref
+#: model:ir.model.fields,field_description:base.field_res_users__ref
+#: model:ir.model.fields.selection,name:base.selection__ir_server_object_lines__evaluation_type__reference
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Reference"
+msgstr "Numéro d'adhésion"
