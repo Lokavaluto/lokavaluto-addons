@@ -796,3 +796,9 @@ msgstr "Type d'adhérent"
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 msgid "Reference"
 msgstr "Numéro d'adhésion"
+
+#. module: membership_extension
+#: model:ir.model.fields,field_description:membership_extension.field_res_partner__membership_start_adhered
+#: model:ir.model.fields,field_description:membership_extension.field_res_users__membership_start_adhered
+msgid "Membership Adhered Start Date"
+msgstr "Date de saisie de l'adhésion"
