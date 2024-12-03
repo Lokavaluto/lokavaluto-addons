@@ -19,7 +19,7 @@
                         <field name="limit_credit_aggregation" 
                             attrs="{'invisible': [('different_credit_request_amount','=',False)]}"/>
                         <field name="max_credit_amount" 
-                            attrs="{'invisible': [('limit_credit_aggregation','=',False),('different_credit_request_amount','=',False)]}"/>
+                            attrs="{'invisible': ['|',('limit_credit_aggregation','=',False),('different_credit_request_amount','=',False)]}"/>
                     </group>
                 </xpath>
             </field>
