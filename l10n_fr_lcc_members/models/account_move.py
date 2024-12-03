@@ -17,4 +17,4 @@ class AccountMove(models.Model):
                 and _("Receipt - %s") % (self.number)
             )
         else:
-            super(AccountMove, self)._get_report_base_filename()
+            return super(AccountMove, self)._get_report_base_filename()
