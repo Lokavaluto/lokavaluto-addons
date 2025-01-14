@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+    <record model="ir.ui.view" id="view_account_journal_form">
+        <field name="name">account.journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="category" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_journal_search_category_inherit" model="ir.ui.view">
+        <field name="name">account.journal.search.category.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_search" />
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator />
+                <filter name="asso" string="Compta fonctionnement asso" domain="[('category', '=', 'asso')]" />
+                <filter name="coupon" string="Compta coupon/billets MLC" domain="[('category', '=', 'coupon')]" />
+                <filter name="num" string="Compta MLC numérique" domain="[('category', '=', 'num')]" />
+                <group name="groupby" string="Group By">
+                    <filter name="type_groupby" string="Catégorie" context="{'group_by': 'category'}" />
+                </group>
+            </filter>
+        </field>
+    </record>
+
+</odoo>
