@@ -9,7 +9,7 @@
         <field name="inherit_id" ref="account.view_account_journal_form" />
         <field name="arch" type="xml">
             <field name="type" position="after">
-                <field name="is_receipt" attrs="{'invisible': [('type', '!=', 'sale')]}"/>
+                <field name="is_receipt" attrs="{'invisible': [('type', '!=', 'sale'),('type', '!=', 'purchase')]}"/>
             </field>
         </field>
     </record>
