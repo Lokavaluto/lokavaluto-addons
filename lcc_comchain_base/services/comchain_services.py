@@ -3,6 +3,8 @@ from werkzeug.exceptions import NotFound
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
+
+from odoo.exceptions import AccessDenied
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)
@@ -135,16 +137,18 @@ class ComchainService(Component):
         comchain_response = comchainCreditResponse(partial=True)
         if comchain_address and amount:
             # Retrieve the partner's wallet - Only one is expected to match the filter
-            wallet_id = list(
+            wallet_ids = list(
                 filter(
                     lambda x: x.comchain_id == comchain_address,
                     partner.get_wallets("comchain"),
                 )
             )
-            if len(wallet_id) == 0:
+            if len(wallet_ids) == 0:
                 raise NotFound("Wallet %s not found in Odoo" % comchain_address)
+            if not wallet_ids[0].is_topup_allowed:
+                raise AccessDenied(f"Topup is not allowed on this wallet {comchain_address}.")
             data = {
-                "wallet_id": wallet_id[0].id,
+                "wallet_id": wallet_ids[0].id,
                 "amount": amount,
             }
             credit_request = self.env["credit.request"].sudo().create(data)

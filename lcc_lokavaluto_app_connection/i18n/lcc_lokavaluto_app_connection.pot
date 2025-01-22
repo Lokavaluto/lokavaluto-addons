@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-27 07:04+0000\n"
-"PO-Revision-Date: 2024-06-27 07:04+0000\n"
+"PO-Revision-Date: 2025-01-22 15:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -91,9 +91,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__active
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__active
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__active
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Active"
 msgstr ""
@@ -110,11 +112,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_form
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
 msgid "Archived"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_form
 msgid "Authorisation"
 msgstr ""
 
@@ -254,8 +259,13 @@ msgid "Create a new reconversion rule."
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_topup_rule
+msgid "Create a new topup rule."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_wallet_view
-msgid "Create a new wallets."
+msgid "Create a new wallet."
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
@@ -265,6 +275,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_uid
 msgid "Created by"
 msgstr ""
 
@@ -275,6 +286,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_date
 msgid "Created on"
 msgstr ""
 
@@ -359,6 +371,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__display_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -432,6 +445,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__id
 msgid "ID"
 msgstr ""
 
@@ -452,6 +466,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__is_reconversion_allowed
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__is_reconversion_allowed
 msgid "Is Reconversion Allowed?"
+msgstr "Reconversion autorisée ?"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__is_topup_allowed
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__is_topup_allowed
+msgid "Is Topup Allowed ?"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__is_topup_allowed
+msgid "Is Topup Allowed?"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
@@ -492,6 +517,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -502,6 +528,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_uid
 msgid "Last Updated by"
 msgstr ""
 
@@ -512,6 +539,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -561,6 +589,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_commission_rule__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__name
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Name"
 msgstr ""
@@ -734,8 +763,19 @@ msgid "Search reconversion rules"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
+msgid "Search topup rules"
+msgstr "Chercher les règles de rechargement"
+
+#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Search wallets"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_commission_rule__sequence
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__sequence
+msgid "Sequence"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
@@ -771,6 +811,38 @@ msgstr ""
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__sale_order__global_credit_status__todo
 msgid "To do"
 msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
+msgid "Topup OFF"
+msgstr "Rechargement OFF"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
+msgid "Topup ON"
+msgstr "Rechargement ON"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_form
+msgid "Topup Rule"
+msgstr "Règle de rechargement"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_topup_rule
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.topup_rule_menu
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_tree
+msgid "Topup Rules"
+msgstr "Règles de rechargement"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_form_view
+msgid "Topups are NOT allowed on this wallet."
+msgstr "Les rechargements ne sont PAS acceptés sur ce portefeuille."
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_form_view
+msgid "Topups are allowed on this wallet."
+msgstr "Les rechargements sont acceptés sur ce portefeuille."
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__transaction_id
@@ -820,8 +892,10 @@ msgstr ""
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_commission_rule__wallet_domain
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__wallet_domain
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__wallet_domain
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_form
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_form
 msgid "Wallet Domain"
 msgstr ""
 

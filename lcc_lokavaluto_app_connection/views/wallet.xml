@@ -15,6 +15,7 @@
                 <sheet string="Digital Currency Wallet">
                     <field name="active" invisible="True" />
                     <field name="is_reconversion_allowed" invisible="True" />
+                    <field name="is_topup_allowed" invisible="True" />
                     <group name="general_info">
                         <group>
                             <field name="name" />
@@ -29,6 +30,12 @@
                     <div class="alert alert-danger" role="alert"
                         attrs="{'invisible': [('is_reconversion_allowed','=',True)]}">
                         Reconversions are NOT allowed on this wallet.</div>
+                    <div class="alert alert-success" role="alert"
+                        attrs="{'invisible': [('is_topup_allowed','=',False)]}">
+                        Topups are allowed on this wallet.</div>
+                    <div class="alert alert-danger" role="alert"
+                        attrs="{'invisible': [('is_topup_allowed','=',True)]}">
+                        Topups are NOT allowed on this wallet.</div>
                 </sheet>
             </form>
         </field>

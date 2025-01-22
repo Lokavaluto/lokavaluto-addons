@@ -63,6 +63,18 @@
         </field>
     </record>
 
+    <record id="action_topup_rule" model="ir.actions.act_window">
+        <field name="name">Topup Rules</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">topup.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new topup rule.
+            </p>
+        </field>
+    </record>
+
     <menuitem name="Digital currencies" id="menu_digital_currencies" sequence="15"
         web_icon="lcc_lokavaluto_app_connection,static/description/icon.png" />
 
@@ -103,5 +115,12 @@
         sequence="99"
         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
         action="action_commission_rule" />
+
+    <menuitem
+        id="topup_rule_menu"
+        parent="lcc_lokavaluto_app_connection.menu_config_digital_currency"
+        sequence="99"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_topup_rule" />
 
 </odoo>

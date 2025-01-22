@@ -5,6 +5,8 @@ from odoo.addons.base_rest.components.service import to_int
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
+from odoo.exceptions import AccessDenied
+
 _logger = logging.getLogger(__name__)
 
 
@@ -36,16 +38,18 @@ class CyclosService(Component):
         cyclos_response = CyclosCreditResponse(partial=True)
         if owner_id and amount:
             # Retrieve the partner's wallet - Only one can match the filter
-            wallet_id = list(
+            wallet_ids = list(
                 filter(
                     lambda x: x.cyclos_id == str(owner_id),
                     partner.get_wallets("cyclos"),
                 )
             )
-            if len(wallet_id) == 0:
+            if len(wallet_ids) == 0:
                 raise NotFound("Wallet %s not found in Odoo" % owner_id)
+            if not wallet_ids[0].is_topup_allowed:
+                raise AccessDenied(f"Topup is not allowed on this wallet {owner_id}.")
             data = {
-                "wallet_id": wallet_id[0].id,
+                "wallet_id": wallet_ids[0].id,
                 "amount": amount,
             }
             credit_request = self.env["credit.request"].sudo().create(data)

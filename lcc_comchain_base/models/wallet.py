@@ -83,6 +83,7 @@ class ResPartnerBackend(models.Model):
                     "wallet": wallet,
                     "message_key": self.comchain_message_key,
                     "active": self.status == "active",
+                    "is_topup_allowed": self.is_topup_allowed,
                 }
             )
 

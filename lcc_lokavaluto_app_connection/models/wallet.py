@@ -41,6 +41,11 @@ class ResPartnerBackend(models.Model):
         readonly=True,
         compute="_compute_is_reconversion_allowed",
     )
+    is_topup_allowed = fields.Boolean(
+        "Is Topup Allowed ?",
+        readonly=True,
+        compute="_compute_is_topup_allowed"
+    )
 
     def _update_search_data(self, backend_keys):
         return {}
@@ -129,3 +134,14 @@ class ResPartnerBackend(models.Model):
                 for rule in all_rules
             ):
                 record.is_reconversion_allowed = True
+
+    def _compute_is_topup_allowed(self):
+        all_rules = self.env["topup.rule"].search([("active", "=", True)], order="sequence")
+        for record in self:
+            # By default, topup is allowed
+            record.is_topup_allowed = True
+            for rule in all_rules:
+                if self.search(safe_eval(rule.wallet_domain) + [("id", "=", record.id)]):
+                    record.is_topup_allowed = rule.is_topup_allowed
+                    # We stop after the first rule matched
+                    break
