@@ -23,6 +23,7 @@ class ContractContract(models.Model):
             "no_order": True,
             "limit_credit_aggregation": contract.limit_credit_aggregation,
             "max_credit_amount": contract.max_credit_amount,
+            "requester_id": contract.company_id.partner_id.id,
         }
 
     def _prepare_invoice(self, date_invoice, journal=None):

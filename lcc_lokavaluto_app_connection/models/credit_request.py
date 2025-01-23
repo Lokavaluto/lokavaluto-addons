@@ -34,11 +34,19 @@ class CreditRequest(models.Model):
     limit_credit_aggregation = fields.Boolean("Limit credit aggregation")
     max_credit_amount = fields.Float("Maximum amount of credit allowed")
 
+    requester_id = fields.Many2one(
+        "res.partner",
+        string="Requester"
+    )
+
     @api.model
     def create(self, vals):
         if vals.get("amount", False) == 0.0:
             raise UserError("Credit resquest can't be created with a null amount.")
         no_order = vals.pop("no_order", False)
+
+        vals["requester_id"] = vals.get("requester_id", self.env.user.partner_id.id)
+
         res = super(CreditRequest, self).create(vals)
 
         if no_order:

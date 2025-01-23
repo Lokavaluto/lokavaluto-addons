@@ -834,6 +834,11 @@ msgid "Topups are allowed on this wallet."
 msgstr "Les rechargements sont acceptés sur ce portefeuille."
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__requester_id
+msgid "Requester"
+msgstr "Demandeur"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__transaction_id
 msgid "Transaction ID"
 msgstr "ID de la transaction"

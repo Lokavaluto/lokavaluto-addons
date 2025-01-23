@@ -104,6 +104,11 @@ class PartnerService(Component):
             raise MissingError(
                 "No top-up found to cancel for given order_id (%r)" % order_id
             )
+        for credit in credit_ids:
+            if credit.requester_id and credit.requester_id.id != self.env.user.partner_id.id:
+                raise AccessDenied(
+                    f"You can not remove credit request {credit.id} as you are not the requester."
+                )
         credit_ids.sudo().unlink()
         return True
 
@@ -461,7 +466,7 @@ class PartnerService(Component):
 
     def _get_credit_request_data(self, cr):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        return {
+        data = {
             "credit_id": cr.id,
             "order_id": cr.order_id.id if cr.order_id else 0,
             "order_url": base_url + cr.order_id.get_portal_url() if cr.order_id else "",
@@ -471,6 +476,14 @@ class PartnerService(Component):
             "monujo_backend": cr.wallet_id.get_wallet_data(),
             "paid": cr.state != "open",
         }
+
+        if cr.requester_id:
+            data["requester"] = {
+                "name": cr.requester_id.name,
+                "id": cr.requester_id.id
+            }
+
+        return data
 
     ##########################################################
     # Request Validators
