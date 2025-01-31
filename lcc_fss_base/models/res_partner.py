@@ -19,14 +19,44 @@ class ResPartner(models.Model):
     household_composition_children = fields.Integer(
         string="Number of Children (-14 years)"
     )
+    household_child_allowance = fields.Selection(
+        [
+            ("no_dependent_children", "No dependent children"),
+            (
+                "shared_responsibility_household",
+                "Shares responsibility within the household",
+            ),
+            (
+                "shared_responsibility_alternate_custody",
+                "Shares responsibility in alternate custody",
+            ),
+            ("sole_adult_responsible", "Sole adult responsible"),
+            ("other", "Other"),
+        ],
+        string="Household Child Allowance",
+    )
+    household_child_allowance_other = fields.Char(
+        string="Household Child Allowance Other, please precise"
+    )
+    name_of_allocation_beneficiary = fields.Char(
+        string="Family an Given names of Allocation beneficiaries"
+    )
     arrival_date_territory = fields.Date(string="Arrival Date in the territory")
-    monthly_household_income = fields.Float(string="Monthly Household Income (€)")
+    monthly_household_food_budget = fields.Float(
+        string="Monthly Household Food Budget (€)"
+    )
     reference_tax_income = fields.Float(string="Reference tax income (€)")
     socio_professional_category = fields.Many2one(
         "hr.professional.category", string="Socio-Professional Category"
     )
     employer_id = fields.Many2one(
         "res.partner", string="Employer", domain="[('is_company','=',True)]"
+    )
+    food_system_worker = fields.Selection(
+        [("yes", "Yes"), ("no", "No"), ("other", "Other")], string="Food System Worker"
+    )
+    food_system_worker_other = fields.Char(
+        string="Food System Worker Other, please precise"
     )
     housing_status = fields.Selection(
         [
