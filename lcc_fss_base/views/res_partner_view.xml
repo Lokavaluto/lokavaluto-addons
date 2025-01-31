@@ -22,17 +22,19 @@
 
                 <!-- page Personnal Information -->
                 <xpath expr="//page[@name='personal_information_page']" position='inside'>
-                    <group name="fss_data_credit" 
+                    <group name="fss_data_credit"
                         string="FSS data to compute credit amount "
                         attrs="{'invisible': [('is_company', '=', True)]}" >
-                        <field name="monthly_household_income" />
                         <field name="reference_tax_income" />
-                    </group> 
+                    </group>
                     <group string="Household composition"
-                        attrs="{'invisible': [('is_company', '=', True)]}">  
+                        attrs="{'invisible': [('is_company', '=', True)]}">
                         <field name="household_composition_adults" />
                         <field name="household_composition_teens" />
                         <field name="household_composition_children" />
+                        <field name="household_child_allowance" widget="radio"/>
+                        <field name="household_child_allowance_other" attrs="{'invisible': [('household_child_allowance', '!=', 'other')]}"/>
+                        <field name="name_of_allocation_beneficiary" />
                     </group>
                     <group name="fss_third_party" attrs="{'invisible': [('is_company', '=', True)]}">
                         <field name="employer_id"  />
@@ -45,10 +47,13 @@
                         <field name="birth_year" />
                         <field name="arrival_date_territory" />
                         <field name="socio_professional_category" />
-                        <field name="housing_status" widget="radio" />        
+                        <field name="monthly_household_food_budget" />
+                        <field name="food_system_worker" widget="radio" />
+                        <field name="food_system_worker_other" attrs="{'invisible': [('food_system_worker', '=', 'no')]}"/>
+                        <field name="housing_status" widget="radio" />
                     </group>
-                    <group name="fss_pos_data" 
-                        string="FSS Point of sale informations" 
+                    <group name="fss_pos_data"
+                        string="FSS Point of sale informations"
                         attrs="{'invisible': [('is_company', '=', False)]}">
                         <field name="subscription_date" />
                         <field name="annual_sales" />

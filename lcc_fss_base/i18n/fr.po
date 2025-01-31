@@ -6,19 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-11 10:24+0000\n"
-"PO-Revision-Date: 2024-06-11 10:24+0000\n"
+"POT-Creation-Date: 2025-01-31 16:22+0000\n"
+"PO-Revision-Date: 2025-01-31 16:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: lcc_fss_base
-#: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
-msgid "Alors"
-msgstr ""
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__annual_sales
@@ -77,6 +72,36 @@ msgid "FSS experimentation evaluation data"
 msgstr "Données nécessaires pour évaluer l’expérimentation SSA"
 
 #. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__name_of_allocation_beneficiary
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__name_of_allocation_beneficiary
+msgid "Family an Given names of Allocation beneficiaries"
+msgstr "Noms et prénoms des autres adultes du foyer qui recevront une allocation"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__food_system_worker
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__food_system_worker
+msgid "Food System Worker"
+msgstr "Travailleur-euse du système alimentaire ?"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__food_system_worker_other
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__food_system_worker_other
+msgid "Food System Worker Other, please precise"
+msgstr "Précision du métier alimentaire :"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_child_allowance
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_child_allowance
+msgid "Household Child Allowance"
+msgstr "Charge des enfants"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_child_allowance_other
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_child_allowance_other
+msgid "Household Child Allowance Other, please precise"
+msgstr "Précision de charge des enfants : autre"
+
+#. module: lcc_fss_base
 #: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
 msgid "Household composition"
 msgstr "Composition du foyer"
@@ -88,10 +113,20 @@ msgid "Housing Status"
 msgstr "Statut d'occupation du logement"
 
 #. module: lcc_fss_base
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__monthly_household_income
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__monthly_household_income
-msgid "Monthly Household Income (€)"
-msgstr "Revenus mensuels du foyer (€)"
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__monthly_household_food_budget
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__monthly_household_food_budget
+msgid "Monthly Household Food Budget (€)"
+msgstr "Budget alimentaire moyen du foyer (par mois)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__food_system_worker__no
+msgid "No"
+msgstr "Non"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__household_child_allowance__no_dependent_children
+msgid "No dependent children"
+msgstr "Pas d'enfants à charge"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_composition_adults
@@ -112,6 +147,8 @@ msgid "Number of Teens (14-18 years)"
 msgstr "Nombre d’adolescents (14-18 ans)"
 
 #. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__food_system_worker__other
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__household_child_allowance__other
 #: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__housing_status__other
 msgid "Other"
 msgstr "Autre"
@@ -133,10 +170,25 @@ msgid "Reference tax income (€)"
 msgstr "Revenu fiscal de référence (€)"
 
 #. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__household_child_allowance__shared_responsibility_alternate_custody
+msgid "Shares responsibility in alternate custody"
+msgstr "Partage la charge en garde alternée"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__household_child_allowance__shared_responsibility_household
+msgid "Shares responsibility within the household"
+msgstr "Partage la charge au sein du foyer"
+
+#. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__socio_professional_category
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__socio_professional_category
 msgid "Socio-Professional Category"
 msgstr "Catégorie socio-professionnelle"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__household_child_allowance__sole_adult_responsible
+msgid "Sole adult responsible"
+msgstr "Seul adulte à charge"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__subscription_date
@@ -154,3 +206,8 @@ msgstr "Locataire"
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__third_party_payer
 msgid "Third Party Payer"
 msgstr "Tiers payeur"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__food_system_worker__yes
+msgid "Yes"
+msgstr "Oui"
