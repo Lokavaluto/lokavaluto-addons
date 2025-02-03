@@ -68,6 +68,8 @@ class PartnerService(Component):
         wallets = self.env["res.partner.backend"].search(
             [("type", "in", backend_types)]
         )
+        if not wallets:
+            _logger.warning("No wallet found for backend keys %r", backend_types)
         for wallet in wallets:
             credit_request_list += self._get_credit_requests(
                 wallet, ["pending"]
