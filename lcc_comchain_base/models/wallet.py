@@ -257,6 +257,11 @@ class ResPartnerBackend(models.Model):
         if backend_key == "comchain:" + self.env.user.company_id.comchain_currency_name:
             name = "comchain"
         elif backend_key.startswith("comchain:"):
+            _logger.warning(
+                "Current comchain currency name %r doesn't match provided backend key %r",
+                self.env.user.company_id.comchain_currency_name,
+                backend_key
+            )
             name = backend_key
         return name
 
