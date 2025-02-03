@@ -22,11 +22,7 @@ class ResPartner(models.Model):
         # Search active members only
         # Consider invoiced partners as active members
         domain_partners = [
-            (
-                "membership_state",
-                "in",
-                ["invoiced", "paid", "free"],
-            ),
+            ("membership_state", "in", ["invoiced", "paid", "free"]),
             ("is_main_profile", "=", True),
             ("active", "=", True),
         ]

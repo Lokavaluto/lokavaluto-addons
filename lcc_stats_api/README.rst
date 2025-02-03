@@ -36,6 +36,7 @@ Contributors
 * Johan Le Baut <https://github.com/jojolb>
 * Stéphan SAINLEGER <https://github.com/stephansainleger>
 * Nicolas JEUDY <https://github.com/njeudy>
+* Quentin Mondot <https://github.com/mondot>
 * Lokavaluto Teams
 
 Funders

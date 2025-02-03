@@ -5,7 +5,7 @@ from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
 from ..datamodel.stats_filter import StatsFilter
-from ..models.account_invoice import CurrencyStats
+from ..models.account_move import CurrencyStats
 from ..models.res_partner import PartnersStats
 
 _logger = logging.getLogger(__name__)
@@ -38,7 +38,7 @@ class PublicStatsMlccService(Component):
 
         # Get currency stats based on all invoices
         currency_stats: CurrencyStats = (
-            self.env["account.invoice"].sudo().get_mlcc_stats(stats_filter)
+            self.env["account.move"].sudo().get_mlcc_stats(stats_filter)
         )
 
         # Get partners stats

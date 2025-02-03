@@ -17,30 +17,30 @@ class CurrencyStats(TypedDict):
     mlcc_circulating: float
 
 
-class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
     @api.model
     def get_mlcc_stats(self, stats_filter: StatsFilter = None):
         # Look for paid invoices with LCC products
         domain_invoices = [
-            ("state", "=", "paid"),
-            ("type", "in", ["out_invoice", "in_invoice"]),
+            ("state", "=", "posted"),
+            ("move_type", "in", ["out_invoice", "in_invoice"]),
             ("has_numeric_lcc_products", "=", True),
         ]
 
         # Filter date if specified
         if stats_filter:
             if stats_filter.start_date:
-                domain_invoices.append(("date_invoice", ">=", stats_filter.start_date))
+                domain_invoices.append(("date", ">=", stats_filter.start_date))
             if stats_filter.end_date:
-                domain_invoices.append(("date_invoice", "<=", stats_filter.end_date))
+                domain_invoices.append(("date", "<=", stats_filter.end_date))
 
         invoices = self.search(domain_invoices)
         mlcc_to_eur = 0.00
         eur_to_mlcc = 0.00
         for invoice in invoices:
-            if invoice.type == "out_invoice":
+            if invoice.move_type == "out_invoice":
                 eur_to_mlcc += invoice.amount_total
             else:
                 mlcc_to_eur += invoice.amount_total
