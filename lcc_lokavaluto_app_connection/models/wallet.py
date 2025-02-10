@@ -118,7 +118,7 @@ class ResPartnerBackend(models.Model):
             (
                 rule
                 for rule in rules
-                if self.search(safe_eval(rule.wallet_domain) + ("id", "=", self.id))
+                if self.search(safe_eval(rule.wallet_domain) + [("id", "=", self.id)])
             ),
             None,
         )
