@@ -90,7 +90,7 @@ class CreditRequest(models.Model):
                     "draft",
                     "cancel",
                 ):
-                    request.order_id.action_cancel()
+                    request.order_id._action_cancel()
                 request.order_id.unlink()
             if request.invoice_id and request.invoice_id.state == "draft":
                 request.invoice_id.unlink()
