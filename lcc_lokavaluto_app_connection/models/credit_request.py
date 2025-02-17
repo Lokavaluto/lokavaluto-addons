@@ -41,8 +41,14 @@ class CreditRequest(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get("amount", False) == 0.0:
-            raise UserError("Credit resquest can't be created with a null amount.")
+        if vals.get("amount",  0) == .0:
+            raise UserError("Credit request can't be created with a null amount.")
+        if vals.get("amount", 0) > 2**46 - 1:
+            ## amount field is declared as a float in postgresql it is a double precision
+            ## which can store values up to 2**53 - 1, but we need precision on the decimal part
+            ## up to 2 digits, so we limit the amount to 2**46 - 1
+            raise UserError("Credit request can't be created with an amount > 2**46 - 1.")
+
         no_order = vals.pop("no_order", False)
 
         vals["requester_id"] = vals.get("requester_id", self.env.user.partner_id.id)
@@ -60,6 +66,11 @@ class CreditRequest(models.Model):
     def write(self, vals):
         if any(request.state == "done" for request in self):
             raise UserError("You can't modify a done credit request.")
+        if "amount" in vals and vals["amount"] > 2**46 - 1:
+            ## amount field is declared as a float in postgresql it is a double precision
+            ## which can store values up to 2**53 - 1, but we need precision on the decimal part
+            ## up to 2 digits, so we limit the amount to 2**46 - 1
+            raise UserError("Credit request can't be created with an amount > 2**46 - 1.")
         res = super(CreditRequest, self).write(vals)
         for request in self:
             if request.state == "pending":
