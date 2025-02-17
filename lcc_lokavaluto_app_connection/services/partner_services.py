@@ -239,7 +239,8 @@ class PartnerService(Component):
         ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
         ## here for a direct search. We'll implement 2 search to fake an
         ## order by ``is_favorite``
-        recipients_fav = self.env["res.partner.backend"].search(
+        rpb = self.env["res.partner.backend"].sudo()
+        recipients_fav = rpb.search(
             [
                 ("partner_id.favorite_user_ids", "in", self.env.uid),
             ]
@@ -256,7 +257,7 @@ class PartnerService(Component):
                 fav_count = (
                     0
                     if offset == 0
-                    else self.env["res.partner.backend"].search_count(
+                    else rpb.search_count(
                         [
                             ("partner_id.favorite_user_ids", "in", self.env.uid),
                         ]
@@ -271,7 +272,7 @@ class PartnerService(Component):
                 offset = 0
 
             if limit != 0:
-                recipients_no_fav = self.env["res.partner.backend"].search(
+                recipients_no_fav = rpb.search(
                     [
                         ("partner_id.favorite_user_ids", "not in", self.env.uid),
                     ]
