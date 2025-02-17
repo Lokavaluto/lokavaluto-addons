@@ -390,12 +390,8 @@ class PartnerService(Component):
         Set partner as favorite
         """
         partner = self._get(_id)
-        partner.write(
-            {
-                "is_favorite": True,
-            }
-        )
-        return {}
+        partner.write({'favorite_user_ids': [(4, self.env.uid)]})
+        return True
 
     @restapi.method(
         [(["/<int:id>/favorite/unset"], "PUT")],
@@ -405,12 +401,8 @@ class PartnerService(Component):
         Unset partner as favorite
         """
         partner = self._get(_id)
-        partner.write(
-            {
-                "is_favorite": False,
-            }
-        )
-        return {}
+        partner.write({'favorite_user_ids': [(3, self.env.uid)]})
+        return True
 
     @restapi.method(
         [(["/<int:id>/favorite/toggle"], "PUT")],
@@ -432,7 +424,7 @@ class PartnerService(Component):
     # from the controller.
 
     def _get(self, _id):
-        return self.env["res.partner"].browse(_id)
+        return self.env["res.partner"].sudo().browse(_id)
 
     def _get_formatted_recipients(self, recipients, backend_keys):
         rows = []
