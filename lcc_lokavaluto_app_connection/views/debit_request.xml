@@ -38,6 +38,7 @@
                         <field name="partner_id" />
                         <field name="wallet_id" />
                         <field name="amount" />
+                        <field name="backend_ident" />
                         <field name="transaction_id" />
                         <field name="transaction_date" />
 			<field name="commission_rule_id" />
@@ -58,6 +59,7 @@
             <search string="Search debit requests">
                 <field name="partner_id" />
                 <field name="wallet_id" />
+                <field name="backend_ident" />
                 <field name="amount" />
                 <field name="state" />
                 <filter domain="[('state','=','draft')]" string="Draft" name="draft" />

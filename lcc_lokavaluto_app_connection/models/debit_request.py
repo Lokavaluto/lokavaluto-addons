@@ -37,6 +37,7 @@ class DebitRequest(models.Model):
         string="State",
         default="draft",
     )
+    backend_ident = fields.Char("Backend Identifier")
     transaction_id = fields.Char("Transaction ID")
     transaction_date = fields.Datetime("Transaction Timestamp")
     debit_move_id = fields.Many2one("account.move", string="Debit Invoice")
@@ -176,6 +177,8 @@ class DebitRequest(models.Model):
             raise UserError("Amount must be superior to zero.")
         if not self.wallet_id:
             raise UserError("The wallet is missing.")
+        if not self.backend_ident:
+            raise UserError("The Backend ident is missing.")
         if not self.transaction_id:
             raise UserError("The transaction ID is missing.")
         return True

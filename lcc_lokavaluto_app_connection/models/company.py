@@ -20,7 +20,7 @@ class Company(models.Model):
 
     def _assert_transaction_valid(self, transaction):
         """Check if the transaction has all required fields"""
-        for field in ["sender", "amount", "transaction_id", "transaction_date"]:
+        for field in ["sender", "amount", "backend_ident", "transaction_id", "transaction_date"]:
             if not transaction.get(field):
                 raise ValueError("Transaction has no %s" % field)
 

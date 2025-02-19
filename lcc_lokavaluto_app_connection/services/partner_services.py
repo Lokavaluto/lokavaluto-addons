@@ -1,4 +1,6 @@
 import logging
+import re
+
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.base_rest.components.service import to_bool, to_int
@@ -137,7 +139,19 @@ class PartnerService(Component):
         res = {}
         DebitRequest = self.env["debit.request"]
         for tx_id in txs_list:
-            debit_requests = DebitRequest.search([("transaction_id", "=", tx_id)])
+            ## tx_id are expected to be like these:
+            ##   cyclos://cyclos.mydomain.org:80/tx/-12039473747344
+            ##   comchain://Lemanopolis/tx/0x1234567890abcdef
+            ##
+            ## Which is BACKEND_ID/tx/TRANSACTION_ID
+
+            m = re.match(r"^(?P<backend_type>[^/:]+)://(?P<backend_locator>[^/]+)/tx/(?P<tx_id>.+)$", tx_id)
+            if not m:
+                _logger.error("Invalid transaction id %s" % tx_id)
+                continue
+            backend_ident = "%s://%s" % (m.group("backend_type"), m.group("backend_locator"))
+            backend_tx_id = m.group("tx_id")
+            debit_requests = DebitRequest.search([("transaction_id", "=", backend_tx_id)])
             if len(debit_requests) != 1:
                 _logger.error(
                     "Impossible to match a debit request for transaction %s: %s requests found"

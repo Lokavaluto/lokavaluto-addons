@@ -41,6 +41,7 @@ class Company(models.Model):
 
         # Retrieve all the debit transactions from the newly created blocks
         company_id = self.env.user.company_id
+        backend_ident = "comchain://%s" % company_id.comchain_currency_name
 
         comchain_res = []
         # Get the ID of the last blockchain block built
@@ -96,6 +97,7 @@ class Company(models.Model):
                     "sender": "comchain:%s" % sender_address,
                     "amount": float(f"{string_amount[0:-2]}.{string_amount[-2:]}"),
                     "transaction_id": tx.hash,
+                    "backend_ident": backend_ident,
                     "transaction_date": full_tx.received_at
                     if full_tx.received_at
                     else None,

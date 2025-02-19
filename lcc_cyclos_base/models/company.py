@@ -113,6 +113,9 @@ class Company(models.Model):
 
         # Retrieve all the debit transactions since the last check minus 1 min
         company_id = self.env.user.company_id
+
+        backend_ident = "cyclos://%s" % company_id.get_cyclos_server_domain()
+
         # we need a date on ISO8601 format "1970-01-01T00:00:00.000", then encoded to be in an URL
         if not company_id.cyclos_date_last_reconversion_check:
             date = "1970-01-01T00:00:00.000"
@@ -143,6 +146,7 @@ class Company(models.Model):
                 "sender": "cyclos:%s" % tx["from"]["user"]["id"],
                 "amount": float(tx["amount"]),
                 "transaction_id": tx["id"],
+                "backend_ident": backend_ident,
                 "transaction_date": date_tx,
             }
             company_id.cyclos_date_last_reconversion_check = date_tx
