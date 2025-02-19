@@ -59,7 +59,7 @@ class Company(models.Model):
             # Get the block transactions
             block_txs = pyc3l.BlockByNumber(block_nb).bc_txs
             for tx in block_txs:
-                if not tx.currency:
+                if not getattr(tx, "currency", None):
                     continue  # this transaction is not linked with a currency
                 if (
                     not tx.currency.name.lower()
