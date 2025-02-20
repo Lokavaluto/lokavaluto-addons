@@ -127,7 +127,7 @@ class Company(models.Model):
 
         # Set all the search criteria in the REST request entrypoint
         entrypoint = (
-            "/transfers?datePeriod=%s&orderBy=dateAsc&toAccountTypes=debit"
+            "/transactions?datePeriod=%s&orderBy=dateAsc&toAccountTypes=debit"
             % encoded_date
         )
 
