@@ -124,16 +124,15 @@ class ResPartnerBackend(models.Model):
         )
 
     def _compute_is_reconversion_allowed(self):
-        all_rules = self.env["reconversion.rule"].search([("active", "=", True)])
+        all_rules = self.env["reconversion.rule"].search([("active", "=", True)], order="sequence")
         for record in self:
-            # For now the reconversions are not allowed for this wallet
+            # By default, reconversion is NOT allowed
             record.is_reconversion_allowed = False
-            if any(
-                self.search(safe_eval(rule.wallet_domain) + [("id", "=", record.id)])
-                and rule.is_reconversion_allowed
-                for rule in all_rules
-            ):
-                record.is_reconversion_allowed = True
+            for rule in all_rules:
+                if self.search(safe_eval(rule.wallet_domain) + [("id", "=", record.id)]):
+                    record.is_reconversion_allowed = rule.is_reconversion_allowed
+                    # We stop after the first rule matched
+                    break
 
     def _compute_is_topup_allowed(self):
         all_rules = self.env["topup.rule"].search([("active", "=", True)], order="sequence")

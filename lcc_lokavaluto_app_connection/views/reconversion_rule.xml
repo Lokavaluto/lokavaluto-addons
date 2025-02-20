@@ -6,6 +6,7 @@
         <field name="model">reconversion.rule</field>
         <field name="arch" type="xml">
             <tree string="Reconversion Rules">
+                <field name="sequence" widget="handle"/>
                 <field name="name" />
                 <field name="wallet_domain" />
                 <field name="is_reconversion_allowed" />
