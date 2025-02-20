@@ -129,7 +129,7 @@ class ResPartnerBackend(models.Model):
             # By default, reconversion is NOT allowed
             record.is_reconversion_allowed = False
             for rule in all_rules:
-                if self.search(safe_eval(rule.wallet_domain) + [("id", "=", record.id)]):
+                if self.search(safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]):
                     record.is_reconversion_allowed = rule.is_reconversion_allowed
                     # We stop after the first rule matched
                     break
@@ -140,7 +140,7 @@ class ResPartnerBackend(models.Model):
             # By default, topup is allowed
             record.is_topup_allowed = True
             for rule in all_rules:
-                if self.search(safe_eval(rule.wallet_domain) + [("id", "=", record.id)]):
+                if self.search(safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]):
                     record.is_topup_allowed = rule.is_topup_allowed
                     # We stop after the first rule matched
                     break
