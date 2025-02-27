@@ -27,54 +27,50 @@ class AuthService(Component):
         api_key_model = self.env["auth.api.key"].sudo()
         response = {"status": "OK"}
         if request.httprequest.authorization and not request.session._login:
-            try:
-                uid = request.session.authenticate(
-                    params.get("db") or self.env.cr.dbname,
-                    request.httprequest.authorization.username,
-                    request.httprequest.authorization.password,
+            uid = request.session.authenticate(
+                params.get("db") or self.env.cr.dbname,
+                request.httprequest.authorization.username,
+                request.httprequest.authorization.password,
+            )
+            current_key = api_key_model.search([("user_id", "=", uid)], limit=1)
+            current_user = self.env["res.users"].sudo().search([("id", "=", uid)])
+            _logger.debug("USER: %s" % current_user)
+            if current_user:
+                partner = current_user.partner_id
+                to_add = self._update_auth_data(
+                    partner, request.httprequest.authorization.password
                 )
-                current_key = api_key_model.search([("user_id", "=", uid)], limit=1)
-                current_user = self.env["res.users"].sudo().search([("id", "=", uid)])
-                _logger.debug("USER: %s" % current_user)
-                if current_user:
-                    partner = current_user.partner_id
-                    to_add = self._update_auth_data(
-                        partner, request.httprequest.authorization.password
+                lcc_profile_info = partner.lcc_profile_info()
+                if len(lcc_profile_info) == 0:
+                    raise exceptions.UserError(
+                        "Invalid User %r (id: %d), related partner %r (id: %d) has no public profile."
+                        % (
+                            current_user.login,
+                            current_user.id,
+                            partner.name,
+                            partner.id,
+                        ),
                     )
-                    lcc_profile_info = partner.lcc_profile_info()
-                    if len(lcc_profile_info) == 0:
-                        raise exceptions.UserError(
-                            "Invalid User %r (id: %d), related partner %r (id: %d) has no public profile."
-                            % (
-                                current_user.login,
-                                current_user.id,
-                                partner.name,
-                                partner.id,
-                            ),
-                        )
-                    response["prefetch"] = {
-                        "backend_credentials": to_add,
-                        "partner": lcc_profile_info[0],
+                response["prefetch"] = {
+                    "backend_credentials": to_add,
+                    "partner": lcc_profile_info[0],
+                }
+
+                if to_add:
+                    response["monujo_backends"] = to_add
+                _logger.debug("AUTH UPDATE to_add: %s" % to_add)
+                _logger.debug("AUTH UPDATE response: %s" % response)
+            if not current_key:
+                current_key = api_key_model.create(
+                    {
+                        "user_id": uid,
                     }
+                )
+            response["uid"] = uid
+            response["api_token"] = "%s" % current_key.key
+            from . import __api_version__
 
-                    if to_add:
-                        response["monujo_backends"] = to_add
-                    _logger.debug("AUTH UPDATE to_add: %s" % to_add)
-                    _logger.debug("AUTH UPDATE response: %s" % response)
-                if not current_key:
-                    current_key = api_key_model.create(
-                        {
-                            "user_id": uid,
-                        }
-                    )
-                response["uid"] = uid
-                response["api_token"] = "%s" % current_key.key
-                from . import __api_version__
-
-                response["api_version"] = __api_version__
-            except Exception as e:
-                response["error"] = "%s" % e
-                response["status"] = "Error"
+            response["api_version"] = __api_version__
         return response
 
     @restapi.method([(["/signup"], "POST")], cors="*")
