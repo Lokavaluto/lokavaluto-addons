@@ -134,6 +134,7 @@ class ResPartner(models.Model):
                     "email",
                     "phone",
                     ("country_id", ["id", "name"]),
+                    "is_company"
                 ]
             )[0]
             profile_info.update(
