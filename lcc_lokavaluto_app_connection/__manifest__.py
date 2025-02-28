@@ -36,6 +36,7 @@
         "views/reconversion_rule.xml",
         "views/topup_rule.xml",
         "views/wallet_restriction_rule.xml",
+        "views/res_alt_currency.xml",
         "views/menu.xml",
         "views/portal_my_home.xml",
         "views/res_config_settings_view.xml",
