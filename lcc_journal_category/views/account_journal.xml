@@ -31,4 +31,14 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="account_journal_view_kanban_category_inherit">
+        <field name="name">account.journal.kanban.category.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_view_kanban" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('col-6') and position()=2]" position="after">
+                <div><field name="category"/></div>
+            </xpath>
+        </field>
+    </record>
 </odoo>
