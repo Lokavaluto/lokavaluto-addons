@@ -1,13 +1,15 @@
 import logging
-from odoo import models, fields, api
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
+
 from ..tools import after_commit
 
 _logger = logging.getLogger(__name__)
 
 
 class CreditRequest(models.Model):
-    """Credit request to follow the top up process for user wallets"""
+    """Credit request to follow the top up process for user wallets."""
 
     _name = "credit.request"
     _description = "Represents the request of a user to transform state currency in alternative currency."
@@ -15,7 +17,9 @@ class CreditRequest(models.Model):
     amount = fields.Float("Amount", required=True)
     wallet_id = fields.Many2one("res.partner.backend", string="Wallet", required=True)
     partner_id = fields.Many2one(
-        "res.partner", related="wallet_id.partner_id", readonly=True
+        "res.partner",
+        related="wallet_id.partner_id",
+        readonly=True,
     )
     alt_currency_id = fields.Many2one(
         "res.alt.currency",
@@ -48,20 +52,22 @@ class CreditRequest(models.Model):
     @api.model
     def create(self, vals):
         if vals.get("amount", 0) == 0.0:
-            raise UserError("Credit request can't be created with a null amount.")
+            msg = "Credit request can't be created with a null amount."
+            raise UserError(msg)
         if vals.get("amount", 0) > 2**46 - 1:
             ## amount field is declared as a float in postgresql it is a double precision
             ## which can store values up to 2**53 - 1, but we need precision on the decimal part
             ## up to 2 digits, so we limit the amount to 2**46 - 1
+            msg = "Credit request can't be created with an amount > 2**46 - 1."
             raise UserError(
-                "Credit request can't be created with an amount > 2**46 - 1."
+                msg,
             )
 
         no_order = vals.pop("no_order", False)
 
         vals["requester_id"] = vals.get("requester_id", self.env.user.partner_id.id)
 
-        res = super(CreditRequest, self).create(vals)
+        res = super().create(vals)
 
         if no_order:
             return res
@@ -72,28 +78,30 @@ class CreditRequest(models.Model):
 
     def write(self, vals):
         if any(request.state == "done" for request in self):
-            raise UserError("You can't modify a done credit request.")
+            msg = "You can't modify a done credit request."
+            raise UserError(msg)
         if "amount" in vals and vals["amount"] > 2**46 - 1:
             ## amount field is declared as a float in postgresql it is a double precision
             ## which can store values up to 2**53 - 1, but we need precision on the decimal part
             ## up to 2 digits, so we limit the amount to 2**46 - 1
+            msg = "Credit request can't be created with an amount > 2**46 - 1."
             raise UserError(
-                "Credit request can't be created with an amount > 2**46 - 1."
+                msg,
             )
 
-        if (
-            self.env.user.company_id.activate_automatic_topup
-            and vals.get("state") == "pending"
-        ):
+        if vals.get("state") == "pending":
             # Launch after_commit function to launch the credit request once the request state is commited
             self._check_pending_requests_to_credit()
 
-        return super(CreditRequest, self).write(vals)
+        return super().write(vals)
 
     @after_commit
-    def _check_pending_requests_to_credit(self):
+    def _check_pending_requests_to_credit(self) -> None:
         for request in self:
-            if request.state == "pending":
+            if (
+                request.alt_currency_id.activate_automatic_topup
+                and request.state == "pending"
+            ):
                 # The top up has been paid, the credit process can start
                 request.sudo().credit_wallet()
 
@@ -102,33 +110,38 @@ class CreditRequest(models.Model):
             if request.state == "pending" or (
                 request.invoice_id and request.invoice_id.state != "draft"
             ):
+                msg = "You can't delete a credit request linked with a confirmed or paid invoice."
                 raise UserError(
-                    "You can't delete a credit request linked with a confirmed or paid invoice."
+                    msg,
                 )
-            elif request.state == "error":
+            if request.state == "error":
+                msg = "You can't delete a credit request in Error. Please solve the issue."
                 raise UserError(
-                    "You can't delete a credit request in Error. Please solve the issue."
+                    msg,
                 )
-            elif request.state == "done":
-                raise UserError(
+            if request.state == "done":
+                msg = (
                     "You can't delete a done credit request. Please archive it instead."
+                )
+                raise UserError(
+                    msg,
                 )
 
             if request.order_id:
-                if request.order_id and request.order_id.state not in (
+                if request.order_id and request.order_id.state not in {
                     "draft",
                     "cancel",
-                ):
+                }:
                     request.order_id._action_cancel()
                 request.order_id.unlink()
             if request.invoice_id and request.invoice_id.state == "draft":
                 request.invoice_id.unlink()
-        return super(CreditRequest, self).unlink()
+        return super().unlink()
 
     def compute_amount_to_credit(self):
         """Compute correct amount function of wallet balance
-        if limited credit aggregation"""
-
+        if limited credit aggregation.
+        """
         self.ensure_one()
         amount = self.amount
         if amount == 0 or not self.wallet_id:
@@ -142,7 +155,8 @@ class CreditRequest(models.Model):
                 return {
                     "error": True,
                     "error_message": wallet_balance_data.get(
-                        "error_message", "Error when trying to get wallet balance"
+                        "error_message",
+                        "Error when trying to get wallet balance",
                     ),
                 }
             amount = min(
@@ -156,7 +170,7 @@ class CreditRequest(models.Model):
                 }
         return {"amount": amount, "error": False}
 
-    def create_credit_sale_order(self):
+    def create_credit_sale_order(self) -> None:
         Order = self.env["sale.order"]
         Line = self.env["sale.order.line"]
 
@@ -176,20 +190,20 @@ class CreditRequest(models.Model):
                 {
                     "product_uom_qty": request.amount,
                     "price_unit": 1,
-                }
+                },
             )
-            _logger.debug("NUMERIC LCC ORDER LINE: %s" % line_vals)
+            _logger.debug(f"NUMERIC LCC ORDER LINE: {line_vals}")
             Line.create(line_vals)
             order_id.write(
-                {"state": "sent", "require_signature": False, "require_payment": True}
+                {"state": "sent", "require_signature": False, "require_payment": True},
             )
-            _logger.debug("Credit request sale order created: %s" % order_id.name)
+            _logger.debug(f"Credit request sale order created: {order_id.name}")
             request.order_id = order_id.id
 
-    def credit_wallet(self):
+    def credit_wallet(self) -> None:
         """Send credit order to the wallet."""
         for record in self:
-            if record.state not in ["pending", "error"]:
+            if record.state not in {"pending", "error"}:
                 continue
 
             # Check if we have the needed data to perform the top up process
@@ -216,18 +230,20 @@ class CreditRequest(models.Model):
                 vals = {
                     "state": "error",
                     "error_message": amount_data.get(
-                        "error_message", "Error defining amount to credit"
+                        "error_message",
+                        "Error defining amount to credit",
                     ),
                 }
             record.write(vals)
 
-    def validate(self):
+    def validate(self) -> None:
         """Function to use when another software is in charge of the top up process,
-        and needs to inform Odoo that the process has been performed with success."""
+        and needs to inform Odoo that the process has been performed with success.
+        """
         for request in self:
             request.write({"state": "done"})
 
-    def try_again(self):
+    def try_again(self) -> None:
         """Function available when the request is in error state, to send a new credit request."""
         for request in self:
             if request.state == "error":
