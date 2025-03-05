@@ -22,13 +22,6 @@ class ResConfigSettings(models.TransientModel):
         string="Monujo iOS app URL",
     )
 
-    commission_product_id = fields.Many2one(
-        "product.product",
-        related="company_id.commission_product_id",
-        readonly=False,
-        string="Commission Product",
-    )
-
     allow_payments_only_to_companies = fields.Boolean(
         related="company_id.allow_payments_only_to_companies",
         readonly=False,
