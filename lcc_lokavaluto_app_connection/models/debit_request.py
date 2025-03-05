@@ -244,7 +244,7 @@ class DebitRequest(models.Model):
 
     def _get_commission_invoice_line_values(self):
         self.ensure_one()
-        product_id = self.env.user.company_id.commission_product_id
+        product_id = self.alt_currency_id.commission_product_id
         commission_amount = self.commission_rule_id.calculate_commission_amount(
             self.amount
         )
