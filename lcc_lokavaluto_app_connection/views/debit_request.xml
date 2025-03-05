@@ -9,6 +9,7 @@
                 <field name="transaction_date" />
                 <field name="partner_id" />
                 <field name="wallet_id" />
+		<field name="alt_currency_id" />
                 <field name="amount" />
                 <field name="state" decoration-info="state in ['draft', 'received', 'invoiced']"
                     decoration-success="state == 'paid'" />
@@ -48,6 +49,7 @@
                     <group name="content" string="Content">
                         <field name="partner_id" />
                         <field name="wallet_id" />
+			<field name="alt_currency_id" readonly="True"/>
                         <field name="amount" />
                         <field name="backend_ident" />
                         <field name="transaction_id" />

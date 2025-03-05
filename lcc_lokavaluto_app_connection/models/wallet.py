@@ -1,9 +1,8 @@
+import logging
 from random import randint
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.tools.safe_eval import safe_eval
-import logging
-
 
 _logger = logging.getLogger(__name__)
 
@@ -17,12 +16,17 @@ class ResPartnerBackend(models.Model):
     )
 
     type = fields.Selection(
-        [("foo", "Value defined only for testing purposes")],
+        related="alt_currency_id.engine",
         string="Type",
         required=True,
     )
-    # You can find real type values in lcc_comchain_base and lcc_cyclos_base
+
     name = fields.Char("Name", required=True)
+    alt_currency_id = fields.Many2one(
+        "res.alt.currency",
+        string="Currency",
+        required=True,
+    )
     active = fields.Boolean(default=True, tracking=True)
     partner_public_name = fields.Char(
         "Partner Public Name",
@@ -64,11 +68,6 @@ class ResPartnerBackend(models.Model):
         for record in self:
             if record.partner_id.public_profile_id:
                 record.partner_public_name = record.partner_id.public_profile_id.name
-
-    def get_lcc_product(self):
-        """Return the numeric lcc product to add in sale orders or invoices.
-        Need to be overrided by financial backend add-ons"""
-        return None
 
     def get_by_name(self, name: str):
         """Returns wallet object matching the name given"""

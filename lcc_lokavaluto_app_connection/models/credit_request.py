@@ -17,6 +17,11 @@ class CreditRequest(models.Model):
     partner_id = fields.Many2one(
         "res.partner", related="wallet_id.partner_id", readonly=True
     )
+    alt_currency_id = fields.Many2one(
+        "res.alt.currency",
+        related="wallet_id.alt_currency_id",
+        string="Currency",
+    )
     state = fields.Selection(
         [
             ("open", "Open"),
@@ -164,7 +169,7 @@ class CreditRequest(models.Model):
             order_id = Order.create(order_vals)
             line_vals = {
                 "order_id": order_id.id,
-                "product_id": self.wallet_id.get_lcc_product().id,
+                "product_id": self.alt_currency_id.currency_unit_product_id.id,
             }
             line_vals = Line.play_onchanges(line_vals, ["product_id"])
             line_vals.update(
