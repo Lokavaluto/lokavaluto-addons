@@ -10,6 +10,7 @@
                 <field name="partner_id" />
                 <field name="requester_id" />
                 <field name="wallet_id" />
+		<field name="alt_currency_id" />
                 <field name="amount" />
                 <field name="state" />
             </tree>
@@ -39,6 +40,7 @@
                     <group name="content" string="Content">
                         <field name="partner_id" />
                         <field name="wallet_id" />
+			<field name="alt_currency_id" readonly="True"/>
                         <field name="amount" />
                         <field name="create_date" />
                         <field name="requester_id" readonly="True" />

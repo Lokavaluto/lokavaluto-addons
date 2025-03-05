@@ -44,10 +44,6 @@ class ResPartner(models.Model):
         self.ensure_one()
         wallets = [wallet for wallet in self.lcc_backend_ids if wallet.type == type]
         if len(wallets) > 0:
-            if len(wallets) > 1:
-                raise NotImplementedError(
-                    "Several wallets retrieved - Multiwallet of one currency is not implemented yet"
-                )
             return wallets
         else:
             return self.env["res.partner.backend"]

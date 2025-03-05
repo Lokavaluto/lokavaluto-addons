@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <tree string="Alternative Currencies">
                 <field name="name" />
-                <field name="technology" />
+                <field name="engine" />
                 <field name="active" />
             </tree>
         </field>
@@ -28,7 +28,9 @@
                         </h1>
                     </div>
                     <group name="definition" string="Definition">
-                        <field name="technology" />
+                      <field name="engine" />
+		      <field name="ident" />
+		      <field name="uri" readonly="True"/>
                     </group>
                     <group name="options" string="Options">
                       <field name="activate_automatic_topup" />
@@ -51,7 +53,7 @@
         <field name="arch" type="xml">
             <search string="Search Alternative Currencies">
                 <field name="name" />
-                <field name="technology" />
+                <field name="engine" />
                 <filter domain="[('active','=',True)]" string="Active" name="active" />
                 <filter domain="[('active','=',False)]" string="Archived" name="archived" />
             </search>

@@ -20,7 +20,8 @@
                         <group>
                             <field name="name" />
                             <field name="partner_id" />
-                            <field name="type" />
+			    <field name="alt_currency_id" />
+                            <field name="type" readonly="True"/>
                             <field name="status" readonly="True" />
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
                                    placeholder='e.g. "SSA"'/>
@@ -50,7 +51,8 @@
             <tree string="Digital Currency Wallet">
                 <field name="name" />
                 <field name="partner_id" />
-                <field name="type" />
+		<field name="alt_currency_id" />
+		<field name="type" />
                 <field name="status" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
             </tree>
