@@ -17,7 +17,7 @@ class TestResAltCurrency(TransactionComponentCase):
             {
                 "name": "Currency A",
                 "active": True,
-                "technology": "foo",
+                "engine": "foo",
                 "currency_unit_product_id": self.currency_A_unit_product.id,
             }
         )

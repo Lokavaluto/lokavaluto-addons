@@ -9,6 +9,14 @@ class TestPartnerService(TransactionComponentCase):
         self.ResPartner = self.env["res.partner"]
         self.ResPartnerBackend = self.env["res.partner.backend"]
         self.WalletRestrictionRule = self.env["wallet.restriction.rule"]
+        self.ResAltCurrency = self.env["res.alt.currency"]
+
+        self.currencyA = self.ResAltCurrency.create(
+            {"name": "Currency A", "active": True, "engine": "foo"}
+        )
+        self.currencyB = self.ResAltCurrency.create(
+            {"name": "Currency B", "active": True, "engine": "foo"}
+        )
 
         self.sender_user = self.ResUsers.create({"name": "Sender", "login": "foo"})
         self.sender = self.ResPartner.create(
@@ -17,8 +25,8 @@ class TestPartnerService(TransactionComponentCase):
         self.sender_wallet = self.ResPartnerBackend.create(
             {
                 "partner_id": self.sender.id,
-                "name": "comchain:sender",
-                "type": "comchain",
+                "name": "foo:sender",
+                "alt_currency_id": self.currencyA.id,
             }
         )
 
@@ -26,8 +34,8 @@ class TestPartnerService(TransactionComponentCase):
         self.recipient_allowed_wallet = self.ResPartnerBackend.create(
             {
                 "partner_id": self.recipient_allowed.id,
-                "name": "comchain:allowed_recipient",
-                "type": "comchain",
+                "name": "foo:allowed_recipient",
+                "alt_currency_id": self.currencyA.id,
             }
         )
         self.recipient_not_allowed = self.ResPartner.create(
@@ -36,8 +44,8 @@ class TestPartnerService(TransactionComponentCase):
         self.recipient_not_allowed_wallet = self.ResPartnerBackend.create(
             {
                 "partner_id": self.recipient_not_allowed.id,
-                "name": "comchain:not_allowed_recipient",
-                "type": "comchain",
+                "name": "foo:not_allowed_recipient",
+                "alt_currency_id": self.currencyA.id,
             }
         )
 
@@ -62,8 +70,8 @@ class TestPartnerService(TransactionComponentCase):
         self.WalletRestrictionRule.create(
             {
                 "name": "Test Rule",
-                "sender_wallet_domain": "[('name', '=', 'comchain:sender')]",
-                "recipient_wallet_domain": "[('name', '=', 'comchain:allowed_recipient')]",
+                "sender_wallet_domain": "[('name', '=', 'foo:sender')]",
+                "recipient_wallet_domain": "[('name', '=', 'foo:allowed_recipient')]",
             }
         )
         collection = (
@@ -104,16 +112,16 @@ class TestPartnerService(TransactionComponentCase):
         rule = self.WalletRestrictionRule.create(
             {
                 "name": "Test Rule",
-                "sender_wallet_domain": "[('name', '=', 'comchain:sender')]",
-                "recipient_wallet_domain": "[('name', '=', 'comchain:allowed_recipient')]",
+                "sender_wallet_domain": "[('name', '=', 'foo:sender')]",
+                "recipient_wallet_domain": "[('name', '=', 'foo:allowed_recipient')]",
             }
         )
         first_matching_rule = self.WalletRestrictionRule.create(
             {
                 "sequence": rule.sequence - 1,
                 "name": "First Matching Rule",
-                "sender_wallet_domain": "[('name', '=', 'comchain:sender')]",
-                "recipient_wallet_domain": "[('name', '=', 'comchain:not_allowed_recipient')]",
+                "sender_wallet_domain": "[('name', '=', 'foo:sender')]",
+                "recipient_wallet_domain": "[('name', '=', 'foo:not_allowed_recipient')]",
                 # Notice that in this test we allow the Not Allowed Recipient
             }
         )
@@ -139,7 +147,7 @@ class TestPartnerService(TransactionComponentCase):
             {
                 "name": "Test Rule",
                 "sender_wallet_domain": "[]",
-                "recipient_wallet_domain": "[('name', '=', 'comchain:allowed_recipient')]",
+                "recipient_wallet_domain": "[('name', '=', 'foo:allowed_recipient')]",
             }
         )
 
@@ -168,8 +176,8 @@ class TestPartnerService(TransactionComponentCase):
         another_sender_wallet = self.ResPartnerBackend.create(
             {
                 "partner_id": another_sender.id,
-                "name": "comchain:anothersender",
-                "type": "comchain",
+                "name": "foo:anothersender",
+                "alt_currency_id": self.currencyA.id,
             }
         )
 

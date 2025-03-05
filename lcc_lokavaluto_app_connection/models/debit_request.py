@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -19,6 +19,11 @@ class DebitRequest(models.Model):
     active = fields.Boolean(default=True, tracking=True)
     amount = fields.Float("Amount", required=True)
     wallet_id = fields.Many2one("res.partner.backend", string="Wallet", required=True)
+    alt_currency_id = fields.Many2one(
+        "res.alt.currency",
+        related="wallet_id.alt_currency_id",
+        string="Currency",
+    )
     partner_id = fields.Many2one(
         "res.partner", related="wallet_id.partner_id", readonly=True
     )
@@ -211,13 +216,11 @@ class DebitRequest(models.Model):
 
     def _get_debit_invoice_line_values(self):
         self.ensure_one()
-        product_id = self.wallet_id.get_lcc_product()
-        invoice_line_values = {
-            "product_id": product_id.id,
+        return {
+            "product_id": self.alt_currency_id.currency_unit_product_id.id,
             "quantity": self.amount,
             "price_unit": product_id.standard_price,
         }
-        return invoice_line_values
 
     def create_commission_invoices(self):
         for request in self:
