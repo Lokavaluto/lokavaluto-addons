@@ -22,12 +22,6 @@ class ResConfigSettings(models.TransientModel):
         string="Monujo iOS app URL",
     )
 
-    activate_automatic_topup = fields.Boolean(
-        related="company_id.activate_automatic_topup",
-        readonly=False,
-        string="Activate Automatic Topup",
-    )
-
     commission_product_id = fields.Many2one(
         "product.product",
         related="company_id.commission_product_id",
