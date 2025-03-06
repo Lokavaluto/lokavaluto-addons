@@ -251,6 +251,7 @@ class PartnerService(Component):
                 recipients |= recipients_no_fav
         _logger.debug("recipients: %s" % recipients)
 
+        recipients = self.env["res.partner.backend"].search([('id', 'in', [r.id for r in recipients])])
         ## Group by partner
         rows = []
         for recipient in recipients:
