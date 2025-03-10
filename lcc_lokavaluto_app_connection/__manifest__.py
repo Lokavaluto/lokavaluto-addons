@@ -41,7 +41,7 @@
         "views/portal_my_home.xml",
         "views/res_config_settings_view.xml",
         "data/numeric_data.xml",
-        "data/res_company_data.xml",
+        "data/res_alt_currency_data.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],
