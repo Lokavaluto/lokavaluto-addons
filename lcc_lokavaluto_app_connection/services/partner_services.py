@@ -238,10 +238,13 @@ class PartnerService(Component):
         )
 
         backend_types = [key.split(":", 1)[0] for key in backend_keys]
-
+        alt_currency_ids = self.env["res.alt.currency"].search(
+            [("engine", "in", backend_types)],
+            limit=1,
+        )
         domain = [
             ("status", "=", "active"),
-            ("type", "in", backend_types),
+            ("alt_currency_id", "in", [alt_currency_ids.id]),
             ("partner_id.id", "!=", self.env.user.partner_id.id),
             ("partner_id.active", "=", True),
             ("partner_id.public_profile_id.name", "!=", False),  # only main profiles
