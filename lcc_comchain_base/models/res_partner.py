@@ -1,5 +1,6 @@
-from odoo import models, api
 import logging
+
+from odoo import models
 
 _logger = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ class ResPartner(models.Model):
 
     def backends(self):
         self.ensure_one()
-        backends = super(ResPartner, self).backends()
+        backends = super().backends()
         wallets = self.get_wallets_by_currency_type("comchain")
         if not wallets:
             return backends
@@ -27,7 +28,9 @@ class ResPartner(models.Model):
         # For comchain the app access buttons on the portal are always displayed
         # as long as the comchain currency is defined,
         # as the user needs to connect to Monujo to create its wallet
-        res = super(ResPartner, self).show_app_access_buttons()
-        if self.env.user.company_id.comchain_currency_name:
+        res = super().show_app_access_buttons()
+        if self.env["res.alt.currency"].search(
+            [("active", "=", True), ("engine", "=", "comchain")]
+        ):
             res = True
         return res

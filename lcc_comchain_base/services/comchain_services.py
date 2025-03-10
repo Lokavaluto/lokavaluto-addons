@@ -1,11 +1,13 @@
+import json
 import logging
+
 from werkzeug.exceptions import NotFound
+
+from odoo.exceptions import AccessDenied
+
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
-
-from odoo.exceptions import AccessDenied
-from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -50,12 +52,44 @@ class ComchainService(Component):
         Add comchain account details on partner
         """
         partner = self.env.user.partner_id
-        wallets = partner.get_wallets_by_currency_type("comchain")
+        currency_name = ""
+        # Find the alternative currency on which the wallet must be created
+        if isinstance(params.wallet, str):
+            wallet_dict = json.loads(params.wallet)
+            currency_name = wallet_dict["server"]["name"]
+        elif isinstance(params.wallet, dict):
+            currency_name = params.wallet["server"]["name"]
+        else:
+            raise ValueError(
+                "Invalid type of field wallet (%r received)" % type(params.wallet)
+            )
+
+        domain = [
+            ("engine", "=", "comchain"),
+            ("active", "=", True),
+            ("ident", "=", currency_name),
+        ]
+        alt_currency = self.env["res.alt.currency"].search(domain)
+        if len(alt_currency) >= 1:
+            raise NotImplementedError(
+                "Several alternative currencies found. Please contact your administrator."
+            )
+        if len(alt_currency) == 0:
+            raise NotFound("Alternative currency not found.")
+
+        # Create the wallet if it does'nt already exist.
+        Wallet = self.env["res.partner.backend"]
+        wallets = Wallet.search(
+            [
+                ("alt_currency_id", "=", alt_currency.id),
+                ("comchain_id", "=", params.address),
+            ]
+        )
         if len(wallets) == 0:
-            self.env["res.partner.backend"].sudo().create(
+            Wallet.sudo().create(
                 {
-                    "type": "comchain",
                     "name": "comchain:%s" % params.address,
+                    "alt_currency_id": alt_currency.name,
                     "partner_id": partner.id,
                     "comchain_status": "pending",
                     "comchain_id": params.address,
@@ -66,7 +100,7 @@ class ComchainService(Component):
             res = True
         else:
             res = {
-                "error": "account already exist",
+                "error": "Wallet already registered.",
                 "status": "Error",
             }
         return res

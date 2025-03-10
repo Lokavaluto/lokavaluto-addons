@@ -17,7 +17,7 @@
     # always loaded
     "data": [
         "security/ir_rule.xml",
-        "views/res_config_settings_view.xml",
+        "views/res_alt_currency.xml",
         "views/wallet.xml",
         "data/comchain_data.xml",
     ],
