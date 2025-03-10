@@ -38,3 +38,6 @@ class AlternativeCurrency(models.Model):
     def _compute_currency_uri(self):
         for cur in self:
             cur.uri = "%s://%s" % (cur.engine, cur.ident)
+
+    def _safe_wallet_partners(self):
+        return []
