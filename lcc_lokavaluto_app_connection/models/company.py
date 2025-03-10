@@ -13,10 +13,6 @@ class Company(models.Model):
     monujo_android_app_url = fields.Char(string="Monujo Android app URL")
     monujo_ios_app_url = fields.Char(string="Monujo iOS app URL")
 
-    allow_payments_only_to_companies = fields.Boolean(
-        string="Allow payments only to companies"
-    )
-
     def _assert_transaction_valid(self, transaction):
         """Check if the transaction has all required fields"""
         for field in [
