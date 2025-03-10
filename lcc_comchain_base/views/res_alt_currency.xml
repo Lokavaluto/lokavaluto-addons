@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_alt_currency_comchain_view_form" model="ir.ui.view">
+        <field name="name">res.alt.currency.comchain.view.form</field>
+        <field name="model">res.alt.currency</field>
+	<field name="inherit_id"
+            ref="lcc_lokavaluto_app_connection.res_alt_currency_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+              <group name="comchain" string="Comchain specific parameters" attrs="{'invisible': [('engine', '!=', 'comchain')]}">
+		<field name="safe_wallet_partner_id"
+                       placeholder="Select partner linked to safe wallet." />
+		<field name="odoo_wallet_partner_id"
+                       placeholder="Select partner linked to Odoo wallet." />
+		<field name="comchain_odoo_wallet_password" password="True" />
+		<field name="last_block_checked_nb" />
+		<field name="message_from" />
+		<field name="message_to" />
+              </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
