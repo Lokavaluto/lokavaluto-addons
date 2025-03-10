@@ -2,9 +2,12 @@ import json
 import logging
 import re
 import time
-from odoo import models, fields, api
-from pyc3l.ApiHandling import APIError
+
 from pyc3l import Pyc3l
+from pyc3l.ApiHandling import APIError
+
+from odoo import api, fields, models
+
 from odoo.addons.lcc_lokavaluto_app_connection import tools
 
 pyc3l = Pyc3l()
@@ -16,9 +19,6 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    type = fields.Selection(
-        selection_add=[("comchain", "Comchain")], ondelete={"comchain": "cascade"}
-    )
     comchain_id = fields.Char(string="Address")
     comchain_wallet = fields.Text(string="Crypted json wallet")
     comchain_status = fields.Char(string="Comchain Status")
@@ -39,8 +39,7 @@ class ResPartnerBackend(models.Model):
         """Return the technical id for the backend"""
         wallet = self.comchain_wallet_parsed
         currency_name = (
-            wallet.get("server", {}).get("name", {})
-            or self.env.user.company_id.comchain_currency_name
+            wallet.get("server", {}).get("name", {}) or self.alt_currency_id.name
         )
         if not currency_name:
             ## not present in wallet and not configured in general settings
@@ -49,7 +48,7 @@ class ResPartnerBackend(models.Model):
 
     def _update_search_data(self, backend_keys):
         _logger.debug("SEARCH: backend_keys = %s" % backend_keys)
-        data = super(ResPartnerBackend, self)._update_search_data(backend_keys)
+        data = super()._update_search_data(backend_keys)
         for wallet in self:
             if wallet.type != "comchain":
                 continue
@@ -87,8 +86,7 @@ class ResPartnerBackend(models.Model):
                 }
             )
 
-        company = self.env.user.company_id
-        safe_wallet_partner = company.safe_wallet_partner_id
+        safe_wallet_partner = self.alt_currency_id.safe_wallet_partner_id
 
         if safe_wallet_partner and self.is_reconversion_allowed:
             safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
@@ -118,7 +116,7 @@ class ResPartnerBackend(models.Model):
 
     @api.depends("name", "type", "comchain_status")
     def _compute_status(self):
-        super(ResPartnerBackend, self)._compute_status()
+        super()._compute_status()
         for record in self:
             if record.type == "comchain":
                 if record.comchain_status == "active":
@@ -146,15 +144,16 @@ class ResPartnerBackend(models.Model):
     def credit_wallet(self, amount=0):
         """Send credit request to the financial backend"""
         self.ensure_one()
-        res = super(ResPartnerBackend, self).credit_wallet(amount)
+        res = super().credit_wallet(amount)
         if self.type != "comchain":
             return res
 
-        company = self.env.user.company_id
         # Get Odoo wallet
         try:
             odoo_wallet = pyc3l.Wallet.from_json(
-                company.odoo_wallet_partner_id.lcc_backend_ids[0].comchain_wallet
+                self.alt_currency_id.odoo_wallet_partner_id.lcc_backend_ids[
+                    0
+                ].comchain_wallet,
             )
         except Exception as e:
             _logger.error(tools.format_last_exception())
@@ -165,8 +164,9 @@ class ResPartnerBackend(models.Model):
             }
 
         # Unlock Odoo wallet before sending a transaction
+        alt_currency = self.alt_currency_id
         try:
-            odoo_wallet.unlock(company.comchain_odoo_wallet_password)
+            odoo_wallet.unlock(alt_currency.comchain_odoo_wallet_password)
         except Exception as e:
             _logger.error(tools.format_last_exception())
             return {
@@ -179,11 +179,11 @@ class ResPartnerBackend(models.Model):
         response = ""
         try:
             response = odoo_wallet.transferOnBehalfOf(
-                "0x%s" % company.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id,
-                "0x%s" % self.comchain_id,
+                f"0x{alt_currency.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id}",
+                f"0x{self.comchain_id}",
                 amount,
-                message_from=company.message_from,
-                message_to=company.message_to,
+                message_from=self.alt_currency_id.message_from,
+                message_to=self.alt_currency_id.message_to,
             )
         except Exception as e:
             _logger.error(tools.format_last_exception())
@@ -243,25 +243,19 @@ class ResPartnerBackend(models.Model):
         # All checks performed
         return {"success": True, "response": response, "error": ""}
 
-    def get_lcc_product(self):
-        product = super(ResPartnerBackend, self).get_lcc_product()
-        if self.type == "comchain":
-            product = self.env.ref("lcc_comchain_base.product_product_comchain")
-        return product
-
     def get_wallet_data(self):
         self.ensure_one()
-        data = super(ResPartnerBackend, self).get_wallet_data()
+        data = super().get_wallet_data()
         if self.type == "comchain":
             data = [
-                "comchain:%s" % self.env.user.company_id.comchain_currency_name,
+                f"comchain:{self.alt_currency_id.ident}",
                 self.comchain_id,
             ]
         return data
 
     def get_wallet_balance(self):
         self.ensure_one()
-        res = super(ResPartnerBackend, self).get_wallet_balance()
+        res = super().get_wallet_balance()
         if self.type != "comchain":
             return res
 

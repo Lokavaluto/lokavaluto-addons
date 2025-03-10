@@ -1,4 +1,3 @@
-from . import res_config_settings
-from . import company
+from . import res_alt_currency
 from . import res_partner
 from . import wallet
