@@ -1,1 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_create_cyclos_wallet_wizard,lcc_cyclos_base.create_cyclos_wallet_wizard.access,lcc_cyclos_base.model_create_cyclos_wallet,lcc_lokavaluto_app_connection.group_wallet_accounts_manager,1,1,1,0

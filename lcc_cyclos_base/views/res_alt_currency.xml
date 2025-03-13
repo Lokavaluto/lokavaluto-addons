@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_alt_currency_cyclos_view_form" model="ir.ui.view">
+        <field name="name">res.alt.currency.cyclos.view.form</field>
+        <field name="model">res.alt.currency</field>
+	<field name="inherit_id"
+            ref="lcc_lokavaluto_app_connection.res_alt_currency_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+              <group name="cyclos" string="Cyclos specific parameters" attrs="{'invisible': [('engine', '!=', 'cyclos')]}">
+		<field name="cyclos_server_url" />
+		<field name="cyclos_server_login" />
+		<field name="cyclos_server_password" password="True" />
+		<field name="cyclos_debit_wallet_partner" />
+		<field name="cyclos_date_last_reconversion_check" />
+              </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

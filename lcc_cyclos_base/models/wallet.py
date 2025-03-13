@@ -1,25 +1,23 @@
 import json
-from odoo import models, fields, api
-from odoo.addons.lcc_lokavaluto_app_connection import tools
 import logging
+
+from odoo import api, fields, models
+from odoo.addons.lcc_lokavaluto_app_connection import tools
 
 _logger = logging.getLogger(__name__)
 
 
 class ResPartnerBackend(models.Model):
-    """Add backend commom property for local currency"""
+    """Add backend commom property for local currency."""
 
     _inherit = "res.partner.backend"
 
-    type = fields.Selection(
-        selection_add=[("cyclos", "Cyclos")], ondelete={"cyclos": "cascade"}
-    )
     cyclos_create_response = fields.Text(string="Cyclos create response")
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
     def _update_search_data(self, backend_keys):
-        data = super(ResPartnerBackend, self)._update_search_data(backend_keys)
+        data = super()._update_search_data(backend_keys)
         for wallet in self:
             if wallet.type != "cyclos":
                 continue
@@ -30,10 +28,10 @@ class ResPartnerBackend(models.Model):
 
     @property
     def cyclos_backend_json_data(self):
-        """Return normalized backend account's data"""
-        backend_key = "%s:%s" % (
+        """Return normalized backend account's data."""
+        backend_key = "{}:{}".format(
             "cyclos",
-            self.env.user.company_id.get_cyclos_server_domain(),
+            self.alt_currency_id.get_cyclos_server_domain(),
         )
         cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos").sudo()
         data = {
@@ -46,31 +44,32 @@ class ResPartnerBackend(models.Model):
             data["accounts"].append(
                 {
                     "owner_id": self.cyclos_id,
-                    "url": self.env.user.company_id.cyclos_server_url,
+                    "url": self.alt_currency_id.cyclos_server_url,
                     "active": self.status == "active",
                     "is_topup_allowed": self.is_topup_allowed,
-                }
+                },
             )
 
-        company = self.env.user.company_id
-        safe_wallet_partner = company.cyclos_debit_wallet_partner
+        safe_wallet_partner = self.alt_currency_id.cyclos_debit_wallet_partner
 
         if safe_wallet_partner and self.is_reconversion_allowed:
             safe_wallet_profile_info = safe_wallet_partner.lcc_profile_info()
             if safe_wallet_profile_info:
                 if len(safe_wallet_profile_info) > 1:
-                    raise ValueError("Safe partner has more than one public profile")
+                    msg = "Safe partner has more than one public profile"
+                    raise ValueError(msg)
 
                 ## Safe wallet is configured and has a public profile
                 data["safe_wallet_recipient"] = safe_wallet_profile_info[0]
 
                 monujo_backends = (
                     safe_wallet_partner.lcc_backend_ids._update_search_data(
-                        [backend_key]
+                        [backend_key],
                     )
                 )
                 if len(monujo_backends) > 1:
-                    raise ValueError("Safe partner has more than one wallet")
+                    msg = "Safe partner has more than one wallet"
+                    raise ValueError(msg)
                 data["safe_wallet_recipient"]["monujo_backends"] = monujo_backends
 
             else:
@@ -81,8 +80,8 @@ class ResPartnerBackend(models.Model):
         return [data]
 
     @api.depends("name", "type", "cyclos_status")
-    def _compute_status(self):
-        super(ResPartnerBackend, self)._compute_status()
+    def _compute_status(self) -> None:
+        super()._compute_status()
         for rec in self:
             if rec.type == "cyclos":
                 if rec.cyclos_status == "active":
@@ -96,82 +95,87 @@ class ResPartnerBackend(models.Model):
                 else:
                     rec.status = ""
 
-    def cyclos_validate_user(self):
-        company_id = self.env.user.company_id
+    def cyclos_validate_user(self) -> None:
         for record in self:
             if record.cyclos_status == "pending":
-                res = company_id.cyclos_rest_call(
-                    "POST", "/%s/registration/validate" % record.cyclos_id
+                res = record.alt_currency_id.cyclos_rest_call(
+                    "POST",
+                    f"/{record.cyclos_id}/registration/validate",
                 )
-                _logger.debug("res: %s" % res.text)
+                _logger.debug(f"res: {res.text}")
                 data = json.loads(res.text)
                 if data.get("status", False) and data.get("status") == "active":
                     record.write(
                         {
                             "cyclos_status": data.get("status", ""),
                             "cyclos_create_response": res.text,
-                        }
+                        },
                     )
 
-    def cyclos_activate_user(self):
-        company_id = self.env.user.company_id
+    def cyclos_activate_user(self) -> None:
         for record in self:
             if record.cyclos_status != "active":
                 data = {"status": "active", "comment": "Activated by Odoo"}
-                company_id.cyclos_rest_call(
-                    "POST", "/%s/status" % record.cyclos_id, data=data
+                record.alt_currency_id.cyclos_rest_call(
+                    "POST",
+                    f"/{record.cyclos_id}/status",
+                    data=data,
                 )
-                res = company_id.cyclos_rest_call(
-                    "GET", "/%s/status" % record.cyclos_id
+                res = record.alt_currency_id.cyclos_rest_call(
+                    "GET",
+                    f"/{record.cyclos_id}/status",
                 )
-                _logger.debug("res: %s" % res)
+                _logger.debug(f"res: {res}")
                 data_res = json.loads(res.text)
                 record.write(
                     {
                         "cyclos_status": data_res.get("status", ""),
-                    }
+                    },
                 )
 
-    def cyclos_block_user(self):
-        company_id = self.env.user.company_id
+    def cyclos_block_user(self) -> None:
         for record in self:
             if record.cyclos_status != "blocked":
                 data = {"status": "blocked", "comment": "Blocked by Odoo"}
-                company_id.cyclos_rest_call(
-                    "POST", "/%s/status" % record.cyclos_id, data=data
+                record.alt_currency_id.cyclos_rest_call(
+                    "POST",
+                    f"/{record.cyclos_id}/status",
+                    data=data,
                 )
-                res = company_id.cyclos_rest_call(
-                    "GET", "/%s/status" % record.cyclos_id
+                res = record.alt_currency_id.cyclos_rest_call(
+                    "GET",
+                    f"/{record.cyclos_id}/status",
                 )
-                _logger.debug("res: %s" % res)
+                _logger.debug(f"res: {res}")
                 data_res = json.loads(res.text)
                 record.write(
                     {
                         "cyclos_status": data_res.get("status", ""),
-                    }
+                    },
                 )
 
-    def cyclos_disable_user(self):
-        company_id = self.env.user.company_id
+    def cyclos_disable_user(self) -> None:
         for record in self:
             if record.cyclos_status != "disabled":
                 data = {"status": "disabled", "comment": "Disabled by Odoo"}
-                company_id.cyclos_rest_call(
-                    "POST", "/%s/status" % record.cyclos_id, data=data
+                record.alt_currency_id.cyclos_rest_call(
+                    "POST",
+                    f"/{record.cyclos_id}/status",
+                    data=data,
                 )
-                res = company_id.cyclos_rest_call(
-                    "GET", "/%s/status" % record.cyclos_id
+                res = record.alt_currency_id.cyclos_rest_call(
+                    "GET",
+                    f"/{record.cyclos_id}/status",
                 )
-                _logger.debug("res: %s" % res)
+                _logger.debug(f"res: {res}")
                 data_res = json.loads(res.text)
                 record.write(
                     {
                         "cyclos_status": data_res.get("status", ""),
-                    }
+                    },
                 )
 
-    def force_cyclos_password(self, password):
-        company_id = self.env.user.company_id
+    def force_cyclos_password(self, password) -> None:
         for record in self:
             # TODO: need to stock password type id from cyclos API and replace -4307382460900696903
             data = {
@@ -181,10 +185,12 @@ class ResPartnerBackend(models.Model):
                 "forceChange": False,
             }
             try:
-                company_id.cyclos_rest_call(
+                record.alt_currency_id.cyclos_rest_call(
                     "POST",
-                    "/%s/passwords/%s/change"
-                    % (record.cyclos_id, "-4307382460900696903"),
+                    "/{}/passwords/{}/change".format(
+                        record.cyclos_id,
+                        "-4307382460900696903",
+                    ),
                     data=data,
                 )
             except ValueError as e:
@@ -199,61 +205,55 @@ class ResPartnerBackend(models.Model):
 
     def cyclos_create_user_token(self, api_login, api_password):
         self.ensure_one()
-        company_id = self.env.user.company_id
         for record in self:
-            res = company_id.cyclos_rest_call(
+            res = record.alt_currency_id.cyclos_rest_call(
                 "POST",
                 "/auth/session",
                 data={"timeoutInSeconds": 90000},
                 api_login=api_login,
                 api_password=api_password,
             )
-            _logger.debug("res TOKEN: %s" % res.text)
+            _logger.debug(f"res TOKEN: {res.text}")
             data = json.loads(res.text)
             return data.get("sessionToken", False)
+        return None
 
-    def cyclos_remove_user_token(self, api_login, api_password):
-        company_id = self.env.user.company_id
+    def cyclos_remove_user_token(self, api_login, api_password) -> None:
         for record in self:
-            res = company_id.cyclos_rest_call(
+            res = record.alt_currency_id.cyclos_rest_call(
                 "DELETE",
                 "/auth/session",
                 api_login=api_login,
                 api_password=api_password,
             )
-            _logger.debug("res: %s" % res.text)
+            _logger.debug(f"res: {res.text}")
 
     def credit_wallet(self, amount=0):
-        """Send credit request to the financial backend"""
+        """Send credit request to the financial backend."""
         self.ensure_one()
-        res = super(ResPartnerBackend, self).credit_wallet(amount)
+        res = super().credit_wallet(amount)
         if self.type != "cyclos":
             return res
 
         data = {
             "amount": amount,
-            "description": "Credited by %s" % self.partner_id.company_id.name,
+            "description": f"Credited by {self.alt_currency_id.name}",
             "subject": self.cyclos_id,
             "type": "debit.toPro" if self.partner_id.is_company else "debit.toUser",
         }
-        _logger.debug("data: %s" % data)
-        response = self.env.user.company_id.cyclos_rest_call(
-            "POST", "/system/payments", data=data
+        _logger.debug(f"data: {data}")
+        response = self.alt_currency_id.cyclos_rest_call(
+            "POST",
+            "/system/payments",
+            data=data,
         )
-        _logger.debug("response: %s" % response)
+        _logger.debug(f"response: {response}")
         # TODO: need to check response
-        res = {"success": True, "response": response}
-        return res
-
-    def get_lcc_product(self):
-        product = super(ResPartnerBackend, self).get_lcc_product()
-        if self.type == "cyclos":
-            product = self.env.ref("lcc_cyclos_base.product_product_cyclos")
-        return product
+        return {"success": True, "response": response}
 
     def get_wallet_data(self):
         self.ensure_one()
-        data = super(ResPartnerBackend, self).get_wallet_data()
+        data = super().get_wallet_data()
         if self.type == "cyclos":
             data = [
                 "cyclos:cyclos",
@@ -263,18 +263,18 @@ class ResPartnerBackend(models.Model):
 
     def get_wallet_balance(self):
         self.ensure_one()
-        res = super(ResPartnerBackend, self).get_wallet_balance()
+        res = super().get_wallet_balance()
         if self.type != "cyclos":
             return res
         try:
-            res = self._cyclos_rest_call("GET", "/%s/accounts" % self.cyclos_id)
-            _logger.debug("res: %s" % res)
+            res = self._cyclos_rest_call("GET", f"/{self.cyclos_id}/accounts")
+            _logger.debug(f"res: {res}")
         except Exception as e:
-            _logger.error(tools.format_last_exception())
+            _logger.exception(tools.format_last_exception())
             return {
                 "success": False,
                 "response": "",
-                "error_message": "Failed to get wallet balance: %s" % e,
+                "error_message": f"Failed to get wallet balance: {e}",
             }
 
         data_res = json.loads(res.text)

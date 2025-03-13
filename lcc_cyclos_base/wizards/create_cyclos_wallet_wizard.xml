@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="create_cyclos_wallet_wizard_view_form" model="ir.ui.view">
+        <field name="name">create.cyclos.wallet.wizard.view.form</field>
+        <field name="model">create.cyclos.wallet</field>
+        <field name="arch" type="xml">
+            <form string="Create a new Cyclos wallet">
+                <sheet>
+                    <group>
+                        <field name="alt_currency_id" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Create" name="create_cyclos_wallet" type="object"
+                        class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="action_create_cyclos_wallet_wizard" model="ir.actions.act_window">
+        <field name="name">Create Cyclos Wallet</field>
+        <field name="res_model">create.cyclos.wallet</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="create_cyclos_wallet_wizard_view_form" />
+        <field name="target">new</field>
+    </record>
+</odoo>

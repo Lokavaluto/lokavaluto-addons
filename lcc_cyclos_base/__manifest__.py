@@ -18,7 +18,9 @@
     # always loaded
     "data": [
         "security/ir_rule.xml",
-        "views/res_config_settings_view.xml",
+        "security/ir.model.access.csv",
+        "wizards/create_cyclos_wallet_wizard.xml",
+        "views/res_alt_currency.xml",
         "views/res_partner_view.xml",
         "views/wallet.xml",
         "data/cyclos_data.xml",
