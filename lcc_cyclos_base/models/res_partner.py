@@ -1,13 +1,14 @@
-import requests
 import json
-from odoo import models
 import logging
+
+import requests
+from odoo import models
 
 _logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):
-    """Inherits partner, adds Cyclos fields in the partner form, and functions"""
+    """Inherits partner, adds Cyclos fields in the partner form, and functions."""
 
     _inherit = "res.partner"
 
@@ -17,13 +18,14 @@ class ResPartner(models.Model):
         wallets = self.get_wallets_by_currency_type("cyclos")
         for wallet in wallets:
             if wallet.cyclos_id:
-                backends = backends | {
-                    "%s:%s"
-                    % ("cyclos", self.env.user.company_id.get_cyclos_server_domain())
+                backends |= {
+                    "{}:{}".format(
+                        "cyclos", wallet.alt_currency_id.get_cyclos_server_domain()
+                    ),
                 }
         return backends
 
-    def cyclos_add_user(self):
+    def cyclos_add_user(self, alt_currency_id) -> None:
         for record in self:
             backend_obj = self.env["res.partner.backend"]
             group = (
@@ -41,7 +43,7 @@ class ResPartner(models.Model):
                         "checkConfirmation": True,
                         "confirmationValue": "Odoo1234",
                         "forceChange": False,
-                    }
+                    },
                 ],
                 "skipActivationEmail": True,
                 "addresses": [
@@ -63,43 +65,49 @@ class ResPartner(models.Model):
                             if record.mobile
                             else "",
                         },
-                    }
+                    },
                 ],
             }
             try:
-                res = self.env.user.company_id.cyclos_rest_call(
-                    "POST", "/users", data=data
+                res = alt_currency_id.cyclos_rest_call(
+                    "POST",
+                    "/users",
+                    data=data,
                 )
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 422:
-                    msg = self.env.user.company_id.build_cyclos_error_message(e)
+                    msg = alt_currency_id.build_cyclos_error_message(e)
                     if msg != "":
+                        msg = "Cyclos serveur complained about:\n{}".format(
+                            "\n".join(msg)
+                        )
                         raise ValueError(
-                            "Cyclos serveur complained about:\n%s" % "\n".join(msg),
+                            msg,
                             e.response,
                         )
                 raise
 
             data = json.loads(res.text)
             if data:
-                _logger.debug("data: %s" % data)
+                _logger.debug(f"data: {data}")
                 backend_obj.create(
                     {
                         "partner_id": record.id,
+                        "alt_currency_id": alt_currency_id.id,
                         "cyclos_id": data.get("user")["id"]
                         if data.get("user", False)
                         else "",
                         "cyclos_status": data.get("status", ""),
-                        "name": "cyclos:%s" % data.get("user")["id"],
+                        "name": "cyclos:{}".format(data.get("user")["id"]),
                         "type": "cyclos",
                         "cyclos_create_response": res.text,
-                    }
+                    },
                 )
 
     def show_app_access_buttons(self):
         # For Cyclos, we display the app access buttons on portal
         # only if the user has at least one activated Cyclos wallet
-        res = super(ResPartner, self).show_app_access_buttons()
+        res = super().show_app_access_buttons()
         for backend in self.lcc_backend_ids:
             if (backend.type == "cyclos") and (backend.status == "active"):
                 res = True
