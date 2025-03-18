@@ -16,6 +16,17 @@
         </field>
     </record>
 
+    <record id="credit_request_view_pivot" model="ir.ui.view">
+        <field name="name">credit.request.view.pivot</field>
+        <field name="model">credit.request</field>
+        <field name="arch" type="xml">
+            <pivot string="Credit Requests">
+                <field name="create_date" type="row" />
+                <field name="amount" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
     <record id="credit_request_view_form" model="ir.ui.view">
         <field name="name">credit.request.view.form</field>
         <field name="model">credit.request</field>
