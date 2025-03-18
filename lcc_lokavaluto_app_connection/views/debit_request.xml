@@ -16,6 +16,17 @@
         </field>
     </record>
 
+    <record id="debit_request_view_pivot" model="ir.ui.view">
+        <field name="name">debit.request.view.pivot</field>
+        <field name="model">debit.request</field>
+        <field name="arch" type="xml">
+            <pivot string="Debit Requests">
+                <field name="transaction_date" type="row" />
+                <field name="amount" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
     <record id="debit_request_view_form" model="ir.ui.view">
         <field name="name">debit.request.view.form</field>
         <field name="model">debit.request</field>
