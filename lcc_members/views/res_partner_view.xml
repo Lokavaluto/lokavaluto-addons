@@ -31,27 +31,6 @@
                         attrs="{'invisible': [('contact_type','=','attached')]}" />
                 </xpath>
 
-                <xpath expr="//field[@name='phone']" position="replace">
-                    <label for="phone" />
-                    <div class="o_row">
-                        <field name="phone" widget="phone" />
-                        <button type="action" name="137"
-                            class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS"
-                            title="Send SMS" attrs="{'invisible':[('phone', '=', False)]}"
-                            context="{'field_name': 'phone'}" />
-                    </div>
-                </xpath>
-                <xpath expr="//field[@name='mobile']" position="replace">
-                    <label for="mobile" />
-                    <div class="o_row">
-                        <field name="mobile" widget="phone" />
-                        <button type="action" name="137"
-                            class="btn-sm btn-link mb4 fa fa-envelope-o" aria-label="Send SMS"
-                            title="Send SMS" attrs="{'invisible':[('mobile', '=', False)]}"
-                            context="{'field_name': 'mobile'}" />
-                    </div>
-                </xpath>
-
                 <!-- ################ -->
                 <!-- NOTEBOOK UPDATES -->
                 <!-- ################ -->
