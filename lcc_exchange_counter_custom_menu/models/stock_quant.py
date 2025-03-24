@@ -11,4 +11,4 @@ class StockQuant(models.Model):
         """Returns a list of fields user can edit when editing a quant in `inventory_mode`."""
         res = super()._get_inventory_fields_write()
         res += ["note"]
-        return ress
+        return res
