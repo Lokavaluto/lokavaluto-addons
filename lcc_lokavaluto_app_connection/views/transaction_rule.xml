@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="transaction_rule_view_tree" model="ir.ui.view">
+        <field name="name">transaction.rule.view.tree</field>
+        <field name="model">transaction.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Transaction Rules">
+                <field name="sequence" widget="handle"/>
+                <field name="name" />
+                <field name="sender_wallet_domain" />
+                <field name="recipient_wallet_domain" />
+                <field name="is_transaction_allowed" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="transaction_rule_view_form" model="ir.ui.view">
+        <field name="name">transaction.rule.view.form</field>
+        <field name="model">transaction.rule</field>
+        <field name="arch" type="xml">
+            <form string="Transaction Rule">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}" />
+                    <field name="active" invisible="True" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group name="domain" string="Sender Wallet Domain">
+                        <field
+                            name="sender_wallet_domain"
+                            widget="domain"
+                            options='{"model": "res.partner.backend"}' />
+                    </group>
+                    <group name="domain" string="Recipient Wallet Domain">
+                        <field
+                            name="recipient_wallet_domain"
+                            widget="domain"
+                            options='{"model": "res.partner.backend"}' />
+                    </group>
+                    <group name="authorisation" string="Authorisation">
+                        <field name="is_transaction_allowed" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="transaction_rule_view_search" model="ir.ui.view">
+        <field name="name">transaction.rule.view.search</field>
+        <field name="model">transaction.rule</field>
+        <field name="arch" type="xml">
+            <search string="Search transaction rules">
+                <field name="name" />
+                <field name="sender_wallet_domain" />
+                <field name="recipient_wallet_domain" />
+                <filter domain="[('active','=',True)]" string="Active" name="active" />
+                <filter domain="[('active','=',False)]" string="Archived" name="archived" />
+                <separator />
+                <filter domain="[('is_transaction_allowed','=',True)]" string="Transaction ON"
+                    name="transaction_on" />
+                <filter domain="[('is_transaction_allowed','=',False)]" string="Transaction OFF"
+                    name="transaction_off" />
+            </search>
+        </field>
+    </record>
+</odoo>
