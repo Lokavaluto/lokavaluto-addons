@@ -13,6 +13,7 @@ from odoo.exceptions import (
     UserError,
     ValidationError,
 )
+from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 
@@ -299,6 +300,24 @@ class PartnerService(Component):
                 recipients |= recipients_no_fav
         _logger.debug("recipients: %s" % recipients)
 
+        matched_transaction_rule = self._get_first_matching_transaction_rule()
+        if matched_transaction_rule:
+            recipients_matched_by_rule = self.env["res.partner.backend"].search(
+                safe_eval(matched_transaction_rule.recipient_wallet_domain)
+            )
+            recipients = [
+                recipient for recipient in recipients
+                if (
+                    matched_transaction_rule.is_transaction_allowed
+                    and recipient in recipients_matched_by_rule
+                )
+                or (
+                    not matched_transaction_rule.is_transaction_allowed
+                    and recipient not in recipients_matched_by_rule
+                )
+            ]
+        # if no transaction rule has matched, all recipients are allowed
+
         ## Group by partner
         rows = []
         for recipient in recipients:
@@ -493,6 +512,17 @@ class PartnerService(Component):
             }
 
         return data
+
+    def _get_first_matching_transaction_rule(self):
+        all_transaction_rules = self.env["transaction.rule"].search(
+            [("active", "=", True)], order="sequence"
+        )
+        for rule in all_transaction_rules:
+            if self.env["res.partner.backend"].search(
+                safe_eval(rule.sender_wallet_domain)
+                + [("partner_id.odoo_user_id.id", "=", self.env.uid)]
+            ):
+                return rule
 
     ##########################################################
     # Request Validators
