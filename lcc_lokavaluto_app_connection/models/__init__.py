@@ -10,3 +10,4 @@ from . import debit_request
 from . import commission_rule
 from . import reconversion_rule
 from . import topup_rule
+from . import transaction_rule
