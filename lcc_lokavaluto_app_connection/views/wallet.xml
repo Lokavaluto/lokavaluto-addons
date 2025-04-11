@@ -22,6 +22,8 @@
                             <field name="partner_id" />
                             <field name="type" />
                             <field name="status" readonly="True" />
+                            <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
+                                   placeholder='e.g. "SSA"'/>
                         </group>
                     </group>
                     <div class="alert alert-success" role="alert"
@@ -50,6 +52,7 @@
                 <field name="partner_id" />
                 <field name="type" />
                 <field name="status" />
+                <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
             </tree>
         </field>
     </record>
@@ -62,10 +65,52 @@
                 <field name="name" string="Name" />
                 <field name="partner_id" string="Contact" />
                 <field name="type" string="Type" />
+                <field name="category_id" string="Tags" />
                 <filter domain="[('status','=','active')]" string="Active" name="active" />
                 <filter domain="[('status','=','to_confirm')]" string="To confirm" name="to_confirm" />
                 <filter domain="[('status','=','blocked')]" string="Blocked" name="blocked" />
                 <filter domain="[('status','=','inactive')]" string="Inactive" name="inactive" />
+            </search>
+        </field>
+    </record>
+
+    <!-- Wallet Categories -->
+    <record id="wallet_category_form_view" model="ir.ui.view">
+        <field name="name">Wallet Tags</field>
+        <field name="model">wallet.category</field>
+        <field name="arch" type="xml">
+            <form string="Wallet Tag">
+                <sheet>
+                    <group col="4">
+                        <field name="name" placeholder='e.g. "SSA"'/>
+                        <field name="color" widget="color_picker"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="wallet_category_view_tree" model="ir.ui.view">
+        <field name="name">wallet.category.view.tree</field>
+        <field name="model">wallet.category</field>
+        <field name="arch" type="xml">
+            <tree string="Wallet Tag">
+                <field name="name" />
+                <field name="color" widget="color_picker"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="wallet_category_view_search" model="ir.ui.view">
+        <field name="name">wallet.category.view.search</field>
+        <field name="model">wallet.category</field>
+        <field name="arch" type="xml">
+            <search string="Search Wallet Tag">
+                <field name="name"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
             </search>
         </field>
     </record>
