@@ -302,21 +302,11 @@ class PartnerService(Component):
 
         matched_transaction_rule = self._get_first_matching_transaction_rule()
         if matched_transaction_rule:
-            recipients_matched_by_rule = self.env["res.partner.backend"].search(
-                safe_eval(matched_transaction_rule.recipient_wallet_domain)
-            )
             recipients = [
                 recipient for recipient in recipients
-                if (
-                    matched_transaction_rule.is_transaction_allowed
-                    and recipient in recipients_matched_by_rule
-                )
-                or (
-                    not matched_transaction_rule.is_transaction_allowed
-                    and recipient not in recipients_matched_by_rule
-                )
+                if matched_transaction_rule.recipient_is_allowed_by_rule(recipient)
             ]
-        # if no transaction rule has matched, all recipients are allowed
+        # if no transaction rule matches, all recipients are allowed
 
         ## Group by partner
         rows = []
@@ -449,6 +439,21 @@ class PartnerService(Component):
             return self.unset_favorite(_id)
         else:
             return self.set_favorite(_id)
+
+    @restapi.method(
+        [(["/<int:id>/is_transaction_allowed"], "GET")],
+    )
+    def check_that_transaction_is_allowed(self, _id):
+        """
+        Check that transaction is allowed between sender and recipient, based on transaction rules
+        """
+        matched_transaction_rule = self._get_first_matching_transaction_rule()
+        if matched_transaction_rule:
+            recipient = self._get(_id)
+            self.recipient_is_allowed_by_rule(recipient)
+
+        # if no transaction rule matches, all recipients are allowed
+        return True
 
     ##########################################################
     # Private methods
