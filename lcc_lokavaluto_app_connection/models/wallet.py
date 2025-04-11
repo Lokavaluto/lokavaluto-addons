@@ -1,3 +1,5 @@
+from random import randint
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
@@ -46,6 +48,7 @@ class ResPartnerBackend(models.Model):
         readonly=True,
         compute="_compute_is_topup_allowed"
     )
+    category_id = fields.Many2many("wallet.category", column1="partner_id", column2="category_id", string="Tags")
 
     def _update_search_data(self, backend_keys):
         return {}
@@ -144,3 +147,23 @@ class ResPartnerBackend(models.Model):
                     record.is_topup_allowed = rule.is_topup_allowed
                     # We stop after the first rule matched
                     break
+
+
+class WalletCategory(models.Model):
+    _description = "Wallet Tags"
+    _name = "wallet.category"
+    _order = "name"
+
+    def _get_default_color(self):
+        return randint(1, 11)
+
+    name = fields.Char(string="Tag Name", required=True, translate=True)
+    color = fields.Integer(string="Color", default=_get_default_color)
+    active = fields.Boolean(default=True, help="The active field allows you to hide the category without removing it.")
+    partner_ids = fields.Many2many(
+        "res.partner.backend",
+        column1="category_id",
+        column2="partner_id",
+        string="Wallets",
+        copy=False
+    )
