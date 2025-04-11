@@ -2,11 +2,11 @@ from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
 
 
-class TransactionRule(models.Model):
-    """A transaction rule defines if a transaction is authorized."""
+class WalletRestrictionRule(models.Model):
+    """A wallet restriction rule defines if a sender wallet is restricted to some recipients' wallet."""
 
-    _name = "transaction.rule"
-    _description = "Define if a transaction is authorized."
+    _name = "wallet.restriction.rule"
+    _description = "Define restrictions between senders and recipients wallets"
     _order = "sequence"
 
     name = fields.Char("Name")
@@ -14,11 +14,10 @@ class TransactionRule(models.Model):
     sequence = fields.Integer()
     sender_wallet_domain = fields.Char("Sender Wallet Domain")
     recipient_wallet_domain = fields.Char("Recipient Wallet Domain")
-    is_transaction_allowed = fields.Boolean("Is Transaction Allowed?")
 
     recipients_matched_by_rule = fields.Many2many(
         "res.partner.backend",
-        string="Matched Recipients",
+        string="Recipients Matched By The Rule",
         compute="_compute_recipients_matched_by_rule",
         store=False
     )
@@ -31,13 +30,4 @@ class TransactionRule(models.Model):
             )
 
     def recipient_is_allowed_by_rule(self, recipient):
-        if (
-                self.is_transaction_allowed
-                and recipient in self.recipients_matched_by_rule
-        ) or (
-                not self.is_transaction_allowed
-                and recipient not in self.recipients_matched_by_rule
-        ):
-            return True
-        else:
-            return False
+        return recipient in self.recipients_matched_by_rule

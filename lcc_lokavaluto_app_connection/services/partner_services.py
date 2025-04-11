@@ -300,13 +300,13 @@ class PartnerService(Component):
                 recipients |= recipients_no_fav
         _logger.debug("recipients: %s" % recipients)
 
-        matched_transaction_rule = self._get_first_matching_transaction_rule()
-        if matched_transaction_rule:
+        matched_wallet_restriction_rule = self._get_first_matching_sender_wallet_restriction_rule()
+        if matched_wallet_restriction_rule:
             recipients = [
                 recipient for recipient in recipients
-                if matched_transaction_rule.recipient_is_allowed_by_rule(recipient)
+                if matched_wallet_restriction_rule.recipient_is_allowed_by_rule(recipient)
             ]
-        # if no transaction rule matches, all recipients are allowed
+        # if no wallet restriction rule matches, all recipients are allowed
 
         ## Group by partner
         rows = []
@@ -445,14 +445,14 @@ class PartnerService(Component):
     )
     def check_that_transaction_is_allowed(self, _id):
         """
-        Check that transaction is allowed between sender and recipient, based on transaction rules
+        Check that transaction is allowed between sender and recipient, based on wallet restriction rules
         """
-        matched_transaction_rule = self._get_first_matching_transaction_rule()
-        if matched_transaction_rule:
+        matched_wallet_restriction_rule = self._get_first_matching_sender_wallet_restriction_rule()
+        if matched_wallet_restriction_rule:
             recipient = self._get(_id)
             self.recipient_is_allowed_by_rule(recipient)
 
-        # if no transaction rule matches, all recipients are allowed
+        # if no wallet restriction rule matches, all recipients are allowed
         return True
 
     ##########################################################
@@ -518,11 +518,11 @@ class PartnerService(Component):
 
         return data
 
-    def _get_first_matching_transaction_rule(self):
-        all_transaction_rules = self.env["transaction.rule"].search(
+    def _get_first_matching_sender_wallet_restriction_rule(self):
+        all_wallet_restriction_rules = self.env["wallet.restriction.rule"].search(
             [("active", "=", True)], order="sequence"
         )
-        for rule in all_transaction_rules:
+        for rule in all_wallet_restriction_rules:
             if self.env["res.partner.backend"].search(
                 safe_eval(rule.sender_wallet_domain)
                 + [("partner_id.odoo_user_id.id", "=", self.env.uid)]
