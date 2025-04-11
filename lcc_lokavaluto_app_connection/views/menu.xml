@@ -75,14 +75,14 @@
         </field>
     </record>
 
-    <record id="action_transaction_rule" model="ir.actions.act_window">
-        <field name="name">Transaction Rules</field>
+    <record id="action_wallet_restriction_rule" model="ir.actions.act_window">
+        <field name="name">Wallet Restriction Rules</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">transaction.rule</field>
+        <field name="res_model">wallet.restriction.rule</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new transaction rule.
+                Create a new wallet restriction rule.
             </p>
         </field>
     </record>
@@ -136,10 +136,10 @@
         action="action_topup_rule" />
 
     <menuitem
-        id="transaction_rule_menu"
+        id="wallet_restriction_rule_menu"
         parent="lcc_lokavaluto_app_connection.menu_config_digital_currency"
         sequence="99"
         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
-        action="action_transaction_rule" />
+        action="action_wallet_restriction_rule" />
 
 </odoo>
