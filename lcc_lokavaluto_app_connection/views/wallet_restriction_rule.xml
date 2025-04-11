@@ -18,7 +18,7 @@
         <field name="name">wallet.restriction.rule.view.form</field>
         <field name="model">wallet.restriction.rule</field>
         <field name="arch" type="xml">
-            <form string="Wallet Restriction Rule">
+            <form string="Wallet Restriction Rules">
                 <sheet>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
                         attrs="{'invisible': [('active', '=', True)]}" />

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-27 07:08+0000\n"
-"PO-Revision-Date: 2025-01-22 15:33+0000\n"
+"POT-Creation-Date: 2025-04-11 15:29+0000\n"
+"PO-Revision-Date: 2025-04-11 15:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,8 @@ msgstr "."
 msgid ""
 ". For any maintenance action\n"
 "                        concerning these wallets, please contact your currency manager."
-msgstr ". Pour une action de maintenance\n"
+msgstr ""
+". Pour une action de maintenance\n"
 "                        concernant ces portefeuilles, veuillez contacter votre gestionnaire de portefeuille."
 
 #. module: lcc_lokavaluto_app_connection
@@ -36,9 +37,6 @@ msgid ""
 "                        <strong>Applications mobiles:</strong>\n"
 "                        <br/>"
 msgstr ""
-"<br/>\n"
-"                        <strong>Applications mobiles:</strong>\n"
-"                        <br/>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
@@ -48,7 +46,8 @@ msgstr "<span class=\"o_form_label\">URL de téléchargement Android</span>"
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
 msgid "<span class=\"o_form_label\">Commission Product</span>"
-msgstr "<span class=\"o_form_label\">Article de Commission à la reconversion</span>"
+msgstr ""
+"<span class=\"o_form_label\">Article de Commission à la reconversion</span>"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
@@ -81,7 +80,7 @@ msgstr "Clé API"
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
 msgid "Accès web"
-msgstr "Accès web"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__activate_automatic_topup
@@ -92,19 +91,32 @@ msgstr "Activer le rechargement automatique"
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
 msgid "Activate top up on Comchain without Admin validation."
-msgstr "Activer le rechargement Comchain sans la validation d'un administrateur."
+msgstr ""
+"Activer le rechargement Comchain sans la validation d'un administrateur."
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_commission_rule__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__active
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__active
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__active
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__active
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__active
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Active"
 msgstr "Actif"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__allow_payments_only_to_companies
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__allow_payments_only_to_companies
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
+msgid "Allow payments only to companies"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_create_credit_request__amount
@@ -120,6 +132,9 @@ msgstr "Montant"
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_form
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_search
 msgid "Archived"
 msgstr "Archivé"
 
@@ -133,6 +148,11 @@ msgstr "Autorisation"
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
 msgid "Automatic Top Up"
 msgstr "Rechargement automatique"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__backend_ident
+msgid "Backend Identifier"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__blocked
@@ -164,6 +184,11 @@ msgid "Cancelled"
 msgstr "Annulé"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__color
+msgid "Color"
+msgstr "Couleur"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__commission_move_id
 msgid "Commission Invoice"
 msgstr "Facture de commission"
@@ -180,6 +205,7 @@ msgid "Commission Product"
 msgstr "Article de commission à la reconversion"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__commission_rule_id
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_form
 msgid "Commission Rule"
 msgstr "Règle de commission"
@@ -210,7 +236,7 @@ msgstr "Paramètres de configuration"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.menu_config_digital_currency
 msgid "Configuration"
-msgstr "Configuration"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner
@@ -270,6 +296,16 @@ msgid "Create a new topup rule."
 msgstr "Créer une nouvelle règle de rechargement."
 
 #. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_wallet_category
+msgid "Create a new wallet category."
+msgstr "Créer une nouvelle catégorie pour les portefeuilles."
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_wallet_restriction_rule
+msgid "Create a new wallet restriction rule."
+msgstr "Créer une nouvelle règle de restriction entre portefeuilles."
+
+#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_wallet_view
 msgid "Create a new wallet."
 msgstr "Créer un nouveau portefeuille"
@@ -281,6 +317,9 @@ msgstr "Créer un nouveau portefeuille"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__create_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__create_uid
 msgid "Created by"
 msgstr "Créé par"
 
@@ -291,6 +330,9 @@ msgstr "Créé par"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__create_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__create_date
 msgid "Created on"
 msgstr "Créé le"
 
@@ -308,6 +350,7 @@ msgstr "Demande de chargement"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__credit_request_ids
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_sale_order__credit_request_ids
 #: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.credit_requests_menu
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_pivot
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_tree
 msgid "Credit Requests"
 msgstr "Demandes de chargement"
@@ -324,18 +367,43 @@ msgstr "État facture de reconversion"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.debit_request_view_form
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_account_invoice_customer_lcc_form
 msgid "Debit Request"
 msgstr "Demande de reconversion"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_debit_request
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_bank_statement_line__debit_request_ids
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__debit_request_ids
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__debit_request_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_bank_statement_line__commission_related_debit_request_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_bank_statement_line__reconversion_related_debit_request_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__commission_related_debit_request_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__reconversion_related_debit_request_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__commission_related_debit_request_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__reconversion_related_debit_request_ids
 #: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.debit_requests_menu
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.debit_request_view_pivot
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.debit_request_view_tree
 msgid "Debit Requests"
 msgstr "Demandes de reconversion"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_reconversion_rule
+msgid "Define if a user can ask for a reconversion on its wallets."
+msgstr "règle de reconversion"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_topup_rule
+msgid "Define if a user can topup on its wallets."
+msgstr "Défini si un utilisateur peut recharger ses portefeuilles."
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_wallet_restriction_rule
+msgid "Define restrictions between senders and recipients wallets"
+msgstr "Défini les restrictions entre des portefeuilles expéditeurs et destinataires"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_commission_rule
+msgid "Define the way a commission must be applied on debit requests"
+msgstr "règle de commission"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.res_config_settings_view_form_digital_currency
@@ -371,6 +439,8 @@ msgstr "Configuration des applications de monnaie numérique"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__display_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__display_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
 
@@ -430,6 +500,27 @@ msgid "Global Credit Status"
 msgstr "État général des chargements"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_bank_statement_line__has_commission_related_debit_requests
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__has_commission_related_debit_requests
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__has_commission_related_debit_requests
+msgid "Has Commission Related Debit Requests"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_bank_statement_line__has_credit_requests
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__has_credit_requests
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__has_credit_requests
+msgid "Has Credit Requests"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_bank_statement_line__has_reconversion_related_debit_requests
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__has_reconversion_related_debit_requests
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__has_reconversion_related_debit_requests
+msgid "Has Reconversion Related Debit Requests"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_bank_statement_line__has_numeric_lcc_products
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__has_numeric_lcc_products
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__has_numeric_lcc_products
@@ -445,6 +536,8 @@ msgstr "A des produits de monnaie numérique"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__id
 msgid "ID"
 msgstr ""
 
@@ -469,8 +562,12 @@ msgstr "Reconversion autorisée ?"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__is_topup_allowed
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__is_topup_allowed
 msgid "Is Topup Allowed ?"
+msgstr "Rechargement autorisé ?"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__is_topup_allowed
+msgid "Is Topup Allowed?"
 msgstr "Rechargement autorisé ?"
 
 #. module: lcc_lokavaluto_app_connection
@@ -512,6 +609,8 @@ msgstr "Montant à créditer"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule____last_update
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category____last_update
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
 
@@ -523,6 +622,8 @@ msgstr "Dernière modification le"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__write_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__write_uid
 msgid "Last Updated by"
 msgstr "Dernière modification par"
 
@@ -534,8 +635,15 @@ msgstr "Dernière modification par"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__write_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__limit_credit_aggregation
+msgid "Limit credit aggregation"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__invoice_id
@@ -561,6 +669,11 @@ msgid "Local Currency Wallets"
 msgstr "Portefeuilles numériques"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__max_credit_amount
+msgid "Maximum amount of credit allowed"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_company__monujo_android_app_url
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_config_settings__monujo_android_app_url
 msgid "Monujo Android app URL"
@@ -584,6 +697,7 @@ msgstr "URL de l'application Monujo Web"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__name
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Name"
 msgstr "Nom"
@@ -623,6 +737,12 @@ msgid "Numeric Wallets"
 msgstr "Portefeuilles numériques"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner_backend
+msgid ""
+"Object in Odoo which match a wallet in a connected transaction backend."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__account_move__global_credit_status__ongoing
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__sale_order__global_credit_status__ongoing
 msgid "On going"
@@ -650,6 +770,12 @@ msgid "Partner"
 msgstr "Contact"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_move__partner_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_account_payment__partner_name
+msgid "Partner Name"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__partner_public_name
 msgid "Partner Public Name"
 msgstr "Nom public du contact"
@@ -673,7 +799,7 @@ msgstr "Pourcentage"
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.portal_my_home_monujo_menu
 msgid "Portefeuille numérique"
-msgstr "Portefeuille numérique"
+msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__debit_request__commission_move_state__posted
@@ -688,14 +814,25 @@ msgid "Received"
 msgstr "Reçu"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__recipient_wallet_domain
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_form
+msgid "Recipient Wallet Domain"
+msgstr "Domaine des portefeuilles destinataires"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__recipients_matched_by_rule
+msgid "Recipients Matched By The Rule"
+msgstr "Destinataires correspondants à la règle"
+
+#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
 msgid "Reconversion OFF"
-msgstr "Reconversion OFF"
+msgstr "Reconversion non autorisée"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
 msgid "Reconversion ON"
-msgstr "Reconversion ON"
+msgstr "Reconversion autorisée"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_form
@@ -714,7 +851,8 @@ msgstr "Règles de reconversion"
 msgid ""
 "Reconversion rules indicate that reconversions are presumed NOT ALLOWED on\n"
 "                        the selected wallet."
-msgstr "Les règles sur les reconversions indiques que celles-ci sont en théorie NON autorisée sur\n"
+msgstr ""
+"Les règles sur les reconversions indiques que celles-ci sont en théorie NON autorisée sur\n"
 "                        le portefeuille sélectionné."
 
 #. module: lcc_lokavaluto_app_connection
@@ -728,6 +866,25 @@ msgid "Reconversions are allowed on this wallet."
 msgstr "Les reconversions sont autorisées sur ce portefeuille."
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_debit_request
+msgid ""
+"Represent the request of an user to transform alternative currency in stage "
+"currency."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_credit_request
+msgid ""
+"Represents the request of a user to transform state currency in alternative "
+"currency."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__requester_id
+msgid "Requester"
+msgstr "Demandeur"
+
+#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.credit_request_view_form
 msgid "Response"
 msgstr "Réponse"
@@ -735,7 +892,17 @@ msgstr "Réponse"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_sale_order
 msgid "Sales Order"
-msgstr "Bons de commande"
+msgstr "Bon de commande"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_search
+msgid "Search Wallet Restriction Rules"
+msgstr "Rechercher les règles de restrictions entre portefeuilles"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_view_search
+msgid "Search Wallet Tag"
+msgstr "Rechercher les catégories de portefeuille"
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_search
@@ -768,6 +935,20 @@ msgid "Search wallets"
 msgstr "Chercher les portefeuilles"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__sender_wallet_domain
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_form
+msgid "Sender Wallet Domain"
+msgstr "Domaine des portefeuilles expéditeurs"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_commission_rule__sequence
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__sequence
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__sequence
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__state
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__state
 msgid "State"
@@ -779,11 +960,27 @@ msgid "Status"
 msgstr "État"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__name
+msgid "Tag Name"
+msgstr "Nom de la catégorie"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__category_id
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
+msgid "Tags"
+msgstr "Catégories"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,help:lcc_lokavaluto_app_connection.field_auth_api_key__key
 msgid ""
 "The API key. Enter a dummy value in this field if it is\n"
 "        obtained from the server environment configuration."
 msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,help:lcc_lokavaluto_app_connection.field_wallet_category__active
+msgid "The active field allows you to hide the category without removing it."
+msgstr "Le champs actif vous permet de cacher la catégorie sans la supprimer."
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__to_confirm
@@ -834,11 +1031,6 @@ msgid "Topups are allowed on this wallet."
 msgstr "Les rechargements sont acceptés sur ce portefeuille."
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__requester_id
-msgid "Requester"
-msgstr "Demandeur"
-
-#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__transaction_id
 msgid "Transaction ID"
 msgstr "ID de la transaction"
@@ -848,7 +1040,9 @@ msgstr "ID de la transaction"
 msgid ""
 "Transaction ID must be unique, a request already exists with this "
 "transaction ID!"
-msgstr "L'ID de la transaction doit être unique, une demande existe déjà avec cet ID de transaction."
+msgstr ""
+"L'ID de la transaction doit être unique, une demande existe déjà avec cet ID"
+" de transaction."
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__transaction_data
@@ -884,6 +1078,12 @@ msgid "Wallet"
 msgstr "Portefeuille"
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_wallet_category
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.wallet_category_menu
+msgid "Wallet Categories"
+msgstr "Catégories de portefeuille"
+
+#. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_commission_rule__wallet_domain
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__wallet_domain
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__wallet_domain
@@ -892,6 +1092,25 @@ msgstr "Portefeuille"
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_form
 msgid "Wallet Domain"
 msgstr "Domaine des portefeuilles"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_wallet_restriction_rule
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.wallet_restriction_rule_menu
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_tree
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_form
+msgid "Wallet Restriction Rules"
+msgstr "Règles de restriction entre portefeuilles"
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_form_view
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_view_tree
+msgid "Wallet Tag"
+msgstr "Catégorie de portefeuille"
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_wallet_category
+msgid "Wallet Tags"
+msgstr "Catégories de portefeuille"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:res.groups,name:lcc_lokavaluto_app_connection.group_wallet_accounts_manager
@@ -905,6 +1124,7 @@ msgstr "Gestionnaire du moteur de transaction"
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_wallet_view
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__partner_ids
 #: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.wallets_menu
 msgid "Wallets"
 msgstr "Portefeuilles"
@@ -915,23 +1135,14 @@ msgid "blocked wallet(s)"
 msgstr "portfeuille(s) bloqué(s)"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model,name:lcc_lokavaluto_app_connection.model_commission_rule
-msgid "commission.rule"
-msgstr "règle de commissin"
-
-#. module: lcc_lokavaluto_app_connection
 #: model:ir.model,name:lcc_lokavaluto_app_connection.model_create_credit_request
 msgid "create Credit Request"
 msgstr "créer un demande de chargement"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model,name:lcc_lokavaluto_app_connection.model_credit_request
-msgid "credit.request"
-msgstr ""
-
-#. module: lcc_lokavaluto_app_connection
-#: model:ir.model,name:lcc_lokavaluto_app_connection.model_debit_request
-msgid "debit.request"
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_form_view
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_form_view
+msgid "e.g. \"SSA\""
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
@@ -952,16 +1163,6 @@ msgid ""
 msgstr ""
 "en attente \n"
 "                        d'activation."
-
-#. module: lcc_lokavaluto_app_connection
-#: model:ir.model,name:lcc_lokavaluto_app_connection.model_reconversion_rule
-msgid "reconversion.rule"
-msgstr "règle de reconversion"
-
-#. module: lcc_lokavaluto_app_connection
-#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner_backend
-msgid "res.partner.backend"
-msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.view_account_invoice_customer_lcc_form
@@ -987,4 +1188,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
 msgid "wallet(s)"
 msgstr "portefeuille(s)"
-
