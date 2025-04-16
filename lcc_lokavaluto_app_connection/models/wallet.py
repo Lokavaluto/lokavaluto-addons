@@ -17,7 +17,8 @@ class ResPartnerBackend(models.Model):
         "Object in Odoo which match a wallet in a connected transaction backend."
     )
 
-    type = fields.Selection([], string="Type", required=True)
+    type = fields.Selection([("foo", "Value defined only for testing purposes")], string="Type", required=True)
+    # You can find real type values in lcc_comchain_base and lcc_cyclos_base
     name = fields.Char("Name", required=True)
     active = fields.Boolean(default=True, tracking=True)
     partner_public_name = fields.Char(

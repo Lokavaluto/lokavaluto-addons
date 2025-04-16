@@ -303,8 +303,8 @@ class PartnerService(Component):
         matched_wallet_restriction_rule = self._get_first_matching_sender_wallet_restriction_rule()
         if matched_wallet_restriction_rule:
             recipients = [
-                recipient for recipient in recipients
-                if matched_wallet_restriction_rule.recipient_is_allowed_by_rule(recipient)
+                recipient_wallet for recipient_wallet in recipients
+                if matched_wallet_restriction_rule.recipient_wallet_is_allowed_by_rule(recipient_wallet)
             ]
         # if no wallet restriction rule matches, all recipients are allowed
 
@@ -450,7 +450,7 @@ class PartnerService(Component):
         matched_wallet_restriction_rule = self._get_first_matching_sender_wallet_restriction_rule()
         if matched_wallet_restriction_rule:
             recipient = self._get(_id)
-            self.recipient_is_allowed_by_rule(recipient)
+            return matched_wallet_restriction_rule.recipient_is_allowed_by_rule(recipient)
 
         # if no wallet restriction rule matches, all recipients are allowed
         return True
@@ -525,7 +525,7 @@ class PartnerService(Component):
         for rule in all_wallet_restriction_rules:
             if self.env["res.partner.backend"].search(
                 safe_eval(rule.sender_wallet_domain)
-                + [("partner_id.odoo_user_id.id", "=", self.env.uid)]
+                + [("partner_id.user_id.id", "=", self.env.uid)]
             ):
                 return rule
 
