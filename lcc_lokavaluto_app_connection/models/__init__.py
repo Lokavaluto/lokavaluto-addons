@@ -11,3 +11,4 @@ from . import commission_rule
 from . import reconversion_rule
 from . import topup_rule
 from . import wallet_restriction_rule
+from . import lokavaluto_private_services_collection
