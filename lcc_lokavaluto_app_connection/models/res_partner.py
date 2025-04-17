@@ -40,7 +40,7 @@ class ResPartner(models.Model):
             self.lcc_backend_ids.filtered(lambda x: x.status == "blocked")
         )
 
-    def get_wallets(self, type):
+    def get_my_wallets_by_currency_type(self, type: str):
         self.ensure_one()
         wallets = [wallet for wallet in self.lcc_backend_ids if wallet.type == type]
         if len(wallets) > 0:

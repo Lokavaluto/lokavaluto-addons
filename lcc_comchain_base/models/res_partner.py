@@ -14,7 +14,7 @@ class ResPartner(models.Model):
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
-        wallets = self.get_wallets("comchain")
+        wallets = self.get_my_wallets_by_currency_type("comchain")
         if not wallets:
             return backends
         backend_id = wallets[0].comchain_backend_id

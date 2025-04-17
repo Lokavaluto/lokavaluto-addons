@@ -32,7 +32,7 @@ class ComchainService(Component):
         )
         res = {}
         for partner in partner_ids:
-            wallets = partner.get_wallets("comchain")
+            wallets = partner.get_my_wallets_by_currency_type("comchain")
             for wallet in wallets:
                 res[wallet.comchain_id] = {
                     "partner_id": partner.id,
@@ -50,7 +50,7 @@ class ComchainService(Component):
         Add comchain account details on partner
         """
         partner = self.env.user.partner_id
-        wallets = partner.get_wallets("comchain")
+        wallets = partner.get_my_wallets_by_currency_type("comchain")
         if len(wallets) == 0:
             self.env["res.partner.backend"].sudo().create(
                 {
@@ -140,7 +140,7 @@ class ComchainService(Component):
             wallet_ids = list(
                 filter(
                     lambda x: x.comchain_id == comchain_address,
-                    partner.get_wallets("comchain"),
+                    partner.get_my_wallets_by_currency_type("comchain"),
                 )
             )
             if len(wallet_ids) == 0:

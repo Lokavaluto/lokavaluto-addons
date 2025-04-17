@@ -13,7 +13,7 @@ class PartnerService(Component):
 
     def _get_backend_credentials(self, partner):
         data = super(PartnerService, self)._get_backend_credentials(partner)
-        wallets = partner.get_wallets("comchain")
+        wallets = partner.get_my_wallets_by_currency_type("comchain")
         if len(wallets) == 0:
             data.extend(self.env["res.partner.backend"].comchain_backend_accounts_data)
         for wallet in wallets:

@@ -13,7 +13,7 @@ class PartnerService(Component):
 
     def _get_backend_credentials(self, partner):
         data = super(PartnerService, self)._get_backend_credentials(partner)
-        wallets = partner.get_wallets("cyclos")
+        wallets = partner.get_my_wallets_by_currency_type("cyclos")
         if len(wallets) == 0:
             data.extend(self.env["res.partner.backend"].cyclos_backend_json_data)
         for wallet in wallets:

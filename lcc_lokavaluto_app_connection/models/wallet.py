@@ -70,19 +70,14 @@ class ResPartnerBackend(models.Model):
         return backend_key
 
     @api.model
-    def get_wallets(self, backend_keys):
+    def get_by_names(self, wallet_names: dict[str]):
         """Returns wallet objects list matching the backend_keys contents"""
-        Wallet = self.env["res.partner.backend"]
-
-        return Wallet.search(
+        return self.search(
             [
                 (
                     "name",
                     "in",
-                    [
-                        Wallet.translate_backend_key_in_wallet_name(backend_key)
-                        for backend_key in backend_keys
-                    ],
+                    wallet_names,
                 )
             ]
         )

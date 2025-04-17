@@ -81,8 +81,8 @@ class PartnerService(Component):
     )
     def pending_topup(self):
         pending_topup_list = []
-        wallets = self.env["res.partner.backend"].get_wallets(
-            request.params["backend_keys"]
+        wallets = self.env["res.partner.backend"].get_by_names(
+            wallet_names=request.params["backend_keys"]
         )
         for wallet in wallets:
             pending_topup_list += self._get_credit_requests(

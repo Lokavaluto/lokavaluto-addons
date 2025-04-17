@@ -12,7 +12,7 @@ class AuthService(Component):
     def _update_auth_data(self, partner, password):
         data = super(AuthService, self)._update_auth_data(partner, password)
         # Update cyclos password with odoo one from authenticate session
-        wallets = partner.get_wallets("cyclos")
+        wallets = partner.get_my_wallets_by_currency_type("cyclos")
         if len(wallets) == 0:
             data.extend(self.env["res.partner.backend"].cyclos_backend_json_data)
         for wallet in wallets:
