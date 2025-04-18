@@ -91,6 +91,10 @@ class ResPartnerBackend(models.Model):
             ]
         )
 
+    def get_by_name(self, name: str):
+        """Returns wallet object matching the name given"""
+        return self.search([("name", "=", name)])
+
     def get_wallet_data(self):
         """Returns wallet informations
         Need to be overrided by financial backend add-ons"""
@@ -126,6 +130,16 @@ class ResPartnerBackend(models.Model):
             ),
             None,
         )
+
+    def get_first_matching_restriction_rule(self):
+        self.ensure_one()
+        rules = self.env["wallet.restriction.rule"].search(
+            [("active", "=", True)], order="sequence"
+        )
+        for rule in rules:
+            if self.search(safe_eval(rule.sender_wallet_domain) + [("id", "=", self.id)], limit=1):
+                return rule
+        return None
 
     def _compute_is_reconversion_allowed(self):
         all_rules = self.env["reconversion.rule"].search([("active", "=", True)], order="sequence")
