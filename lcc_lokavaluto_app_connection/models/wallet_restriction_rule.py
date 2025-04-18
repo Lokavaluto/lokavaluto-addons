@@ -1,4 +1,3 @@
-from odoo.addons.lcc_lokavaluto_app_connection.models.res_partner import ResPartner
 from odoo.addons.lcc_lokavaluto_app_connection.models.wallet import ResPartnerBackend
 from odoo import models, fields, api
 from odoo.tools.safe_eval import safe_eval
@@ -31,13 +30,5 @@ class WalletRestrictionRule(models.Model):
                 safe_eval(rule.recipient_wallet_domain)
             )
 
-    def recipient_is_allowed_by_rule(self, recipient: ResPartner) -> bool:
-        res_partners_allowed_by_rule = [
-            recipient_wallet.partner_id for recipient_wallet in self.recipients_matched_by_rule
-        ]
-        is_allowed = recipient in res_partners_allowed_by_rule
-        return is_allowed
-
-    def recipient_wallet_is_allowed_by_rule(self, recipient: ResPartnerBackend) -> bool:
-        is_allowed = recipient in self.recipients_matched_by_rule
-        return is_allowed
+    def recipient_is_allowed_by_rule(self, recipient: ResPartnerBackend) -> bool:
+        return recipient in self.recipients_matched_by_rule
