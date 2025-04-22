@@ -22,7 +22,7 @@
                             <field name="partner_id" />
                             <field name="type" />
                             <field name="status" readonly="True" />
-                            <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
                                    placeholder='e.g. "SSA"'/>
                         </group>
                     </group>
@@ -52,7 +52,7 @@
                 <field name="partner_id" />
                 <field name="type" />
                 <field name="status" />
-                <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
             </tree>
         </field>
     </record>
@@ -65,7 +65,7 @@
                 <field name="name" string="Name" />
                 <field name="partner_id" string="Contact" />
                 <field name="type" string="Type" />
-                <field name="category_id" string="Tags" />
+                <field name="tag_ids" string="Tags" />
                 <filter domain="[('status','=','active')]" string="Active" name="active" />
                 <filter domain="[('status','=','to_confirm')]" string="To confirm" name="to_confirm" />
                 <filter domain="[('status','=','blocked')]" string="Blocked" name="blocked" />
@@ -74,10 +74,10 @@
         </field>
     </record>
 
-    <!-- Wallet Categories -->
-    <record id="wallet_category_form_view" model="ir.ui.view">
+    <!-- Wallet Tags -->
+    <record id="wallet_tag_form_view" model="ir.ui.view">
         <field name="name">Wallet Tags</field>
-        <field name="model">wallet.category</field>
+        <field name="model">wallet.tag</field>
         <field name="arch" type="xml">
             <form string="Wallet Tag">
                 <sheet>
@@ -91,9 +91,9 @@
         </field>
     </record>
 
-    <record id="wallet_category_view_tree" model="ir.ui.view">
-        <field name="name">wallet.category.view.tree</field>
-        <field name="model">wallet.category</field>
+    <record id="wallet_tag_view_tree" model="ir.ui.view">
+        <field name="name">wallet.tag.view.tree</field>
+        <field name="model">wallet.tag</field>
         <field name="arch" type="xml">
             <tree string="Wallet Tag">
                 <field name="name" />
@@ -103,9 +103,9 @@
         </field>
     </record>
 
-    <record id="wallet_category_view_search" model="ir.ui.view">
-        <field name="name">wallet.category.view.search</field>
-        <field name="model">wallet.category</field>
+    <record id="wallet_tag_view_search" model="ir.ui.view">
+        <field name="name">wallet.tag.view.search</field>
+        <field name="model">wallet.tag</field>
         <field name="arch" type="xml">
             <search string="Search Wallet Tag">
                 <field name="name"/>
