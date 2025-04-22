@@ -87,14 +87,14 @@
         </field>
     </record>
 
-    <record id="action_wallet_category" model="ir.actions.act_window">
-        <field name="name">Wallet Categories</field>
+    <record id="action_wallet_tag" model="ir.actions.act_window">
+        <field name="name">Wallet Tags</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">wallet.category</field>
+        <field name="res_model">wallet.tag</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new wallet category.
+                Create a new wallet tag.
             </p>
         </field>
     </record>
@@ -155,10 +155,10 @@
         action="action_wallet_restriction_rule" />
 
     <menuitem
-        id="wallet_category_menu"
+        id="wallet_tag_menu"
         parent="lcc_lokavaluto_app_connection.menu_config_digital_currency"
         sequence="99"
         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
-        action="action_wallet_category" />
+        action="action_wallet_tag" />
 
 </odoo>

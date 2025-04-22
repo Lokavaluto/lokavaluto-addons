@@ -92,7 +92,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__active
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__active
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__active
 #: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__active
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_search
@@ -124,7 +124,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_form
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.topup_rule_view_search
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_tag_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_form
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_restriction_rule_view_search
 msgid "Archived"
@@ -176,7 +176,7 @@ msgid "Cancelled"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__color
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__color
 msgid "Color"
 msgstr ""
 
@@ -288,8 +288,8 @@ msgid "Create a new topup rule."
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_wallet_category
-msgid "Create a new wallet category."
+#: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_wallet_tag
+msgid "Create a new wallet tag."
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
@@ -310,7 +310,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_uid
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__create_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__create_uid
 msgid "Created by"
 msgstr ""
@@ -323,7 +323,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_date
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__create_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__create_date
 msgid "Created on"
 msgstr ""
@@ -431,7 +431,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__display_name
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__display_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__display_name
 msgid "Display Name"
 msgstr ""
@@ -528,7 +528,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__id
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__id
 msgid "ID"
 msgstr ""
@@ -601,7 +601,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule____last_update
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category____last_update
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule____last_update
 msgid "Last Modified on"
 msgstr ""
@@ -614,7 +614,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_uid
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__write_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -627,7 +627,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_date
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__write_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__write_date
 msgid "Last Updated on"
 msgstr ""
@@ -890,7 +890,7 @@ msgid "Search Wallet Restriction Rules"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_view_search
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_tag_view_search
 msgid "Search Wallet Tag"
 msgstr ""
 
@@ -950,7 +950,7 @@ msgid "Status"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__name
 msgid "Tag Name"
 msgstr ""
 
@@ -968,7 +968,7 @@ msgid ""
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,help:lcc_lokavaluto_app_connection.field_wallet_category__active
+#: model:ir.model.fields,help:lcc_lokavaluto_app_connection.field_wallet_tag__active
 msgid "The active field allows you to hide the category without removing it."
 msgstr ""
 
@@ -1066,9 +1066,10 @@ msgid "Wallet"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_wallet_category
-#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.wallet_category_menu
-msgid "Wallet Categories"
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_wallet_tag
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.wallet_tag_menu
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_wallet_tag
+msgid "Wallet Tags"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
@@ -1094,14 +1095,9 @@ msgid "Wallet Restriction Rules"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_form_view
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_view_tree
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_tag_form_view
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_tag_view_tree
 msgid "Wallet Tag"
-msgstr ""
-
-#. module: lcc_lokavaluto_app_connection
-#: model:ir.model,name:lcc_lokavaluto_app_connection.model_wallet_category
-msgid "Wallet Tags"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
@@ -1116,7 +1112,7 @@ msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_wallet_view
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_category__partner_ids
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__partner_ids
 #: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.wallets_menu
 msgid "Wallets"
 msgstr ""
@@ -1132,7 +1128,7 @@ msgid "create Credit Request"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_category_form_view
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_tag_form_view
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_form_view
 msgid "e.g. \"SSA\""
 msgstr ""

@@ -24,10 +24,10 @@ class PartnerSearchInfo(Datamodel):
     limit = fields.Integer(required=False, allow_none=True)
     website_url = fields.String(required=False, allow_none=True)
     order = fields.String(required=False, allow_none=True)
-    sender_wallet_name = fields.String(required=False, allow_none=True)
+    sender_wallet_ident = fields.String(required=False, allow_none=True)
 
 
-# Currently the format to identify a wallet is [_CURRENCY_ENGINE]:[_CURRENCY_WALLET_IDENT]
+# Currently the format of sender_wallet_ident, to identify a wallet, is [_CURRENCY_ENGINE]:[_CURRENCY_WALLET_IDENT]
 # it corresponds to the field `name` in `res.partner.backend` table.
 # Soon it'll be replaced by WALLET_ID :== [_CURRENCY_ENGINE]://[_CURRENCY_IDENT]/wallet/[_CURRENCY_WALLET_IDENT]
 # cf https://docs.lokavaluto.fr/o73ElbpVSpWhIxkpiBDmwg#
@@ -35,8 +35,8 @@ class PartnerSearchInfo(Datamodel):
 class PartnerCheckTransaction(Datamodel):
     _name = "partner.check.transaction.get.params"
 
-    sender_wallet_name = fields.String(required=True, allow_none=False)
-    recipient_wallet_name = fields.String(required=True, allow_none=False)
+    sender_wallet_ident = fields.String(required=True, allow_none=False)
+    recipient_wallet_ident = fields.String(required=True, allow_none=False)
 
 
 class PartnerValidateCreditRequest(Datamodel):

@@ -300,10 +300,11 @@ class PartnerService(Component):
                 recipients |= recipients_no_fav
         _logger.debug("recipients: %s" % recipients)
 
-        if recipients_search_info.sender_wallet_name:
-            sender_wallet = self.env["res.partner.backend"].get_by_name(name=recipients_search_info.sender_wallet_name)
+        # Next lines apply wallet restriction rules on recipients
+        if recipients_search_info.sender_wallet_ident:
+            sender_wallet = self.env["res.partner.backend"].get_by_name(name=recipients_search_info.sender_wallet_ident)
         else:
-            sender_wallet = self.env.user.partner_id.get_wallets(backend_types[0])  # TODO: @Stephan : quand est-ce qu'on a plusieurs types dans backend_types ?
+            sender_wallet = self.env.user.partner_id.get_wallets(backend_types[0])
             if type(sender_wallet) is list:
                sender_wallet = sender_wallet[0]
 
@@ -457,8 +458,8 @@ class PartnerService(Component):
         Check that transaction is allowed between sender and recipient, based on wallet restriction rules
         """
         Wallet = self.env["res.partner.backend"]
-        sender_wallet = Wallet.get_by_name(partner_is_transaction_allowed_get_params.sender_wallet_name)
-        recipient_wallet = Wallet.get_by_name(partner_is_transaction_allowed_get_params.recipient_wallet_name)
+        sender_wallet = Wallet.get_by_name(partner_is_transaction_allowed_get_params.sender_wallet_ident)
+        recipient_wallet = Wallet.get_by_name(partner_is_transaction_allowed_get_params.recipient_wallet_ident)
 
         matched_wallet_restriction_rule = sender_wallet.get_first_matching_restriction_rule()
         if matched_wallet_restriction_rule:

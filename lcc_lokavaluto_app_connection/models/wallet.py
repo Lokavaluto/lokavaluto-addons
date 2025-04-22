@@ -49,7 +49,7 @@ class ResPartnerBackend(models.Model):
         readonly=True,
         compute="_compute_is_topup_allowed"
     )
-    category_id = fields.Many2many("wallet.category", column1="partner_id", column2="category_id", string="Tags")
+    tag_ids = fields.Many2many("wallet.tag", string="Tags")
 
     def _update_search_data(self, backend_keys):
         return {}
@@ -164,9 +164,9 @@ class ResPartnerBackend(models.Model):
                     break
 
 
-class WalletCategory(models.Model):
+class WalletTag(models.Model):
     _description = "Wallet Tags"
-    _name = "wallet.category"
+    _name = "wallet.tag"
     _order = "name"
 
     def _get_default_color(self):
@@ -175,10 +175,3 @@ class WalletCategory(models.Model):
     name = fields.Char(string="Tag Name", required=True, translate=True)
     color = fields.Integer(string="Color", default=_get_default_color)
     active = fields.Boolean(default=True, help="The active field allows you to hide the category without removing it.")
-    partner_ids = fields.Many2many(
-        "res.partner.backend",
-        column1="category_id",
-        column2="partner_id",
-        string="Wallets",
-        copy=False
-    )
