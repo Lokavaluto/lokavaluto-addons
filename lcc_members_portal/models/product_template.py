@@ -22,6 +22,8 @@ class ProductTemplate(models.Model):
                 ("portal_private_registration_product", "=", True),
                 ("portal_organization_registration_product", "=", False),
                 ("active", "=", True),
+                "|",
+                ("company_id", "=", None),
                 ("company_id", "=", company_id),
             ],
         )
@@ -34,6 +36,8 @@ class ProductTemplate(models.Model):
                 ("portal_private_registration_product", "=", False),
                 ("portal_organization_registration_product", "=", True),
                 ("active", "=", True),
+                "|",
+                ("company_id", "=", None),
                 ("company_id", "=", company_id),
             ],
             limit=1,
