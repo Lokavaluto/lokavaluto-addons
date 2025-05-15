@@ -3,7 +3,7 @@
 
 {
     "name": "lcc exchange counter custom menu",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "author": "Elabore",
     "website": "https://elabore.coop",
     "maintainer": "Elabore",
@@ -12,7 +12,7 @@
     "summary": "Create customs menu for POS operators and managers",
     # any module necessary for this one to work correctly
     "depends": [
-        "base","point_of_sale","pos_hr","stock","base_user_role"
+        "base","point_of_sale","pos_hr","stock"
     ],
     "qweb": [],
     "external_dependencies": {

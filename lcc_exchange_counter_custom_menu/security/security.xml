@@ -3,19 +3,25 @@
 
     <data noupdate="0">
 
-        <!-- GROUPS Rôle-->
-        <!-- Création du rôle utilisateur "Opérateurs de comptoir de change" -->
+        <!-- GROUPS CATEGORY -->
+        <!-- Création de la catégorie de groupe "Comptoir de change" -->
+        <record id="module_lcc_exchange_counter" model="ir.module.category">
+            <field name="name">Comptoir de change</field>
+        </record>
+
+        <!-- GROUPS -->
+        <!-- Création du groupe "Opérateurs de comptoir de change" -->
         <record id="group_exchange_counter_operators" model="res.groups">
             <field name="name">Opérateur·rice·s de comptoir de change</field>
-            <field name="category_id" ref="base_user_role.ir_module_category_role"/>
+            <field name="category_id" ref="module_lcc_exchange_counter"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('point_of_sale.group_pos_user'))]"/>
         </record>
 
-        <!-- GROUPS Rôle-->
-        <!-- Création du rôle utilisateur "Managers de comptoir de change" -->
+        <!-- GROUPS -->
+        <!-- Création du groupe utilisateur "Managers de comptoir de change" -->
         <record id="group_exchange_counter_managers" model="res.groups">
-            <field name="name">Manager de comptoir de change</field>
-            <field name="category_id" ref="base_user_role.ir_module_category_role"/>
+            <field name="name">Gestionnaires de comptoir de change</field>
+            <field name="category_id" ref="module_lcc_exchange_counter"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('point_of_sale.group_pos_manager')),(4, ref('stock.group_stock_user'))]"/>
         </record>
 

@@ -68,7 +68,7 @@
     </record>
 
     <!-- MENUS POUR LE MANAGER DE COMPTOIR DE CHANGE-->
-    <menuitem name="Comptoir de Change (manager)"
+    <menuitem name="Comptoir de Change (gestionnaire)"
     id="cdc_manager_menu_root"
     parent="base.menu_custom">
         <!-- MENUS POS -->
