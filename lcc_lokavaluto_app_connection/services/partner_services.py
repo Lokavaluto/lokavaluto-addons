@@ -380,14 +380,14 @@ class PartnerService(Component):
         [
             (
                 [
-                    "/accounts",
+                    "/pending-wallets",
                 ],
                 "GET",
             )
         ],
         input_param=Datamodel("account.search.info"),
     )
-    def search_accounts(self, account_search_info):
+    def pending_wallets(self, account_search_info):
         _logger.debug("PARAMS: %s" % account_search_info)
         backend_keys = self.env.user.partner_id.backends() & set(
             account_search_info.backend_keys
@@ -413,6 +413,21 @@ class PartnerService(Component):
             partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
 
         return self._get_formatted_recipients(partners, backend_keys)
+
+    @restapi.method(
+        [
+            (
+                [
+                    "/accounts",
+                ],
+                "GET",
+            )
+        ],
+        input_param=Datamodel("account.search.info"),
+    )
+    def old_pending_wallets(self, account_search_info):
+        _logger.warn("Deprecated API entrypoint /accounts called (should use /pending-wallets)")
+        return self.pending_wallets(account_search_info)
 
     @restapi.method(
         [(["/<int:id>/favorite/set"], "PUT")],
