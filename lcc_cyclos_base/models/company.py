@@ -99,7 +99,12 @@ class Company(models.Model):
                 error = json_error.get("propertyErrors")
             elif json_error.get("generalErrors"):
                 error = json_error.get("generalErrors")
-            msg = ["  - %s: %s" % (k, ", ".join(v)) for k, v in error.items()]
+            if isinstance(error, list):
+                msg = ["  - %s" % v for v in error]
+            elif isinstance(error, dict):
+                msg = ["  - %s: %s" % (k, ", ".join(v)) for k, v in error.items()]
+            else:
+                msg = repr(error)
         return msg
 
     def _retrieve_last_debit_transactions(self):
