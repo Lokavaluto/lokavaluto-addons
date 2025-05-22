@@ -4,7 +4,7 @@
         <record id="lcc_fss_form_view" model="ir.ui.view">
             <field name="name">LCC FSS Members Form View</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="inherit_id" ref="lcc_members.lcc_members_form_view" />
             <field name="priority">99</field>
             <field name="arch" type="xml">
                 <!-- ################### -->
@@ -26,11 +26,22 @@
                         string="FSS data to compute credit amount "
                         attrs="{'invisible': [('is_company', '=', True)]}" >
                         <field name="reference_tax_income" />
+                        <field name="number_of_tax_shares" />
+                        <field name="fss_quotient" />
+                        <field name="initial_contribution_tranche" />
+                        <field name="number_of_increases" />
+                        <field name="reason_for_increases" />
+                        <field name="number_of_decreases" />
+                        <field name="reason_for_decreases" />
+                        <field name="contribution_reference_tranche" />
+                        <field name="number_of_allocation_units" />
+                        <field name="allocation_amount" />
+                        <field name="contribution_amount" />
+                        <field name="contract_start_date" />
                     </group>
-                    <group string="Household composition"
+                    <group name="fss_household_composition" string="Household composition"
                         attrs="{'invisible': [('is_company', '=', True)]}">
                         <field name="household_composition_adults" />
-                        <field name="household_composition_teens" />
                         <field name="household_composition_children" />
                         <field name="household_child_allowance" widget="radio"/>
                         <field name="household_child_allowance_other" attrs="{'invisible': [('household_child_allowance', '!=', 'other')]}"/>
