@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fss_mandatory_modifier.user,lcc_fss_base_fss_mandatory_modifier.user,lcc_fss_base.model_fss_mandatory_modifier,,1,0,0,0
+access_fss_mandatory_modifier.full_manager,lcc_fss_base_fss_mandatory_modifier.full_manager,lcc_fss_base.model_fss_mandatory_modifier,,1,1,1,1

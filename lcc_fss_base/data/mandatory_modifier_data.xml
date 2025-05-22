@@ -1,0 +1,13 @@
+<odoo>
+    <data noupdate="1">
+        <record id="landlord_without_credit" model="fss.mandatory.modifier">
+            <field name="name">Propriétaire sans crédit</field>
+        </record>
+        <record id="assets_exceeding_20_000_euros" model="fss.mandatory.modifier">
+            <field name="name">Patrimoine supérieur à 20 000€</field>
+        </record>
+        <record id="uses_food_aid" model="fss.mandatory.modifier">
+            <field name="name">A recours à l’aide alimentaire</field>
+        </record>
+    </data>
+</odoo>

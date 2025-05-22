@@ -26,8 +26,10 @@
     },
     # always loaded
     "data": [
+        "security/ir.model.access.csv",
         "views/res_partner_view.xml",
         "views/portal_my_home.xml",
+        "data/mandatory_modifier_data.xml"
     ],
     # only loaded in demonstration mode
     "demo": [],

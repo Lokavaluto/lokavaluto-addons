@@ -21,16 +21,31 @@
                 <!-- ################ -->
 
                 <!-- page Personnal Information -->
+
+                <!-- Remove the whole group user_choices (which is in the personal information page) -->
+                <xpath expr="//group[@name='user_choices']" position="replace" />
+
                 <xpath expr="//page[@name='personal_information_page']" position='inside'>
                     <group name="fss_data_credit"
                         string="FSS data to compute credit amount "
                         attrs="{'invisible': [('is_company', '=', True)]}" >
                         <field name="reference_tax_income" />
+                        <field name="number_of_tax_shares" />
+                        <field name="fss_quotient" />
+                        <field name="initial_contribution_tranche" />
+                        <field name="mandatory_modifiers" widget="many2many_checkboxes" />
+                        <field name="number_of_increases" />
+                        <field name="reason_for_increases" />
+                        <field name="number_of_decreases" />
+                        <field name="reason_for_decreases" />
+                        <field name="contribution_reference_tranche" />
+                        <field name="number_of_allocation_units" />
+                        <field name="allocation_amount" />
+                        <field name="contribution_amount" />
                     </group>
                     <group string="Household composition"
                         attrs="{'invisible': [('is_company', '=', True)]}">
                         <field name="household_composition_adults" />
-                        <field name="household_composition_teens" />
                         <field name="household_composition_children" />
                         <field name="household_child_allowance" widget="radio"/>
                         <field name="household_child_allowance_other" attrs="{'invisible': [('household_child_allowance', '!=', 'other')]}"/>
