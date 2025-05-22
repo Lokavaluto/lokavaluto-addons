@@ -13,12 +13,22 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
+    reference_tax_income = fields.Float(string="Reference tax income (€)")
+    number_of_tax_shares = fields.Float(string="Number of tax shares")
+    fss_quotient = fields.Float("FSS quotient (€)")
+    initial_contribution_tranche = fields.Float(string="Initial contribution tranche (€)")
+    number_of_increases = fields.Integer(string="Number of increases")
+    reason_for_increases = fields.Char(string="Reason for the increases")
+    number_of_decreases = fields.Integer(string="Number of decreases")
+    reason_for_decreases = fields.Char(string="Reason for the decreases")
+    contribution_reference_tranche = fields.Float(string="Contribution reference tranche (€)")
+    number_of_allocation_units = fields.Float(string="Number of allocation units")
+    allocation_amount = fields.Float(string="Allocation amount (€)")
+    contribution_amount = fields.Float(string="Contribution amount (€)")
+    contract_start_date = fields.Date(string="Contract start date")
     birth_year = fields.Integer(string="Birth Year")
     household_composition_adults = fields.Integer(string="Number of Adults (+18 years)")
-    household_composition_teens = fields.Integer(string="Number of Teens (14-18 years)")
-    household_composition_children = fields.Integer(
-        string="Number of Children (-14 years)"
-    )
+    household_composition_children = fields.Integer(string="Number of children")
     household_child_allowance = fields.Selection(
         [
             ("no_dependent_children", "No dependent children"),
@@ -41,11 +51,10 @@ class ResPartner(models.Model):
     name_of_allocation_beneficiary = fields.Char(
         string="Family an Given names of Allocation beneficiaries"
     )
-    arrival_date_territory = fields.Date(string="Arrival Date in the territory")
+    arrival_date_territory = fields.Date(string="Arrival year in the territory")
     monthly_household_food_budget = fields.Float(
         string="Monthly Household Food Budget (€)"
     )
-    reference_tax_income = fields.Float(string="Reference tax income (€)")
     socio_professional_category = fields.Many2one(
         "hr.professional.category", string="Socio-Professional Category"
     )
