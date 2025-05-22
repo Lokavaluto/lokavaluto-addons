@@ -6,14 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 16:22+0000\n"
-"PO-Revision-Date: 2025-01-31 16:22+0000\n"
+"POT-Creation-Date: 2025-05-28 13:15+0000\n"
+"PO-Revision-Date: 2025-05-28 13:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__allocation_amount
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__allocation_amount
+msgid "Allocation amount (€)"
+msgstr "Montant de l’allocation (€)"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__annual_sales
@@ -30,8 +36,8 @@ msgstr "Année du chiffre d’affaires"
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__arrival_date_territory
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__arrival_date_territory
-msgid "Arrival Date in the territory"
-msgstr "Date d’arrivée sur le territoire"
+msgid "Arrival year in the territory"
+msgstr "Année d’arrivée sur le territoire"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__birth_year
@@ -42,7 +48,19 @@ msgstr "Année de naissance"
 #. module: lcc_fss_base
 #: model:ir.model,name:lcc_fss_base.model_res_partner
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__contract_start_date
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__contract_start_date
+msgid "Contract start date"
+msgstr "Date de début du contrat"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__contribution_amount
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__contribution_amount
+msgid "Contribution amount (€)"
+msgstr "Montant total de la cotisation (€)"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__contribution
@@ -51,10 +69,36 @@ msgid "Contribution of point of sales (€/month)"
 msgstr "Cotisation du point de vente (€/mois)"
 
 #. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__contribution_reference_tranche
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__contribution_reference_tranche
+msgid "Contribution reference tranche (€)"
+msgstr "Tranche de référence de la cotisation (€)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__employer_id
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__employer_id
 msgid "Employer"
 msgstr "Employeur"
+
+#. module: lcc_fss_base
+#: model:ir.model,name:lcc_fss_base.model_fss_mandatory_modifier
+msgid "FSS Mandatory Modifier"
+msgstr ""
 
 #. module: lcc_fss_base
 #: model_terms:ir.ui.view,arch_db:lcc_fss_base.lcc_fss_form_view
@@ -72,10 +116,17 @@ msgid "FSS experimentation evaluation data"
 msgstr "Données nécessaires pour évaluer l’expérimentation SSA"
 
 #. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__fss_quotient
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__fss_quotient
+msgid "FSS quotient (€)"
+msgstr "Quotient SSA (€)"
+
+#. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__name_of_allocation_beneficiary
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__name_of_allocation_beneficiary
 msgid "Family an Given names of Allocation beneficiaries"
-msgstr "Noms et prénoms des autres adultes du foyer qui recevront une allocation"
+msgstr ""
+"Noms et prénoms des autres adultes du foyer qui recevront une allocation"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__food_system_worker
@@ -113,10 +164,47 @@ msgid "Housing Status"
 msgstr "Statut d'occupation du logement"
 
 #. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier__id
+msgid "ID"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__initial_contribution_tranche
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__initial_contribution_tranche
+msgid "Initial contribution tranche (€)"
+msgstr "Tranche initiale de cotisation (€)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__mandatory_modifiers
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__mandatory_modifiers
+msgid "Mandatory modifiers"
+msgstr "Modificateurs obligatoires"
+
+#. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__monthly_household_food_budget
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__monthly_household_food_budget
 msgid "Monthly Household Food Budget (€)"
-msgstr "Budget alimentaire moyen du foyer (par mois)"
+msgstr "Budget alimentaire moyen du foyer (par mois en €)"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_fss_mandatory_modifier__name
+msgid "Name"
+msgstr ""
 
 #. module: lcc_fss_base
 #: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__food_system_worker__no
@@ -135,16 +223,34 @@ msgid "Number of Adults (+18 years)"
 msgstr "Nombre d’adultes (+18 ans)"
 
 #. module: lcc_fss_base
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_composition_children
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_composition_children
-msgid "Number of Children (-14 years)"
-msgstr "Nombre d’enfants (-14 ans)"
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__number_of_allocation_units
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__number_of_allocation_units
+msgid "Number of allocation units"
+msgstr "Nombre d’unités d’allocation"
 
 #. module: lcc_fss_base
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_composition_teens
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_composition_teens
-msgid "Number of Teens (14-18 years)"
-msgstr "Nombre d’adolescents (14-18 ans)"
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__household_composition_children
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__household_composition_children
+msgid "Number of children"
+msgstr "Nombre d’enfants"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__number_of_decreases
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__number_of_decreases
+msgid "Number of decreases"
+msgstr "Nombre de diminutions"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__number_of_increases
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__number_of_increases
+msgid "Number of increases"
+msgstr "Nombre d’augmentations"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__number_of_tax_shares
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__number_of_tax_shares
+msgid "Number of tax shares"
+msgstr "Nombre de parts familiales"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__food_system_worker__other
@@ -162,6 +268,18 @@ msgstr "Propriétaire avec crédit"
 #: model:ir.model.fields.selection,name:lcc_fss_base.selection__res_partner__housing_status__owner_no_credit
 msgid "Owner without Credit"
 msgstr "Propriétaire sans crédit"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__reason_for_decreases
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__reason_for_decreases
+msgid "Reason for the decreases"
+msgstr "Raison des diminutions"
+
+#. module: lcc_fss_base
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__reason_for_increases
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__reason_for_increases
+msgid "Reason for the increases"
+msgstr "Raison des augmentations"
 
 #. module: lcc_fss_base
 #: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__reference_tax_income
