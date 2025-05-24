@@ -344,6 +344,9 @@ class PartnerService(Component):
         backend_keys = set(self.env.user.partner_id.backends()) & set(
             request.params["backend_keys"]
         )
+        ## XXXvlab: temporary fix to work with cyclos
+        if "@" in request.params["data"]["rpb"]:
+            request.params["data"]["rpb"] = request.params["data"]["rpb"].split("@", 1)[0]
 
         backend_types = [key.split(":", 1)[0] for key in backend_keys]
         domain = [
