@@ -1,4 +1,6 @@
 import logging
+import re
+
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.base_rest.components.service import to_bool, to_int
@@ -57,19 +59,17 @@ class PartnerService(Component):
         input_param=Datamodel("partner.credit.requests.get.param"),
     )
     def credit_requests(self, partner_credit_requests_get_param):
-        credit_request_list = []
-        backend_types = []
-        for backend_key in partner_credit_requests_get_param.backend_keys:
-            backend_types.append(
-                self.env["res.partner.backend"].translate_backend_key_in_wallet_name(
-                    backend_key
-                )
-            )
-        wallets = self.env["res.partner.backend"].search(
-            [("type", "in", backend_types)]
+        ResPartnerBackend = self.env["res.partner.backend"]
+        backend_keys = set(self.env.user.partner_id.backends()) & set(
+            partner_credit_requests_get_param.backend_keys
         )
+        backend_types = [key.split(":", 1)[0] for key in backend_keys]
+
+        wallets = ResPartnerBackend.search([("type", "in", backend_types)])
         if not wallets:
             _logger.warning("No wallet found for backend keys %r", backend_types)
+
+        credit_request_list = []
         for wallet in wallets:
             credit_request_list += self._get_credit_requests(
                 wallet, ["pending"]
@@ -81,9 +81,34 @@ class PartnerService(Component):
     )
     def pending_topup(self):
         pending_topup_list = []
-        wallets = self.env["res.partner.backend"].get_wallets(
-            request.params["backend_keys"]
+        backend_keys = request.params["backend_keys"]
+        backend_types = []
+
+        ## Temporary workaround bug of monujo < 1.2.0-rc.2 sending a
+        ## wallet internal id (ie: comchain:1f234...7fabb) instead of
+        ## a backend internal id (ie: comchain:Lemanopolis).
+        supported_backend_keys = self.env.user.partner_id.backends()
+        supported_backend_types = [key.split(":", 1)[0] for key in supported_backend_keys]
+        cleaned_backend_keys = []
+        for backend_key in backend_keys:
+            if re.match("^(cyclos|comchain):(-?[0-9a-f]{12,})(@.+)?$", backend_key):
+                backend_type = backend_key.split(":")[0]
+                if backend_type in supported_backend_types:
+                    backend_types.append(backend_type)
+                continue
+            cleaned_backend_keys.append(backend_key)
+        backend_keys = cleaned_backend_keys
+        ## End of workaround
+
+        backend_keys = set(self.env.user.partner_id.backends()) & set(
+            backend_keys
         )
+        backend_types += [key.split(":", 1)[0] for key in backend_keys]
+
+        wallets = self.env["res.partner.backend"].search([
+            ("type", "in", backend_types),
+            ("partner_id.id", "=", self.env.user.partner_id.id),
+        ])
         for wallet in wallets:
             pending_topup_list += self._get_credit_requests(
                 wallet, ["open", "pending", "error"]
