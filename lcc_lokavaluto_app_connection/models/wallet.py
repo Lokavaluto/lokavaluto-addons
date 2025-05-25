@@ -93,6 +93,9 @@ class ResPartnerBackend(models.Model):
 
     def get_by_name(self, name: str):
         """Returns wallet object matching the name given"""
+        ## XXXvlab: temporary hack to make cyclos ident work
+        if "@" in name:
+            name = name.split("@", 1)[0]
         return self.search([("name", "=", name)])
 
     def get_wallet_data(self):
