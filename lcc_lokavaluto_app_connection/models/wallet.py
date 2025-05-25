@@ -69,28 +69,6 @@ class ResPartnerBackend(models.Model):
         Need to be overrided by financial backend add-ons"""
         return None
 
-    @api.model
-    def translate_backend_key_in_wallet_name(self, backend_key):
-        return backend_key
-
-    @api.model
-    def get_wallets(self, backend_keys):
-        """Returns wallet objects list matching the backend_keys contents"""
-        Wallet = self.env["res.partner.backend"]
-
-        return Wallet.search(
-            [
-                (
-                    "name",
-                    "in",
-                    [
-                        Wallet.translate_backend_key_in_wallet_name(backend_key)
-                        for backend_key in backend_keys
-                    ],
-                )
-            ]
-        )
-
     def get_by_name(self, name: str):
         """Returns wallet object matching the name given"""
         ## XXXvlab: temporary hack to make cyclos ident work
