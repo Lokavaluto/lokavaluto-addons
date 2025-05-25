@@ -248,22 +248,6 @@ class ResPartnerBackend(models.Model):
             product = self.env.ref("lcc_comchain_base.product_product_comchain")
         return product
 
-    @api.model
-    def translate_backend_key_in_wallet_name(self, backend_key):
-        name = super(ResPartnerBackend, self).translate_backend_key_in_wallet_name(
-            backend_key
-        )
-        if backend_key == "comchain:" + self.env.user.company_id.comchain_currency_name:
-            name = "comchain"
-        elif backend_key.startswith("comchain:"):
-            _logger.warning(
-                "Current comchain currency name %r doesn't match provided backend key %r",
-                self.env.user.company_id.comchain_currency_name,
-                backend_key
-            )
-            name = backend_key
-        return name
-
     def get_wallet_data(self):
         self.ensure_one()
         data = super(ResPartnerBackend, self).get_wallet_data()
