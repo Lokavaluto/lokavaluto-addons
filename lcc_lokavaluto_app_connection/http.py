@@ -1,7 +1,7 @@
 import logging
 
 from odoo.http import root
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, MissingError
 from odoo.addons.base_rest import http
 from werkzeug.wrappers import Response
 from werkzeug.datastructures import Headers
@@ -79,6 +79,15 @@ class NewRestApiDispatcher(http.RestApiDispatcher):
     ##
 
     def handle_error(self, exception):
+        if isinstance(exception, (MissingError,)):
+            extra_info = getattr(exception, "rest_json_info", None) or {}
+            extra_info["error"] = exception.args[0]
+            return http.wrapJsonException(
+                http.NotFound(http.ustr(exception)),
+                include_description=True,
+                extra_info=extra_info
+            )
+
         if isinstance(exception, (AccessDenied,)):
             extra_info = getattr(exception, "rest_json_info", None)
             return http.wrapJsonException(
