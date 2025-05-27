@@ -41,7 +41,7 @@ class CyclosService(Component):
             wallet_ids = list(
                 filter(
                     lambda x: x.cyclos_id == str(owner_id),
-                    partner.get_wallets("cyclos"),
+                    partner.get_wallets_by_currency_type("cyclos"),
                 )
             )
             if len(wallet_ids) == 0:
@@ -71,7 +71,7 @@ class CyclosService(Component):
         )
         res = {}
         for partner in partner_ids:
-            wallets = partner.get_wallets("cyclos")
+            wallets = partner.get_wallets_by_currency_type("cyclos")
             for wallet in wallets:
                 res[wallet.cyclos_id] = {
                     "partner_id": partner.id,

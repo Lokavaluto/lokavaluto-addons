@@ -327,7 +327,7 @@ class PartnerService(Component):
         if recipients_search_info.sender_wallet_ident:
             sender_wallet = self.env["res.partner.backend"].get_by_name(name=recipients_search_info.sender_wallet_ident)
         else:
-            sender_wallet = self.env.user.partner_id.get_wallets(backend_types[0])
+            sender_wallet = self.env.user.partner_id.get_wallets_by_currency_type(backend_types[0])
             if type(sender_wallet) is list:
                sender_wallet = sender_wallet[0]
 

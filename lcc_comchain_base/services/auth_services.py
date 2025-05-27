@@ -11,7 +11,7 @@ class AuthService(Component):
 
     def _update_auth_data(self, partner, password):
         data = super(AuthService, self)._update_auth_data(partner, password)
-        wallets = partner.get_wallets("comchain")
+        wallets = partner.get_wallets_by_currency_type("comchain")
         if len(wallets) == 0:
             data.extend(self.env["res.partner.backend"].comchain_backend_accounts_data)
         for wallet in wallets:
