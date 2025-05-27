@@ -16,7 +16,7 @@ class ResPartner(models.Model):
     def backends(self):
         self.ensure_one()
         backends = super(ResPartner, self).backends()
-        wallets = self.get_wallets("cyclos")
+        wallets = self.get_wallets_by_currency_type("cyclos")
         for wallet in wallets:
             if wallet.cyclos_id:
                 backends = backends | {
