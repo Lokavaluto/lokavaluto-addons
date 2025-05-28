@@ -77,6 +77,7 @@ class ComchainService(Component):
         Activate comchain account on partners
 
         """
+        _logger.warning("Deprecated /comchain/activate usage !")
         wallet_obj = self.env["res.partner.backend"]
         for account in params.accounts:
             domain = [
@@ -91,7 +92,11 @@ class ComchainService(Component):
                 raise NotImplementedError(
                     "Several wallets retrieved with same address. Please contact your administrator"
                 )
-            wallet_id.activate(account.type, account.credit_min, account.credit_max)
+            wallet_id.activate({
+                "type": account.type,
+                "credit_min": account.credit_min,
+                "credit_max": account.credit_max
+            })
         return True
 
     @restapi.method(
