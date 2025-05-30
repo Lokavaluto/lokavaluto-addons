@@ -148,7 +148,7 @@ class CreditRequest(models.Model):
         for request in self:
             order_vals = {
                 "partner_id": request.partner_id.id,
-                "user_id": 2,  # OdooBot-s ID
+                "user_id": 1,  # __system__ user ID
             }
             order_vals = Order.play_onchanges(order_vals, ["partner_id"])
             order_id = Order.create(order_vals)
