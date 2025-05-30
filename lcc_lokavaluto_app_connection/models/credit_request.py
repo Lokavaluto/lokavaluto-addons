@@ -1,6 +1,10 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 
 class CreditRequest(models.Model):
     """Credit request to follow the top up process for user wallets"""
@@ -59,8 +63,7 @@ class CreditRequest(models.Model):
             return res
 
         # Create Sale Order to get credit request payment
-        new_order = res.partner_id.create_numeric_lcc_order(res.wallet_id, res.amount)
-        res.order_id = new_order.id
+        res.create_credit_sale_order()
         return res
 
     def write(self, vals):
@@ -137,6 +140,37 @@ class CreditRequest(models.Model):
                     "error_message": "Wallet balance above the Max credit amount allowed",
                 }
         return {"amount": amount, "error": False}
+
+    def create_credit_sale_order(self):
+        Order = self.env["sale.order"]
+        Line = self.env["sale.order.line"]
+
+        for request in self:
+            order_vals = {
+                "partner_id": request.partner_id.id,
+                "user_id": 2,  # OdooBot-s ID
+            }
+            order_vals = Order.play_onchanges(order_vals, ["partner_id"])
+            order_id = Order.create(order_vals)
+            line_vals = {
+                "order_id": order_id.id,
+                "product_id": self.wallet_id.get_lcc_product().id,
+            }
+            line_vals = Line.play_onchanges(line_vals, ["product_id"])
+            line_vals.update(
+                {
+                    "product_uom_qty": request.amount,
+                    "price_unit": 1,
+                }
+            )
+            _logger.debug("NUMERIC LCC ORDER LINE: %s" % line_vals)
+            Line.create(line_vals)
+            order_id.write(
+                {"state": "sent", "require_signature": False, "require_payment": True}
+            )
+            _logger.debug("Credit request sale order created: %s" % order_id.name)
+            request.order_id = order_id.id
+
 
     def credit_wallet(self):
         """Send credit order to the wallet."""
