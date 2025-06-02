@@ -1,6 +1,35 @@
-# Continuous integration
+![Lokavaluto logo](https://drive.lokavaluto.fr/s/fyLon3G23wMHyyx/preview)
+# Lokavaluto Odoo addons
 
-## Global picture
+This repository gathers the Odoo add-ons developped by the french association Lokavaluto (https://lokavaluto.fr).
+
+Lokavaluto is an associative digital commons, initiated in 2019 by several French-speaking complementary local currency associations, with the aim of offering digital tools to all projects promoting monetary or economic alternatives.
+
+Lokavaluto's purpose is to pool human and financial resources around the IT issues faced by local currencies. The association relieves local currencies of the need for technical expertise, operational maintenance, technology watch and software development, enabling them to concentrate on their core activity: running and developing local currencies!
+
+## Installation
+
+- clone the current repository on your host system
+- link your Odoo addons volumes with the cloned repository
+- installed the add-ons throught Odoo Applications
+
+## Configuration
+
+Each add-on has its own configuration and guidelines, please consult the corresponding README files.
+
+## Demo instance
+
+A demonstration Odoo instance is available on https://demo.lokavaluto.fr.
+An account needs to be created, you might need help from Lokavaluto technical teams. Do not hesitate to contact them through the website https://lokavaluto.fr
+
+## Contribute
+
+Feel free to open issues and propose Pull Requests!
+The priorities and all the development tasks are decided by Lokavaluto's actors and developers. These last ones will provide feedbacks to your contribution to ensure it complies with Local currencies needs and normative rules.
+
+## Continuous integration
+
+### Global picture
 
 Hosts are available through sftp (sftp is using ssh). The
 authentication is the SSH one through a private key on the github side
@@ -16,9 +45,9 @@ yet used. A simple git push could be studied also.
 To trigger the restart of odoo on the host, we set up a inotify
 watcher through `incron`.
 
-## Host setup
+### Host setup
 
-### odoo
+#### odoo
 
 To add `odoo` services to a compose read host, add this section to
 your `compose.yml`:
@@ -55,7 +84,7 @@ Notice:
 - the `--addons` path correlates with the `volumes` section.
 - the `modules` section list the current modules
 
-### sftp
+#### sftp
 
 To add `sftp` services to a compose ready host, add this section to
 your `compose.yml`:
@@ -90,7 +119,7 @@ all files that are to be modified the group `3000` from the host:
 chown 1000:3000 /srv/datastore/data/odoo/opt/odoo/auto/lokavaluto -R
 ```
 
-### incron
+#### incron
 
 Incron is the tool used for the github deployement to signal the end
 of the upload of the new files. It should trigger a restart of the
@@ -126,4 +155,8 @@ Line to create in current installation
 
 It is expected that the client will delete and add a file in folder:
 `lokavaluto-addons.updated` to trigger the reload.
+
+## Licenses
+
+This repository is licensed under AGPL-3.0.
 
