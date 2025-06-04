@@ -175,7 +175,10 @@ class PartnerService(Component):
                 continue
             backend_ident = "%s://%s" % (m.group("backend_type"), m.group("backend_locator"))
             backend_tx_id = m.group("tx_id")
-            debit_requests = DebitRequest.search([("transaction_id", "=", backend_tx_id)])
+            debit_requests = DebitRequest.search([
+                ("backend_ident", "=", backend_ident),
+                ("transaction_id", "=", backend_tx_id)
+            ])
             if len(debit_requests) != 1:
                 _logger.error(
                     "Impossible to match a debit request for transaction %s: %s requests found"
