@@ -135,7 +135,7 @@ class CreditRequest(models.Model):
                 self.max_credit_amount - wallet_balance_data.get("response"),
                 self.amount,
             )
-            if amount < 0:
+            if amount <= 0:
                 return {
                     "error": True,
                     "error_message": "Wallet balance above the Max credit amount allowed",
