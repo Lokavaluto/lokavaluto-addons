@@ -51,7 +51,7 @@ class ResPartner(models.Model):
     name_of_allocation_beneficiary = fields.Char(
         string="Family an Given names of Allocation beneficiaries"
     )
-    arrival_date_territory = fields.Date(string="Arrival year in the territory")
+    arrival_year_territory = fields.Integer(string="Arrival year in the territory")
     monthly_household_food_budget = fields.Float(
         string="Monthly Household Food Budget (€)"
     )

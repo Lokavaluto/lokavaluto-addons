@@ -34,8 +34,8 @@ msgid "Annual sales year"
 msgstr "Année du chiffre d’affaires"
 
 #. module: lcc_fss_base
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__arrival_date_territory
-#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__arrival_date_territory
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_partner__arrival_year_territory
+#: model:ir.model.fields,field_description:lcc_fss_base.field_res_users__arrival_year_territory
 msgid "Arrival year in the territory"
 msgstr "Année d’arrivée sur le territoire"
 
