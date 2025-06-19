@@ -1,4 +1,10 @@
+import logging
 import traceback
+from functools import wraps
+from odoo import api, registry
+from odoo.sql_db import BaseCursor
+
+_logger = logging.getLogger(__name__)
 
 
 def status(reqs):
@@ -56,3 +62,27 @@ def format_last_exception(prefix="  | "):
     return "\n".join(
         str(prefix + line) for line in traceback.format_exc().strip().split("\n")
     )
+
+
+def after_commit(func):
+    @wraps(func)
+    def wrapped(self, *args, **kwargs):
+        assert isinstance(self.env.cr, BaseCursor)
+        dbname = self.env.cr.dbname
+        context = self.env.context
+        uid = self.env.uid
+
+        @self.env.cr.postcommit.add
+        def called_after():
+            db_registry = registry(dbname)
+            with db_registry.cursor() as cr:
+                env = api.Environment(cr, uid, context)
+                try:
+                    func(self.with_env(env), *args, **kwargs)
+                except Exception as e:
+                    _logger.warning(
+                        "Postcommit function %s failed: %s" % (func.__name__, self)
+                    )
+                    _logger.exception(e)
+
+    return wrapped

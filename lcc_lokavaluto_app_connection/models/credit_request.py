@@ -1,7 +1,7 @@
+import logging
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-
-import logging
+from ..tools import after_commit
 
 _logger = logging.getLogger(__name__)
 
@@ -75,13 +75,22 @@ class CreditRequest(models.Model):
             raise UserError(
                 "Credit request can't be created with an amount > 2**46 - 1."
             )
-        res = super(CreditRequest, self).write(vals)
+
+        if (
+            self.env.user.company_id.activate_automatic_topup
+            and vals.get("state") == "pending"
+        ):
+            # Launch after_commit function to launch the credit request once the request state is commited
+            self._check_pending_requests_to_credit()
+
+        return super(CreditRequest, self).write(vals)
+
+    @after_commit
+    def _check_pending_requests_to_credit(self):
         for request in self:
             if request.state == "pending":
                 # The top up has been paid, the credit process can start
-                if self.env.user.company_id.activate_automatic_topup:
-                    request.credit_wallet()
-        return res
+                request.credit_wallet()
 
     def unlink(self):
         for request in self:
