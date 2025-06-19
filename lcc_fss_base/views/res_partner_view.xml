@@ -56,7 +56,7 @@
                         attrs="{'invisible': [('is_company', '=', True)]}" >
                         <field name="gender" />
                         <field name="birth_year" />
-                        <field name="arrival_date_territory" />
+                        <field name="arrival_year_territory" />
                         <field name="socio_professional_category" />
                         <field name="monthly_household_food_budget" />
                         <field name="food_system_worker" widget="radio" />
