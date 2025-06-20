@@ -38,20 +38,19 @@ class CreditRequest(models.Model):
     limit_credit_aggregation = fields.Boolean("Limit credit aggregation")
     max_credit_amount = fields.Float("Maximum amount of credit allowed")
 
-    requester_id = fields.Many2one(
-        "res.partner",
-        string="Requester"
-    )
+    requester_id = fields.Many2one("res.partner", string="Requester")
 
     @api.model
     def create(self, vals):
-        if vals.get("amount",  0) == .0:
+        if vals.get("amount", 0) == 0.0:
             raise UserError("Credit request can't be created with a null amount.")
         if vals.get("amount", 0) > 2**46 - 1:
             ## amount field is declared as a float in postgresql it is a double precision
             ## which can store values up to 2**53 - 1, but we need precision on the decimal part
             ## up to 2 digits, so we limit the amount to 2**46 - 1
-            raise UserError("Credit request can't be created with an amount > 2**46 - 1.")
+            raise UserError(
+                "Credit request can't be created with an amount > 2**46 - 1."
+            )
 
         no_order = vals.pop("no_order", False)
 
@@ -73,7 +72,9 @@ class CreditRequest(models.Model):
             ## amount field is declared as a float in postgresql it is a double precision
             ## which can store values up to 2**53 - 1, but we need precision on the decimal part
             ## up to 2 digits, so we limit the amount to 2**46 - 1
-            raise UserError("Credit request can't be created with an amount > 2**46 - 1.")
+            raise UserError(
+                "Credit request can't be created with an amount > 2**46 - 1."
+            )
         res = super(CreditRequest, self).write(vals)
         for request in self:
             if request.state == "pending":
@@ -170,7 +171,6 @@ class CreditRequest(models.Model):
             )
             _logger.debug("Credit request sale order created: %s" % order_id.name)
             request.order_id = order_id.id
-
 
     def credit_wallet(self):
         """Send credit order to the wallet."""

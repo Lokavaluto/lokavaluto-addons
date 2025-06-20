@@ -146,7 +146,9 @@ class ComchainService(Component):
             if len(wallet_ids) == 0:
                 raise NotFound("Wallet %s not found in Odoo" % comchain_address)
             if not wallet_ids[0].is_topup_allowed:
-                raise AccessDenied(f"Topup is not allowed on this wallet {comchain_address}.")
+                raise AccessDenied(
+                    f"Topup is not allowed on this wallet {comchain_address}."
+                )
             data = {
                 "wallet_id": wallet_ids[0].id,
                 "amount": amount,

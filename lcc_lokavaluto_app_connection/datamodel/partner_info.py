@@ -32,6 +32,7 @@ class PartnerSearchInfo(Datamodel):
 # Soon it'll be replaced by WALLET_ID :== [_CURRENCY_ENGINE]://[_CURRENCY_IDENT]/wallet/[_CURRENCY_WALLET_IDENT]
 # cf https://docs.lokavaluto.fr/o73ElbpVSpWhIxkpiBDmwg#
 
+
 class PartnerCheckTransaction(Datamodel):
     _name = "partner.check.transaction.get.params"
 

@@ -23,11 +23,11 @@ class MembershipInvoice(models.TransientModel):
         self.env["res.partner"].browse(self._context.get("active_ids")).write(values)
         res = super().membership_invoice()
         invoice_ids = None
-        for d in res['domain']:
-            if d[0] == 'id' and d[1] == 'in':
+        for d in res["domain"]:
+            if d[0] == "id" and d[1] == "in":
                 invoice_ids = d[2]
                 if invoice_ids:
-                    self.env['account.move'].browse(invoice_ids).write({
-                    'team_id':self.team_id.id
-                    })
+                    self.env["account.move"].browse(invoice_ids).write(
+                        {"team_id": self.team_id.id}
+                    )
         return res

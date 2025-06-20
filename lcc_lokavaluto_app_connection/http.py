@@ -85,7 +85,7 @@ class NewRestApiDispatcher(http.RestApiDispatcher):
             return http.wrapJsonException(
                 http.NotFound(http.ustr(exception)),
                 include_description=True,
-                extra_info=extra_info
+                extra_info=extra_info,
             )
 
         if isinstance(exception, (AccessDenied,)):

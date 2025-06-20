@@ -87,7 +87,9 @@ class PartnerService(Component):
         ## wallet internal id (ie: comchain:1f234...7fabb) instead of
         ## a backend internal id (ie: comchain:Lemanopolis).
         supported_backend_keys = self.env.user.partner_id.backends()
-        supported_backend_types = [key.split(":", 1)[0] for key in supported_backend_keys]
+        supported_backend_types = [
+            key.split(":", 1)[0] for key in supported_backend_keys
+        ]
         cleaned_backend_keys = []
         for backend_key in backend_keys:
             if re.match("^(cyclos|comchain):(-?[0-9a-f]{12,})(@.+)?$", backend_key):
@@ -99,15 +101,15 @@ class PartnerService(Component):
         backend_keys = cleaned_backend_keys
         ## End of workaround
 
-        backend_keys = set(self.env.user.partner_id.backends()) & set(
-            backend_keys
-        )
+        backend_keys = set(self.env.user.partner_id.backends()) & set(backend_keys)
         backend_types += [key.split(":", 1)[0] for key in backend_keys]
 
-        wallets = self.env["res.partner.backend"].search([
-            ("type", "in", backend_types),
-            ("partner_id.id", "=", self.env.user.partner_id.id),
-        ])
+        wallets = self.env["res.partner.backend"].search(
+            [
+                ("type", "in", backend_types),
+                ("partner_id.id", "=", self.env.user.partner_id.id),
+            ]
+        )
         for wallet in wallets:
             pending_topup_list += self._get_credit_requests(
                 wallet, ["open", "pending", "error"]
@@ -133,7 +135,10 @@ class PartnerService(Component):
                 "No top-up found to cancel for given order_id (%r)" % order_id
             )
         for credit in credit_ids:
-            if credit.requester_id and credit.requester_id.id != self.env.user.partner_id.id:
+            if (
+                credit.requester_id
+                and credit.requester_id.id != self.env.user.partner_id.id
+            ):
                 raise AccessDenied(
                     f"You can not remove credit request {credit.id} as you are not the requester."
                 )
@@ -169,16 +174,24 @@ class PartnerService(Component):
             ##
             ## Which is BACKEND_ID/tx/TRANSACTION_ID
 
-            m = re.match(r"^(?P<backend_type>[^/:]+)://(?P<backend_locator>[^/]+)/tx/(?P<tx_id>.+)$", tx_id)
+            m = re.match(
+                r"^(?P<backend_type>[^/:]+)://(?P<backend_locator>[^/]+)/tx/(?P<tx_id>.+)$",
+                tx_id,
+            )
             if not m:
                 _logger.error("Invalid transaction id %s" % tx_id)
                 continue
-            backend_ident = "%s://%s" % (m.group("backend_type"), m.group("backend_locator"))
+            backend_ident = "%s://%s" % (
+                m.group("backend_type"),
+                m.group("backend_locator"),
+            )
             backend_tx_id = m.group("tx_id")
-            debit_requests = DebitRequest.search([
-                ("backend_ident", "=", backend_ident),
-                ("transaction_id", "=", backend_tx_id)
-            ])
+            debit_requests = DebitRequest.search(
+                [
+                    ("backend_ident", "=", backend_ident),
+                    ("transaction_id", "=", backend_tx_id),
+                ]
+            )
             if len(debit_requests) != 1:
                 _logger.error(
                     "Impossible to match a debit request for transaction %s: %s requests found"
@@ -247,7 +260,7 @@ class PartnerService(Component):
         website_url = recipients_search_info.website_url
 
         if self.env.company.allow_payments_only_to_companies == True:
-            domain.extend([('partner_id.is_company','=',True)])
+            domain.extend([("partner_id.is_company", "=", True)])
 
         if value:
             domain.extend(
@@ -328,18 +341,29 @@ class PartnerService(Component):
 
         # Next lines apply wallet restriction rules on recipients
         if recipients_search_info.sender_wallet_ident:
-            sender_wallet = self.env["res.partner.backend"].get_by_name(name=recipients_search_info.sender_wallet_ident)
+            sender_wallet = self.env["res.partner.backend"].get_by_name(
+                name=recipients_search_info.sender_wallet_ident
+            )
         else:
-            sender_wallet = self.env.user.partner_id.get_wallets_by_currency_type(backend_types[0])
+            sender_wallet = self.env.user.partner_id.get_wallets_by_currency_type(
+                backend_types[0]
+            )
             if type(sender_wallet) is list:
-               sender_wallet = sender_wallet[0]
+                sender_wallet = sender_wallet[0]
 
-        if sender_wallet:  # notice : bool(self.env["res.partner.backend"]) returns False
-            matched_wallet_restriction_rule = sender_wallet.get_first_matching_restriction_rule()
+        if (
+            sender_wallet
+        ):  # notice : bool(self.env["res.partner.backend"]) returns False
+            matched_wallet_restriction_rule = (
+                sender_wallet.get_first_matching_restriction_rule()
+            )
             if matched_wallet_restriction_rule:
                 recipients = [
-                    recipient_wallet for recipient_wallet in recipients
-                    if matched_wallet_restriction_rule.recipient_is_allowed_by_rule(recipient_wallet)
+                    recipient_wallet
+                    for recipient_wallet in recipients
+                    if matched_wallet_restriction_rule.recipient_is_allowed_by_rule(
+                        recipient_wallet
+                    )
                 ]
             # if no wallet restriction rule matches, all recipients are allowed
 
@@ -372,7 +396,9 @@ class PartnerService(Component):
         )
         ## XXXvlab: temporary fix to work with cyclos
         if "@" in request.params["data"]["rpb"]:
-            request.params["data"]["rpb"] = request.params["data"]["rpb"].split("@", 1)[0]
+            request.params["data"]["rpb"] = request.params["data"]["rpb"].split("@", 1)[
+                0
+            ]
 
         backend_types = [key.split(":", 1)[0] for key in backend_keys]
         domain = [
@@ -455,7 +481,9 @@ class PartnerService(Component):
         input_param=Datamodel("account.search.info"),
     )
     def old_pending_wallets(self, account_search_info):
-        _logger.warn("Deprecated API entrypoint /accounts called (should use /pending-wallets)")
+        _logger.warn(
+            "Deprecated API entrypoint /accounts called (should use /pending-wallets)"
+        )
         return self.pending_wallets(account_search_info)
 
     @restapi.method(
@@ -466,7 +494,7 @@ class PartnerService(Component):
         Set partner as favorite
         """
         partner = self._get(_id)
-        partner.write({'favorite_user_ids': [(4, self.env.uid)]})
+        partner.write({"favorite_user_ids": [(4, self.env.uid)]})
         return True
 
     @restapi.method(
@@ -477,7 +505,7 @@ class PartnerService(Component):
         Unset partner as favorite
         """
         partner = self._get(_id)
-        partner.write({'favorite_user_ids': [(3, self.env.uid)]})
+        partner.write({"favorite_user_ids": [(3, self.env.uid)]})
         return True
 
     @restapi.method(
@@ -502,12 +530,20 @@ class PartnerService(Component):
         Check that transaction is allowed between sender and recipient, based on wallet restriction rules
         """
         Wallet = self.env["res.partner.backend"]
-        sender_wallet = Wallet.get_by_name(partner_is_transaction_allowed_get_params.sender_wallet_ident)
-        recipient_wallet = Wallet.get_by_name(partner_is_transaction_allowed_get_params.recipient_wallet_ident)
+        sender_wallet = Wallet.get_by_name(
+            partner_is_transaction_allowed_get_params.sender_wallet_ident
+        )
+        recipient_wallet = Wallet.get_by_name(
+            partner_is_transaction_allowed_get_params.recipient_wallet_ident
+        )
 
-        matched_wallet_restriction_rule = sender_wallet.get_first_matching_restriction_rule()
+        matched_wallet_restriction_rule = (
+            sender_wallet.get_first_matching_restriction_rule()
+        )
         if matched_wallet_restriction_rule:
-            return matched_wallet_restriction_rule.recipient_is_allowed_by_rule(recipient_wallet)
+            return matched_wallet_restriction_rule.recipient_is_allowed_by_rule(
+                recipient_wallet
+            )
 
         # if no wallet restriction rule matches, all recipients are allowed
         return True
@@ -568,10 +604,7 @@ class PartnerService(Component):
         }
 
         if cr.requester_id:
-            data["requester"] = {
-                "name": cr.requester_id.name,
-                "id": cr.requester_id.id
-            }
+            data["requester"] = {"name": cr.requester_id.name, "id": cr.requester_id.id}
 
         return data
 

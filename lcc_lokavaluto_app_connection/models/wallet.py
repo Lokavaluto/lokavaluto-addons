@@ -17,7 +17,11 @@ class ResPartnerBackend(models.Model):
         "Object in Odoo which match a wallet in a connected transaction backend."
     )
 
-    type = fields.Selection([("foo", "Value defined only for testing purposes")], string="Type", required=True)
+    type = fields.Selection(
+        [("foo", "Value defined only for testing purposes")],
+        string="Type",
+        required=True,
+    )
     # You can find real type values in lcc_comchain_base and lcc_cyclos_base
     name = fields.Char("Name", required=True)
     active = fields.Boolean(default=True, tracking=True)
@@ -45,9 +49,7 @@ class ResPartnerBackend(models.Model):
         compute="_compute_is_reconversion_allowed",
     )
     is_topup_allowed = fields.Boolean(
-        "Is Topup Allowed ?",
-        readonly=True,
-        compute="_compute_is_topup_allowed"
+        "Is Topup Allowed ?", readonly=True, compute="_compute_is_topup_allowed"
     )
     tag_ids = fields.Many2many("wallet.tag", string="Tags")
 
@@ -118,28 +120,38 @@ class ResPartnerBackend(models.Model):
             [("active", "=", True)], order="sequence"
         )
         for rule in rules:
-            if self.search(safe_eval(rule.sender_wallet_domain) + [("id", "=", self.id)], limit=1):
+            if self.search(
+                safe_eval(rule.sender_wallet_domain) + [("id", "=", self.id)], limit=1
+            ):
                 return rule
         return None
 
     def _compute_is_reconversion_allowed(self):
-        all_rules = self.env["reconversion.rule"].search([("active", "=", True)], order="sequence")
+        all_rules = self.env["reconversion.rule"].search(
+            [("active", "=", True)], order="sequence"
+        )
         for record in self:
             # By default, reconversion is NOT allowed
             record.is_reconversion_allowed = False
             for rule in all_rules:
-                if self.search(safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]):
+                if self.search(
+                    safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]
+                ):
                     record.is_reconversion_allowed = rule.is_reconversion_allowed
                     # We stop after the first rule matched
                     break
 
     def _compute_is_topup_allowed(self):
-        all_rules = self.env["topup.rule"].search([("active", "=", True)], order="sequence")
+        all_rules = self.env["topup.rule"].search(
+            [("active", "=", True)], order="sequence"
+        )
         for record in self:
             # By default, topup is allowed
             record.is_topup_allowed = True
             for rule in all_rules:
-                if self.search(safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]):
+                if self.search(
+                    safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]
+                ):
                     record.is_topup_allowed = rule.is_topup_allowed
                     # We stop after the first rule matched
                     break
@@ -155,4 +167,7 @@ class WalletTag(models.Model):
 
     name = fields.Char(string="Tag Name", required=True, translate=True)
     color = fields.Integer(string="Color", default=_get_default_color)
-    active = fields.Boolean(default=True, help="The active field allows you to hide the category without removing it.")
+    active = fields.Boolean(
+        default=True,
+        help="The active field allows you to hide the category without removing it.",
+    )

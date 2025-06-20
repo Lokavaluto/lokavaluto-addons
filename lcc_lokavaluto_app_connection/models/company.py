@@ -16,15 +16,21 @@ class Company(models.Model):
     commission_product_id = fields.Many2one(
         "product.product", string="Commission Product"
     )
-    allow_payments_only_to_companies = fields.Boolean(string="Allow payments only to companies")
+    allow_payments_only_to_companies = fields.Boolean(
+        string="Allow payments only to companies"
+    )
 
     def _assert_transaction_valid(self, transaction):
         """Check if the transaction has all required fields"""
-        for field in ["sender", "amount", "backend_ident", "transaction_id", "transaction_date"]:
+        for field in [
+            "sender",
+            "amount",
+            "backend_ident",
+            "transaction_id",
+            "transaction_date",
+        ]:
             if not transaction.get(field):
                 raise ValueError("Transaction has no %s" % field)
-
-
 
     def _cron_import_new_digital_currency_debit_requests(self):
         """Create the debit requests in Odoo for all the debit

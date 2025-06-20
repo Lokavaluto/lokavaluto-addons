@@ -117,10 +117,7 @@ class res_partner(models.Model):
         for rec in self.filtered("email"):
             if "," in rec.email:
                 raise UserError(
-                    _(
-                        "Field contains multiple email addresses. This is "
-                        "not supported."
-                    )
+                    _("Field contains multiple email addresses. This is not supported.")
                 )
             if rec.is_main_profile:
                 if self.search_count(

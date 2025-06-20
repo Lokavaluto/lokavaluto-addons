@@ -20,7 +20,7 @@ class WalletRestrictionRule(models.Model):
         "res.partner.backend",
         string="Recipients Matched By The Rule",
         compute="_compute_recipients_matched_by_rule",
-        store=False
+        store=False,
     )
 
     @api.depends("recipient_wallet_domain")
