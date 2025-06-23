@@ -27,7 +27,6 @@
         "website",
         "crm",
         "website_partner",
-        "l10n_fr",
         "sale",
         "partner_favorite",
         "portal",
