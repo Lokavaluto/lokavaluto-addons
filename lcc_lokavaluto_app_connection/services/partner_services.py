@@ -1,15 +1,16 @@
 import logging
 import re
 
-from odoo.addons.base_rest import restapi
-from odoo.addons.base_rest.components.service import to_bool, to_int
-from odoo.addons.base_rest_datamodel.restapi import Datamodel
-from odoo.addons.component.core import Component
 from odoo.exceptions import (
     AccessDenied,
     MissingError,
 )
 from odoo.http import request
+
+from odoo.addons.base_rest import restapi
+from odoo.addons.base_rest.components.service import to_bool, to_int
+from odoo.addons.base_rest_datamodel.restapi import Datamodel
+from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
@@ -604,7 +605,19 @@ class PartnerService(Component):
         return params
 
     def _get_backend_credentials(self, partner):
-        return []
+        data = []
+        wallets = self.env["res.partner.backend"].search(
+            [("active", "=", True), ("partner_id", "=", partner.id)]
+        )
+        if len(wallets) == 0:
+            all_alt_currencies = self.env["res.alt.currency"].search(
+                [("active", "=", True)]
+            )
+            for currency in all_alt_currencies:
+                data.append(currency.get_currency_json_data())
+        for wallet in wallets:
+            data.append(wallet.get_wallet_json_data())
+        return data
 
     def _get_credit_request_data(self, cr):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")

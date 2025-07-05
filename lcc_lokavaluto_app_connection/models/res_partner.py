@@ -1,6 +1,6 @@
-from odoo import models, fields, api
-
 import logging
+
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ class ResPartner(models.Model):
 
     def get_wallets_by_currency_type(self, type: str):
         self.ensure_one()
-        wallets = [wallet for wallet in self.lcc_backend_ids if wallet.type == type]
+        wallets = self.lcc_backend_ids.filtered(lambda p: p.type == type)
         if len(wallets) > 0:
             return wallets
         else:

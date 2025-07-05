@@ -59,27 +59,19 @@ class ResPartnerBackend(models.Model):
         _logger.debug("SEARCH: data %s" % data)
         return data
 
-    @property
-    def comchain_backend_accounts_data(self):
-        """Return normalized backend account's data"""
-        backend_id = self.comchain_backend_id
-        if not backend_id:
-            ## Comchain financial backend is not configured in general settings
-            return []
-        comchain_product = self.env.ref(
-            "lcc_comchain_base.product_product_comchain"
-        ).sudo()
-        data = {
-            "type": backend_id,
-            "accounts": [],
-            "min_credit_amount": getattr(comchain_product, "sale_min_qty", 0),
-            "max_credit_amount": getattr(comchain_product, "sale_max_qty", 0),
-        }
-        wallet = self.comchain_wallet_parsed
-        if wallet:
+    def get_wallet_json_data(self):
+        """Returns normalized wallet data in JSON
+
+        By default, and if no wallet in self, only return alt_currency json data.
+        Need to be overrided by financial backend add-ons.
+
+        """
+        data = super().get_wallet_json_data()
+
+        if self.comchain_wallet_parsed:
             data["accounts"].append(
                 {
-                    "wallet": wallet,
+                    "wallet": self.comchain_wallet_parsed,
                     "message_key": self.comchain_message_key,
                     "active": self.status == "active",
                     "is_topup_allowed": self.is_topup_allowed,
@@ -112,7 +104,7 @@ class ResPartnerBackend(models.Model):
                     safe_wallet_partner.name,
                 )
 
-        return [data]
+        return data
 
     @api.depends("name", "type", "comchain_status")
     def _compute_status(self):
