@@ -21,3 +21,20 @@ class TestResAltCurrency(TransactionComponentCase):
                 "currency_unit_product_id": self.currency_A_unit_product.id,
             }
         )
+
+    def test_get_currency_json_data(self):
+        json_data = self.currency_A.get_currency_json_data()
+
+        expected_result = {
+            "type": "foo:Currency A",
+            "accounts": [],
+            "min_credit_amount": getattr(
+                self.currency_A_unit_product, "sale_min_qty", 0
+            ),
+            "max_credit_amount": getattr(
+                self.currency_A_unit_product, "sale_max_qty", 0
+            ),
+        }
+
+        result = json_data == expected_result
+        self.assertTrue(result)

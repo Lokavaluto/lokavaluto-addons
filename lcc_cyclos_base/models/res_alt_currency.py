@@ -5,9 +5,10 @@ from datetime import datetime, timedelta
 from urllib.parse import quote, urlparse
 
 import requests
-from odoo import fields, models
 from requests.auth import HTTPBasicAuth
 from werkzeug.exceptions import NotFound
+
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -45,6 +46,18 @@ class AlternativeCurrency(models.Model):
     cyclos_date_last_reconversion_check = fields.Datetime(
         "Last reconversion date on Cyclos",
     )
+
+    def get_currency_json_data(self):
+        """Return normalized currency's data."""
+        res = super().get_currency_json_data()
+        if self.engine != "cyclos":
+            return res
+
+        res["type"] = "{}:{}".format(
+            "cyclos",
+            self.get_cyclos_server_domain(),
+        )
+        return res
 
     def get_cyclos_server_domain(self):
         self.ensure_one()

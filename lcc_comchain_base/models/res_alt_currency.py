@@ -1,7 +1,8 @@
 import logging
 
-from odoo import api, fields, models
 from pyc3l import Pyc3l
+
+from odoo import api, fields, models
 
 pyc3l = Pyc3l()
 _logger = logging.getLogger(__name__)

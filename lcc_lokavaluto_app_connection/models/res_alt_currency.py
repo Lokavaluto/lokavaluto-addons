@@ -47,6 +47,22 @@ class AlternativeCurrency(models.Model):
     def _safe_wallet_partners(self):
         return []
 
+    def get_currency_json_data(self):
+        """
+        Return normalized currency's data.
+        """
+        self.ensure_one()
+        return {
+            "type": "%s:%s" % (self.engine, self.ident),
+            "accounts": [],
+            "min_credit_amount": getattr(
+                self.currency_unit_product_id, "sale_min_qty", 0
+            ),
+            "max_credit_amount": getattr(
+                self.currency_unit_product_id, "sale_max_qty", 0
+            ),
+        }
+
     def _cron_import_new_digital_currency_debit_requests(self) -> None:
         for alt_currency in self.search([("active", "=", True)]):
             _logger.info(

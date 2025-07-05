@@ -81,6 +81,12 @@ class ResPartnerBackend(models.Model):
         Need to be overrided by financial backend add-ons"""
         return []
 
+    def get_wallet_json_data(self):
+        """Returns normalized wallet data in JSON.
+        By default, and if no wallet in self, only return alt_currency json data.
+        Need to be overrided by financial backend add-ons."""
+        return self.alt_currency_id.get_currency_json_data()
+
     def credit_wallet(self, amount):
         """Send credit request to the financial backend"""
         res = {

@@ -1,9 +1,11 @@
 import logging
+
 from odoo import exceptions
 from odoo.http import request
+
 from odoo.addons.base_rest import restapi
-from odoo.addons.lcc_members.controllers.auth_signup import AuthSignupHome
 from odoo.addons.component.core import Component
+from odoo.addons.lcc_members.controllers.auth_signup import AuthSignupHome
 
 _logger = logging.getLogger(__name__)
 
@@ -37,9 +39,7 @@ class AuthService(Component):
             _logger.debug("USER: %s" % current_user)
             if current_user:
                 partner = current_user.partner_id
-                to_add = self._update_auth_data(
-                    partner, request.httprequest.authorization.password
-                )
+                to_add = self._update_auth_data(partner)
                 lcc_profile_info = partner.lcc_profile_info()
                 if len(lcc_profile_info) == 0:
                     raise exceptions.UserError(
@@ -117,8 +117,20 @@ class AuthService(Component):
         return {"status": "OK"}
 
     # Privates functions
-    def _update_auth_data(self, partner, password):
-        return []
+    def _update_auth_data(self, partner):
+        data = []
+        wallets = self.env["res.partner.backend"].search(
+            [("active", "=", True), ("partner_id", "=", partner.id)]
+        )
+        if len(wallets) == 0:
+            all_alt_currencies = self.env["res.alt.currency"].search(
+                [("active", "=", True)]
+            )
+            for currency in all_alt_currencies:
+                data.append(currency.get_currency_json_data())
+        for wallet in wallets:
+            data.append(wallet.sudo().get_wallet_json_data())
+        return data
 
     # Validator
     def _validator_authenticate(self):
