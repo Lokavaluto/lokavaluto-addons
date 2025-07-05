@@ -2,6 +2,7 @@ import json
 import logging
 
 from odoo import api, fields, models
+
 from odoo.addons.lcc_lokavaluto_app_connection import tools
 
 _logger = logging.getLogger(__name__)
@@ -26,20 +27,15 @@ class ResPartnerBackend(models.Model):
                     data[backend_key] = [wallet.cyclos_id]
         return data
 
-    @property
-    def cyclos_backend_json_data(self):
-        """Return normalized backend account's data."""
-        backend_key = "{}:{}".format(
-            "cyclos",
-            self.alt_currency_id.get_cyclos_server_domain(),
-        )
-        cyclos_product = self.env.ref("lcc_cyclos_base.product_product_cyclos").sudo()
-        data = {
-            "type": backend_key,
-            "accounts": [],
-            "min_credit_amount": getattr(cyclos_product, "sale_min_qty", 0),
-            "max_credit_amount": getattr(cyclos_product, "sale_max_qty", 0),
-        }
+    def get_wallet_json_data(self):
+        """Returns normalized wallet data in JSON
+
+        By default, and if no wallet in self, only return alt_currency json data.
+        Need to be overrided by financial backend add-ons.
+
+        """
+
+        data = super().get_wallet_json_data()
         if self.cyclos_id:
             data["accounts"].append(
                 {
@@ -64,7 +60,7 @@ class ResPartnerBackend(models.Model):
 
                 monujo_backends = (
                     safe_wallet_partner.lcc_backend_ids._update_search_data(
-                        [backend_key],
+                        [data["type"]],
                     )
                 )
                 if len(monujo_backends) > 1:
@@ -77,7 +73,7 @@ class ResPartnerBackend(models.Model):
                     "Safe wallet %s has no public profile",
                     safe_wallet_partner.name,
                 )
-        return [data]
+        return data
 
     @api.depends("name", "type", "cyclos_status")
     def _compute_status(self) -> None:
