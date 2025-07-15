@@ -7,7 +7,7 @@ class ContractContract(models.Model):
     create_credit_requests = fields.Boolean("Create Credit Requests")
     wallet_id = fields.Many2one("res.partner.backend", string="Wallet to credit")
     different_credit_request_amount = fields.Boolean("Different credit request amount")
-    credit_request_amount = fields.Float(String="Credit request amount")
+    credit_request_amount = fields.Float(string="Credit request amount")
     limit_credit_aggregation = fields.Boolean("Limit credit aggregation")
     max_credit_amount = fields.Float("Maximum amount of credit allowed")
 
