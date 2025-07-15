@@ -1,4 +1,5 @@
 from odoo.addons.component.tests.common import TransactionComponentCase
+from ..datamodel.partner_info import PartnerCheckTransaction
 
 
 class TestPartnerService(TransactionComponentCase):
@@ -49,21 +50,14 @@ class TestPartnerService(TransactionComponentCase):
             }
         )
 
-        self.PartnerCheckTransactionGetParams = self.env.datamodels[
-            "partner.check.transaction.get.params"
-        ]
-        self.sender_to_allowed_recipient_get_params = (
-            self.PartnerCheckTransactionGetParams(
-                sender_wallet_ident=self.sender_wallet.name,
-                recipient_wallet_ident=self.recipient_allowed_wallet.name,
-            )
+        self.sender_to_allowed_recipient_get_params = PartnerCheckTransaction(
+            sender_wallet_ident=self.sender_wallet.name,
+            recipient_wallet_ident=self.recipient_allowed_wallet.name,
         )
 
-        self.sender_to_not_allowed_recipient_get_params = (
-            self.PartnerCheckTransactionGetParams(
-                sender_wallet_ident=self.sender_wallet.name,
-                recipient_wallet_ident=self.recipient_not_allowed_wallet.name,
-            )
+        self.sender_to_not_allowed_recipient_get_params = PartnerCheckTransaction(
+            sender_wallet_ident=self.sender_wallet.name,
+            recipient_wallet_ident=self.recipient_not_allowed_wallet.name,
         )
 
     def test_is_transaction_allowed(self):
@@ -181,17 +175,13 @@ class TestPartnerService(TransactionComponentCase):
             }
         )
 
-        another_sender_to_allowed_recipient_get_params = (
-            self.PartnerCheckTransactionGetParams(
-                sender_wallet_ident=another_sender_wallet.name,
-                recipient_wallet_ident=self.recipient_allowed_wallet.name,
-            )
+        another_sender_to_allowed_recipient_get_params = PartnerCheckTransaction(
+            sender_wallet_ident=another_sender_wallet.name,
+            recipient_wallet_ident=self.recipient_allowed_wallet.name,
         )
-        another_sender_to_not_allowed_recipient_get_params = (
-            self.PartnerCheckTransactionGetParams(
-                sender_wallet_ident=another_sender_wallet.name,
-                recipient_wallet_ident=self.recipient_not_allowed_wallet.name,
-            )
+        another_sender_to_not_allowed_recipient_get_params = PartnerCheckTransaction(
+            sender_wallet_ident=another_sender_wallet.name,
+            recipient_wallet_ident=self.recipient_not_allowed_wallet.name,
         )
 
         collection = (
