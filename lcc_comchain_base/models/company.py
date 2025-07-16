@@ -76,7 +76,7 @@ class Company(models.Model):
                     )
                     continue  # this transaction has been refused by the smart contract
                 if (
-                    full_tx.addr_to.lstrip("0x")
+                    full_tx.addr_to.removeprefix("0x")
                     != company_id.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id
                 ):
                     _logger.info(
@@ -85,7 +85,7 @@ class Company(models.Model):
                     )
                     continue
                 _logger.info("Transaction %s retrieved" % tx.hash)
-                sender_address = full_tx.addr_from.lstrip("0x")
+                sender_address = full_tx.addr_from.removeprefix("0x")
                 ## full_tx.sent will probably need to be a string at some point
                 ## to account for the full capacity of u256 bytes. Let's assume
                 ## they'll be this long.
