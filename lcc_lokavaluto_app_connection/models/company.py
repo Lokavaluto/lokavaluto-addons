@@ -51,14 +51,14 @@ class Company(models.Model):
             )
             if len(wallet_ids) == 0:
                 _logger.warning(
-                    "No wallet found for debit transaction %s"
-                    % transaction["transaction_id"]
+                    "No wallet found for debit transaction %r (Sender requested: %r)"
+                    % (transaction["transaction_id"], transaction["sender"])
                 )
                 continue
             elif len(wallet_ids) > 1:
                 raise ValueError(
-                    "Too many wallets found for debit transaction %s"
-                    % transaction["transaction_id"]
+                    "Too many wallets found for debit transaction %r (Sender requested: %r)"
+                    % (transaction["transaction_id"], transaction["sender"])
                 )
             transaction["wallet_id"] = wallet_ids[0].id
             del transaction["sender"]
