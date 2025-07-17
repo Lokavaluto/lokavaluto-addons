@@ -38,7 +38,7 @@ class AlternativeCurrency(models.Model):
 
     last_block_checked_nb = fields.Integer("Last Block Checked Nb")
 
-    def _retrieve_last_debit_transactions(self):
+    def _retrieve_last_debit_transactions(self, start=None, end=None):
         """A list of transactions (dictionnary) is expected, with the following data:
         - sender: the Odoo name of the wallet concerned by the debit request,
         - amount: the amount debited from the wallet,
@@ -46,7 +46,7 @@ class AlternativeCurrency(models.Model):
         - transaction_date: the timestamp of the transaction.
         """
         self.ensure_one()
-        yield from super()._retrieve_last_debit_transactions()
+        yield from super()._retrieve_last_debit_transactions(start, end)
 
         if self.engine != "comchain":
             return
@@ -54,19 +54,44 @@ class AlternativeCurrency(models.Model):
         # Retrieve all the debit transactions from the newly created blocks
         backend_ident = f"comchain://{self.ident}"
 
-        # Get the ID of the last blockchain block built
-        last_block_id = pyc3l.getBlockNumber()
-        # Loop on all the blocks created since the last check
-        _logger.info(
-            f"Start reconversion check on Comchain from block {self.last_block_checked_nb} to block {last_block_id}",
-        )
-        if last_block_id < self.last_block_checked_nb:
-            msg = "Inconsistent last processed block is greater than last block id."
+        if start is not None:
+            if not isinstance(start, int) or start < 0:
+                raise ValueError("Start block ID must be a positive integer")
+            start_block_id = start
+        else:
+            start_block_id = self.last_block_checked_nb + 1
+
+        if end is not None:
+            if not isinstance(end, int) or end < 0:
+                raise ValueError("End block ID must be a positive integer")
+            end_block_id = end
+        else:
+            end_block_id = pyc3l.getBlockNumber()
+            if start is None:
+                if start_block_id == end_block_id + 1:
+                    _logger.info(
+                        "No new block to check on Comchain "
+                        "(last checked: %s, current: %s)",
+                        self.last_block_checked_nb,
+                        end_block_id,
+                    )
+                    return
+
+        if end_block_id < start_block_id:
             raise ValueError(
-                msg,
+                f"Inconsistent block range, first ID is greater than last one "
+                f"({start_block_id} > {end_block_id})"
             )
-        for block_nb in range(self.last_block_checked_nb + 1, last_block_id + 1):
-            _logger.info(f"Get Debit Transactions - read block {block_nb}")
+
+        # Loop on all the blocks range
+        _logger.info(
+            f"Start reconversion check on Comchain from block {start_block_id} "
+            f"to block {end_block_id}"
+        )
+        for block_nb in range(start_block_id, end_block_id + 1):
+            _logger.info("Get Debit Transactions - read block %s" % block_nb)
+            nb_txs = 0
+
             # Get the block transactions
             block_txs = pyc3l.BlockByNumber(block_nb).bc_txs
             for tx in block_txs:
@@ -108,8 +133,14 @@ class AlternativeCurrency(models.Model):
                     "transaction_date": full_tx.received_at or None,
                 }
                 self.env.cr.commit()
+                nb_txs += 1
 
-            self.last_block_checked_nb = block_nb
+            if block_nb > self.last_block_checked_nb:
+                self.last_block_checked_nb = block_nb
+
+            _logger.info(
+                f"{nb_txs} transactions found in Comchain block {block_nb}."
+            )
             self.env.cr.commit()
 
     def _safe_wallet_partners(self):

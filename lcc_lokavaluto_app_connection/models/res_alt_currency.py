@@ -61,12 +61,27 @@ class AlternativeCurrency(models.Model):
             ),
         }
 
-    def _cron_import_new_digital_currency_debit_requests(self) -> None:
-        for alt_currency in self.search([("active", "=", True)]):
+    def _cron_import_new_digital_currency_debit_requests(self, currency_uri=None, start=None, end=None) -> None:
+        if (start is not None or end is not None) and currency_uri is None:
+            raise ValueError(
+                "When start or end is set, currency_uri must be set too.",
+            )
+        if currency_uri is None:
+            currencies = self.search([("active", "=", True)])
+        else:
+            if not isinstance(currency_uri, str):
+                raise ValueError("currency_uri must be a string.")
+            currencies = self.search([("uri", "=", currency_uri)])
+            if len(currencies) == 0:
+                raise ValueError(
+                    f"No currency found for uri {currency_uri}.",
+                )
+
+        for alt_currency in currencies:
             _logger.info(
                 f"Start sync debit request for alt currency {alt_currency.name}.",
             )
-            alt_currency._sync_new_debit_requests()
+            alt_currency._sync_new_debit_requests(start, end)
             _logger.info(
                 f"Sync of debit request for alt currency {alt_currency.name} finished.",
             )
@@ -84,8 +99,9 @@ class AlternativeCurrency(models.Model):
                 msg = f"Transaction has no {field}"
                 raise ValueError(msg)
 
-    def _sync_new_debit_requests(self) -> None:
-        """Create the debit requests in Odoo for all the debit
+    def _sync_new_debit_requests(self, start=None, end=None) -> None:
+        """
+        Create the debit requests in Odoo for all the debit
         transactions performed since the last check.
         """
         # For each transaction received for each alternative currency:
@@ -94,7 +110,7 @@ class AlternativeCurrency(models.Model):
         # - if yes, do nothing
         # - if no, create a new debit request
         self.ensure_one()
-        for transaction in self._retrieve_last_debit_transactions():
+        for transaction in self._retrieve_last_debit_transactions(start, end):
             self._assert_transaction_valid(transaction)
 
             ## replace sender by wallet_id
@@ -174,7 +190,7 @@ class AlternativeCurrency(models.Model):
                 ),
             )
 
-    def _retrieve_last_debit_transactions(self):
+    def _retrieve_last_debit_transactions(self, start=None, end=None):
         """TO OVERIDE in digital currency backend dedicated add-ons
         A list of transactions (dictionary) is expected, with the following data:
         - sender: the Odoo name of the wallet concerned by the debit request,

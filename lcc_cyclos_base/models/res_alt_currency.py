@@ -149,37 +149,72 @@ class AlternativeCurrency(models.Model):
                 msg = repr(error)
         return msg
 
-    def _retrieve_last_debit_transactions(self):
-        """A list of transactions (dictionnary) is expected, with the following data:
+    def _retrieve_last_debit_transactions(self, start=None, end=None):
+        """Retrieve the last debit transactions from the Cyclos backend.
+
+        A list of transactions (dictionary) is expected, with the
+        following data:
+
         - sender: the Odoo name of the wallet concerned by the debit request,
         - amount: the amount debited from the wallet,
         - transaction_id: the transaction ID in the digital currency backend
         - transaction_date: the timestamp of the transaction.
+
         """
+
         self.ensure_one()
-        yield from super()._retrieve_last_debit_transactions()
+        yield from super()._retrieve_last_debit_transactions(start, end)
 
         if self.engine != "cyclos":
             return
 
-        # Retrieve all the debit transactions since the last check minus 1 min
+        # Retrieve all the debit transactions since the last check
+        # minus 1 min
         backend_ident = f"cyclos://{self.get_cyclos_server_domain()}"
 
-        # we need a date on ISO8601 format "1970-01-01T00:00:00.000", then encoded to be in an URL
-        if not self.cyclos_date_last_reconversion_check:
-            date = "1970-01-01T00:00:00.000"
+        # we need dates on ISO8601 format "1970-01-01T00:00:00.000",
+        # then encoded to be in an URL
+        if start is not None:
+            if not isinstance(start, str):
+                raise ValueError("Start date must be a string in ISO8601 format")
+            start_date = start
         else:
-            date = (
-                self.cyclos_date_last_reconversion_check - timedelta(minutes=1)
-            ).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
-        encoded_date = quote(date, safe="")
+            if self.cyclos_date_last_reconversion_check:
+                start_date = (
+                    self.cyclos_date_last_reconversion_check - timedelta(minutes=1)
+                ).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
+            else:
+                start_date = "1970-01-01T00:00:00.000"
+        encoded_start_date = quote(start_date, safe="")
+
+        if end is not None:
+            if not isinstance(end, str):
+                raise ValueError("End date must be a string in ISO8601 format")
+            encoded_end_date = quote(end, safe="")
+            period_range = (
+                f"datePeriod={encoded_start_date}&datePeriod={encoded_end_date}"
+            )
+            _logger.info(
+                f"Start reconversion check on Cyclos from {start_date} to {end}"
+            )
+        else:
+            period_range = f"datePeriod={encoded_start_date}"
+            _logger.info(
+                f"Start reconversion check on Cyclos from {start_date} to now"
+            )
 
         # Set all the search criteria in the REST request entrypoint
-        entrypoint = f"/transactions?datePeriod={encoded_date}&orderBy=dateAsc&toAccountTypes=debit"
+        entrypoint = (
+            f"/transactions?{period_range}&orderBy=dateAsc&toAccountTypes=debit"
+        )
 
         # Get the transactions from Cyclos
         response = self.cyclos_rest_call("GET", entrypoint)
         transactions = json.loads(response.text)
+
+        _logger.info(
+            f"{len(transactions)} transactions found from Cyclos."
+        )
         for tx in transactions:
             date_tx = datetime.utcfromtimestamp(
                 datetime.fromisoformat(tx["date"]).timestamp(),
