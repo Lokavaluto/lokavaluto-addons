@@ -4,7 +4,9 @@
             <field name="name">Alt Currency: import new digital currency debit requests</field>
             <field name="model_id" ref="lcc_lokavaluto_app_connection.model_res_alt_currency" />
             <field name="state">code</field>
-            <field name="code">model._cron_import_new_digital_currency_debit_requests()</field>
+            <field name="code">
+                model._cron_import_new_digital_currency_debit_requests()
+            </field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
