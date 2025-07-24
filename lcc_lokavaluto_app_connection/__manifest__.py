@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "16.0.1.0.1",
+    "version": "16.0.1.0.2",
     "licence": "AGPL-3",
     # any module necessary for this one to work correctly
     "depends": [
