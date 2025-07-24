@@ -45,12 +45,11 @@ class AccountInvoice(models.Model):
         string="LCC amount to credit", compute="_compute_global_lcc_amounts"
     )
 
-    partner_name = fields.Char(compute="_compute_partner_name", string="Partner Name")
-
-    @api.depends("partner_id")
-    def _compute_partner_name(self):
-        for record in self:
-            record.partner_name = record.partner_id.name if record.partner_id else ""
+    # The `partner_name` field is used to display the partner name in views.
+    # Do not use `partner_id` to display the partner name in views,
+    # otherwise the ORM may try to access the wrong `partner_id` field
+    # if another `partner_id` field is present in the view.
+    partner_name = fields.Char(related="partner_id.name")
 
     @api.depends("credit_request_ids")
     def _compute_global_credit_status(self):

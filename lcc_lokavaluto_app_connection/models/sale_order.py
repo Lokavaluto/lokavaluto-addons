@@ -33,6 +33,12 @@ class SaleOrder(models.Model):
         string="LCC amount to credit", compute="_compute_global_lcc_amounts"
     )
 
+    # The `partner_name` field is used to display the partner name in views.
+    # Do not use `partner_id` to display the partner name in views,
+    # otherwise the ORM may try to access the wrong `partner_id` field
+    # if another `partner_id` field is present in the view.
+    partner_name = fields.Char(related="partner_id.name")
+
     @api.depends("state", "order_line.product_id")
     def _compute_has_numeric_lcc_products(self):
         self.has_numeric_lcc_products = False
