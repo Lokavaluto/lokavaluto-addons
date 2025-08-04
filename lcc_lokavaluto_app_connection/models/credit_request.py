@@ -90,7 +90,7 @@ class CreditRequest(models.Model):
         for request in self:
             if request.state == "pending":
                 # The top up has been paid, the credit process can start
-                request.credit_wallet()
+                request.sudo().credit_wallet()
 
     def unlink(self):
         for request in self:
