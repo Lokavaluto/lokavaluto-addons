@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import models, _
 from odoo.exceptions import UserError
 
 
@@ -8,13 +8,14 @@ class AccountMove(models.Model):
     def _get_report_base_filename(self):
         self.ensure_one()
         if self.journal_id.is_receipt:
-            return (
-                self.move_type == "out_invoice"
-                and self.state == "draft"
-                and _("Draft Receipt")
-                or self.move_type == "out_invoice"
-                and self.state in ("open", "in_payment", "paid")
-                and _("Receipt - %s") % (self.number)
-            )
-        else:
-            return super(AccountMove, self)._get_report_base_filename()
+            if self.move_type == "out_invoice" and self.state == "draft":
+                return _(f"Draft Receipt - %s") % self.name
+            elif self.move_type == "out_invoice" and self.state == "posted":
+                return _(f"Receipt - %s") % self.name
+            elif self.move_type == "out_invoice" and self.state == "cancel":
+                return _(f"Cancelled Receipt - %s") % self.name
+            else:
+                raise UserError(_("The receipt is in a state we do not handle. "
+                                  "Please contact the support for this issue."))
+
+        return super(AccountMove, self)._get_report_base_filename()
