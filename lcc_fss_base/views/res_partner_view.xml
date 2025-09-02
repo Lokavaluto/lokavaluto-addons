@@ -10,7 +10,6 @@
                 <!-- ################### -->
                 <!-- MAIN DISPLAY UPDATE -->
                 <!-- ################### -->
-                <xpath expr="//field[@name='website']" position="replace" />
                 <xpath expr="//field[@name='currency_exchange_office']" position="replace" />
                 <xpath expr="//field[@name='title']" position="replace" />
                 <xpath expr="//field[@name='function']" position="replace" />
