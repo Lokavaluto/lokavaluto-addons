@@ -425,6 +425,142 @@ class PartnerService(Component):
         return {"count": len(rows), "rows": rows}
 
     @restapi.method(
+        [(["/search_all"], "GET")],
+        input_param=Datamodel("partner.search.info"),
+    )
+    def search_all_recipients(self, recipients_search_info):
+        """Search all recipients by name, email or phone
+
+        website_url: we can search we url of the web site if needed
+
+        This entrypoint is for admin access to all recipients
+
+        XXXvlab: upon empty search string, returns all favorite only. And
+        always order by favorite first.
+
+        """
+
+        if not self.env.user.has_group("lcc_lokavaluto_app_connection.group_wallet_accounts_manager"):
+            raise AccessDenied()
+
+        _logger.debug("PARAMS: %s" % recipients_search_info)
+        value = recipients_search_info.value
+        backend_keys = set(self.env.user.partner_id.backends()) & set(
+            recipients_search_info.backend_keys
+        )
+
+        backend_types = [key.split(":", 1)[0] for key in backend_keys]
+        # Transform backend_keys in backend_URI if needed
+        # TO BE REMOVED once Monujo sends URIs through the API
+        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+
+        domain = [
+            ("status", "=", "active"),
+            ("type", "in", backend_types),
+            ("partner_id.active", "=", True),
+            ("partner_id.public_profile_id.name", "!=", False),  ## only main profiles
+        ]
+        offset = recipients_search_info.offset if recipients_search_info.offset else 0
+        limit = recipients_search_info.limit if recipients_search_info.limit else None
+        order = (
+            recipients_search_info.order if recipients_search_info.order else "name asc"
+        )
+        order = _recipient_order_normalize(order)
+        website_url = recipients_search_info.website_url
+
+        if value:
+            domain.extend(
+                [
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    ("partner_id.public_profile_id.name", "ilike", value),
+                    ("partner_id.public_profile_id.business_name", "ilike", value),
+                    ("partner_id.public_profile_id.email", "ilike", value),
+                    ("partner_id.public_profile_id.phone", "ilike", value),
+                    ("partner_id.public_profile_id.mobile", "ilike", value),
+                    ("partner_id.industry_id", "ilike", value),
+                    ("partner_id.secondary_industry_ids.name", "ilike", value),
+                    ("partner_id.keywords", "ilike", value),
+                ]
+            )
+        if website_url:
+            partner_id = website_url.split("-")[-1]
+            try:
+                partner_id = int(partner_id)
+                domain.extend([("partner_id.id", "=", partner_id)])
+            except ValueError:
+                raise MissingError("Url not valid.")
+        _logger.debug("DOMAIN: %s" % domain)
+        ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
+        ## here for a direct search. We'll implement 2 search to fake an
+        ## order by ``is_favorite``
+        rpb = self.env["res.partner.backend"].sudo()
+        recipients_fav = rpb.search(
+            [
+                ("partner_id.favorite_user_ids", "in", self.env.uid),
+            ]
+            + domain,
+            limit=limit,
+            offset=offset,
+            order=order,
+        )
+        _logger.debug("recipients_fav: %s" % recipients_fav)
+        len_recipients = len(recipients_fav)
+        recipients = recipients_fav
+        if (limit is None or len_recipients < limit) and value:
+            if len_recipients == 0:
+                fav_count = (
+                    0
+                    if offset == 0
+                    else rpb.search_count(
+                        [
+                            ("partner_id.favorite_user_ids", "in", self.env.uid),
+                        ]
+                        + domain,
+                    )
+                )
+                offset -= fav_count
+            else:
+                if limit is not None:
+                    limit -= len_recipients
+
+                offset = 0
+
+            if limit != 0:
+                recipients_no_fav = rpb.search(
+                    [
+                        ("partner_id.favorite_user_ids", "not in", self.env.uid),
+                    ]
+                    + domain,
+                    limit=limit,
+                    offset=offset,
+                    order=order,
+                )
+                _logger.debug("recipients_no_fav: %s" % recipients_no_fav)
+                recipients |= recipients_no_fav
+        _logger.debug("recipients: %s" % recipients)
+
+        ## Group by partner
+        rows = []
+        for recipient in recipients:
+            partner = recipient.partner_id
+            lcc_profile_info = partner.lcc_profile_info()
+            if not lcc_profile_info:
+                continue
+            row = lcc_profile_info[0]
+            row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
+                currency_uris
+            )
+            rows.append(row)
+
+        return {"count": len(rows), "rows": rows}
+
+    @restapi.method(
         [(["/get_recipient_by_uri"], "GET")],
     )
     def search_recipient_by_uri(self):
