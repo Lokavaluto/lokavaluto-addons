@@ -13,10 +13,10 @@ class TestPartnerService(TransactionComponentCase):
         self.ResAltCurrency = self.env["res.alt.currency"]
 
         self.currencyA = self.ResAltCurrency.create(
-            {"name": "Currency A", "active": True, "engine": "foo"}
+            {"name": "Currency A", "ident": "currencyA", "active": True, "engine": "foo"}
         )
         self.currencyB = self.ResAltCurrency.create(
-            {"name": "Currency B", "active": True, "engine": "foo"}
+            {"name": "Currency B", "ident": "currencyB", "active": True, "engine": "foo"}
         )
 
         self.sender_user = self.ResUsers.create({"name": "Sender", "login": "foo"})
@@ -37,6 +37,7 @@ class TestPartnerService(TransactionComponentCase):
             {
                 "partner_id": self.recipient_allowed.id,
                 "name": "foo:allowed_recipient",
+                "ident": "allowed_recipient",
                 "alt_currency_id": self.currencyA.id,
             }
         )
@@ -47,6 +48,7 @@ class TestPartnerService(TransactionComponentCase):
             {
                 "partner_id": self.recipient_not_allowed.id,
                 "name": "foo:not_allowed_recipient",
+                "ident": "not_allowed_recipient",
                 "alt_currency_id": self.currencyA.id,
             }
         )
