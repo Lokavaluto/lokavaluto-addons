@@ -49,7 +49,15 @@ class ResPartner(models.Model):
             return self.env["res.partner.backend"]
 
     def backends(self):
-        return set()
+        backends = set()
+        wallets = self.get_wallets_by_currency_type("foo")
+
+        if not wallets:
+            return backends
+        for wallet in wallets:
+            backends |= {f"{wallet.alt_currency_id.engine}:{wallet.alt_currency_id.ident}"}
+        return backends
+
 
     def _validator_return_authenticate(self):
         return {
