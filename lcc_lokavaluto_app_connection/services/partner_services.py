@@ -198,20 +198,20 @@ class PartnerService(Component):
             ## Which is BACKEND_ID/tx/TRANSACTION_ID
 
             m = re.match(
-                r"^(?P<backend_type>[^/:]+)://(?P<backend_locator>[^/]+)/tx/(?P<tx_id>.+)$",
+                r"^(?P<engine>[^/:]+)://(?P<ident>[^/]+)/tx/(?P<tx_id>.+)$",
                 tx_id,
             )
             if not m:
                 _logger.error(f"Invalid transaction id {tx_id}")
                 continue
-            backend_ident = "{}://{}".format(
-                m.group("backend_type"),
-                m.group("backend_locator"),
+            currency_uri = "{}://{}".format(
+                m.group("engine"),
+                m.group("ident"),
             )
             backend_tx_id = m.group("tx_id")
             debit_requests = DebitRequest.search(
                 [
-                    ("backend_ident", "=", backend_ident),
+                    ("alt_currency_id.uri", "=", currency_uri),
                     ("transaction_id", "=", backend_tx_id),
                 ],
             )
