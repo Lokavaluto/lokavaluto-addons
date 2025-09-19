@@ -47,19 +47,6 @@ class ResPartnerBackend(models.Model):
             return False
         return "%s:%s" % ("comchain", currency_name)
 
-    def _update_search_data(self, backend_keys):
-        _logger.debug("SEARCH: backend_keys = %s" % backend_keys)
-        data = super()._update_search_data(backend_keys)
-        for wallet in self:
-            if wallet.type != "comchain":
-                continue
-            if wallet.comchain_id:
-                for backend_key in backend_keys:
-                    if backend_key.startswith("comchain:"):
-                        data[backend_key] = [wallet.comchain_id]
-        _logger.debug("SEARCH: data %s" % data)
-        return data
-
     @api.depends("comchain_id")
     def _compute_ident(self):
         for wallet in self:

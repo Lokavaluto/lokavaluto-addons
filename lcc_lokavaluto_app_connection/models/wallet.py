@@ -58,12 +58,29 @@ class ResPartnerBackend(models.Model):
     )
     tag_ids = fields.Many2many("wallet.tag", string="Tags")
 
-    def _update_search_data(self, backend_keys):
-        return {}
     def _compute_wallet_uri(self):
         for wallet in self:
             wallet.uri = f"{wallet.alt_currency_id.uri}/wallet/{wallet.ident}"
 
+    def _update_search_data(self, currency_uris):
+        # Initiate lists
+        data = {}
+        currencies = self.env["res.alt.currency"].search(
+            [
+                ("active", "=", True),
+                ("uri", "in", currency_uris)
+            ]
+        )
+        for cur in currencies:
+            data[f"{cur.engine}:{cur.ident}"] = []
+
+        # Add backend_uris's data
+        for wallet in self:
+            cur = wallet.alt_currency_id
+            if cur.uri in currency_uris:
+                data[f"{cur.engine}:{cur.ident}"].append(wallet.ident)
+
+        return data
 
     @api.depends("name", "type")
     def _compute_status(self):

@@ -485,7 +485,7 @@ class PartnerService(Component):
         if backend_keys:  # filter out partners not having the queried backends
             partners = partners.filtered(lambda r: r.backends() & set(backend_keys))
 
-        return self._get_formatted_recipients(partners, backend_keys)
+        return self._get_formatted_recipients(partners, currency_uris)
 
     @restapi.method(
         [
@@ -585,13 +585,13 @@ class PartnerService(Component):
                 raise MissingError(f"Invalid backend id {backend}")
         return currency_uris
 
-    def _get_formatted_recipients(self, recipients, backend_keys):
+    def _get_formatted_recipients(self, recipients, currency_uris):
         rows = []
-        if backend_keys:
+        if currency_uris:
             for partner in recipients:
                 row = partner.lcc_profile_info()[0]
                 row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
-                    backend_keys,
+                    currency_uris,
                 )
                 rows.append(row)
         return {"count": len(rows), "rows": rows}
