@@ -464,12 +464,9 @@ class PartnerService(Component):
         backend_keys = self.env.user.partner_id.backends() & set(
             account_search_info.backend_keys,
         )
-
-        ## XXXvlab: big ugly shortcut
-        backend_types = [key.split(":", 1)[0] for key in backend_keys]
-
+        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
         recipients = self.env["res.partner.backend"].search(
-            [("status", "=", "to_confirm"), ("type", "in", backend_types)],
+            [("status", "=", "to_confirm"), ("alt_currency_id.uri", "in", currency_uris)],
         )
 
         domain = [("id", "in", recipients.mapped("partner_id.id"))]
