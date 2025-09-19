@@ -22,6 +22,8 @@
                             <field name="partner_id" />
 			    <field name="alt_currency_id" />
                             <field name="type" readonly="True"/>
+			    <field name="ident" />
+			    <field name="uri" readonly="True" />
                             <field name="status" readonly="True" />
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
                                    placeholder='e.g. "SSA"'/>
@@ -67,6 +69,7 @@
                 <field name="name" string="Name" />
                 <field name="partner_id" string="Contact" />
                 <field name="type" string="Type" />
+		<field name="uri" string="URI" />
                 <field name="tag_ids" string="Tags" />
                 <filter domain="[('status','=','active')]" string="Active" name="active" />
                 <filter domain="[('status','=','to_confirm')]" string="To confirm" name="to_confirm" />

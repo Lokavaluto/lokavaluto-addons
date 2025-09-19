@@ -19,6 +19,7 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
+    ident = fields.Char(compute="_compute_ident")
     comchain_id = fields.Char(string="Address")
     comchain_wallet = fields.Text(string="Crypted json wallet")
     comchain_status = fields.Char(string="Comchain Status")
@@ -58,6 +59,11 @@ class ResPartnerBackend(models.Model):
                         data[backend_key] = [wallet.comchain_id]
         _logger.debug("SEARCH: data %s" % data)
         return data
+
+    @api.depends("comchain_id")
+    def _compute_ident(self):
+        for wallet in self:
+            self.ident = self.comchain_id
 
     def get_wallet_json_data(self):
         """Returns normalized wallet data in JSON
