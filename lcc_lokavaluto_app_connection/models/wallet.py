@@ -27,6 +27,8 @@ class ResPartnerBackend(models.Model):
         string="Currency",
         required=True,
     )
+    ident = fields.Char("Wallet Ident", required=True, store=True, tracking=True)
+    uri = fields.Char("Wallet URI", compute="_compute_wallet_uri", store=True, tracking=True)
     active = fields.Boolean(default=True, tracking=True)
     partner_public_name = fields.Char(
         "Partner Public Name",
@@ -58,6 +60,10 @@ class ResPartnerBackend(models.Model):
 
     def _update_search_data(self, backend_keys):
         return {}
+    def _compute_wallet_uri(self):
+        for wallet in self:
+            wallet.uri = f"{wallet.alt_currency_id.uri}/wallet/{wallet.ident}"
+
 
     @api.depends("name", "type")
     def _compute_status(self):

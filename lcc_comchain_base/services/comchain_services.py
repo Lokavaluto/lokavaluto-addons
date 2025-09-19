@@ -90,6 +90,7 @@ class ComchainService(Component):
                 {
                     "name": "comchain:%s" % params.address,
                     "alt_currency_id": alt_currency.id,
+                    "ident": params.address,
                     "partner_id": partner.id,
                     "comchain_status": "pending",
                     "comchain_id": params.address,

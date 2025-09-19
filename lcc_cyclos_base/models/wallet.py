@@ -13,6 +13,7 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
+    ident = fields.Char(compute="_compute_ident")
     cyclos_create_response = fields.Text(string="Cyclos create response")
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
@@ -26,6 +27,12 @@ class ResPartnerBackend(models.Model):
                 if backend_key.startswith("cyclos:") and wallet.cyclos_id:
                     data[backend_key] = [wallet.cyclos_id]
         return data
+
+    @api.depends("cyclos_id")
+    def _compute_ident(self):
+        for wallet in self:
+            self.ident = self.cyclos_id
+
 
     def get_wallet_json_data(self):
         """Returns normalized wallet data in JSON
