@@ -57,15 +57,21 @@ class PartnerService(Component):
         backend_keys = set(self.env.user.partner_id.backends()) & set(
             partner_credit_requests_get_param.backend_keys,
         )
-        backend_types = [key.split(":", 1)[0] for key in backend_keys]
+        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
 
-        wallets = ResPartnerBackend.search([("type", "in", backend_types)])
-        if not wallets:
-            _logger.warning("No wallet found for backend keys %r", backend_types)
-
-        credit_request_list = []
-        for wallet in wallets:
-            credit_request_list += self._get_credit_requests(wallet, ["pending"])
+        # Retrieve all the credit requests of the requested currencies
+        credit_requests = self.env["credit.request"].sudo().search(
+            [
+                ("alt_currency_id.uri", "in", currency_uris),
+                ("state", "in", ["pending"])
+            ],
+            order="create_date desc",
+        )
+        # Retrieve credit requests data
+        credit_request_list = [
+                self._get_credit_request_data(cr)
+                for cr in credit_requests
+            ]
         return credit_request_list
 
     @restapi.method(
@@ -74,40 +80,59 @@ class PartnerService(Component):
     def pending_topup(self):
         pending_topup_list = []
         backend_keys = request.params["backend_keys"]
-        backend_types = []
+        currency_engines = []
 
         ## Temporary workaround bug of monujo < 1.2.0-rc.2 sending a
         ## wallet internal id (ie: comchain:1f234...7fabb) instead of
         ## a backend internal id (ie: comchain:Lemanopolis).
         supported_backend_keys = self.env.user.partner_id.backends()
-        supported_backend_types = [
+        supported_currency_engines = [
             key.split(":", 1)[0] for key in supported_backend_keys
         ]
         cleaned_backend_keys = []
         for backend_key in backend_keys:
             if re.match(r"^(cyclos|comchain):(-?[0-9a-f]{12,})(@.+)?$", backend_key):
-                backend_type = backend_key.split(":")[0]
-                if backend_type in supported_backend_types:
-                    backend_types.append(backend_type)
+                currency_engine = backend_key.split(":")[0]
+                if currency_engine in supported_currency_engines:
+                    currency_engines.append(currency_engine)
                 continue
             cleaned_backend_keys.append(backend_key)
         backend_keys = cleaned_backend_keys
-        ## End of workaround
+        ## Break of workaround
 
         backend_keys = set(self.env.user.partner_id.backends()) & set(backend_keys)
-        backend_types += [key.split(":", 1)[0] for key in backend_keys]
+        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+
+        ## Continue the workaround
+        currency_uris += [
+            cur.uri for cur in self.env["res.alt.currency"].search(
+                [
+                    ("active", "=", True),
+                    ("engine", "in", currency_engines),
+                ]
+            )
+        ]
+        ## End of the workaround
 
         wallets = self.env["res.partner.backend"].search(
             [
-                ("type", "in", backend_types),
+                ("alt_currency_id.uri", "in", currency_uris),
                 ("partner_id.id", "=", self.env.user.partner_id.id),
             ],
         )
+        CreditRequestSU = self.env["credit.request"].sudo()
         for wallet in wallets:
-            pending_topup_list += self._get_credit_requests(
-                wallet,
-                ["open", "pending", "error"],
-            )
+            pending_topup_list += [
+                self._get_credit_request_data(cr)
+                for cr in CreditRequestSU.search(
+                        [
+                            ("wallet_id", "=", wallet.id),
+                            ("state", "in", ["open", "pending", "error"])
+                        ],
+                        order="create_date desc",
+                )
+            ]
+
         return pending_topup_list
 
     @restapi.method(
@@ -583,17 +608,6 @@ class PartnerService(Component):
 
     def _get_backend_credentials(self, partner):
         return []
-
-    def _get_credit_requests(self, wallet, status):
-        """Return data on all the opened requests of the wallets."""
-        CreditRequestSU = self.env["credit.request"].sudo()
-        return [
-            self._get_credit_request_data(cr)
-            for cr in CreditRequestSU.search(
-                [("wallet_id", "=", wallet.id), ("state", "in", status)],
-                order="create_date desc",
-            )
-        ]
 
     def _get_credit_request_data(self, cr):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
