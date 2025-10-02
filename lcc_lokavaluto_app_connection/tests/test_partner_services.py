@@ -138,7 +138,7 @@ class TestPartnerService(TransactionComponentCase):
         self.WalletRestrictionRule.create(
             {
                 "name": "Test Rule",
-                "sender_wallet_domain": "[]",
+                "sender_wallet_domain": None,
                 "recipient_wallet_domain": "[('name', '=', 'comchain:allowed_recipient')]",
             }
         )

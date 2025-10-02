@@ -120,9 +120,10 @@ class ResPartnerBackend(models.Model):
             [("active", "=", True)], order="sequence"
         )
         for rule in rules:
-            if self.search(
-                safe_eval(rule.sender_wallet_domain) + [("id", "=", self.id)], limit=1
-            ):
+            if not rule.sender_wallet_domain:  # it means all senders are concerned
+                return rule
+            domain = safe_eval(rule.sender_wallet_domain) + [("id", "=", self.id)]
+            if self.search(domain, limit=1):
                 return rule
         return None
 
