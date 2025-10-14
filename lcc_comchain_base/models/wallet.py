@@ -19,7 +19,6 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    ident = fields.Char(compute="_compute_ident")
     comchain_id = fields.Char(string="Address")
     comchain_wallet = fields.Text(string="Crypted json wallet")
     comchain_status = fields.Char(string="Comchain Status")
@@ -47,10 +46,10 @@ class ResPartnerBackend(models.Model):
             return False
         return "%s:%s" % ("comchain", currency_name)
 
-    @api.depends("comchain_id")
-    def _compute_ident(self):
-        for wallet in self:
-            self.ident = self.comchain_id
+    def write(self, vals):
+        if vals.get("comchain_id"):
+            vals["ident"] = vals.get("comchain_id")
+        return super(ResPartnerBackend, self).write(vals)
 
     def get_wallet_json_data(self):
         """Returns normalized wallet data in JSON
@@ -84,7 +83,7 @@ class ResPartnerBackend(models.Model):
 
                 monujo_backends = (
                     safe_wallet_partner.lcc_backend_ids._update_search_data(
-                        [self.comchain_backend_id]
+                        [self.alt_currency_id.uri]
                     )
                 )
                 if len(monujo_backends) > 1:
