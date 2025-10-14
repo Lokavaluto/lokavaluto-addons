@@ -615,8 +615,22 @@ class PartnerService(Component):
             )
             for currency in all_alt_currencies:
                 data.append(currency.get_currency_json_data())
+            return data
+
         for wallet in wallets:
             data.append(wallet.get_wallet_json_data())
+
+        # Concatenate wallets from the same currency in the same parent
+        merged_data = {}
+        for item in data:
+            t = item["type"]
+            if t not in merged_data:
+                merged_data[t] = item
+            else:
+                # Merge accounts
+                merged_data[t]["accounts"].extend(item["accounts"])
+
+        data = list(merged_data.values())
         return data
 
     def _get_credit_request_data(self, cr):
