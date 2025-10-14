@@ -27,7 +27,7 @@ class ResPartnerBackend(models.Model):
         string="Currency",
         required=True,
     )
-    ident = fields.Char("Wallet Ident", required=True, store=True, tracking=True)
+    ident = fields.Char("Wallet Ident", store=True, tracking=True)
     uri = fields.Char("Wallet URI", compute="_compute_wallet_uri", store=True, tracking=True)
     active = fields.Boolean(default=True, tracking=True)
     partner_public_name = fields.Char(
@@ -58,6 +58,8 @@ class ResPartnerBackend(models.Model):
     )
     tag_ids = fields.Many2many("wallet.tag", string="Tags")
 
+
+    @api.depends("alt_currency_id", "ident")
     def _compute_wallet_uri(self):
         for wallet in self:
             wallet.uri = f"{wallet.alt_currency_id.uri}/wallet/{wallet.ident}"
@@ -91,6 +93,14 @@ class ResPartnerBackend(models.Model):
         for record in self:
             if record.partner_id.public_profile_id:
                 record.partner_public_name = record.partner_id.public_profile_id.name
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(ResPartnerBackend, self).create(vals_list)
+        for wallet in self:
+            if wallet.type == "foo":
+                wallet.ident = wallet.id
+        return res
 
     def get_by_name(self, name: str):
         """Returns wallet object matching the name given"""

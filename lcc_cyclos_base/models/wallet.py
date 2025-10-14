@@ -13,16 +13,14 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    ident = fields.Char(compute="_compute_ident")
     cyclos_create_response = fields.Text(string="Cyclos create response")
     cyclos_id = fields.Char(string="Cyclos id")
     cyclos_status = fields.Char(string="Cyclos Status")
 
-    @api.depends("cyclos_id")
-    def _compute_ident(self):
-        for wallet in self:
-            self.ident = self.cyclos_id
-
+    def write(self, vals):
+        if vals.get("cyclos_id"):
+            vals["ident"] = vals.get("cyclos_id")
+        return super(ResPartnerBackend, self).write(vals)
 
     def get_wallet_json_data(self):
         """Returns normalized wallet data in JSON
@@ -57,7 +55,7 @@ class ResPartnerBackend(models.Model):
 
                 monujo_backends = (
                     safe_wallet_partner.lcc_backend_ids._update_search_data(
-                        [data["type"]],
+                        [self.alt_currency_id.uri],
                     )
                 )
                 if len(monujo_backends) > 1:
