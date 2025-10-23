@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "16.0.1.0.2",
+    "version": "16.0.1.1.0",
     "licence": "AGPL-3",
     # any module necessary for this one to work correctly
     "depends": [
@@ -24,7 +24,6 @@
     # always loaded
     "data": [
         "security/wallets_security.xml",
-        "security/ir.model.access.csv",
         "wizards/create_credit_request.xml",
         "views/account_invoice.xml",
         "views/res_partner.xml",
@@ -42,6 +41,7 @@
         "views/res_config_settings_view.xml",
         "data/numeric_data.xml",
         "data/res_alt_currency_data.xml",
+        "security/ir.model.access.csv",
     ],
     # only loaded in demonstration mode
     "demo": [],
