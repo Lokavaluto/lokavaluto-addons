@@ -39,7 +39,8 @@ class AuthService(Component):
             _logger.debug("USER: %s" % current_user)
             if current_user:
                 partner = current_user.partner_id
-                to_add = self._update_auth_data(partner)
+                to_add = partner.get_partner_wallets_credentials()
+                to_add = self._add_token_data(to_add, partner)
                 lcc_profile_info = partner.lcc_profile_info()
                 if len(lcc_profile_info) == 0:
                     raise exceptions.UserError(
@@ -72,6 +73,10 @@ class AuthService(Component):
 
             response["api_version"] = __api_version__
         return response
+
+    def _add_token_data(self, data, partner):
+        """Return token data for the concerned wallets."""
+        return data
 
     @restapi.method([(["/signup"], "POST")], cors="*")
     def signup(self):
@@ -115,22 +120,6 @@ class AuthService(Component):
         if error:
             return {"error": error, "status": "Error"}
         return {"status": "OK"}
-
-    # Privates functions
-    def _update_auth_data(self, partner):
-        data = []
-        wallets = self.env["res.partner.backend"].search(
-            [("active", "=", True), ("partner_id", "=", partner.id)]
-        )
-        if len(wallets) == 0:
-            all_alt_currencies = self.env["res.alt.currency"].search(
-                [("active", "=", True)]
-            )
-            for currency in all_alt_currencies:
-                data.append(currency.get_currency_json_data())
-        for wallet in wallets:
-            data.append(wallet.sudo().get_wallet_json_data())
-        return data
 
     # Validator
     def _validator_authenticate(self):

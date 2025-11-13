@@ -58,6 +58,32 @@ class ResPartner(models.Model):
             backends |= {f"{wallet.alt_currency_id.engine}:{wallet.alt_currency_id.ident}"}
         return backends
 
+    def get_partner_wallets_credentials(self):
+        data = []
+        wallets = self.lcc_backend_ids.filtered(lambda x: x.active == True)
+        if len(wallets) == 0:
+            all_alt_currencies = self.env["res.alt.currency"].search(
+                [("active", "=", True)]
+            )
+            for currency in all_alt_currencies:
+                data.append(currency.get_currency_json_data())
+            return data
+
+        for wallet in wallets:
+            data.append(wallet.get_wallet_json_data())
+
+        # Concatenate wallets from the same currency in the same parent
+        merged_data = {}
+        for item in data:
+            t = item["type"]
+            if t not in merged_data:
+                merged_data[t] = item
+            else:
+                # Merge accounts
+                merged_data[t]["accounts"].extend(item["accounts"])
+
+        data = list(merged_data.values())
+        return data
 
     def _validator_return_authenticate(self):
         return {
