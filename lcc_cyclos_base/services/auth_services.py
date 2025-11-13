@@ -11,8 +11,9 @@ _logger = logging.getLogger(__name__)
 class AuthService(Component):
     _inherit = "auth.service"
 
-    def _update_auth_data(self, partner):
-        data = super()._update_auth_data(partner)
+    def _add_token_data(self, data, partner):
+        """Return token data for the concerned Cyclos wallets."""
+        data = super(AuthService, self)._add_token_data(data, partner)
         password = request.httprequest.authorization.password
         # Update cyclos password with odoo one from authenticate session
         for wallet_json_data in data:
