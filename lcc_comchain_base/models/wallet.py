@@ -34,18 +34,6 @@ class ResPartnerBackend(models.Model):
     def comchain_wallet_parsed(self):
         return json.loads(self.comchain_wallet) if self.comchain_wallet else {}
 
-    @property
-    def comchain_backend_id(self):
-        """Return the technical id for the backend"""
-        wallet = self.comchain_wallet_parsed
-        currency_name = (
-            wallet.get("server", {}).get("name", {}) or self.alt_currency_id.name
-        )
-        if not currency_name:
-            ## not present in wallet and not configured in general settings
-            return False
-        return "%s:%s" % ("comchain", currency_name)
-
     def write(self, vals):
         if vals.get("comchain_id"):
             vals["ident"] = vals.get("comchain_id")
