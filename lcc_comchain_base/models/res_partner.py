@@ -18,11 +18,9 @@ class ResPartner(models.Model):
         wallets = self.get_wallets_by_currency_type("comchain")
         if not wallets:
             return backends
-        backend_id = wallets[0].comchain_backend_id
-        if not backend_id:
-            ## not present in wallet and not configured in general settings
-            return backends
-        return backends | {backend_id}
+        for wallet in wallets:
+            backends |= f"comchain:{wallet.alt_currency_id.ident}"
+        return backends
 
     def show_app_access_buttons(self):
         # For comchain the app access buttons on the portal are always displayed
