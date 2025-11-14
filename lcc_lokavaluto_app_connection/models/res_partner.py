@@ -49,12 +49,14 @@ class ResPartner(models.Model):
             return self.env["res.partner.backend"]
 
     def backends(self):
-        backends = set()
-        wallets = self.get_wallets_by_currency_type("foo")
+        """
+        Return the list of currencies on which the partner has a wallet.
 
-        if not wallets:
-            return backends
-        for wallet in wallets:
+        SOON OBSOLETE: this function should be removed once all API only uses
+        currency and wallet URIs.
+        """
+        backends = set()
+        for wallet in self.lcc_backend_ids:
             backends |= {f"{wallet.alt_currency_id.engine}:{wallet.alt_currency_id.ident}"}
         return backends
 
