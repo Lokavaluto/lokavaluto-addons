@@ -12,19 +12,6 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    def backends(self):
-        self.ensure_one()
-        backends = super(ResPartner, self).backends()
-        wallets = self.get_wallets_by_currency_type("cyclos")
-        for wallet in wallets:
-            if wallet.cyclos_id:
-                backends |= {
-                    "{}:{}".format(
-                        "cyclos", wallet.alt_currency_id.get_cyclos_server_domain()
-                    ),
-                }
-        return backends
-
     def cyclos_add_user(self, alt_currency_id) -> None:
         for record in self:
             backend_obj = self.env["res.partner.backend"]
