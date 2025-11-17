@@ -8,12 +8,8 @@ from odoo.addons.component.core import Component
 from odoo.http import request
 from odoo.exceptions import (
     AccessDenied,
-    AccessError,
     MissingError,
-    UserError,
-    ValidationError,
 )
-from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 

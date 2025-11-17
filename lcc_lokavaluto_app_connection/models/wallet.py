@@ -1,7 +1,6 @@
 from random import randint
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 import logging
 

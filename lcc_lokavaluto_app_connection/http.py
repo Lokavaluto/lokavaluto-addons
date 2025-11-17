@@ -54,10 +54,10 @@ def CORSMiddleware(original_app):
 
         try:
             res = original_app(self, environ, add_cors_headers)
-        except AccessDenied as e:
+        except AccessDenied:
             response = Response(status=401, headers={})
             return response(environ, add_cors_headers)
-        except Exception as e:
+        except Exception:
             # _logger.debug(format_last_exception())
             raise
         _logger.debug("OK: %r", res)

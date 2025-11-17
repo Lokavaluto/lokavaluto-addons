@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import odoo
-import odoo.modules.registry
-from odoo.modules import get_module_resource
-from odoo.tools.translate import _
-from odoo import http
 
-from odoo.http import request, serialize_exception as _serialize_exception
 
 _logger = logging.getLogger(__name__)
 

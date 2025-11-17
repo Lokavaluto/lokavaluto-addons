@@ -1,8 +1,6 @@
 import requests
 import json
-from urllib.parse import urlparse
-from requests.auth import HTTPBasicAuth
-from odoo import models, fields, api
+from odoo import models
 import logging
 
 _logger = logging.getLogger(__name__)

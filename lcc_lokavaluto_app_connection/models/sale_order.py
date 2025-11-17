@@ -46,7 +46,7 @@ class SaleOrder(models.Model):
             categ = self.env.ref(
                 "lcc_lokavaluto_app_connection.product_category_numeric_lcc"
             )
-        except Exception as e:
+        except Exception:
             categ = self.env["product.category"].search([("name", "=", "Numeric LCC")])
         if categ:
             lcc_numeric_products = self.order_line.filtered(

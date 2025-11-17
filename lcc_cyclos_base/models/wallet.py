@@ -1,4 +1,3 @@
-import requests
 import json
 from odoo import models, fields, api
 from odoo.addons.lcc_lokavaluto_app_connection import tools

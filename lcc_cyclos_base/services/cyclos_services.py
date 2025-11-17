@@ -1,7 +1,6 @@
 import logging
 from werkzeug.exceptions import NotFound
 from odoo.addons.base_rest import restapi
-from odoo.addons.base_rest.components.service import to_int
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 

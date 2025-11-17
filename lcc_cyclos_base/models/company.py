@@ -6,7 +6,6 @@ from requests.auth import HTTPBasicAuth
 from urllib.parse import urlparse, quote
 from werkzeug.exceptions import NotFound
 from odoo import models, fields
-from odoo.addons.lcc_lokavaluto_app_connection import tools
 
 import logging
 

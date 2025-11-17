@@ -5,7 +5,6 @@ from odoo.addons.base_rest_datamodel.restapi import Datamodel
 from odoo.addons.component.core import Component
 
 from odoo.exceptions import AccessDenied
-from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 

@@ -184,7 +184,7 @@ class CreditRequest(models.Model):
     def credit_wallet(self):
         """Send credit order to the wallet."""
         for record in self:
-            if not record.state in ["pending", "error"]:
+            if record.state not in ["pending", "error"]:
                 continue
 
             # Check if we have the needed data to perform the top up process
