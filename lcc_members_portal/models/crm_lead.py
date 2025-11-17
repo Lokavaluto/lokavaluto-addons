@@ -1,5 +1,4 @@
-from bdb import set_trace
-from odoo import fields, models, api
+from odoo import fields, models
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 

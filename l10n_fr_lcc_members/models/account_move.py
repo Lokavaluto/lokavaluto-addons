@@ -9,11 +9,11 @@ class AccountMove(models.Model):
         self.ensure_one()
         if self.journal_id.is_receipt:
             if self.move_type == "out_invoice" and self.state == "draft":
-                return _(f"Draft Receipt - %s") % self.name
+                return _("Draft Receipt - %s") % self.name
             elif self.move_type == "out_invoice" and self.state == "posted":
-                return _(f"Receipt - %s") % self.name
+                return _("Receipt - %s") % self.name
             elif self.move_type == "out_invoice" and self.state == "cancel":
-                return _(f"Cancelled Receipt - %s") % self.name
+                return _("Cancelled Receipt - %s") % self.name
             else:
                 raise UserError(_("The receipt is in a state we do not handle. "
                                   "Please contact the support for this issue."))

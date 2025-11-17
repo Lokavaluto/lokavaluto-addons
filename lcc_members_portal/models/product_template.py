@@ -1,5 +1,5 @@
 from datetime import datetime
-from odoo import fields, models, api
+from odoo import fields, models
 
 
 class ProductTemplate(models.Model):

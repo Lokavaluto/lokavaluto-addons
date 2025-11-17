@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo.tools.translate import _
-from odoo import models, api
+from odoo import models
 
 
 class PortalWizardUser(models.TransientModel):
