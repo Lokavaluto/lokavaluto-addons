@@ -7,7 +7,7 @@ class CommissionRule(models.Model):
 
     _name = "commission.rule"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = "Define the way a commission must be applied on debit requests"
+    _description = "Commission Rule"
 
     name = fields.Char("Name", tracking=True)
     active = fields.Boolean(default=True, tracking=True)

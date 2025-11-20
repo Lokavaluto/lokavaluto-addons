@@ -6,7 +6,7 @@ class TopupRule(models.Model):
 
     _name = "topup.rule"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = "Define if a user can topup on its wallets."
+    _description = "Top Up Rule"
     _order = "sequence"
 
     name = fields.Char("Name", tracking=True)

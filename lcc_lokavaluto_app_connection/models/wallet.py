@@ -8,13 +8,11 @@ _logger = logging.getLogger(__name__)
 
 
 class ResPartnerBackend(models.Model):
-    """Add backend commom property for local currency"""
+    """Object in Odoo which match a wallet in an alternative currency."""
 
     _name = "res.partner.backend"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = (
-        "Object in Odoo which match a wallet in a connected transaction backend."
-    )
+    _description = "Wallet"
 
     type = fields.Selection(
         related="alt_currency_id.engine",

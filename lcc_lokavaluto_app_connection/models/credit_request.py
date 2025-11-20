@@ -9,11 +9,15 @@ _logger = logging.getLogger(__name__)
 
 
 class CreditRequest(models.Model):
-    """Credit request to follow the top up process for user wallets."""
+    """
+    Credit request to follow the top up process for user wallets.
+
+    Represents the request of a user to transform state currency in alternative currency.
+    """
 
     _name = "credit.request"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = "Represents the request of a user to transform state currency in alternative currency."
+    _description = "Credit Request"
 
     amount = fields.Float("Amount", required=True, tracking=True)
     wallet_id = fields.Many2one(

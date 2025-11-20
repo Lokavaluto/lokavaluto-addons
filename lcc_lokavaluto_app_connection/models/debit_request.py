@@ -3,7 +3,11 @@ from odoo.exceptions import UserError
 
 
 class DebitRequest(models.Model):
-    """Debit request to follow the reconversion process for wallet users"""
+    """
+    Debit request to follow the reconversion process for wallet users
+
+    Represent the request of an user to transform alternative currency in stage currency.
+    """
 
     _sql_constraints = [
         (
@@ -15,7 +19,7 @@ class DebitRequest(models.Model):
 
     _name = "debit.request"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = "Represent the request of an user to transform alternative currency in stage currency."
+    _description = "Debit request"
 
     active = fields.Boolean(default=True, tracking=True)
     amount = fields.Float("Amount", required=True, tracking=True)
