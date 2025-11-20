@@ -6,7 +6,7 @@ class ReconversionRule(models.Model):
 
     _name = "reconversion.rule"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = "Define if a user can ask for a reconversion on its wallets."
+    _description = "Reconversion rule"
     _order = "sequence"
 
     sequence = fields.Integer(tracking=True)

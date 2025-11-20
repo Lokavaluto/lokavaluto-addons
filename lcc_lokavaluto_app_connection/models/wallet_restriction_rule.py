@@ -8,7 +8,7 @@ class WalletRestrictionRule(models.Model):
 
     _name = "wallet.restriction.rule"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = "Define restrictions between senders and recipients wallets"
+    _description = "Wallet Restriction Rule"
     _order = "sequence"
 
     name = fields.Char("Name", tracking=True)
