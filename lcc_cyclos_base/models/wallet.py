@@ -13,9 +13,9 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    cyclos_create_response = fields.Text(string="Cyclos create response")
-    cyclos_id = fields.Char(string="Cyclos id")
-    cyclos_status = fields.Char(string="Cyclos Status")
+    cyclos_create_response = fields.Text(string="Cyclos create response", tracking=True)
+    cyclos_id = fields.Char(string="Cyclos id", tracking=True)
+    cyclos_status = fields.Char(string="Cyclos Status", tracking=True)
 
     def write(self, vals):
         if vals.get("cyclos_id"):

@@ -11,6 +11,7 @@ class ResPartnerBackend(models.Model):
     """Add backend commom property for local currency"""
 
     _name = "res.partner.backend"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = (
         "Object in Odoo which match a wallet in a connected transaction backend."
     )
@@ -26,6 +27,7 @@ class ResPartnerBackend(models.Model):
         "res.alt.currency",
         string="Currency",
         required=True,
+        tracking=True,
     )
     ident = fields.Char("Wallet Ident", store=True, tracking=True)
     uri = fields.Char("Wallet URI", compute="_compute_wallet_uri", store=True, tracking=True)
@@ -47,7 +49,12 @@ class ResPartnerBackend(models.Model):
         compute="_compute_status",
         tracking=True,
     )
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    partner_id = fields.Many2one(
+        "res.partner",
+        string="Partner",
+        required=True,
+        tracking=True,
+    )
     is_reconversion_allowed = fields.Boolean(
         "Is Reconversion Allowed?",
         readonly=True,
@@ -56,7 +63,7 @@ class ResPartnerBackend(models.Model):
     is_topup_allowed = fields.Boolean(
         "Is Topup Allowed ?", readonly=True, compute="_compute_is_topup_allowed"
     )
-    tag_ids = fields.Many2many("wallet.tag", string="Tags")
+    tag_ids = fields.Many2many("wallet.tag", string="Tags", tracking=True)
 
 
     @api.depends("alt_currency_id", "ident")

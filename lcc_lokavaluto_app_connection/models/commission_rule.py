@@ -6,12 +6,13 @@ class CommissionRule(models.Model):
     commission amount for digital currencies."""
 
     _name = "commission.rule"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Define the way a commission must be applied on debit requests"
 
-    name = fields.Char("Name")
-    active = fields.Boolean(default=True)
-    sequence = fields.Integer()
-    wallet_domain = fields.Char("Wallet Domain")
+    name = fields.Char("Name", tracking=True)
+    active = fields.Boolean(default=True, tracking=True)
+    sequence = fields.Integer(tracking=True)
+    wallet_domain = fields.Char("Wallet Domain", tracking=True)
 
     calculation_rule = fields.Selection(
         [
@@ -19,9 +20,10 @@ class CommissionRule(models.Model):
             ("percentage", "Percentage"),
         ],
         string="Calculation Rule",
+        tracking=True,
     )
 
-    calculation_value = fields.Float("Value")
+    calculation_value = fields.Float("Value", tracking=True)
 
     def calculate_commission_amount(self, debit_amount):
         self.ensure_one()

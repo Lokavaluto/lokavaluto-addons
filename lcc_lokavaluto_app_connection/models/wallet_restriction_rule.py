@@ -7,14 +7,15 @@ class WalletRestrictionRule(models.Model):
     """A wallet restriction rule defines if a sender wallet is restricted to some recipients' wallet."""
 
     _name = "wallet.restriction.rule"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Define restrictions between senders and recipients wallets"
     _order = "sequence"
 
-    name = fields.Char("Name")
-    active = fields.Boolean(default=True)
-    sequence = fields.Integer()
-    sender_wallet_domain = fields.Char("Sender Wallet Domain")
-    recipient_wallet_domain = fields.Char("Recipient Wallet Domain")
+    name = fields.Char("Name", tracking=True)
+    active = fields.Boolean(default=True, tracking=True)
+    sequence = fields.Integer(tracking=True)
+    sender_wallet_domain = fields.Char("Sender Wallet Domain", tracking=True)
+    recipient_wallet_domain = fields.Char("Recipient Wallet Domain", tracking=True)
 
     recipients_matched_by_rule = fields.Many2many(
         "res.partner.backend",

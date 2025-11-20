@@ -14,11 +14,17 @@ class DebitRequest(models.Model):
     ]
 
     _name = "debit.request"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Represent the request of an user to transform alternative currency in stage currency."
 
     active = fields.Boolean(default=True, tracking=True)
-    amount = fields.Float("Amount", required=True)
-    wallet_id = fields.Many2one("res.partner.backend", string="Wallet", required=True)
+    amount = fields.Float("Amount", required=True, tracking=True)
+    wallet_id = fields.Many2one(
+        "res.partner.backend",
+        string="Wallet",
+        required=True,
+        tracking=True,
+    )
     alt_currency_id = fields.Many2one(
         "res.alt.currency",
         related="wallet_id.alt_currency_id",
@@ -41,11 +47,12 @@ class DebitRequest(models.Model):
         required=True,
         string="State",
         default="draft",
+        tracking=True,
     )
     backend_ident = fields.Char("Backend Identifier")
-    transaction_id = fields.Char("Transaction ID")
-    transaction_date = fields.Datetime("Transaction Timestamp")
-    debit_move_id = fields.Many2one("account.move", string="Debit Invoice")
+    transaction_id = fields.Char("Transaction ID", tracking=True)
+    transaction_date = fields.Datetime("Transaction Timestamp", tracking=True)
+    debit_move_id = fields.Many2one("account.move", string="Debit Invoice", tracking=True)
     debit_move_state = fields.Selection(
         [
             ("draft", "Draft"),
@@ -59,8 +66,9 @@ class DebitRequest(models.Model):
     commission_rule_id = fields.Many2one(
         "commission.rule",
         string="Commission Rule",
+        tracking=True,
     )
-    commission_move_id = fields.Many2one("account.move", string="Commission Invoice")
+    commission_move_id = fields.Many2one("account.move", string="Commission Invoice", tracking=True)
     commission_move_state = fields.Selection(
         [
             ("draft", "Draft"),
