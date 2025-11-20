@@ -5,12 +5,13 @@ class ReconversionRule(models.Model):
     """A recommission rule defines if a wallet can use the reconversion process."""
 
     _name = "reconversion.rule"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Define if a user can ask for a reconversion on its wallets."
     _order = "sequence"
 
-    sequence = fields.Integer()
-    name = fields.Char("Name")
-    active = fields.Boolean(default=True)
-    wallet_domain = fields.Char("Wallet Domain")
+    sequence = fields.Integer(tracking=True)
+    name = fields.Char("Name", tracking=True)
+    active = fields.Boolean(default=True, tracking=True)
+    wallet_domain = fields.Char("Wallet Domain", tracking=True)
 
-    is_reconversion_allowed = fields.Boolean("Is Reconversion Allowed?")
+    is_reconversion_allowed = fields.Boolean("Is Reconversion Allowed?", tracking=True)

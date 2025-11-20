@@ -12,10 +12,16 @@ class CreditRequest(models.Model):
     """Credit request to follow the top up process for user wallets."""
 
     _name = "credit.request"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Represents the request of a user to transform state currency in alternative currency."
 
-    amount = fields.Float("Amount", required=True)
-    wallet_id = fields.Many2one("res.partner.backend", string="Wallet", required=True)
+    amount = fields.Float("Amount", required=True, tracking=True)
+    wallet_id = fields.Many2one(
+        "res.partner.backend",
+        string="Wallet",
+        required=True,
+        tracking=True,
+    )
     partner_id = fields.Many2one(
         "res.partner",
         related="wallet_id.partner_id",
@@ -36,18 +42,19 @@ class CreditRequest(models.Model):
         string="State",
         required=True,
         default="open",
+        tracking=True,
     )
 
-    invoice_id = fields.Many2one("account.move", string="Linked Invoice")
-    order_id = fields.Many2one("sale.order", string="Linked Sale Order")
+    invoice_id = fields.Many2one("account.move", string="Linked Invoice", tracking=True)
+    order_id = fields.Many2one("sale.order", string="Linked Sale Order", tracking=True)
 
-    transaction_data = fields.Char("Transaction Message")
-    error_message = fields.Char("Error Message")
+    transaction_data = fields.Char("Transaction Message", tracking=True)
+    error_message = fields.Char("Error Message", tracking=True)
 
-    limit_credit_aggregation = fields.Boolean("Limit credit aggregation")
-    max_credit_amount = fields.Float("Maximum amount of credit allowed")
+    limit_credit_aggregation = fields.Boolean("Limit credit aggregation", tracking=True)
+    max_credit_amount = fields.Float("Maximum amount of credit allowed", tracking=True)
 
-    requester_id = fields.Many2one("res.partner", string="Requester")
+    requester_id = fields.Many2one("res.partner", string="Requester", tracking=True)
 
     @api.model
     def create(self, vals):

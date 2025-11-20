@@ -42,6 +42,11 @@
                         attrs="{'invisible': [('is_topup_allowed','=',True)]}">
                         Topups are NOT allowed on this wallet.</div>
                 </sheet>
+		<div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>

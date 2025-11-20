@@ -19,16 +19,17 @@ class ResPartnerBackend(models.Model):
 
     _inherit = "res.partner.backend"
 
-    comchain_id = fields.Char(string="Address")
-    comchain_wallet = fields.Text(string="Crypted json wallet")
-    comchain_status = fields.Char(string="Comchain Status")
+    comchain_id = fields.Char(string="Address", tracking=True)
+    comchain_wallet = fields.Text(string="Crypted json wallet", tracking=True)
+    comchain_status = fields.Char(string="Comchain Status", tracking=True)
     comchain_type = fields.Selection(
         [("0", "Personal"), ("1", "Company"), ("2", "Admin")],
         string="Type",
+        tracking=True,
     )
-    comchain_credit_min = fields.Float(string="Min Credit limit")
-    comchain_credit_max = fields.Float(string="Max Credit limit")
-    comchain_message_key = fields.Char(string="Message keys")
+    comchain_credit_min = fields.Float(string="Min Credit limit", tracking=True)
+    comchain_credit_max = fields.Float(string="Max Credit limit", tracking=True)
+    comchain_message_key = fields.Char(string="Message keys", tracking=True)
 
     @property
     def comchain_wallet_parsed(self):
