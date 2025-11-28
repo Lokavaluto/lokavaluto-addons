@@ -30,9 +30,6 @@ class AlternativeCurrency(models.Model):
     odoo_wallet_partner_id = fields.Many2one(
         "res.partner", string="Odoo Wallet Partner", tracking=True
     )
-    comchain_odoo_wallet_password = fields.Char(
-        string="Odoo wallet password", tracking=True
-    )
     message_from = fields.Char("Message from", default=_default_messages, tracking=True)
     message_to = fields.Char("Message to", default=_default_messages, tracking=True)
 

@@ -13,7 +13,6 @@
                        placeholder="Select partner linked to safe wallet." />
 		<field name="odoo_wallet_partner_id"
                        placeholder="Select partner linked to Odoo wallet." />
-		<field name="comchain_odoo_wallet_password" password="True" />
 		<field name="last_block_checked_nb" />
 		<field name="message_from" />
 		<field name="message_to" />

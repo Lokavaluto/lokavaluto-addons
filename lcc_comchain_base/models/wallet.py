@@ -123,12 +123,9 @@ class ResPartnerBackend(models.Model):
             return res
 
         # Get Odoo wallet
+        odoo_wallet = self.alt_currency_id.odoo_wallet_partner_id.lcc_backend_ids[0]
         try:
-            odoo_wallet = pyc3l.Wallet.from_json(
-                self.alt_currency_id.odoo_wallet_partner_id.lcc_backend_ids[
-                    0
-                ].comchain_wallet,
-            )
+            comchain_odoo_wallet = pyc3l.Wallet.from_json(odoo_wallet.comchain_wallet)
         except Exception as e:
             _logger.error(tools.format_last_exception())
             return {
@@ -138,9 +135,8 @@ class ResPartnerBackend(models.Model):
             }
 
         # Unlock Odoo wallet before sending a transaction
-        alt_currency = self.alt_currency_id
         try:
-            odoo_wallet.unlock(alt_currency.comchain_odoo_wallet_password)
+            comchain_odoo_wallet.unlock(odoo_wallet.comchain_wallet_pwd)
         except Exception as e:
             _logger.error(tools.format_last_exception())
             return {
@@ -150,9 +146,10 @@ class ResPartnerBackend(models.Model):
             }
 
         # Send a transaction
+        alt_currency = self.alt_currency_id
         response = ""
         try:
-            response = odoo_wallet.transferOnBehalfOf(
+            response = comchain_odoo_wallet.transferOnBehalfOf(
                 f"0x{alt_currency.safe_wallet_partner_id.lcc_backend_ids[0].comchain_id}",
                 f"0x{self.comchain_id}",
                 amount,
