@@ -11,6 +11,7 @@
                 <group name="comchain_specific" string="Comchain specific"
                     attrs="{'invisible': [('type','!=','comchain')]}">
                     <field name="comchain_id" />
+                    <field name="comchain_wallet_pwd" password="True"/>
                     <field name="comchain_wallet" />
                     <field name="comchain_status" />
                     <field name="comchain_type" />
