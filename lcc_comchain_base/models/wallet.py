@@ -30,6 +30,7 @@ class ResPartnerBackend(models.Model):
     comchain_credit_min = fields.Float(string="Min Credit limit", tracking=True)
     comchain_credit_max = fields.Float(string="Max Credit limit", tracking=True)
     comchain_message_key = fields.Char(string="Message keys", tracking=True)
+    comchain_wallet_pwd = fields.Char(string="Wallet Password")
 
     @property
     def comchain_wallet_parsed(self):
