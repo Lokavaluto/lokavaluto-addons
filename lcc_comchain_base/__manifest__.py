@@ -20,6 +20,7 @@
         "views/res_alt_currency.xml",
         "views/wallet.xml",
         "data/comchain_data.xml",
+        "data/res_alt_currency_data.xml",
     ],
     # only loaded in demonstration mode
     "demo": [],

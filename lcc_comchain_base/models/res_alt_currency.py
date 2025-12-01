@@ -3,6 +3,8 @@ import logging
 from pyc3l import Pyc3l
 
 from odoo import api, fields, models
+from odoo.exceptions import AccessDenied
+
 
 pyc3l = Pyc3l()
 _logger = logging.getLogger(__name__)
@@ -142,3 +144,34 @@ class AlternativeCurrency(models.Model):
 
     def _safe_wallet_partners(self):
         return [*super()._safe_wallet_partners(), self.safe_wallet_partner_id]
+
+    def _cron_auto_gas_filling(self, currency_uri=None):
+        """Fill the Odoo wallet with Gas by sending a 0 unit transaction.
+
+        This cron will use the Odoo Wallet to send himself transactions regularly.
+
+        After each transaction, the Odoo Wallet will be refilled with Gas by Comchain,\
+        allowing it to trigger TransactionOnBehalf requests without the risk of running\
+        out.
+        """
+        if currency_uri is None:
+            currencies = self.search([("active", "=", True)])
+        else:
+            if not isinstance(currency_uri, str):
+                raise ValueError("currency_uri must be a string.")
+            currencies = self.search([("uri", "=", currency_uri)])
+            if len(currencies) == 0:
+                raise ValueError(
+                    f"No currency found for uri {currency_uri}.",
+                )
+
+        for alt_currency in currencies:
+            if alt_currency.engine != "comchain":
+                continue
+
+            # Get Odoo wallets
+            odoo_wallet_1 = alt_currency.odoo_wallet_partner_id.lcc_backend_ids[0]
+            message = "Gas filling transaction."
+
+            # Send 0 unit transaction to himself to generate gas.
+            odoo_wallet_1.send_nant_transaction(odoo_wallet_1, 0.00, message)

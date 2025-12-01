@@ -1,0 +1,14 @@
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_fill_comchain_odoo_wallet_with_gas" model="ir.cron">
+            <field name="name">Alt Currency: fill Comchain Odoo wallet with gas</field>
+            <field name="model_id" ref="lcc_lokavaluto_app_connection.model_res_alt_currency" />
+            <field name="state">code</field>
+            <field name="code">model._cron_auto_gas_filling()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">0</field>
+        </record>
+    </data>
+</odoo>
