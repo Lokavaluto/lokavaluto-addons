@@ -9,6 +9,8 @@ from pyc3l.ApiHandling import APIError
 from odoo import api, fields, models
 
 from odoo.addons.lcc_lokavaluto_app_connection import tools
+from odoo.exceptions import MissingError
+
 
 pyc3l = Pyc3l()
 _logger = logging.getLogger(__name__)
@@ -252,3 +254,32 @@ class ResPartnerBackend(models.Model):
             )
 
         return False
+
+    def send_nant_transaction(self, dest_wallet, amount, message_from="", message_to=""):
+        self.ensure_one()
+        if self.type != "comchain":
+            return res
+
+        if not self.comchain_wallet_pwd:
+            raise MissingError(f"Transaction impossible - Wallet password missing")
+
+        # Get Comchain wallet
+        comchain_wallet = pyc3l.Wallet.from_json(self.comchain_wallet)
+
+        # Unlock wallet before sending a transaction
+        comchain_wallet.unlock(self.comchain_wallet_pwd)
+
+        # Send a transaction
+        response = comchain_wallet.transferNant(
+            f"0x{dest_wallet.comchain_id}",
+            amount,
+            message_from=message_from,
+            message_to=message_to,
+        )
+
+        message = self.check_transaction_content(response, amount)
+        if message:
+            raise APIError(message)
+
+        # All checks performed
+        return response

@@ -1,5 +1,6 @@
 import json
 from minimock import mock, Mock, restore
+from unittest.mock import patch
 from odoo.addons.component.tests.common import TransactionComponentCase
 from pyc3l import Pyc3l, Wallet
 
@@ -24,6 +25,7 @@ class TestResWallet(TransactionComponentCase):
                 "partner_id": partner.id,
                 "comchain_id": ident,
                 "comchain_wallet": json.dumps("foo"),
+                "comchain_wallet_pwd": "strong_password",
                 "comchain_message_key": "bar"
             }
         )
@@ -190,4 +192,34 @@ class TestResWallet(TransactionComponentCase):
             res,
             "Max retry reached to get transaction info (10 retries)"
         )
+        restore()
+
+    def test_send_nant_transaction(self):
+        # Create data
+        pyc3l = Pyc3l()
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+
+        # Create destination wallet
+        dest_partner = self._create_res_partner("Destination")
+        dest_wallet = self._create_res_partner_backend(dest_partner, currency, ident="12345")
+
+        # Mock the wallet data and the transaction data returned by Pyc3l
+        mock_wallet = Mock(
+            "wallet",
+            unlock=Mock("unlock"),
+            transferNant=Mock("transferNant",returns="tx_hash_123")
+        )
+        mock("Wallet.from_json", returns=mock_wallet)
+
+        # Mock the check_transaction_response and check_transaction_content methods
+        with patch.object(
+            type(wallet), "check_transaction_content", return_value=False
+        ):
+            # Send nant transaction
+            res = wallet.send_nant_transaction(dest_wallet, 100)
+
+            self.assertEqual(res, "tx_hash_123")
+
         restore()
