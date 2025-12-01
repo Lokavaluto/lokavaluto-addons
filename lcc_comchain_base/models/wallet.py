@@ -164,51 +164,12 @@ class ResPartnerBackend(models.Model):
                 "error": "Failed transfer on behalf transaction: %s" % e,
             }
 
-        # Verify the Comchain transaction - res supposed to be the transaction hash
-        if not self.is_transaction_hash(response):
+        message = self.check_transaction_content(response, amount)
+        if message:
             return {
                 "success": False,
                 "response": response,
-                "error": "Comchain transaction failed: TransferOnBehalofOf response is not the expected hash",
-            }
-
-        transaction = pyc3l.Transaction(response)
-
-        retry = 0
-        while True:
-            tx_data = None
-            try:
-                tx_data = transaction.data
-            except APIError as e:
-                if not e.args[0].startswith("API Call failed without message"):
-                    _logger.error(tools.format_last_exception())
-                    return {
-                        "success": False,
-                        "response": response,
-                        "error": "Failure when trying to get transaction info: %s" % e,
-                    }
-            if tx_data is not None:
-                received = tx_data.get("recieved")
-                if received is None:
-                    _logger.error(
-                        "Received incomplete transaction data. Missing 'recieved' field."
-                    )
-                else:
-                    break
-            retry += 1
-            if retry >= 10:
-                return {
-                    "success": False,
-                    "response": response,
-                    "error": "Max retry reached to get transaction info (10 retries)",
-                }
-            time.sleep(0.5)
-        if received != round(amount * 100):
-            return {
-                "success": False,
-                "response": response,
-                "error": "Order sent, but checking transaction record returned as an unexepected amount of '%s' received."
-                % received,
+                "error": message,
             }
 
         # All checks performed
@@ -246,3 +207,48 @@ class ResPartnerBackend(models.Model):
     def is_transaction_hash(self, response):
         """Checks if the response is a 0x 64digits hash"""
         return re.search("^0x[0-9a-f]{64,64}$", response, re.IGNORECASE)
+
+    def check_transaction_content(self, response, amount=0):
+        """
+        Check if the transaction data are the one expected or not.
+
+        Return a message explaining the issue if there is an issue.
+        Return False if no problem.
+        """
+        # Verify the Comchain transaction - res supposed to be the transaction hash
+        if not self.is_transaction_hash(response):
+            return f"Comchain transaction failed: response is not the expected hash: {response}"
+
+        transaction = pyc3l.Transaction(response)
+
+        retry = 0
+        while True:
+            tx_data = None
+            try:
+                tx_data = transaction.data
+            except APIError as e:
+                _logger.error(tools.format_last_exception())
+                if not e.args[0].startswith("API Call failed without message"):
+                    return f"Failure when trying to get transaction info: {e}"
+
+            if tx_data is not None:
+                received = tx_data.get("recieved")
+                if received is None:
+                    _logger.error(
+                        "Received incomplete transaction data. Missing 'recieved' field."
+                    )
+                else:
+                    break
+            retry += 1
+            if retry >= 10:
+                return f"Max retry reached to get transaction info (10 retries)"
+
+            time.sleep(0.5)
+
+        if received != round(amount * 100):
+            return (
+                f"Order sent, but checking transaction record returned as an unexepected "
+                f"amount of {received} received."
+            )
+
+        return False
