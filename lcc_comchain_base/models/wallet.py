@@ -165,7 +165,7 @@ class ResPartnerBackend(models.Model):
             }
 
         # Verify the Comchain transaction - res supposed to be the transaction hash
-        if not re.search("^0x[0-9a-f]{64,64}$", response, re.IGNORECASE):
+        if not self.is_transaction_hash(response):
             return {
                 "success": False,
                 "response": response,
@@ -242,3 +242,7 @@ class ResPartnerBackend(models.Model):
             }
 
         return {"success": True, "response": balance}
+
+    def is_transaction_hash(self, response):
+        """Checks if the response is a 0x 64digits hash"""
+        return re.search("^0x[0-9a-f]{64,64}$", response, re.IGNORECASE)

@@ -102,3 +102,31 @@ class TestResWallet(TransactionComponentCase):
 
         self.assertEqual(res, {"success": True, "response": 1})
         restore()
+
+    def test_is_transaction_hash_ok(self):
+        """ Test is_transaction_hash() for a valid transaction. """
+
+        # Create data
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+
+        # Launch check on a real transaction hash
+        res = wallet.is_transaction_hash(
+            "0x85f8dfd7e5eab0fe66145ffb0ef3435c75875943b4b589bb0ee6042b4efb1e2e"
+        )
+        self.assertTrue(res)
+
+    def test_is_transaction_hash_ko(self):
+        """ Test is_transaction_hash() for an invalid transaction. """
+
+        # Create data
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+
+        # Launch check on a wrong transaction hash
+        res = wallet.is_transaction_hash(
+            "LoremIpsum"
+        )
+        self.assertFalse(res)
