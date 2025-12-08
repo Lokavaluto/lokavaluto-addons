@@ -49,6 +49,31 @@ class PartnerService(Component):
         return self.env.user.partner_id.get_partner_wallets_credentials()
 
     @restapi.method(
+        [(["/report-contact-info"], "GET")],
+    )
+    def report_contact_info(self):
+        def contact_info(p):
+            res =  {
+                "name": p.name,
+                "street": p.street,
+                "street2": p.street2,
+                "city": p.city,
+                "zip": p.zip,
+                "email": p.email,
+                "phone": p.phone,
+                "mobile": p.mobile,
+                "website": p.website
+            }
+            if hasattr(p, "logo"):
+                res["logo"] = p.logo
+            return res
+        company_id = self.env.user.company_id
+        return {
+            "issuer": contact_info(company_id),
+            "user": contact_info(self.env.user.partner_id)
+        }
+
+    @restapi.method(
         [(["/credit-requests"], "GET")],
         input_param=Datamodel("partner.credit.requests.get.param"),
     )
