@@ -7,97 +7,80 @@ class TestResWallet(TransactionComponentCase):
     def setUp(self):
         super().setUp()
 
-        self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
         self.ResPartnerBackend = self.env["res.partner.backend"]
         self.ResAltCurrency = self.env["res.alt.currency"]
 
-        self.partner_roger = self.ResPartner.create({"name": "Roger"})
-        self.currency_A_unit_product = self.env.ref(
+        self.comchain_currency_unit_product = self.env.ref(
             "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
         ).sudo()
-        self.currency_A = self.ResAltCurrency.create(
+
+    def _create_res_partner_backend(self, partner, currency, ident="98765"):
+        return self.ResPartnerBackend.create(
             {
-                "name": "Currency A",
-                "ident": "currencyA",
+                "name": f"comchain:{ident}",
+                "alt_currency_id": currency.id,
+                "partner_id": partner.id,
+                "comchain_id": ident,
+                "comchain_wallet": json.dumps("foo"),
+                "comchain_message_key": "bar"
+            }
+        )
+
+    def _create_res_partner(self, name="John Doe"):
+        return self.ResPartner.create({"name": name})
+
+    def _create_alt_currency(self, ident="currency", safe_wallet_partner_id=None):
+        return self.ResAltCurrency.create(
+            {
+                "name": ident,
+                "ident": ident,
                 "active": True,
                 "engine": "comchain",
-                "currency_unit_product_id": self.currency_A_unit_product.id,
+                "currency_unit_product_id": self.comchain_currency_unit_product.id,
             }
         )
 
 
     def test_create_and_activate_wallet(self):
-        comchain_json_wallet_1 = json.dumps("foo")
-        comchain_id = "1f2s34gf6sd7gq846f8fs4qv684fq3f85"
-        comchain_message_key = "smgfsgfds3g45f3q54435f13qg"
+        # Create data
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
 
-        # Create wallet
-        wallet_1 = self.ResPartnerBackend.create(
-            {
-                "name": f"comchain:{comchain_id}",
-                "active": True,
-                "alt_currency_id": self.currency_A.id,
-                "partner_id": self.partner_roger.id,
-                "comchain_id": comchain_id,
-                "comchain_wallet": comchain_json_wallet_1,
-                "comchain_status": "pending",
-                "comchain_type": 0,
-                "comchain_credit_min": 0,
-                "comchain_credit_max": 0,
-                "comchain_message_key": comchain_message_key,
-            }
-        )
-        self.assertEqual(wallet_1.comchain_status, "pending")
-        self.assertEqual(wallet_1.comchain_id, comchain_id)
-        self.assertEqual(wallet_1.comchain_message_key, comchain_message_key)
+        # Wallet should be pending when created
+        self.assertEqual(wallet.comchain_status, "pending")
 
         # Activate wallet
-        wallet_1.activate(1, -500, 10000)
-        self.assertEqual(wallet_1.comchain_status, "active")
-        self.assertEqual(wallet_1.comchain_type, "1")
-        self.assertEqual(wallet_1.comchain_credit_min, -500)
-        self.assertEqual(wallet_1.comchain_credit_max, 10000)
+        wallet.activate(1, -500, 10000)
+        self.assertEqual(wallet.comchain_status, "active")
+        self.assertEqual(wallet.comchain_type, "1")
+        self.assertEqual(wallet.comchain_credit_min, -500)
+        self.assertEqual(wallet.comchain_credit_max, 10000)
 
 
     def test_get_wallet_json_data(self):
-        comchain_json_wallet_1 = json.dumps("foo")
-        comchain_id = "1f2s34gf6sd7gq846f8fs4qv684fq3f85"
-        comchain_message_key = "smgfsgfds3g45f3q54435f13qg"
+        # Create data
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
 
-        # Create wallet
-        wallet_1 = self.ResPartnerBackend.create(
-            {
-                "name": f"comchain:{comchain_id}",
-                "active": True,
-                "alt_currency_id": self.currency_A.id,
-                "partner_id": self.partner_roger.id,
-                "comchain_id": comchain_id,
-                "comchain_wallet": comchain_json_wallet_1,
-                "comchain_status": "pending",
-                "comchain_type": 0,
-                "comchain_credit_min": 0,
-                "comchain_credit_max": 0,
-                "comchain_message_key": comchain_message_key,
-            }
-        )
-
-        json_data = wallet_1.get_wallet_json_data()
+        json_data = wallet.get_wallet_json_data()
         expected_result = {
-            "type": "comchain:currencyA",
+            "type": "comchain:currency",
             "accounts": [
                 {
                     "wallet": "foo",
-                    "message_key": "smgfsgfds3g45f3q54435f13qg",
+                    "message_key": "bar",
                     "active": False,
                     "is_topup_allowed": True,
                 }
             ],
             "min_credit_amount": getattr(
-                self.currency_A_unit_product, "sale_min_qty", 0
+                self.comchain_currency_unit_product, "sale_min_qty", 0
             ),
             "max_credit_amount": getattr(
-                self.currency_A_unit_product, "sale_max_qty", 0
+                self.comchain_currency_unit_product, "sale_max_qty", 0
             ),
         }
         self.assertEqual(json_data, expected_result)
