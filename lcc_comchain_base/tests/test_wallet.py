@@ -1,6 +1,7 @@
 import json
-
+from minimock import mock, Mock, restore
 from odoo.addons.component.tests.common import TransactionComponentCase
+from pyc3l import Pyc3l, Wallet
 
 
 class TestResWallet(TransactionComponentCase):
@@ -84,3 +85,20 @@ class TestResWallet(TransactionComponentCase):
             ),
         }
         self.assertEqual(json_data, expected_result)
+
+    def test_get_wallet_balance(self):
+        # Create data
+        pyc3l = Pyc3l()
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+
+        # Mock the wallet data returned by Pyc3l
+        mock_wallet = Mock("wallet", nantBalance=1)
+        mock("Wallet.from_json", returns=mock_wallet)
+
+        # Get wallet balance
+        res = wallet.get_wallet_balance()
+
+        self.assertEqual(res, {"success": True, "response": 1})
+        restore()
