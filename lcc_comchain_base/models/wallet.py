@@ -221,11 +221,10 @@ class ResPartnerBackend(models.Model):
         if not self.is_transaction_hash(response):
             return f"Comchain transaction failed: response is not the expected hash: {response}"
 
-        transaction = pyc3l.Transaction(response)
-
         retry = 0
         while True:
             tx_data = None
+            transaction = pyc3l.Transaction(response)
             try:
                 tx_data = transaction.data
             except APIError as e:
