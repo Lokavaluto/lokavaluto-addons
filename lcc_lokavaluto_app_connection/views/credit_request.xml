@@ -77,11 +77,14 @@
                     </group>
                     <div class="alert alert-danger" role="alert"
                         attrs="{'invisible': [('state','!=','error')]}">
-                        <div>
+                        <div name="warning_1">
                             <strong>An error status doesn't always mean the credit request
-                                failed.</strong><br /> Before trying again to credit the wallet,
+                            failed.</strong>
+			</div>
+			<div name="warning_2">
+			    Before trying again to credit the wallet,
                             please <strong>check on the transactions database that the request
-                                has not successed.</strong>
+                            has not succeeded.</strong>
                         </div>
                         <button name="try_again"
                             string="Try again"

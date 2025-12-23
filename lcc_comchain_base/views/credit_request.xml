@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="credit_request_comchain_form_view" model="ir.ui.view">
+        <field name="name">credit.request.comchain.form.view</field>
+        <field name="model">credit.request</field>
+        <field name="inherit_id" ref="lcc_lokavaluto_app_connection.credit_request_view_form" />
+        <field name="priority">0</field>
+        <field name="arch" type="xml">
+          <xpath expr="//div[@name='warning_1']" position="after">
+	    <div>If the field <strong>Transaction message</strong> is filled, please wait 3 minutes and click on button <strong>CHECK ERROR</strong> to verify the transaction status.</div>
+	    <button name="check_still_in_error" string="Check Error" class="oe_highlight me-2" type="object"/>
+          </xpath>
+        </field>
+    </record>
+
+</odoo>
