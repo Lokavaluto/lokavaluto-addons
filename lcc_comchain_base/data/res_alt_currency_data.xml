@@ -10,5 +10,16 @@
             <field name="numbercall">-1</field>
             <field name="active">0</field>
         </record>
+
+	<record id="ir_cron_check_credit_request_in_error" model="ir.cron">
+            <field name="name">Alt Currency: check Comchain credit request in error</field>
+            <field name="model_id" ref="lcc_lokavaluto_app_connection.model_res_alt_currency" />
+            <field name="state">code</field>
+            <field name="code">model._cron_check_credit_requests_in_error()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="active">0</field>
+        </record>
     </data>
 </odoo>

@@ -175,3 +175,36 @@ class AlternativeCurrency(models.Model):
 
             # Send 0 unit transaction to himself to generate gas.
             odoo_wallet_1.send_nant_transaction(odoo_wallet_1, 0.00, message)
+
+    def _cron_check_credit_requests_in_error(self):
+        """Check credit requests in error.
+
+        Sometimes Comchain credit requests are in error because the transaction
+        could not be verified at the time of processing, due to block mining delay.
+
+        This cron will check all credit requests in error to ensure they are still
+        in error.
+
+        It does not reprocess the credit requests, that remain a manual operation.
+        """
+        currencies = self.search([("active", "=", True), ("engine", "=", "comchain")])
+        for alt_currency in currencies:
+            alt_currency._check_credit_requests_in_error()
+
+    def _check_credit_requests_in_error(self) -> None:
+        """Check all credit requests in error for this currency."""
+        self.ensure_one()
+        _logger.info(
+            f"Start checking credit requests in error for alt currency {self.name}.",
+        )
+        credit_requests = self.env["credit.request"].search(
+            [
+                ("alt_currency_id", "=", self.id),
+                ("state", "=", "error"),
+            ]
+        )
+        for credit_request in credit_requests:
+            credit_request.check_still_in_error()
+        _logger.info(
+                f"Check of credit requests in error for alt currency {self.name} finished.",
+        )
