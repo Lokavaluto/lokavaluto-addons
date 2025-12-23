@@ -51,8 +51,8 @@ class TestResWallet(TransactionComponentCase):
         partner = self._create_res_partner()
         wallet = self._create_res_partner_backend(partner, currency)
 
-        # Wallet should be pending when created
-        self.assertEqual(wallet.comchain_status, "pending")
+        # Wallet status should be undefined when created
+        self.assertFalse(wallet.comchain_status)
 
         # Activate wallet
         wallet.activate(1, -500, 10000)
