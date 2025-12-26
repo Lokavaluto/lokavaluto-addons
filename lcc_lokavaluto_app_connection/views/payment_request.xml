@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_request_view_tree" model="ir.ui.view">
+      <field name="name">payment.request.view.tree</field>
+      <field name="model">payment.request</field>
+      <field name="arch" type="xml">
+        <tree string="Payment Requests" default_order="create_date desc"
+	      decoration-info="state == 'open'"
+	      decoration-success="state == 'paid'"
+	      decoration-danger="state == 'refused'"
+              decoration-muted="state == 'cancelled'" >
+          <field name="create_date" />
+          <field name="creator_partner_id" string="Creator" />
+          <field name="sender_partner_id" string="Sender" />
+          <field name="receiver_partner_id" string="Receiver" />
+	  <field name="alt_currency_id" />
+          <field name="amount" />
+          <field name="state"
+		 widget="badge"
+		 decoration-info="state == 'open'"
+		 decoration-success="state == 'paid'"
+		 decoration-muted="state == 'cancelled'"
+                 decoration-danger="state == 'refused'" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="payment_request_view_pivot" model="ir.ui.view">
+      <field name="name">payment.request.view.pivot</field>
+      <field name="model">payment.request</field>
+      <field name="arch" type="xml">
+        <pivot string="Payment Requests">
+          <field name="create_date" type="row" />
+          <field name="amount" type="measure" />
+        </pivot>
+      </field>
+    </record>
+
+    <record id="payment_request_view_form" model="ir.ui.view">
+      <field name="name">payment.request.view.form</field>
+      <field name="model">payment.request</field>
+      <field name="arch" type="xml">
+        <form string="Payment Request">
+          <header>
+            <field name="state" widget="statusbar" />
+          </header>
+          <sheet>
+	    <widget name="web_ribbon" title="Open"
+		    bg_color="bg-info"
+                    attrs="{'invisible': [('state', '!=', 'open')]}"/>
+	    <widget name="web_ribbon" title="Paid"
+		    bg_color="bg-success"
+                    attrs="{'invisible': [('state', '!=', 'paid')]}"/>
+            <widget name="web_ribbon" title="Cancelled"
+                    bg_color="bg-dark"
+                    attrs="{'invisible': [('state', '!=', 'cancelled')]}"/>
+	    <widget name="web_ribbon" title="Refused"
+                    bg_color="bg-danger"
+                    attrs="{'invisible': [('state', '!=', 'refused')]}"/>
+            <group name="content" >
+	      <group name="request_metadata" string="Metadata">
+		<field name="creator_wallet_id" />
+		<field name="creator_partner_id" />
+		<field name="create_date" />
+		<field name="alt_currency_id" />
+	      </group>
+	      <group name="request_content" string="Request content">
+		<field name="sender_wallet_id" />
+		<field name="sender_partner_id" />
+		<field name="receiver_wallet_id" />
+		<field name="receiver_partner_id" />
+		<field name="amount" />
+		<field name="message" />
+              </group>
+              <group
+		  name="request_outcome"
+		  string="Request Outcome"
+		  attrs="{'invisible': [('state', 'not in', ('paid', 'refused'))]}">
+		<field name="tx_id" />
+		<field name="refusal_reason" attrs="{'invisible': [('state', '!=', 'refused')]}" />
+	      </group>
+	    </group>
+          </sheet>
+	  <div class="oe_chatter">
+            <field name="message_follower_ids"/>
+            <field name="activity_ids"/>
+            <field name="message_ids"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="payment_request_view_search" model="ir.ui.view">
+        <field name="name">payment.request.view.search</field>
+        <field name="model">payment.request</field>
+        <field name="arch" type="xml">
+            <search string="Search payment requests">
+                <field name="creator_partner_id" />
+                <field name="sender_partner_id" />
+		<field name="receiver_partner_id" />
+                <field name="amount" />
+		<field name="message" />
+                <field name="state" />
+                <filter domain="[('state','=','open')]" string="Open" name="open" />
+                <filter domain="[('state','=','paid')]" string="Paid" name="paid" />
+                <filter domain="[('state','=','cancelled')]" string="Cancelled" name="cancelled" />
+                <filter domain="[('state','=','refused')]" string="Refused" name="refused" />
+		<separator/>
+		<filter name="date" string="Date" date="create_date"/>
+                <group expand="0" string="Group By">
+                  <filter string="Creator" name="groupby_creator" domain="[]"
+			  context="{'group_by': 'creator_wallet_id'}"/>
+                  <filter string="Sender" name="groupby_sender" domain="[]"
+			  context="{'group_by': 'sender_wallet_id'}" />
+		  <filter string="Receiver" name="groupby_receiver" domain="[]"
+			  context="{'group_by': 'receiver_wallet_id'}" />
+		  <filter string="State" name="groupby_state" domain="[]"
+			  context="{'group_by': 'state'}" />
+                  <filter string="Date" name="groupby_date" domain="[]"
+			  context="{'group_by': 'create_date'}" help="Requests by Date"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
