@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "16.0.1.2.0",
+    "version": "16.0.1.3.0",
     "licence": "AGPL-3",
     # any module necessary for this one to work correctly
     "depends": [
@@ -31,6 +31,7 @@
         "views/wallet.xml",
         "views/credit_request.xml",
         "views/debit_request.xml",
+        "views/payment_request.xml",
         "views/commission_rule.xml",
         "views/reconversion_rule.xml",
         "views/topup_rule.xml",
