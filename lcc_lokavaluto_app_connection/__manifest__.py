@@ -31,6 +31,7 @@
         "views/wallet.xml",
         "views/credit_request.xml",
         "views/debit_request.xml",
+        "views/payment_request.xml",
         "views/commission_rule.xml",
         "views/reconversion_rule.xml",
         "views/topup_rule.xml",
