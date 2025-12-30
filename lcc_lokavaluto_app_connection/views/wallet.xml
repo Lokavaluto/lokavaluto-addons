@@ -13,6 +13,18 @@
                         groups="lcc_lokavaluto_app_connection.group_wallet_full_manager" />
                 </header>
                 <sheet string="Digital Currency Wallet">
+		    <widget name="web_ribbon" title="Inactive"
+			    bg_color="bg-dark"
+			    attrs="{'invisible': [('status', '!=', 'inactive')]}"/>
+		    <widget name="web_ribbon" title="Active"
+			    bg_color="bg-success"
+			    attrs="{'invisible': [('status', '!=', 'active')]}"/>
+		    <widget name="web_ribbon" title="To confirm"
+			    bg_color="bg-warning"
+			    attrs="{'invisible': [('status', '!=', 'to_confirm')]}"/>
+		    <widget name="web_ribbon" title="Blocked"
+			    bg_color="bg-danger"
+			    attrs="{'invisible': [('status', '!=', 'blocked')]}"/>
                     <field name="active" invisible="True" />
                     <field name="is_reconversion_allowed" invisible="True" />
                     <field name="is_topup_allowed" invisible="True" />
@@ -55,12 +67,20 @@
         <field name="name">wallet.view.tree</field>
         <field name="model">res.partner.backend</field>
         <field name="arch" type="xml">
-            <tree string="Digital Currency Wallet">
+            <tree string="Digital Currency Wallet"
+		  decoration-muted="status == 'inactive'"
+		  decoration-warning="status == 'to_confirm'"
+		  decoration-success="status == 'active'"
+		  decoration-danger="status == 'blocked'" >
                 <field name="name" />
                 <field name="partner_id" />
 		<field name="alt_currency_id" />
 		<field name="type" />
-                <field name="status" />
+                <field name="status" widget="badge"
+		       decoration-muted="status == 'inactive'"
+		       decoration-warning="status == 'to_confirm'"
+		       decoration-success="status == 'active'"
+		       decoration-danger="status == 'blocked'" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
             </tree>
         </field>
