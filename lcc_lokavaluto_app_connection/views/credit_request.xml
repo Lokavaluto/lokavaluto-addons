@@ -5,14 +5,23 @@
         <field name="name">credit.request.view.tree</field>
         <field name="model">credit.request</field>
         <field name="arch" type="xml">
-            <tree string="Credit Requests" default_order="create_date desc">
+            <tree string="Credit Requests" default_order="create_date desc"
+	          decoration-info="state == 'open'"
+		  decoration-success="state == 'done'"
+		  decoration-danger="state == 'error'"
+		  decoration-warning="state == 'pending'" >
                 <field name="create_date" />
                 <field name="partner_id" />
                 <field name="requester_id" />
                 <field name="wallet_id" />
 		<field name="alt_currency_id" />
                 <field name="amount" />
-                <field name="state" />
+                <field name="state"
+		       widget="badge"
+                       decoration-info="state == 'open'"
+                       decoration-success="state == 'done'"
+                       decoration-warning="state == 'pending'"
+                       decoration-danger="state == 'error'"/>
             </tree>
         </field>
     </record>
@@ -37,6 +46,18 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
+		  <widget name="web_ribbon" title="Open"
+			  bg_color="bg-info"
+			  attrs="{'invisible': [('state', '!=', 'open')]}"/>
+		  <widget name="web_ribbon" title="Done"
+			  bg_color="bg-success"
+			  attrs="{'invisible': [('state', '!=', 'done')]}"/>
+		  <widget name="web_ribbon" title="Pending"
+			  bg_color="bg-warning"
+			  attrs="{'invisible': [('state', '!=', 'pending')]}"/>
+		  <widget name="web_ribbon" title="Error"
+			  bg_color="bg-danger"
+			  attrs="{'invisible': [('state', '!=', 'error')]}"/>
                     <group name="content" string="Content">
                         <field name="partner_id" />
                         <field name="wallet_id" />
