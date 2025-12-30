@@ -5,14 +5,21 @@
         <field name="name">debit.request.view.tree</field>
         <field name="model">debit.request</field>
         <field name="arch" type="xml">
-            <tree string="Debit Requests" default_order="transaction_date desc">
+            <tree string="Debit Requests" default_order="transaction_date desc"
+		  decoration-info="state == 'received'"
+		  decoration-warning="state == 'invoiced'"
+		  decoration-success="state == 'paid'"
+		  decoration-muted="state == 'cancelled'" >
                 <field name="transaction_date" />
                 <field name="partner_id" />
                 <field name="wallet_id" />
 		<field name="alt_currency_id" />
                 <field name="amount" />
-                <field name="state" decoration-info="state in ['draft', 'received', 'invoiced']"
-                    decoration-success="state == 'paid'" />
+                <field name="state" widget="badge"
+		       decoration-info="state == 'received'"
+		       decoration-warning="state == 'invoiced'"
+		       decoration-success="state == 'paid'"
+		       decoration-muted="state == 'cancelled'" />
             </tree>
         </field>
     </record>
@@ -41,6 +48,18 @@
                         statusbar_visible="draft,received,invoiced,paid" />
                 </header>
                 <sheet>
+		    <widget name="web_ribbon" title="Received"
+			    bg_color="bg-info"
+			    attrs="{'invisible': [('state', '!=', 'received')]}"/>
+		    <widget name="web_ribbon" title="Paid"
+			    bg_color="bg-success"
+			    attrs="{'invisible': [('state', '!=', 'paid')]}"/>
+		    <widget name="web_ribbon" title="Invoiced"
+			    bg_color="bg-warning"
+			    attrs="{'invisible': [('state', '!=', 'invoiced')]}"/>
+		    <widget name="web_ribbon" title="Cancelled"
+			    bg_color="bg-dark"
+			    attrs="{'invisible': [('state', '!=', 'cancelled')]}"/>
                     <div class="alert alert-danger" role="alert"
                         attrs="{'invisible': [('is_reconversion_allowed','=',True)]}">
                         Reconversion rules indicate that reconversions are presumed NOT ALLOWED on
