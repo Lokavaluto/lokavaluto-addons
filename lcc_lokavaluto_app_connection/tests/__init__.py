@@ -12,3 +12,4 @@ from . import test_lcc_api
 from . import test_wallet_services
 from . import test_batch
 from . import test_tools
+from . import test_payment_request_services
