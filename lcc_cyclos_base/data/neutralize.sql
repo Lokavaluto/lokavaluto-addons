@@ -1,3 +1,3 @@
 -- deactivate cyclos transactions
-UPDATE res_company
+UPDATE res_alt_currency
    SET cyclos_server_password = NULL;
