@@ -3,6 +3,7 @@ import re
 import time
 from pyc3l import Pyc3l
 from pyc3l.ApiHandling import APIError
+from odoo.addons.lcc_lokavaluto_app_connection import tools
 
 pyc3l = Pyc3l()
 _logger = logging.getLogger(__name__)
