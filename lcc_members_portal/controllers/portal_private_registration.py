@@ -138,7 +138,7 @@ class PortalPrivateRegistration(CustomerPortal):
         # Create sale order to finalize the registration process
         sale_order = request.website.sale_get_order(force_create=True)
         sale_order.company_id = main_partner.company_id.id
-        sale_order.team_id = request.env["crm.team"].browse(values["team_id"])
+        sale_order.team_id = request.env["crm.team"].browse(int(values["team_id"]))
         values = {}
         product = (
             request.env["product.template"].sudo().browse(int(kwargs.get("product_id")))
