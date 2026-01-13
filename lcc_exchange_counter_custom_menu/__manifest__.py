@@ -3,7 +3,7 @@
 
 {
     "name": "lcc exchange counter custom menu",
-    "version": "16.0.1.0.1",
+    "version": "16.0.1.0.2",
     "author": "Elabore",
     "website": "https://elabore.coop",
     "maintainer": "Elabore",
@@ -26,7 +26,6 @@
     ],
     "assets": {
         "point_of_sale.assets": [
-            "lcc_exchange_counter_custom_menu/static/src/xml/**/*.xml",
             "lcc_exchange_counter_custom_menu/static/src/js/**/*.js",
         ]
     },
