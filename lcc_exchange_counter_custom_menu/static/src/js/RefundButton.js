@@ -2,17 +2,31 @@ odoo.define('lcc_exchange_counter_custom_menu.RefundButton', function(require) {
     'use strict';
 
     const RefundButton = require('point_of_sale.RefundButton');
-    const Registries = require("point_of_sale.Registries");
-    
-    const CustomRefundButton = (OriginalRefundButton) =>
-        class extends OriginalRefundButton {
+    const ProductScreen = require('point_of_sale.ProductScreen');
 
-            showRefundButton() {               
-                    return this.env.pos && this.env.pos.config && this.env.pos.get_cashier().role === 'manager';
+    // Replace the existing RefundButton control definition with a condition
+    // that shows the button only when the current cashier has role 'manager'.
+    ProductScreen.addControlButton({
+        component: RefundButton,
+        condition: function () {
+            try {
+                const cashier = this.env && this.env.pos && this.env.pos.get_cashier
+                    ? this.env.pos.get_cashier()
+                    : null;
+                if (!cashier) {
+                    return false;
                 }
-        }
+                // exact match as requested
+                return cashier.role === 'manager';
+            } catch (e) {
+                // be safe: hide the button on errors
+                return false;
+            }
+        },
+        // replace the original RefundButton registration (avoid duplicate)
+        position: ['replace', 'RefundButton'],
+    });
 
-    Registries.Component.extend(RefundButton, CustomRefundButton);
-
-    return RefundButton;
+    // nothing else to export
+    return {};
 });
