@@ -106,3 +106,23 @@ def transform_backend_keys_in_currency_uris(backend_keys):
         else:
             raise MissingError(f"Invalid backend id {backend}")
     return currency_uris
+
+
+def transform_wallet_backend_keys_in_wallet_uris(wallet_backend_keys, currency_ident):
+    """
+    Transition function to transform wallet backend keys format in wallet URI format.
+    TO BE REMOVED once Monujo uses backend URIs
+    """
+    wallet_uris = []
+    for backend in wallet_backend_keys:
+        separator_count = backend.count("/wallet/")
+        if separator_count == 1:
+            # backend matches wished URI structure
+            wallet_uris.append(backend)
+        elif separator_count == 0:
+            # backend is OLD format
+            engine, ident = backend.split(":", 1)
+            wallet_uris.append(f"{engine}://{currency_ident}/wallet/{ident}")
+        else:
+            raise MissingError(f"Invalid backend id {backend}")
+    return wallet_uris
