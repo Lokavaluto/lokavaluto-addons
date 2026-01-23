@@ -86,3 +86,23 @@ def after_commit(func):
                     _logger.exception(e)
 
     return wrapped
+
+
+def transform_backend_keys_in_currency_uris(backend_keys):
+    """
+    Transition function to transform currency backend keys format in currency URI format.
+    TO BE REMOVED once Monujo uses backend URIs
+    """
+    currency_uris = []
+    for backend in backend_keys:
+        separator_count = backend.count("://")
+        if separator_count == 1:
+            # backend matches wished URI structure
+            currency_uris.append(backend)
+        elif separator_count == 0:
+            # backend is OLD format
+            engine, ident = backend.split(":", 1)
+            currency_uris.append(f"{engine}://{ident}")
+        else:
+            raise MissingError(f"Invalid backend id {backend}")
+    return currency_uris

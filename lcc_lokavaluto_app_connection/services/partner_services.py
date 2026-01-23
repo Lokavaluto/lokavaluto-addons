@@ -6,7 +6,7 @@ from odoo.exceptions import (
     MissingError,
 )
 from odoo.http import request
-
+from ..tools import transform_backend_keys_in_currency_uris
 from odoo.addons.base_rest import restapi
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
@@ -83,7 +83,7 @@ class PartnerService(Component):
         backend_keys = set(self.env.user.partner_id.backends()) & set(
             partner_credit_requests_get_param.backend_keys,
         )
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+        currency_uris = transform_backend_keys_in_currency_uris(backend_keys)
 
         # Retrieve all the credit requests of the requested currencies
         credit_requests = (
@@ -130,7 +130,7 @@ class PartnerService(Component):
         ## Break of workaround
 
         backend_keys = set(self.env.user.partner_id.backends()) & set(backend_keys)
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+        currency_uris = transform_backend_keys_in_currency_uris(backend_keys)
 
         ## Continue the workaround
         currency_uris += [
@@ -289,7 +289,10 @@ class PartnerService(Component):
         backend_keys = set(self.env.user.partner_id.backends()) & set(
             recipients_search_info.backend_keys,
         )
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+
+        # Transform backend_keys in backend_URI if needed
+        # TO BE REMOVED once Monujo sends URIs through the API
+        currency_uris = transform_backend_keys_in_currency_uris(backend_keys)
         alt_currency_ids = self.env["res.alt.currency"].search(
             [("uri", "in", currency_uris)],
         )
@@ -318,7 +321,7 @@ class PartnerService(Component):
         backend_keys = set(self.env.user.partner_id.backends()) & set(
             request.params["backend_keys"],
         )
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+        currency_uris = transform_backend_keys_in_currency_uris(backend_keys)
         ## XXXvlab: temporary fix to work with cyclos
         if "@" in request.params["data"]["rpb"]:
             request.params["data"]["rpb"] = request.params["data"]["rpb"].split("@", 1)[
@@ -374,7 +377,7 @@ class PartnerService(Component):
         backend_keys = self.env.user.partner_id.backends() & set(
             account_search_info.backend_keys,
         )
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+        currency_uris = transform_backend_keys_in_currency_uris(backend_keys)
         recipients = self.env["res.partner.backend"].search(
             [
                 ("status", "=", "to_confirm"),
@@ -656,7 +659,7 @@ class PartnerService(Component):
         )
         # Transform backend_keys in backend_URI if needed
         # TO BE REMOVED once Monujo sends URIs through the API
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+        currency_uris = transform_backend_keys_in_currency_uris(backend_keys)
 
         domain = self._build_search_recipients_domain(
             currency_uris,
@@ -693,25 +696,6 @@ class PartnerService(Component):
             rows.append(row)
 
         return {"count": len(rows), "rows": rows}
-
-    def _transform_backend_keys_in_currency_uris(self, backend_keys):
-        """
-        Transition function to transform backend keys format in backend URI format.
-        TO BE REMOVED once Monujo uses backend URIs
-        """
-        currency_uris = []
-        for backend in backend_keys:
-            separator_count = backend.count("://")
-            if separator_count == 1:
-                # backend matches wished URI structure
-                currency_uris.append(backend)
-            elif separator_count == 0:
-                # backend is OLD format
-                engine, ident = backend.split(":", 1)
-                currency_uris.append(f"{engine}://{ident}")
-            else:
-                raise MissingError(f"Invalid backend id {backend}")
-        return currency_uris
 
     def _get_formatted_recipients(self, recipients, currency_uris):
         rows = []
