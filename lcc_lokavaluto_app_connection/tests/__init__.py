@@ -5,3 +5,4 @@ from . import test_partner_services_search
 from . import test_partner_services_backend_credentials
 from . import test_res_alt_currency
 from . import test_partner_services_report_contact_info
+from . import test_tools
