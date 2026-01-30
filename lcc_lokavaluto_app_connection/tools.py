@@ -126,3 +126,25 @@ def transform_wallet_backend_keys_in_wallet_uris(wallet_backend_keys, currency_i
         else:
             raise MissingError(f"Invalid backend id {backend}")
     return wallet_uris
+
+
+def transform_wallet_uris_in_wallet_backend_keys(wallet_uris):
+    """
+    Transition function to transform wallet URI format in wallet backend keys format.
+    TO BE REMOVED once Monujo uses backend URIs
+    """
+    backend_keys = []
+    for uri in wallet_uris:
+        separator_count = uri.count("/wallet/")
+        if separator_count == 1:
+            # URI format: comchain://Lokacoin/wallet/abc123
+            # Extract engine and wallet address
+            engine = uri.split("://")[0]
+            wallet_address = uri.split("/wallet/")[1]
+            backend_keys.append(f"{engine}:{wallet_address}")
+        elif separator_count == 0:
+            # Already in old format
+            backend_keys.append(uri)
+        else:
+            raise MissingError(f"Invalid wallet uri {uri}")
+    return backend_keys
