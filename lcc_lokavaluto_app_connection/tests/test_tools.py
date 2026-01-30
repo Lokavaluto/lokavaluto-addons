@@ -1,6 +1,9 @@
 from odoo.addons.component.tests.common import TransactionComponentCase
-from ..tools import transform_backend_keys_in_currency_uris,transform_wallet_backend_keys_in_wallet_uris
-
+from ..tools import (
+    transform_backend_keys_in_currency_uris,
+    transform_wallet_backend_keys_in_wallet_uris,
+    transform_wallet_uris_in_wallet_backend_keys,
+)
 
 class TestResWallet(TransactionComponentCase):
 
@@ -36,3 +39,16 @@ class TestResWallet(TransactionComponentCase):
         ]
         result = transform_wallet_backend_keys_in_wallet_uris(wallet_backend_keys, currency_ident)
         self.assertEqual(result, expected_wallet_uris)
+
+    def test_transform_wallet_uris_in_wallet_backend_keys(self):
+        """Test the transformation of wallet URIs into wallets backend keys."""
+        wallet_uris = [
+            "foo://currencyA/wallet/walletA",
+            "foo://currencyA/wallet/walletB",
+        ]
+        expected_wallet_backend_keys = [
+            "foo:walletA",
+            "foo:walletB",
+        ]
+        result = transform_wallet_uris_in_wallet_backend_keys(wallet_uris)
+        self.assertEqual(result, expected_wallet_backend_keys)
