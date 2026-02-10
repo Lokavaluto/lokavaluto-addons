@@ -51,6 +51,19 @@
         </field>
     </record>
 
+    <record id="action_payment_request_recurrent_contract" model="ir.actions.act_window">
+        <field name="name">Recurrent Contracts</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">payment.request.recurrent.contract</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_open': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new recurrent contract.
+            </p>
+        </field>
+    </record>
+
     <record id="action_reconversion_rule" model="ir.actions.act_window">
         <field name="name">Reconversion Rules</field>
         <field name="type">ir.actions.act_window</field>
@@ -170,6 +183,13 @@
         sequence="10"
         groups="base.group_no_one"
         action="action_payment_request" />
+
+    <menuitem
+        id="payment_request_recurrent_contract_menu"
+        parent="lcc_lokavaluto_app_connection.transactions_menu"
+        sequence="20"
+        groups="base.group_no_one"
+        action="action_payment_request_recurrent_contract" />
 
     <menuitem name="Configuration" id="menu_config_digital_currency"
         parent="lcc_lokavaluto_app_connection.menu_digital_currencies" sequence="999" />

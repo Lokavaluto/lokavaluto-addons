@@ -15,3 +15,4 @@ from . import lokavaluto_private_services_collection
 from . import res_alt_currency
 from . import unusual_transaction
 from . import payment_request
+from . import payment_request_recurrent_contract
