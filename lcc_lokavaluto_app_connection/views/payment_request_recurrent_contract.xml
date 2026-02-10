@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_request_recurrent_contract_view_tree" model="ir.ui.view">
+        <field name="name">payment.request.recurrent.contract.view.tree</field>
+        <field name="model">payment.request.recurrent.contract</field>
+        <field name="arch" type="xml">
+            <tree string="Recurrent Contracts" default_order="create_date desc"
+                  decoration-muted="state == 'draft'"
+                  decoration-info="state == 'open'"
+                  decoration-success="state == 'closed'">
+                <field name="name" />
+                <field name="creator_partner_id" string="Creator" />
+                <field name="sender_partner_id" string="Sender" />
+                <field name="receiver_partner_id" string="Receiver" />
+                <field name="alt_currency_id" />
+                <field name="amount" />
+                <field name="recurring_interval" />
+                <field name="recurring_rule_type" />
+                <field name="recurring_next_date" />
+                <field name="payment_request_count" string="Requests" />
+                <field name="state"
+                       widget="badge"
+                       decoration-muted="state == 'draft'"
+                       decoration-info="state == 'open'"
+                       decoration-success="state == 'closed'" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="payment_request_recurrent_contract_view_form" model="ir.ui.view">
+        <field name="name">payment.request.recurrent.contract.view.form</field>
+        <field name="model">payment.request.recurrent.contract</field>
+        <field name="arch" type="xml">
+            <form string="Recurrent Contract">
+                <header>
+                    <button name="action_confirm" string="Confirm"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}" />
+                    <button name="action_close" string="Close"
+                            type="object"
+                            attrs="{'invisible': [('state', '!=', 'open')]}" />
+                    <button name="action_draft" string="Set to Draft"
+                            type="object"
+                            attrs="{'invisible': [('state', '!=', 'closed')]}" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,closed" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_payment_requests" type="object"
+                                class="oe_stat_button" icon="fa-list-alt">
+                            <field name="payment_request_count" widget="statinfo"
+                                   string="Payment Requests" />
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Draft"
+                            bg_color="bg-secondary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}" />
+                    <widget name="web_ribbon" title="Running"
+                            bg_color="bg-info"
+                            attrs="{'invisible': [('state', '!=', 'open')]}" />
+                    <widget name="web_ribbon" title="Closed"
+                            bg_color="bg-success"
+                            attrs="{'invisible': [('state', '!=', 'closed')]}" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group name="content">
+                        <group name="contract_parties" string="Parties">
+                            <field name="creator_wallet_id" />
+                            <field name="creator_partner_id" />
+                            <field name="sender_wallet_id" />
+                            <field name="sender_partner_id" />
+                            <field name="receiver_wallet_id" />
+                            <field name="receiver_partner_id" />
+                        </group>
+                        <group name="contract_amount" string="Amount">
+                            <field name="alt_currency_id" />
+                            <field name="amount" />
+                            <field name="message" />
+                        </group>
+                        <group name="contract_recurrence" string="Recurrence">
+                            <field name="date_start" />
+                            <field name="date_end" />
+                            <label for="recurring_interval" />
+                            <div class="o_row">
+                                <field name="recurring_interval" class="oe_inline" />
+                                <field name="recurring_rule_type" class="oe_inline" />
+                            </div>
+                            <field name="recurring_next_date"
+                                   attrs="{'invisible': [('state', '=', 'draft')]}" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="payment_request_recurrent_contract_view_search" model="ir.ui.view">
+        <field name="name">payment.request.recurrent.contract.view.search</field>
+        <field name="model">payment.request.recurrent.contract</field>
+        <field name="arch" type="xml">
+            <search string="Search Recurrent Contracts">
+                <field name="name" />
+                <field name="creator_partner_id" />
+                <field name="sender_partner_id" />
+                <field name="receiver_partner_id" />
+                <field name="amount" />
+                <field name="message" />
+                <field name="state" />
+                <filter domain="[('state','=','draft')]" string="Draft" name="draft" />
+                <filter domain="[('state','=','open')]" string="Running" name="open" />
+                <filter domain="[('state','=','closed')]" string="Closed" name="closed" />
+                <separator />
+                <filter name="date_start" string="Start Date" date="date_start" />
+                <filter name="recurring_next_date" string="Next Date" date="recurring_next_date" />
+                <group expand="0" string="Group By">
+                    <filter string="Creator" name="groupby_creator" domain="[]"
+                            context="{'group_by': 'creator_wallet_id'}" />
+                    <filter string="Sender" name="groupby_sender" domain="[]"
+                            context="{'group_by': 'sender_wallet_id'}" />
+                    <filter string="Receiver" name="groupby_receiver" domain="[]"
+                            context="{'group_by': 'receiver_wallet_id'}" />
+                    <filter string="State" name="groupby_state" domain="[]"
+                            context="{'group_by': 'state'}" />
+                    <filter string="Recurrence" name="groupby_recurrence" domain="[]"
+                            context="{'group_by': 'recurring_rule_type'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>
