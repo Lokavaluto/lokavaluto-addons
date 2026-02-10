@@ -32,6 +32,7 @@
         "views/credit_request.xml",
         "views/debit_request.xml",
         "views/payment_request.xml",
+        "views/payment_request_recurrent_contract.xml",
         "views/commission_rule.xml",
         "views/reconversion_rule.xml",
         "views/topup_rule.xml",
@@ -42,6 +43,7 @@
         "views/res_config_settings_view.xml",
         "data/numeric_data.xml",
         "data/res_alt_currency_data.xml",
+        "data/payment_request_recurrent_contract.xml",
         "security/ir.model.access.csv",
     ],
     # only loaded in demonstration mode

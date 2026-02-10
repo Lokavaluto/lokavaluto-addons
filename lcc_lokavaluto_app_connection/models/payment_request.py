@@ -74,3 +74,11 @@ class PaymentRequest(models.Model):
     message = fields.Char("Message", tracking=True)
     tx_id = fields.Char("Transaction ID", tracking=True)
     refusal_reason = fields.Char("Refusal Reason", tracking=True)
+
+    recurrent_contract_id = fields.Many2one(
+        "payment.request.recurrent.contract",
+        string="Recurrent Contract",
+        ondelete="set null",
+        index=True,
+        help="The recurrent contract that generated this payment request",
+    )

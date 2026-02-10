@@ -14,3 +14,4 @@ from . import wallet_restriction_rule
 from . import lokavaluto_private_services_collection
 from . import res_alt_currency
 from . import payment_request
+from . import payment_request_recurrent_contract
