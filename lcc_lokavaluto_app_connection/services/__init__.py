@@ -266,3 +266,4 @@ from . import wallet_services  # noqa: E402
 from . import recipient_services  # noqa: E402
 from . import auth_services  # noqa: E402
 from . import payment_request_services  # noqa: E402
+from . import payment_request_recurrent_contract_services  # noqa: E402
