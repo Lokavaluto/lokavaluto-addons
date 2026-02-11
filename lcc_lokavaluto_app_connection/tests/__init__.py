@@ -8,3 +8,4 @@ from . import test_partner_services_report_contact_info
 from . import test_tools
 from . import test_payment_request_services
 from . import test_payment_request_recurrent_contract
+from . import test_payment_request_recurrent_contract_services
