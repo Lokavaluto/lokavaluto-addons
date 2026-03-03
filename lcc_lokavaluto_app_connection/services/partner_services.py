@@ -439,6 +439,15 @@ class PartnerService(Component):
         return {"count": len(rows), "rows": rows}
 
     @restapi.method(
+        [(["/can-search-all-recipients"], "GET")],
+    )
+    def can_search_all_recipients(self) -> bool:
+        """Check if the current user has the rights to search all recipients."""
+        return self.env.user.has_group(
+            "lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        )
+
+    @restapi.method(
         [(["/search_all"], "GET")],
         input_param=Datamodel("partner.search.info"),
     )
