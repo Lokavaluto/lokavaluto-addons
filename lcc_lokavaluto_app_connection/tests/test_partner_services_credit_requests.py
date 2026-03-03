@@ -163,6 +163,26 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
     #         self.assertTrue(result)
     #         self.assertEqual(self.credit_request_E, None)
 
+    def test_can_validate_credit_request_as_full_manager(self):
+        collection = (
+            self.env["lokavaluto.private.services"].with_user(self.user_admin).browse(1)
+        )
+        with collection.work_on("res.partner.backend") as work:
+            service = work.component(usage="partner")
+            result = service.can_validate_credit_request()
+
+            self.assertTrue(result)
+
+    def test_can_validate_credit_request_as_regular_user(self):
+        collection = (
+            self.env["lokavaluto.private.services"].with_user(self.user).browse(1)
+        )
+        with collection.work_on("res.partner.backend") as work:
+            service = work.component(usage="partner")
+            result = service.can_validate_credit_request()
+
+            self.assertFalse(result)
+
     def test_validate_credit_request_service(self):
         collection = (
             self.env["lokavaluto.private.services"].with_user(self.user_admin).browse(1)
