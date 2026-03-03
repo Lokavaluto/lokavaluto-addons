@@ -1,5 +1,9 @@
 from odoo.addons.component.tests.common import TransactionComponentCase
-from ..datamodel.partner_info import PartnerCreditRequestsGetParam, PartnerValidateCreditRequest
+from ..datamodel.partner_info import (
+    PartnerCreditRequestsGetParam,
+    PartnerValidateCreditRequest,
+)
+
 
 class TestPartnerServiceCreditRequests(TransactionComponentCase):
     def setUp(self):
@@ -20,7 +24,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
                 "ident": "currencyA",
                 "active": True,
                 "engine": "foo",
-                "currency_unit_product_id": self.currency_unit_product.id
+                "currency_unit_product_id": self.currency_unit_product.id,
             }
         )
         self.currencyB = self.ResAltCurrency.create(
@@ -29,17 +33,27 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
                 "ident": "currencyB",
                 "active": True,
                 "engine": "foo",
-                "currency_unit_product_id": self.currency_unit_product.id
+                "currency_unit_product_id": self.currency_unit_product.id,
             }
         )
 
         self.user = self.ResUsers.create({"name": "John Doe", "login": "foo"})
-        self.user_admin  = self.ResUsers.create(
+        self.user_admin = self.ResUsers.create(
             {
                 "name": "User Admin",
                 "login": "user_admin",
-                'groups_id': [(6, 0, [self.env.ref('lcc_lokavaluto_app_connection.group_wallet_full_manager').id])],
-             }
+                "groups_id": [
+                    (
+                        6,
+                        0,
+                        [
+                            self.env.ref(
+                                "lcc_lokavaluto_app_connection.group_wallet_full_manager"
+                            ).id
+                        ],
+                    )
+                ],
+            }
         )
         self.partner = self.user.partner_id
 
@@ -97,14 +111,12 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
 
     def test_credit_requests_service(self):
         collection = (
-            self.env["lokavaluto.private.services"]
-            .with_user(self.user)
-            .browse(1)
+            self.env["lokavaluto.private.services"].with_user(self.user).browse(1)
         )
         sender_credit_request_get_params = PartnerCreditRequestsGetParam(
             backend_keys=[
                 f"{self.currencyA.engine}:{self.currencyA.ident}",
-                "toto:tata"
+                "toto:tata",
             ]
         )
         with collection.work_on("res.partner.backend") as work:
@@ -117,7 +129,6 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
             self.assertEqual(len(result), 2)
             self.assertEqual(result[0]["amount"], 56.00)
             self.assertTrue(result[0]["paid"])
-
 
     # def test_pending_topup(self):
     #     collection = (
@@ -137,7 +148,6 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
     #         self.assertEqual(result[0]["amount"], 33.00)
     #         self.assertTrue(result[0]["paid"])
 
-
     # def test_remove_pending_topup(self):
     #     collection = (
     #         self.env["lokavaluto.private.services"]
@@ -155,9 +165,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
 
     def test_validate_credit_request_service(self):
         collection = (
-            self.env["lokavaluto.private.services"]
-            .with_user(self.user_admin)
-            .browse(1)
+            self.env["lokavaluto.private.services"].with_user(self.user_admin).browse(1)
         )
         validate_credit_request_get_params = PartnerValidateCreditRequest(
             ids=[self.credit_request_F.id]
@@ -165,7 +173,9 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
         with collection.work_on("res.partner.backend") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
-            result = service.validate_credit_requests(validate_credit_request_get_params)
+            result = service.validate_credit_requests(
+                validate_credit_request_get_params
+            )
 
             self.assertTrue(result)
             self.assertEqual(self.credit_request_F.state, "done")

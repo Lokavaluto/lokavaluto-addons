@@ -53,7 +53,7 @@ class PartnerService(Component):
     )
     def report_contact_info(self):
         def contact_info(p):
-            res =  {
+            res = {
                 "name": p.name,
                 "street": p.street,
                 "street2": p.street2,
@@ -62,15 +62,16 @@ class PartnerService(Component):
                 "email": p.email,
                 "phone": p.phone,
                 "mobile": p.mobile,
-                "website": p.website
+                "website": p.website,
             }
             if hasattr(p, "logo"):
                 res["logo"] = p.logo
             return res
+
         company_id = self.env.user.company_id
         return {
             "issuer": contact_info(company_id),
-            "user": contact_info(self.env.user.partner_id)
+            "user": contact_info(self.env.user.partner_id),
         }
 
     @restapi.method(
@@ -85,18 +86,21 @@ class PartnerService(Component):
         currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
 
         # Retrieve all the credit requests of the requested currencies
-        credit_requests = self.env["credit.request"].sudo().search(
-            [
-                ("alt_currency_id.uri", "in", currency_uris),
-                ("state", "in", ["pending"])
-            ],
-            order="create_date desc",
+        credit_requests = (
+            self.env["credit.request"]
+            .sudo()
+            .search(
+                [
+                    ("alt_currency_id.uri", "in", currency_uris),
+                    ("state", "in", ["pending"]),
+                ],
+                order="create_date desc",
+            )
         )
         # Retrieve credit requests data
         credit_request_list = [
-                self._get_credit_request_data(cr)
-                for cr in credit_requests
-            ]
+            self._get_credit_request_data(cr) for cr in credit_requests
+        ]
         return credit_request_list
 
     @restapi.method(
@@ -130,7 +134,8 @@ class PartnerService(Component):
 
         ## Continue the workaround
         currency_uris += [
-            cur.uri for cur in self.env["res.alt.currency"].search(
+            cur.uri
+            for cur in self.env["res.alt.currency"].search(
                 [
                     ("active", "=", True),
                     ("engine", "in", currency_engines),
@@ -150,11 +155,11 @@ class PartnerService(Component):
             pending_topup_list += [
                 self._get_credit_request_data(cr)
                 for cr in CreditRequestSU.search(
-                        [
-                            ("wallet_id", "=", wallet.id),
-                            ("state", "in", ["open", "pending", "error"])
-                        ],
-                        order="create_date desc",
+                    [
+                        ("wallet_id", "=", wallet.id),
+                        ("state", "in", ["open", "pending", "error"]),
+                    ],
+                    order="create_date desc",
                 )
             ]
 
@@ -293,7 +298,7 @@ class PartnerService(Component):
         currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
         alt_currency_ids = self.env["res.alt.currency"].search(
             [("uri", "in", currency_uris)],
-            #limit=1,
+            # limit=1,
         )
         domain = [
             ("status", "=", "active"),
@@ -440,7 +445,9 @@ class PartnerService(Component):
 
         """
 
-        if not self.env.user.has_group("lcc_lokavaluto_app_connection.group_wallet_accounts_manager"):
+        if not self.env.user.has_group(
+            "lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        ):
             raise AccessDenied()
 
         _logger.debug("PARAMS: %s" % recipients_search_info)
@@ -627,7 +634,10 @@ class PartnerService(Component):
         )
         currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
         recipients = self.env["res.partner.backend"].search(
-            [("status", "=", "to_confirm"), ("alt_currency_id.uri", "in", currency_uris)],
+            [
+                ("status", "=", "to_confirm"),
+                ("alt_currency_id.uri", "in", currency_uris),
+            ],
         )
 
         domain = [("id", "in", recipients.mapped("partner_id.id"))]
@@ -727,19 +737,19 @@ class PartnerService(Component):
         return self.env["res.partner"].sudo().browse(_id)
 
     def _transform_backend_keys_in_currency_uris(self, backend_keys):
-        '''
+        """
         Transition function to transform backend keys format in backend URI format.
         TO BE REMOVED once Monujo uses backend URIs
-        '''
+        """
         currency_uris = []
         for backend in backend_keys:
             separator_count = backend.count("://")
-            if  separator_count == 1:
+            if separator_count == 1:
                 # backend matches wished URI structure
                 currency_uris.append(backend)
             elif separator_count == 0:
                 # backend is OLD format
-                engine,ident = backend.split(":", 1)
+                engine, ident = backend.split(":", 1)
                 currency_uris.append(f"{engine}://{ident}")
             else:
                 raise MissingError(f"Invalid backend id {backend}")
