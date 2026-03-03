@@ -64,6 +64,23 @@ class TestPartnerServiceSearchAllRecipients(TransactionComponentCase):
 
     ## Tests
 
+    def test_can_search_all_recipients_as_accounts_manager(self):
+        """A user with group_wallet_accounts_manager can search all recipients."""
+
+        charlie = self._make_users("charlie")
+        self._set_admin(charlie)
+        service = self._get_service_as_user(charlie)
+
+        self.assertTrue(service.can_search_all_recipients())
+
+    def test_can_search_all_recipients_as_regular_user(self):
+        """A user without group_wallet_accounts_manager cannot search all recipients."""
+
+        alice = self._make_users("alice")
+        service = self._get_service_as_user(alice)
+
+        self.assertFalse(service.can_search_all_recipients())
+
     def test_non_admin_user_gets_access_denied(self):
         """A user without group_wallet_accounts_manager must get AccessDenied."""
 
