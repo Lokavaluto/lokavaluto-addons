@@ -1,5 +1,4 @@
 import json
-from pyc3l import Pyc3l
 from unittest.mock import patch
 from odoo.addons.component.tests.common import TransactionComponentCase
 

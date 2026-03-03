@@ -1,7 +1,7 @@
 from minimock import mock, Mock, restore
 from pyc3l import Pyc3l
 from odoo.addons.component.tests.common import TransactionComponentCase
-import odoo
+import odoo  # noqa: F401 -- minimock namespace lookup
 
 
 class TestResWallet(TransactionComponentCase):

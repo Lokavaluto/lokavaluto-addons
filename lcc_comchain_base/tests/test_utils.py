@@ -1,5 +1,5 @@
 from minimock import mock, Mock, restore
-from pyc3l import Pyc3l
+from pyc3l import Pyc3l  # noqa: F401 -- minimock namespace lookup
 from odoo.addons.component.tests.common import TransactionComponentCase
 from ..utils import is_transaction_hash, check_transaction_content
 

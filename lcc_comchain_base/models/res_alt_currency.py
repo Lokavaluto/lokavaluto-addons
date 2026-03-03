@@ -3,7 +3,6 @@ import logging
 from pyc3l import Pyc3l
 
 from odoo import api, fields, models
-from odoo.exceptions import AccessDenied
 
 
 pyc3l = Pyc3l()

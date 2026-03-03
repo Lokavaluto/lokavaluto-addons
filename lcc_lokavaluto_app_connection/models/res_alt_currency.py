@@ -61,7 +61,9 @@ class AlternativeCurrency(models.Model):
             ),
         }
 
-    def _cron_import_new_digital_currency_debit_requests(self, currency_uri=None, start=None, end=None) -> None:
+    def _cron_import_new_digital_currency_debit_requests(
+        self, currency_uri=None, start=None, end=None
+    ) -> None:
         if (start is not None or end is not None) and currency_uri is None:
             raise ValueError(
                 "When start or end is set, currency_uri must be set too.",

@@ -45,7 +45,7 @@ def check_transaction_content(tx_hash, amount=0):
                 break
         retry += 1
         if retry >= 10:
-            return f"Max retry reached to get transaction info (10 retries)"
+            return "Max retry reached to get transaction info (10 retries)"
 
         time.sleep(0.5)
 

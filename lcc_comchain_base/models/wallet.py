@@ -1,6 +1,5 @@
 import json
 import logging
-import re
 
 from ..utils import check_transaction_content
 
@@ -213,7 +212,7 @@ class ResPartnerBackend(models.Model):
             return res
 
         if not self.comchain_wallet_pwd:
-            raise MissingError(f"Transaction impossible - Wallet password missing")
+            raise MissingError("Transaction impossible - Wallet password missing")
 
         # Get Comchain wallet
         comchain_wallet = pyc3l.Wallet.from_json(self.comchain_wallet)
