@@ -199,6 +199,15 @@ class PartnerService(Component):
         return True
 
     @restapi.method(
+        [(["/can-validate-credit-request"], "GET")],
+    )
+    def can_validate_credit_request(self) -> bool:
+        """Check if the current user has the rights to validate credit requests."""
+        return self.env["credit.request"].check_access_rights(
+            "write", raise_exception=False
+        )
+
+    @restapi.method(
         [(["/validate-credit-request"], "POST")],
         input_param=Datamodel("partner.validate.credit.requests.param"),
     )
