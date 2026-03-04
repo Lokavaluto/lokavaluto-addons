@@ -288,155 +288,19 @@ class PartnerService(Component):
         input_param=Datamodel("partner.search.info"),
     )
     def search_recipients(self, recipients_search_info):
-        """Search recipients by name, email or phone
-        website_url: we can search we url of the web site if needed.
-
-        XXXvlab: upon empty search string, returns all favorite only. And
-        always order by favorite first.
-
-        """
-        _logger.debug(f"PARAMS: {recipients_search_info}")
-        value = recipients_search_info.value
-        sender_partner = self.env.user.partner_id
-        backend_keys = set(sender_partner.backends()) & set(
-            recipients_search_info.backend_keys,
+        """Search recipients, excluding self and safe wallets."""
+        return self._search_recipients_common(
+            backend_keys=recipients_search_info.backend_keys,
+            value=recipients_search_info.value,
+            offset=recipients_search_info.offset,
+            limit=recipients_search_info.limit,
+            order=recipients_search_info.order,
+            website_url=recipients_search_info.website_url,
+            sender_wallet_ident=recipients_search_info.sender_wallet_ident,
+            apply_restriction_rules=True,
+            exclude_safe_wallets=True,
+            exclude_self=True,
         )
-
-        # Transform backend_keys in backend_URI if needed
-        # TO BE REMOVED once Monujo sends URIs through the API
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
-        alt_currency_ids = self.env["res.alt.currency"].search(
-            [("uri", "in", currency_uris)],
-            # limit=1,
-        )
-        domain = [
-            ("status", "=", "active"),
-            ("alt_currency_id", "in", alt_currency_ids.ids),
-            ("partner_id.id", "!=", sender_partner.id),
-            ("partner_id.active", "=", True),
-            ("partner_id.public_profile_id.name", "!=", False),  # only main profiles
-        ]
-        offset = recipients_search_info.offset or 0
-        limit = recipients_search_info.limit or None
-        order = recipients_search_info.order or "name asc"
-        order = _recipient_order_normalize(order)
-        for alt_currency in alt_currency_ids:
-            for safe_wallet_partner in alt_currency._safe_wallet_partners():
-                domain += [("partner_id.id", "!=", safe_wallet_partner.id)]
-        website_url = recipients_search_info.website_url
-
-        if value:
-            domain.extend(
-                [
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    ("partner_id.public_profile_id.name", "ilike", value),
-                    ("partner_id.public_profile_id.business_name", "ilike", value),
-                    ("partner_id.public_profile_id.email", "ilike", value),
-                    ("partner_id.public_profile_id.phone", "ilike", value),
-                    ("partner_id.public_profile_id.mobile", "ilike", value),
-                    ("partner_id.industry_id", "ilike", value),
-                    ("partner_id.secondary_industry_ids.name", "ilike", value),
-                    ("partner_id.keywords", "ilike", value),
-                ],
-            )
-        if website_url:
-            partner_id = website_url.split("-")[-1]
-            try:
-                partner_id = int(partner_id)
-                domain.extend([("partner_id.id", "=", partner_id)])
-            except ValueError:
-                msg = "Url not valid."
-                raise MissingError(msg)
-        _logger.debug(f"DOMAIN: {domain}")
-
-        ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
-        ## here for a direct search. We'll implement 2 search to fake an
-        ## order by ``is_favorite``
-        rpb = self.env["res.partner.backend"].sudo()
-        recipients_fav = rpb.search(
-            [("partner_id.favorite_user_ids", "in", self.env.uid), *domain],
-            limit=limit,
-            offset=offset,
-            order=order,
-        )
-        _logger.debug(f"recipients_fav: {recipients_fav}")
-        len_recipients = len(recipients_fav)
-        recipients = recipients_fav
-        if (limit is None or len_recipients < limit) and value:
-            if len_recipients == 0:
-                fav_count = (
-                    0
-                    if offset == 0
-                    else rpb.search_count(
-                        [("partner_id.favorite_user_ids", "in", self.env.uid), *domain],
-                    )
-                )
-                offset -= fav_count
-            else:
-                if limit is not None:
-                    limit -= len_recipients
-
-                offset = 0
-
-            if limit != 0:
-                recipients_no_fav = rpb.search(
-                    [("partner_id.favorite_user_ids", "not in", self.env.uid), *domain],
-                    limit=limit,
-                    offset=offset,
-                    order=order,
-                )
-                _logger.debug(f"recipients_no_fav: {recipients_no_fav}")
-                recipients |= recipients_no_fav
-        _logger.debug(f"recipients: {recipients}")
-
-        # Next lines apply wallet restriction rules on recipients
-        if recipients_search_info.sender_wallet_ident:
-            sender_wallet = rpb.get_by_name(
-                name=recipients_search_info.sender_wallet_ident,
-            )
-        else:
-            sender_wallet = sender_partner.lcc_backend_ids.filtered(
-                lambda p: p.alt_currency_id.uri in currency_uris
-            )
-            if len(sender_wallet) > 1:
-                raise MissingError("Several sender wallets found, only one expected")
-
-        if (
-            sender_wallet
-        ):  # notice : bool(self.env["res.partner.backend"]) returns False
-            matched_wallet_restriction_rule = (
-                sender_wallet.get_first_matching_restriction_rule()
-            )
-            if matched_wallet_restriction_rule:
-                recipients = [
-                    recipient_wallet
-                    for recipient_wallet in recipients
-                    if matched_wallet_restriction_rule.recipient_is_allowed_by_rule(
-                        recipient_wallet,
-                    )
-                ]
-            # if no wallet restriction rule matches, all recipients are allowed
-
-        ## Group by partner
-        rows = []
-        for recipient in recipients:
-            partner = recipient.partner_id
-            lcc_profile_info = partner.lcc_profile_info()
-            if not lcc_profile_info:
-                continue
-            row = lcc_profile_info[0]
-            row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
-                currency_uris
-            )
-            rows.append(row)
-
-        return {"count": len(rows), "rows": rows}
 
     @restapi.method(
         [(["/can-search-all-recipients"], "GET")],
@@ -452,138 +316,19 @@ class PartnerService(Component):
         input_param=Datamodel("partner.search.info"),
     )
     def search_all_recipients(self, recipients_search_info):
-        """Search all recipients by name, email or phone
+        """Admin-only search for all recipients, without restrictions."""
 
-        website_url: we can search we url of the web site if needed
-
-        This entrypoint is for admin access to all recipients
-
-        XXXvlab: upon empty search string, returns all favorite only. And
-        always order by favorite first.
-
-        """
-
-        if not self.env.user.has_group(
-            "lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
-        ):
+        if not self.can_search_all_recipients():
             raise AccessDenied()
 
-        _logger.debug("PARAMS: %s" % recipients_search_info)
-        value = recipients_search_info.value
-        backend_keys = set(self.env.user.partner_id.backends()) & set(
-            recipients_search_info.backend_keys
+        return self._search_recipients_common(
+            backend_keys=recipients_search_info.backend_keys,
+            value=recipients_search_info.value,
+            offset=recipients_search_info.offset,
+            limit=recipients_search_info.limit,
+            order=recipients_search_info.order,
+            website_url=recipients_search_info.website_url,
         )
-
-        backend_types = [key.split(":", 1)[0] for key in backend_keys]
-        # Transform backend_keys in backend_URI if needed
-        # TO BE REMOVED once Monujo sends URIs through the API
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
-
-        domain = [
-            ("status", "=", "active"),
-            ("type", "in", backend_types),
-            ("partner_id.active", "=", True),
-            ("partner_id.public_profile_id.name", "!=", False),  ## only main profiles
-        ]
-        offset = recipients_search_info.offset if recipients_search_info.offset else 0
-        limit = recipients_search_info.limit if recipients_search_info.limit else None
-        order = (
-            recipients_search_info.order if recipients_search_info.order else "name asc"
-        )
-        order = _recipient_order_normalize(order)
-        website_url = recipients_search_info.website_url
-
-        if value:
-            domain.extend(
-                [
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    "|",
-                    ("partner_id.public_profile_id.name", "ilike", value),
-                    ("partner_id.public_profile_id.business_name", "ilike", value),
-                    ("partner_id.public_profile_id.email", "ilike", value),
-                    ("partner_id.public_profile_id.phone", "ilike", value),
-                    ("partner_id.public_profile_id.mobile", "ilike", value),
-                    ("partner_id.industry_id", "ilike", value),
-                    ("partner_id.secondary_industry_ids.name", "ilike", value),
-                    ("partner_id.keywords", "ilike", value),
-                ]
-            )
-        if website_url:
-            partner_id = website_url.split("-")[-1]
-            try:
-                partner_id = int(partner_id)
-                domain.extend([("partner_id.id", "=", partner_id)])
-            except ValueError:
-                raise MissingError("Url not valid.")
-        _logger.debug("DOMAIN: %s" % domain)
-        ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
-        ## here for a direct search. We'll implement 2 search to fake an
-        ## order by ``is_favorite``
-        rpb = self.env["res.partner.backend"].sudo()
-        recipients_fav = rpb.search(
-            [
-                ("partner_id.favorite_user_ids", "in", self.env.uid),
-            ]
-            + domain,
-            limit=limit,
-            offset=offset,
-            order=order,
-        )
-        _logger.debug("recipients_fav: %s" % recipients_fav)
-        len_recipients = len(recipients_fav)
-        recipients = recipients_fav
-        if (limit is None or len_recipients < limit) and value:
-            if len_recipients == 0:
-                fav_count = (
-                    0
-                    if offset == 0
-                    else rpb.search_count(
-                        [
-                            ("partner_id.favorite_user_ids", "in", self.env.uid),
-                        ]
-                        + domain,
-                    )
-                )
-                offset -= fav_count
-            else:
-                if limit is not None:
-                    limit -= len_recipients
-
-                offset = 0
-
-            if limit != 0:
-                recipients_no_fav = rpb.search(
-                    [
-                        ("partner_id.favorite_user_ids", "not in", self.env.uid),
-                    ]
-                    + domain,
-                    limit=limit,
-                    offset=offset,
-                    order=order,
-                )
-                _logger.debug("recipients_no_fav: %s" % recipients_no_fav)
-                recipients |= recipients_no_fav
-        _logger.debug("recipients: %s" % recipients)
-
-        ## Group by partner
-        rows = []
-        for recipient in recipients:
-            partner = recipient.partner_id
-            lcc_profile_info = partner.lcc_profile_info()
-            if not lcc_profile_info:
-                continue
-            row = lcc_profile_info[0]
-            row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
-                currency_uris
-            )
-            rows.append(row)
-
-        return {"count": len(rows), "rows": rows}
 
     @restapi.method(
         [(["/get_recipient_by_uri"], "GET")],
@@ -753,6 +498,172 @@ class PartnerService(Component):
 
     def _get(self, _id):
         return self.env["res.partner"].sudo().browse(_id)
+
+    def _search_recipients_common(
+        self,
+        backend_keys,
+        value="",
+        offset=0,
+        limit=None,
+        order="name asc",
+        website_url=None,
+        sender_wallet_ident=None,
+        apply_restriction_rules=False,
+        exclude_safe_wallets=False,
+        exclude_self=False,
+    ):
+        """Search recipients by name, email, phone or website_url.
+
+        Resolves backend_keys to currencies, builds the search domain,
+        applies value/website_url filters, orders by favorites first,
+        and optionally enforces wallet restriction rules.
+
+        XXXvlab: upon empty search string, returns favorites only.
+        Always orders by favorite first.
+        """
+        backend_keys = set(self.env.user.partner_id.backends()) & set(
+            backend_keys,
+        )
+        # Transform backend_keys in backend_URI if needed
+        # TO BE REMOVED once Monujo sends URIs through the API
+        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+        alt_currency_ids = self.env["res.alt.currency"].search(
+            [("uri", "in", currency_uris)],
+        )
+        domain = [
+            ("status", "=", "active"),
+            ("alt_currency_id", "in", alt_currency_ids.ids),
+            ("partner_id.active", "=", True),
+            ("partner_id.public_profile_id.name", "!=", False),  # only main profiles
+        ]
+
+        if exclude_self:
+            domain += [("partner_id.id", "!=", self.env.user.partner_id.id)]
+
+        if exclude_safe_wallets:
+            for alt_currency in alt_currency_ids:
+                for safe_wallet_partner in alt_currency._safe_wallet_partners():
+                    domain += [("partner_id.id", "!=", safe_wallet_partner.id)]
+
+        offset = offset or 0
+        limit = limit or None
+        order = _recipient_order_normalize(order or "name asc")
+
+        if value:
+            domain.extend(
+                [
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    "|",
+                    ("partner_id.public_profile_id.name", "ilike", value),
+                    ("partner_id.public_profile_id.business_name", "ilike", value),
+                    ("partner_id.public_profile_id.email", "ilike", value),
+                    ("partner_id.public_profile_id.phone", "ilike", value),
+                    ("partner_id.public_profile_id.mobile", "ilike", value),
+                    ("partner_id.industry_id", "ilike", value),
+                    ("partner_id.secondary_industry_ids.name", "ilike", value),
+                    ("partner_id.keywords", "ilike", value),
+                ],
+            )
+        if website_url:
+            partner_id = website_url.split("-")[-1]
+            try:
+                partner_id = int(partner_id)
+                domain.extend([("partner_id.id", "=", partner_id)])
+            except ValueError:
+                msg = "Url not valid."
+                raise MissingError(msg)
+        _logger.debug(f"DOMAIN: {domain}")
+
+        ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
+        ## here for a direct search. We'll implement 2 search to fake an
+        ## order by ``is_favorite``
+        rpb = self.env["res.partner.backend"].sudo()
+        recipients_fav = rpb.search(
+            [("partner_id.favorite_user_ids", "in", self.env.uid), *domain],
+            limit=limit,
+            offset=offset,
+            order=order,
+        )
+        _logger.debug(f"recipients_fav: {recipients_fav}")
+        len_recipients = len(recipients_fav)
+        recipients = recipients_fav
+        if (limit is None or len_recipients < limit) and value:
+            if len_recipients == 0:
+                fav_count = (
+                    0
+                    if offset == 0
+                    else rpb.search_count(
+                        [("partner_id.favorite_user_ids", "in", self.env.uid), *domain],
+                    )
+                )
+                offset -= fav_count
+            else:
+                if limit is not None:
+                    limit -= len_recipients
+
+                offset = 0
+
+            if limit != 0:
+                recipients_no_fav = rpb.search(
+                    [("partner_id.favorite_user_ids", "not in", self.env.uid), *domain],
+                    limit=limit,
+                    offset=offset,
+                    order=order,
+                )
+                _logger.debug(f"recipients_no_fav: {recipients_no_fav}")
+                recipients |= recipients_no_fav
+        _logger.debug(f"recipients: {recipients}")
+
+        if apply_restriction_rules:
+            sender_partner = self.env.user.partner_id
+            if sender_wallet_ident:
+                sender_wallet = rpb.get_by_name(
+                    name=sender_wallet_ident,
+                )
+            else:
+                sender_wallet = sender_partner.lcc_backend_ids.filtered(
+                    lambda p: p.alt_currency_id.uri in currency_uris
+                )
+                if len(sender_wallet) > 1:
+                    raise MissingError(
+                        "Several sender wallets found, only one expected"
+                    )
+
+            if (
+                sender_wallet
+            ):  # notice : bool(self.env["res.partner.backend"]) returns False
+                matched_wallet_restriction_rule = (
+                    sender_wallet.get_first_matching_restriction_rule()
+                )
+                if matched_wallet_restriction_rule:
+                    recipients = [
+                        recipient_wallet
+                        for recipient_wallet in recipients
+                        if matched_wallet_restriction_rule.recipient_is_allowed_by_rule(
+                            recipient_wallet,
+                        )
+                    ]
+                # if no wallet restriction rule matches, all recipients are allowed
+
+        ## Group by partner
+        rows = []
+        for recipient in recipients:
+            partner = recipient.partner_id
+            lcc_profile_info = partner.lcc_profile_info()
+            if not lcc_profile_info:
+                continue
+            row = lcc_profile_info[0]
+            row["monujo_backends"] = partner.lcc_backend_ids._update_search_data(
+                currency_uris
+            )
+            rows.append(row)
+
+        return {"count": len(rows), "rows": rows}
 
     def _transform_backend_keys_in_currency_uris(self, backend_keys):
         """
