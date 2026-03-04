@@ -107,6 +107,15 @@ class ComchainService(Component):
         return res
 
     @restapi.method(
+        [(["/can-activate"], "GET")],
+    )
+    def can_activate(self) -> bool:
+        """Check if the current user can activate or discard comchain accounts."""
+        return self.env["res.partner.backend"].check_access_rights(
+            "write", raise_exception=False
+        )
+
+    @restapi.method(
         [(["/activate"], "POST")],
         input_param=Datamodel("comchain.activate.list"),
     )
