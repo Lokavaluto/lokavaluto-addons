@@ -75,7 +75,14 @@ class ComchainService(Component):
                 "Several alternative currencies found. Please contact your administrator."
             )
         if len(alt_currency) == 0:
-            raise NotFound("Alternative currency not found.")
+            _logger.error(
+                "Register wallet failed: currency '%s' not found",
+                currency_name,
+            )
+            return {
+                "error": "Currency '%s' not found." % currency_name,
+                "status": "Error",
+            }
 
         # Create the wallet if it does'nt already exist.
         Wallet = self.env["res.partner.backend"]
