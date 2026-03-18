@@ -1170,3 +1170,115 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.lcc_partner_app
 msgid "wallet(s)"
 msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__alt_currency_id
+msgid "Alternative Currency"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_search
+msgid "Category"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.actions.act_window,help:lcc_lokavaluto_app_connection.action_unusual_transaction
+msgid "Create a new unusual transaction."
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_search
+msgid "Currency"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__description
+msgid "Description"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__expected_receiver_partner_id
+msgid "Expected Receiver Partner"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__expected_receiver_wallet_id
+msgid "Expected Receiver Wallet"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__expected_sender_partner_id
+msgid "Expected Sender Partner"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__expected_sender_wallet_id
+msgid "Expected Sender Wallet"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_form
+msgid "General"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__unusual_transaction__tx_category__payment
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_search
+msgid "Payment"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__unusual_transaction__tx_category__pledge
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_search
+msgid "Pledge"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_form
+msgid "Receiver"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__unusual_transaction__tx_category__reconversion
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_search
+msgid "Reconversion"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_search
+msgid "Search Unusual Transactions"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_form
+msgid "Sender"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__unusual_transaction__tx_category__technical
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_search
+msgid "Technical"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__tx_category
+msgid "Transaction Category"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_unusual_transaction__tx_hash
+msgid "Transaction Hash"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_unusual_transaction
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_form
+msgid "Unusual Transaction"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
+#: model:ir.actions.act_window,name:lcc_lokavaluto_app_connection.action_unusual_transaction
+#: model:ir.ui.menu,name:lcc_lokavaluto_app_connection.unusual_transaction_menu
+#: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_tree
+msgid "Unusual Transactions"
+msgstr ""
