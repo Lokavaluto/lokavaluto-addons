@@ -99,6 +99,18 @@
         </field>
     </record>
 
+    <record id="action_unusual_transaction" model="ir.actions.act_window">
+        <field name="name">Unusual Transactions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">unusual.transaction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new unusual transaction.
+            </p>
+        </field>
+    </record>
+
     <record id="action_alt_currency" model="ir.actions.act_window">
         <field name="name">Alternative Currencies</field>
         <field name="type">ir.actions.act_window</field>
@@ -179,5 +191,12 @@
         sequence="99"
         groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
         action="action_wallet_tag" />
+
+    <menuitem
+        id="unusual_transaction_menu"
+        parent="lcc_lokavaluto_app_connection.menu_config_digital_currency"
+        sequence="99"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_unusual_transaction" />
 
 </odoo>

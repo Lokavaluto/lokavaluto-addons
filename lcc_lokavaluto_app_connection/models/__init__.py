@@ -13,3 +13,4 @@ from . import topup_rule
 from . import wallet_restriction_rule
 from . import lokavaluto_private_services_collection
 from . import res_alt_currency
+from . import unusual_transaction

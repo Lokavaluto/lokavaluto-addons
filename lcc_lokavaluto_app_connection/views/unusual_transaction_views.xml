@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="unusual_transaction_view_tree" model="ir.ui.view">
+        <field name="name">unusual.transaction.view.tree</field>
+        <field name="model">unusual.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Unusual Transactions">
+                <field name="tx_hash" />
+                <field name="alt_currency_id" />
+                <field name="tx_category" />
+                <field name="expected_sender_partner_id" />
+                <field name="expected_receiver_partner_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="unusual_transaction_view_form" model="ir.ui.view">
+        <field name="name">unusual.transaction.view.form</field>
+        <field name="model">unusual.transaction</field>
+        <field name="arch" type="xml">
+            <form string="Unusual Transaction">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="tx_hash" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="general" string="General">
+                            <field name="alt_currency_id" />
+                            <field name="tx_category" />
+                            <field name="description" />
+                        </group>
+                    </group>
+                    <group>
+                        <group name="sender" string="Sender">
+                            <field name="expected_sender_wallet_id" />
+                            <field name="expected_sender_partner_id" />
+                        </group>
+                        <group name="receiver" string="Receiver">
+                            <field name="expected_receiver_wallet_id" />
+                            <field name="expected_receiver_partner_id" />
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="unusual_transaction_view_search" model="ir.ui.view">
+        <field name="name">unusual.transaction.view.search</field>
+        <field name="model">unusual.transaction</field>
+        <field name="arch" type="xml">
+            <search string="Search Unusual Transactions">
+                <field name="tx_hash" />
+                <field name="expected_sender_wallet_id" />
+                <field name="expected_receiver_wallet_id" />
+                <field name="expected_sender_partner_id" />
+                <field name="expected_receiver_partner_id" />
+                <field name="alt_currency_id" />
+                <separator />
+                <filter name="category_pledge" string="Pledge"
+                    domain="[('tx_category', '=', 'pledge')]" />
+                <filter name="category_reconversion" string="Reconversion"
+                    domain="[('tx_category', '=', 'reconversion')]" />
+                <filter name="category_payment" string="Payment"
+                    domain="[('tx_category', '=', 'payment')]" />
+                <filter name="category_technical" string="Technical"
+                    domain="[('tx_category', '=', 'technical')]" />
+                <separator />
+                <filter name="groupby_category" string="Category"
+                    context="{'group_by': 'tx_category'}" />
+                <filter name="groupby_currency" string="Currency"
+                    context="{'group_by': 'alt_currency_id'}" />
+            </search>
+        </field>
+    </record>
+
+</odoo>
