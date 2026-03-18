@@ -121,6 +121,12 @@ class PortalPrivateRegistration(CustomerPortal):
             }
         )
         values["name"] = values["firstname"] + " " + values["lastname"]
+        # HTTP form data comes in as strings, but Odoo ORM requires integers for
+        # Many2one fields. Without this conversion, the value is stored as False,
+        # which breaks base_location's _check_zip constraint.
+        for field in ("country_id", "team_id", "title"):
+            if values.get(field):
+                values[field] = int(values[field])
         return values
 
     @http.route(

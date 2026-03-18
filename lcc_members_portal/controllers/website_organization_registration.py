@@ -14,7 +14,7 @@ class WebsiteOrganizationRegistration(http.Controller):
         "city",
         "zipcode",
         "country_id",
-        # "team_id",  # TODO: issue occuring when this field is added. INVESTIGATION NEEDED
+        "team_id",
         "phone",
         "company_email",
         "website_url",
@@ -129,6 +129,12 @@ class WebsiteOrganizationRegistration(http.Controller):
         values["name"] = values["company_name"]
         values.update({"zip": values.pop("zipcode", "")})
         values.update({"website": values.pop("website_url", "")})
+        # HTTP form data comes in as strings, but Odoo ORM requires integers for
+        # Many2one fields. Without this conversion, the value is stored as False,
+        # which breaks base_location's _check_zip constraint.
+        for field in ("country_id", "industry_id", "team_id"):
+            if values.get(field):
+                values[field] = int(values[field])
         return values
 
     @http.route(
@@ -140,10 +146,7 @@ class WebsiteOrganizationRegistration(http.Controller):
     def send_registration_request(self, **kwargs):
         # Create a new lead
         values = self._compute_web_form_data(kwargs)
-        lead = request.env["crm.lead"].sudo().create(values)
-        lead.team_id = request.env["crm.team"].browse(
-            kwargs.pop("team_id")
-        )  # TODO: see remark above concerning team_id
+        request.env["crm.lead"].sudo().create(values)
         return request.render(
             "lcc_members_portal.website_organization_registration_saved", {}
         )
