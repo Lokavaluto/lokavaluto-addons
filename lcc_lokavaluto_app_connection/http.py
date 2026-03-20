@@ -154,6 +154,7 @@ def CORSMiddleware(original_app):
                 headers.add(
                     "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"
                 )
+            headers.set("Access-Control-Max-Age", "86400")
             # headers.add("Access-Control-Expose-Headers", "")
             return start_response(status, list(headers))
 
