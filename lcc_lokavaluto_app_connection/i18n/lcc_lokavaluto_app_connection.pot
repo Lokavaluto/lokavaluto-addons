@@ -1217,6 +1217,11 @@ msgid "Expected Sender Wallet"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__unusual_transaction__tx_category__error
+msgid "Error"
+msgstr ""
+
+#. module: lcc_lokavaluto_app_connection
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.unusual_transaction_view_form
 msgid "General"
 msgstr ""

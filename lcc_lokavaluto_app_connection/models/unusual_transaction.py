@@ -31,6 +31,7 @@ class UnusualTransaction(models.Model):
             ("reconversion", "Reconversion"),
             ("payment", "Payment"),
             ("technical", "Technical"),
+            ("error", "Error")
         ],
         string="Transaction Category",
         required=True,
