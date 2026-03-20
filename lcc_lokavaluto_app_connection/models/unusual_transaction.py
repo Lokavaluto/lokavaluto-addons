@@ -39,7 +39,6 @@ class UnusualTransaction(models.Model):
     expected_sender_wallet_id = fields.Many2one(
         "res.partner.backend",
         string="Expected Sender Wallet",
-        required=True,
         domain="[('alt_currency_id', '=', alt_currency_id)]",
     )
     expected_sender_partner_id = fields.Many2one(
@@ -51,7 +50,6 @@ class UnusualTransaction(models.Model):
     expected_receiver_wallet_id = fields.Many2one(
         "res.partner.backend",
         string="Expected Receiver Wallet",
-        required=True,
         domain="[('alt_currency_id', '=', alt_currency_id)]",
     )
     expected_receiver_partner_id = fields.Many2one(
