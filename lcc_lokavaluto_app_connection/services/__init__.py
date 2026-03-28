@@ -1,7 +1,15 @@
-from . import partner_services
-from . import auth_services
+import functools
+import logging
+
+from odoo.exceptions import AccessDenied
+from odoo.http import request
+
+from odoo.addons.base_rest import restapi
+
 
 __api_version__ = 13
+
+_logger = logging.getLogger(__name__)
 
 
 ##
@@ -192,3 +200,66 @@ def _features_restapi_method(routes, **kwargs):
 
 
 restapi.method = _features_restapi_method
+
+
+##
+## Currency API decorator
+##
+
+
+def lcc_api(routes, require_actions=None, **kwargs):
+    """Like ``@restapi.method`` but auto-validates ``X-Lokapi-Caller-User-Uri``.
+
+    Reads the ``X-Lokapi-Caller-User-Uri`` HTTP header and delegates
+    authentication to ``self._auth_user_uri(user_uri)`` which each
+    backend overrides.  The decorator handles action gating from the
+    returned actions list.
+
+    Args:
+        routes: Same as ``@restapi.method`` routes parameter.
+        require_actions: Action gating (coarse-grained authorization).
+            - ``None`` (default): no action gate, only auth.
+            - ``True``: caller must have at least one action.
+            - tuple of strings: caller must have at least one
+              of these specific actions.
+        **kwargs: Passed through to ``@restapi.method``.
+    """
+
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(self, *args, **kw):
+            # -- Read header --
+            caller_user_uri = request.httprequest.headers.get(
+                "X-Lokapi-Caller-User-Uri"
+            )
+            if not caller_user_uri:
+                _logger.debug("lcc_api: missing X-Lokapi-Caller-User-Uri header")
+                raise AccessDenied()
+
+            # -- Delegate auth to backend --
+            caller_actions = self._auth_user_uri(caller_user_uri)
+
+            # -- Action gating --
+            if require_actions is not None:
+                if require_actions is True:
+                    if not caller_actions:
+                        _logger.debug("lcc_api: no actions (gate=True)")
+                        raise AccessDenied()
+                elif not set(caller_actions) & set(require_actions):
+                    _logger.debug(
+                        "lcc_api: lacks required actions %s (has: %s)",
+                        require_actions,
+                        caller_actions,
+                    )
+                    raise AccessDenied()
+
+            return func(self, *args, **kw)
+
+        return restapi.method(routes, **kwargs)(wrapper)
+
+    return decorator
+
+
+from . import partner_services  # noqa: E402
+from . import wallet_services  # noqa: E402
+from . import auth_services  # noqa: E402
