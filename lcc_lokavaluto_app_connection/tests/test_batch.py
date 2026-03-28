@@ -21,15 +21,20 @@ def _make_environ(body, method="POST", path="/batch", headers=None):
 
 
 def _make_wsgi_app(handler):
-    """Wrap a handler(environ) -> (status, body) into a WSGI app."""
+    """Wrap a handler(environ) -> (status, body[, headers]) into a WSGI app.
+
+    ``handler`` returns ``(status, body)`` or ``(status, body,
+    extra_headers)`` where *extra_headers* is a list of
+    ``(name, value)`` tuples.
+    """
 
     def wsgi_app(environ, start_response):
-        status_code, response_body = handler(environ)
+        result = handler(environ)
+        status_code, response_body = result[0], result[1]
+        extra_headers = result[2] if len(result) > 2 else []
         data = json.dumps(response_body).encode("utf-8")
-        start_response(
-            f"{status_code} OK",
-            [("Content-Type", "application/json")],
-        )
+        headers = [("Content-Type", "application/json")] + list(extra_headers)
+        start_response(f"{status_code} OK", headers)
         return [data]
 
     return wsgi_app
@@ -305,3 +310,97 @@ class TestBatchEndpoint(BaseCase):
         self.assertEqual(body["responses"][0]["status"], 200)
         self.assertEqual(body["responses"][1]["status"], 403)
         self.assertEqual(body["responses"][2]["status"], 200)
+
+    def test_per_sub_request_headers_forwarded(self):
+        """Per-sub-request headers are applied to the sub-environ."""
+
+        received = {}
+
+        def handler(environ):
+            received["features"] = environ.get("HTTP_X_CLIENT_FEATURES")
+            received["caller"] = environ.get("HTTP_X_LOKAPI_CALLER_USER_URI")
+            return 200, {"ok": True}
+
+        app = _make_wsgi_app(handler)
+        environ = _make_environ(
+            {
+                "requests": [
+                    {
+                        "path": "/api/test",
+                        "headers": {
+                            "X-Client-Features": "wallet/0",
+                            "X-Lokapi-Caller-User-Uri": "comchain://cc/user/0xa",
+                        },
+                    }
+                ]
+            }
+        )
+
+        _collect_response(environ, lambda e, sr: _handle_batch(app, e, sr))
+
+        self.assertEqual(received["features"], "wallet/0")
+        self.assertEqual(received["caller"], "comchain://cc/user/0xa")
+
+    def test_per_sub_request_headers_override_batch_headers(self):
+        """Per-sub-request headers take precedence over batch-level ones."""
+
+        received = {}
+
+        def handler(environ):
+            received["api_key"] = environ.get("HTTP_API_KEY")
+            return 200, {"ok": True}
+
+        app = _make_wsgi_app(handler)
+        environ = _make_environ(
+            {
+                "requests": [
+                    {
+                        "path": "/api/test",
+                        "headers": {"Api-Key": "sub-key"},
+                    }
+                ]
+            },
+            headers={"HTTP_API_KEY": "batch-key"},
+        )
+
+        _collect_response(environ, lambda e, sr: _handle_batch(app, e, sr))
+
+        self.assertEqual(received["api_key"], "sub-key")
+
+    def test_response_headers_captured(self):
+        """X-* response headers from sub-requests are included in the batch response."""
+
+        def handler(environ):
+            return (
+                200,
+                {"ok": True},
+                [
+                    ("X-Supported-Features", "wallet/0"),
+                    ("X-Selected-Features", "wallet/0"),
+                ],
+            )
+
+        app = _make_wsgi_app(handler)
+        environ = _make_environ({"requests": [{"path": "/api/test"}]})
+
+        status, body = _collect_response(
+            environ, lambda e, sr: _handle_batch(app, e, sr)
+        )
+
+        self.assertEqual(status, 200)
+        resp = body["responses"][0]
+        self.assertIn("headers", resp)
+        self.assertEqual(resp["headers"]["X-Supported-Features"], "wallet/0")
+        self.assertEqual(resp["headers"]["X-Selected-Features"], "wallet/0")
+
+    def test_response_headers_absent_when_empty(self):
+        """No 'headers' key in response when sub-request returns no X-* headers."""
+
+        app = _make_wsgi_app(lambda e: (200, {"ok": True}))
+        environ = _make_environ({"requests": [{"path": "/api/test"}]})
+
+        status, body = _collect_response(
+            environ, lambda e, sr: _handle_batch(app, e, sr)
+        )
+
+        self.assertNotIn("headers", body["responses"][0])

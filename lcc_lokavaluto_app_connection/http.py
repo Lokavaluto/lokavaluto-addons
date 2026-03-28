@@ -5,10 +5,12 @@ import logging
 from odoo.http import root
 from odoo.exceptions import AccessDenied, MissingError
 from odoo.addons.base_rest import http
+from werkzeug.exceptions import NotAcceptable
 from werkzeug.test import EnvironBuilder
 from werkzeug.wrappers import Response
 from werkzeug.datastructures import Headers
 
+from .services import MissingCommonFeature
 
 _logger = logging.getLogger(__name__)
 
@@ -25,12 +27,18 @@ except (ImportError, IOError) as err:
 ##
 
 
-def _dispatch_sub_request(wsgi_app, environ, path, method, params, body):
+def _dispatch_sub_request(wsgi_app, environ, path, method, params, body, headers=None):
     """Dispatch a single sub-request through the WSGI app.
 
     Builds a synthetic WSGI environ that inherits session cookies
     from the original ``environ`` and dispatches it through
-    ``wsgi_app``.  Returns ``(status_code, parsed_body)``.
+    ``wsgi_app``.  Returns ``(status_code, parsed_body,
+    response_headers_dict)``.
+
+    ``headers`` is an optional dict of HTTP headers for this
+    sub-request (e.g. ``{"X-Client-Features": "wallet/0"}``).
+    They are applied after the forwarded session headers, so
+    per-sub-request headers override batch-level ones.
     """
     content_type = "application/json"
     data = json.dumps(body if body is not None else params).encode("utf-8")
@@ -49,6 +57,13 @@ def _dispatch_sub_request(wsgi_app, environ, path, method, params, body):
         if header in environ:
             sub_environ[header] = environ[header]
 
+    ## Apply per-sub-request headers.  Header names are converted
+    ## from HTTP form (``X-Foo-Bar``) to WSGI environ form
+    ## (``HTTP_X_FOO_BAR``).
+    for name, value in (headers or {}).items():
+        wsgi_key = "HTTP_" + name.upper().replace("-", "_")
+        sub_environ[wsgi_key] = value
+
     ## Capture the sub-response via a simple collector.
     ## The WSGI spec (PEP 3333) allows apps to send body data via
     ## either the returned iterable OR the write() callable from
@@ -56,9 +71,9 @@ def _dispatch_sub_request(wsgi_app, environ, path, method, params, body):
     captured = {}
     write_buf = io.BytesIO()
 
-    def capture_start_response(status, headers, exc_info=None):
+    def capture_start_response(status, headers_list, exc_info=None):
         captured["status"] = status
-        captured["headers"] = headers
+        captured["headers"] = headers_list
         return write_buf.write
 
     try:
@@ -68,7 +83,7 @@ def _dispatch_sub_request(wsgi_app, environ, path, method, params, body):
             result_iter.close()
     except Exception:
         _logger.exception("Batch sub-request failed: %s %s", method, path)
-        return 500, {"error": "Internal server error"}
+        return 500, {"error": "Internal server error"}, {}
 
     ## Combine bytes from both the write() callable and the iterable.
     write_buf.seek(0)
@@ -82,7 +97,14 @@ def _dispatch_sub_request(wsgi_app, environ, path, method, params, body):
     except (json.JSONDecodeError, ValueError):
         response_body = response_bytes.decode("utf-8", errors="replace")
 
-    return status_code, response_body
+    ## Collect response headers into a dict, keeping only the
+    ## interesting ones (X-* custom headers).
+    resp_headers = {}
+    for name, value in captured.get("headers", []):
+        if name.startswith("X-"):
+            resp_headers[name] = value
+
+    return status_code, response_body, resp_headers
 
 
 def _handle_batch(wsgi_app, environ, start_response):
@@ -118,11 +140,21 @@ def _handle_batch(wsgi_app, environ, start_response):
         method = req.get("method", "POST").upper()
         params = req.get("params", {})
         body = req.get("body")
+        sub_headers = req.get("headers", {})
 
-        status_code, response_body = _dispatch_sub_request(
-            wsgi_app, environ, path, method, params, body
+        status_code, response_body, resp_headers = _dispatch_sub_request(
+            wsgi_app,
+            environ,
+            path,
+            method,
+            params,
+            body,
+            headers=sub_headers,
         )
-        responses.append({"status": status_code, "body": response_body})
+        entry = {"status": status_code, "body": response_body}
+        if resp_headers:
+            entry["headers"] = resp_headers
+        responses.append(entry)
 
     result = json.dumps({"responses": responses})
     response = Response(result, status=200, content_type="application/json")
@@ -213,7 +245,14 @@ class NewRestApiDispatcher(http.RestApiDispatcher):
                 include_description=True,
                 extra_info=extra_info,
             )
-
+        if isinstance(exception, (MissingCommonFeature,)):
+            extra_info = getattr(exception, "rest_json_info", None) or {}
+            extra_info["error"] = exception.args[0]
+            return http.wrapJsonException(
+                NotAcceptable(http.ustr(exception)),
+                include_description=True,
+                extra_info=extra_info,
+            )
         if isinstance(exception, (AccessDenied,)):
             extra_info = getattr(exception, "rest_json_info", None)
             return http.wrapJsonException(
