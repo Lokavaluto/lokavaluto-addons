@@ -2,6 +2,7 @@ import logging
 from random import randint
 
 from odoo import api, fields, models
+from odoo.exceptions import MissingError
 from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
@@ -113,6 +114,34 @@ class ResPartnerBackend(models.Model):
         if "@" in name:
             name = name.split("@", 1)[0]
         return self.search([("name", "=", name)])
+
+    @api.model
+    def get_by_uri(self, wallet_uri):
+        """Resolve a wallet URI to a single active wallet record.
+
+        The wallet URI format is
+        ``{engine}://{currency_ident}/wallet/{wallet_ident}``.
+
+        Args:
+            wallet_uri: full wallet URI string.
+
+        Returns:
+            Single ``res.partner.backend`` record.
+
+        Raises:
+            odoo.exceptions.MissingError: if no active wallet
+                matches the URI.
+        """
+        wallet = self.search(
+            [
+                ("uri", "=", wallet_uri),
+                ("active", "=", True),
+                ("status", "=", "active"),
+            ]
+        )
+        if not wallet:
+            raise MissingError(f"Wallet not found for URI '{wallet_uri}'")
+        return wallet
 
     def get_auth_context(self):
         """Return backend-specific auth enrichment data for this wallet.
