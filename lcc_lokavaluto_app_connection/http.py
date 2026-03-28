@@ -1,18 +1,132 @@
+import io
+import json
 import logging
 
 from odoo.http import root
 from odoo.exceptions import AccessDenied, MissingError
 from odoo.addons.base_rest import http
+from werkzeug.test import EnvironBuilder
 from werkzeug.wrappers import Response
 from werkzeug.datastructures import Headers
 
 
 _logger = logging.getLogger(__name__)
 
+BATCH_PATH = "/batch"
+
 try:
     import pyquerystring
 except (ImportError, IOError) as err:
     _logger.debug(err)
+
+
+##
+## Batch request support
+##
+
+
+def _dispatch_sub_request(wsgi_app, environ, path, method, params, body):
+    """Dispatch a single sub-request through the WSGI app.
+
+    Builds a synthetic WSGI environ that inherits session cookies
+    from the original ``environ`` and dispatches it through
+    ``wsgi_app``.  Returns ``(status_code, parsed_body)``.
+    """
+    content_type = "application/json"
+    data = json.dumps(body if body is not None else params).encode("utf-8")
+    builder = EnvironBuilder(
+        path=path,
+        method=method,
+        data=data,
+        content_type=content_type,
+    )
+    sub_environ = builder.get_environ()
+
+    ## Forward relevant headers from the original request so that
+    ## session auth, token auth and content negotiation work inside
+    ## a batch.
+    for header in ("HTTP_COOKIE", "HTTP_AUTHORIZATION", "HTTP_ACCEPT", "HTTP_API_KEY"):
+        if header in environ:
+            sub_environ[header] = environ[header]
+
+    ## Capture the sub-response via a simple collector.
+    ## The WSGI spec (PEP 3333) allows apps to send body data via
+    ## either the returned iterable OR the write() callable from
+    ## start_response.  We must capture both.
+    captured = {}
+    write_buf = io.BytesIO()
+
+    def capture_start_response(status, headers, exc_info=None):
+        captured["status"] = status
+        captured["headers"] = headers
+        return write_buf.write
+
+    try:
+        result_iter = wsgi_app(sub_environ, capture_start_response)
+        iter_bytes = b"".join(result_iter)
+        if hasattr(result_iter, "close"):
+            result_iter.close()
+    except Exception:
+        _logger.exception("Batch sub-request failed: %s %s", method, path)
+        return 500, {"error": "Internal server error"}
+
+    ## Combine bytes from both the write() callable and the iterable.
+    write_buf.seek(0)
+    write_bytes = write_buf.read()
+    response_bytes = write_bytes + iter_bytes if write_bytes else iter_bytes
+
+    status_code = int(captured.get("status", "500").split(" ", 1)[0])
+
+    try:
+        response_body = json.loads(response_bytes)
+    except (json.JSONDecodeError, ValueError):
+        response_body = response_bytes.decode("utf-8", errors="replace")
+
+    return status_code, response_body
+
+
+def _handle_batch(wsgi_app, environ, start_response):
+    """Process a batch request and return aggregated responses."""
+    try:
+        content_length = int(environ.get("CONTENT_LENGTH", 0) or 0)
+        raw_body = environ["wsgi.input"].read(content_length)
+        payload = json.loads(raw_body)
+    except (json.JSONDecodeError, ValueError, KeyError):
+        response = Response(
+            json.dumps({"error": "Invalid JSON body"}),
+            status=400,
+            content_type="application/json",
+        )
+        return response(environ, start_response)
+
+    requests = payload.get("requests")
+    if not isinstance(requests, list):
+        response = Response(
+            json.dumps({"error": "'requests' must be a list"}),
+            status=400,
+            content_type="application/json",
+        )
+        return response(environ, start_response)
+
+    responses = []
+    for idx, req in enumerate(requests):
+        if not isinstance(req, dict) or "path" not in req:
+            responses.append({"status": 400, "body": {"error": "Missing 'path'"}})
+            continue
+
+        path = req["path"]
+        method = req.get("method", "POST").upper()
+        params = req.get("params", {})
+        body = req.get("body")
+
+        status_code, response_body = _dispatch_sub_request(
+            wsgi_app, environ, path, method, params, body
+        )
+        responses.append({"status": status_code, "body": response_body})
+
+    result = json.dumps({"responses": responses})
+    response = Response(result, status=200, content_type="application/json")
+    return response(environ, start_response)
 
 
 ##
@@ -40,8 +154,20 @@ def CORSMiddleware(original_app):
                 headers.add(
                     "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"
                 )
+            headers.set("Access-Control-Max-Age", "86400")
             # headers.add("Access-Control-Expose-Headers", "")
             return start_response(status, list(headers))
+
+        ## Handle batch requests before normal dispatch.
+        if (
+            environ.get("PATH_INFO") == BATCH_PATH
+            and environ.get("REQUEST_METHOD") == "POST"
+        ):
+            return _handle_batch(
+                lambda sub_env, sub_sr: original_app(self, sub_env, sub_sr),
+                environ,
+                add_cors_headers,
+            )
 
         if environ.get("REQUEST_METHOD") == "OPTIONS":
             try:
