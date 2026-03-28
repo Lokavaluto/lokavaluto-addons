@@ -106,3 +106,58 @@ class TestComchainPermissions(TransactionComponentCase):
         alice = self._make_user_and_wallet("alice", comchain_type=False)
         auth = alice.wallet.get_auth_context()
         self.assertEqual(auth["comchain_perms"], ())
+
+    ## Tests: get_authorized_actions
+
+    def test_get_authorized_actions_per_comchain_type(self):
+        """get_authorized_actions maps comchain_type to actions."""
+        expected = {
+            "0": [],
+            "1": [],
+            "2": [
+                "activate",
+                "search-all-recipients",
+                "validate-credit-request",
+            ],
+            "3": ["validate-credit-request"],
+            "4": ["activate", "search-all-recipients"],
+        }
+        for comchain_type, expected_actions in expected.items():
+            with self.subTest(comchain_type=comchain_type):
+                alice = self._make_user_and_wallet(
+                    f"alice_{comchain_type}",
+                    comchain_type=comchain_type,
+                )
+                actions = alice.wallet.get_authorized_actions()
+                self.assertEqual(actions, expected_actions)
+
+    def test_get_authorized_actions_legacy_full_manager(self):
+        """Legacy group_wallet_full_manager gets all actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0")
+        alice.user.groups_id = [
+            (
+                4,
+                self.env.ref(
+                    "lcc_lokavaluto_app_connection.group_wallet_full_manager"
+                ).id,
+            )
+        ]
+        actions = alice.wallet.get_authorized_actions()
+        self.assertEqual(
+            actions,
+            ["activate", "search-all-recipients", "validate-credit-request"],
+        )
+
+    def test_get_authorized_actions_personal_has_no_actions(self):
+        """Personal wallet (type 0) has no permissions, thus no actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0")
+        actions = alice.wallet.get_authorized_actions()
+        self.assertEqual(actions, [])
+
+    def test_get_authorized_actions_disabled_has_no_actions(self):
+        """Disabled wallet has no actions regardless of type."""
+        alice = self._make_user_and_wallet(
+            "alice", comchain_type="2", comchain_status="disabled"
+        )
+        actions = alice.wallet.get_authorized_actions()
+        self.assertEqual(actions, [])

@@ -83,6 +83,41 @@ class ResPartnerBackend(models.Model):
             perms = self._TYPE_PERMS.get(self.comchain_type or "0", ())
         return {**base_auth, "comchain_perms": perms}
 
+    # Maps comchain permissions to coarse-grained actions.
+    _PERM_ACTIONS = {
+        "set_admin": (
+            "activate",
+            "search-all-recipients",
+            "validate-credit-request",
+        ),
+        "set_property": (
+            "activate",
+            "search-all-recipients",
+        ),
+        "pledge": ("validate-credit-request",),
+    }
+
+    def get_authorized_actions(self):
+        """Map comchain permissions to coarse-grained actions.
+
+        A disabled (non-active status) wallet has no actions.
+
+        Returns:
+            list: sorted, deduplicated action strings.
+        """
+        self.ensure_one()
+        base_actions = super().get_authorized_actions()
+        if self.type != "comchain":
+            return base_actions
+        if self.comchain_status != "active":
+            return base_actions
+        auth_data = self.get_auth_context()
+        perms = auth_data.get("comchain_perms", ())
+        actions = set(base_actions)
+        for perm in perms:
+            actions.update(self._PERM_ACTIONS.get(perm, ()))
+        return sorted(actions)
+
     def write(self, vals):
         if vals.get("comchain_id"):
             vals["ident"] = vals.get("comchain_id")
