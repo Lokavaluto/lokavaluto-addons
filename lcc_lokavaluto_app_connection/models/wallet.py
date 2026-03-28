@@ -114,6 +114,44 @@ class ResPartnerBackend(models.Model):
             name = name.split("@", 1)[0]
         return self.search([("name", "=", name)])
 
+    def get_auth_context(self):
+        """Return backend-specific auth enrichment data for this wallet.
+
+        Called after structural checks (currency exists, caller owns
+        an active wallet) have passed.  The caller's existence is
+        already proven — this method only adds backend-specific data.
+
+        Override in financial backend add-ons to populate
+        backend-namespaced keys (e.g. ``comchain_perms``).
+        Values MUST be tuples (not sets) because Odoo may serialize
+        ``env.context`` in RPC/caching paths.
+
+        Returns:
+            dict: empty in base, enriched by backend overrides.
+        """
+        self.ensure_one()
+        return {}
+
+    def get_authorized_actions(self):
+        """Return coarse-grained actions available to the caller.
+
+        Actions are the interface between the generic currency service
+        and backend-specific permission systems.  Valid actions:
+
+        - ``validate-credit-request``
+        - ``search-all-recipients``
+        - ``activate``
+
+        Override in financial backend add-ons to read
+        backend-namespaced keys from ``self.env.context`` and map
+        them to action strings.
+
+        Returns:
+            list: sorted action strings.  Empty in base.
+        """
+        self.ensure_one()
+        return []
+
     def get_wallet_data(self):
         """Returns wallet informations
         Need to be overrided by financial backend add-ons"""
