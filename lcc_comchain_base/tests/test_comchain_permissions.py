@@ -473,6 +473,74 @@ class TestComchainPermissions(TransactionComponentCase):
         result = self._call_archived(alice, features_header="wallet/0")
         self.assertEqual(result, [])
 
+    ## Tests: wallet service caller validation
+
+    def test_ws_inactive_caller_denied(self):
+        """All wallet service endpoints deny access for inactive caller."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        alice.wallet.active = False
+
+        with self.assertRaises(AccessDenied):
+            self._call_update(
+                alice, "0xb", {"accountType": 0}, features_header="wallet/0"
+            )
+        with self.assertRaises(AccessDenied):
+            self._call_archive(alice, "0xb", features_header="wallet/0")
+        with self.assertRaises(AccessDenied):
+            self._call_archived(alice, features_header="wallet/0")
+
+    def test_ws_disabled_caller_denied(self):
+        """Wallet service endpoints deny access for disabled caller."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        alice.wallet.comchain_status = "disabled"
+
+        with self.assertRaises(AccessDenied):
+            self._call_update(
+                alice, "0xb", {"accountType": 0}, features_header="wallet/0"
+            )
+        with self.assertRaises(AccessDenied):
+            self._call_archive(alice, "0xb", features_header="wallet/0")
+        with self.assertRaises(AccessDenied):
+            self._call_archived(alice, features_header="wallet/0")
+
+    def test_ws_cross_currency_denied(self):
+        """Wallet on different currency is not found via wallet service."""
+        currency_product = self.env.ref(
+            "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
+        ).sudo()
+        other_currency = self.env["res.alt.currency"].create(
+            {
+                "name": "Other Comchain",
+                "ident": "othercc",
+                "active": True,
+                "engine": "comchain",
+                "currency_unit_product_id": currency_product.id,
+            }
+        )
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_users("bob")
+        self.env["res.partner.backend"].create(
+            {
+                "partner_id": bob.partner_id.id,
+                "name": "comchain:0xb",
+                "ident": "0xb",
+                "alt_currency_id": other_currency.id,
+                "comchain_type": "0",
+                "comchain_status": "active",
+            }
+        )
+
+        # Alice's wallet is on testcomchain, bob's on othercc
+        # _resolve_target_wallet searches on alice's currency, won't find bob
+        with self.assertRaises(MissingError):
+            self._call_update(
+                alice, "0xb", {"accountType": 1}, features_header="wallet/0"
+            )
+
     ## Tests: auth_context endpoint (comchain wallet service)
 
     def _call_auth_context(self, caller, target_ident, features_header=None):
