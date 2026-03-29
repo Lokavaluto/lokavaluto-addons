@@ -173,6 +173,99 @@ class TestComchainPermissions(TransactionComponentCase):
         actions = alice.wallet.get_authorized_actions()
         self.assertEqual(actions, [])
 
+    ## Tests: wallet service archive endpoint
+
+    def _call_archive(self, caller, wallet_ident, features_header=None):
+        """Call the archive endpoint via the wallet service."""
+        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
+        if features_header:
+            headers["X-Client-Features"] = features_header
+        mock_request = Mock(
+            "request",
+            httprequest=Mock("httprequest", headers=headers),
+            future_response=Mock("future_response", headers={}),
+            _common_features=None,
+        )
+        service = self._get_wallet_service(caller.user)
+        with patch.object(svc, "request", mock_request):
+            return service.archive(wallet_ident)
+
+    def test_ws_archive_disabled_wallet(self):
+        """Admin can archive a disabled (non-archived) wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", addr="0xb", comchain_status="disabled")
+
+        self._call_archive(alice, "0xb", features_header="wallet/0")
+
+        wallet_bob = (
+            self.env["res.partner.backend"]
+            .with_context(active_test=False)
+            .browse(bob.wallet.id)
+        )
+        self.assertEqual(wallet_bob.comchain_status, "inactive")
+        self.assertFalse(wallet_bob.active)
+
+    def test_ws_archive_admin_can_archive_personal(self):
+        """Admin can archive a personal wallet via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        self._call_archive(alice, "0xb", features_header="wallet/0")
+
+        wallet_bob = (
+            self.env["res.partner.backend"]
+            .with_context(active_test=False)
+            .browse(bob.wallet.id)
+        )
+        self.assertEqual(wallet_bob.comchain_status, "inactive")
+        self.assertFalse(wallet_bob.active)
+
+    def test_ws_archive_property_can_archive_personal(self):
+        """Property admin can archive a personal wallet via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        self._call_archive(alice, "0xb", features_header="wallet/0")
+
+        wallet_bob = (
+            self.env["res.partner.backend"]
+            .with_context(active_test=False)
+            .browse(bob.wallet.id)
+        )
+        self.assertEqual(wallet_bob.comchain_status, "inactive")
+        self.assertFalse(wallet_bob.active)
+
+    def test_ws_archive_property_cannot_archive_admin(self):
+        """Property admin cannot archive an admin-type wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="2", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_archive(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_archive_personal_denied(self):
+        """Personal user (no perms) cannot archive via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_archive(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_archive_pledge_denied(self):
+        """Pledge user cannot archive via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="3", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_archive(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_archive_nonexistent_wallet(self):
+        """Archiving a nonexistent wallet raises MissingError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        with self.assertRaises(MissingError):
+            self._call_archive(alice, "0xnonexistent", features_header="wallet/0")
+
     ## Tests: auth_context endpoint (comchain wallet service)
 
     def _call_auth_context(self, caller, target_ident, features_header=None):

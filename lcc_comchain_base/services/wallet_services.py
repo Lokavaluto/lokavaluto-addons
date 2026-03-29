@@ -13,6 +13,9 @@ _logger = logging.getLogger(__name__)
 class WalletService(Component):
     _inherit = "wallet.service"
 
+    # Account types that require set_admin permission to assign.
+    _ADMIN_ACCOUNT_TYPES = {2, 3, 4}
+
     def _auth_user_uri(self, user_uri):
         """Comchain caller authentication from user URI.
 
@@ -42,6 +45,34 @@ class WalletService(Component):
         self.env.comchain_caller_wallet = wallet
         return wallet.get_authorized_actions()
 
+    def _get_caller_currency(self):
+        """Return the currency from the comchain caller wallet."""
+        return self.env.comchain_caller_wallet.alt_currency_id
+
+    def _archive_wallet(self, wallet):
+        """Archive a comchain wallet with permission checks.
+
+        Requires ``set_property`` or ``set_admin`` permission.
+        Requires ``set_admin`` to archive admin-type wallets.
+        Sets ``comchain_status`` to ``"inactive"`` before calling
+        ``super()`` to set ``active = False``.
+        """
+        auth_data = self.env.comchain_caller_wallet.get_auth_context()
+        perms = auth_data.get("comchain_perms", ())
+        if "set_property" not in perms and "set_admin" not in perms:
+            _logger.warning("archive denied: caller lacks set_property/set_admin")
+            raise AccessDenied()
+        current_type = int(wallet.comchain_type or "0")
+        if current_type in self._ADMIN_ACCOUNT_TYPES and "set_admin" not in perms:
+            _logger.warning(
+                "archive denied: caller lacks set_admin for admin-type wallet "
+                "(type %s)",
+                current_type,
+            )
+            raise AccessDenied()
+        wallet.sudo().comchain_status = "inactive"
+        super()._archive_wallet(wallet)
+
     # -- Endpoints --
 
     @lcc_api(
@@ -51,13 +82,7 @@ class WalletService(Component):
     @features("wallet/0")
     def auth_context(self, wallet_ident):
         """Return auth context for a target wallet on the caller's currency."""
-        caller = self.env.comchain_caller_wallet
-        currency = caller.alt_currency_id
         wallet_ident = unquote(wallet_ident)
-        target = currency._search_active_wallets([("ident", "=", wallet_ident)])
-        if not target:
-            raise MissingError(
-                f"Wallet '{wallet_ident}' not found on currency '{currency.ident}'"
-            )
+        target = self._resolve_target_wallet(wallet_ident)
         auth = target.get_auth_context()
         return sorted(auth.get("comchain_perms", ()))
