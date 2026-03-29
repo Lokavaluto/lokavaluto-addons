@@ -44,6 +44,22 @@ class AlternativeCurrency(models.Model):
         for cur in self:
             cur.uri = "%s://%s" % (cur.engine, cur.ident)
 
+    def _search_active_wallets(self, domain=None):
+        """Search active wallets on this currency with optional extra domain.
+
+        Always filters on ``alt_currency_id``, ``active=True``,
+        and ``status='active'``.
+        """
+        self.ensure_one()
+        base_domain = [
+            ("alt_currency_id", "=", self.id),
+            ("active", "=", True),
+            ("status", "=", "active"),
+        ]
+        if domain:
+            base_domain += domain
+        return self.env["res.partner.backend"].search(base_domain)
+
     def _safe_wallet_partners(self):
         return []
 

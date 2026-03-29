@@ -1,6 +1,12 @@
 from types import SimpleNamespace
+from unittest.mock import patch
 
+from minimock import Mock
+
+from odoo.exceptions import AccessDenied, MissingError
 from odoo.addons.component.tests.common import TransactionComponentCase
+
+import odoo.addons.lcc_lokavaluto_app_connection.services as svc
 
 
 class TestComchainPermissions(TransactionComponentCase):
@@ -63,6 +69,11 @@ class TestComchainPermissions(TransactionComponentCase):
     def _user_uri(self, addr):
         """Build a user_uri for the given user on the test currency."""
         return f"comchain://testcomchain/user/{addr}"
+
+    def _get_wallet_service(self, user):
+        collection = self.env["lokavaluto.private.services"].with_user(user).browse(1)
+        with collection.work_on("res.partner.backend") as work:
+            return work.component(usage="wallet")
 
     ## Tests: get_auth_context
 
@@ -161,3 +172,40 @@ class TestComchainPermissions(TransactionComponentCase):
         )
         actions = alice.wallet.get_authorized_actions()
         self.assertEqual(actions, [])
+
+    ## Tests: auth_context endpoint (comchain wallet service)
+
+    def _call_auth_context(self, caller, target_ident, features_header=None):
+        """Call the comchain auth_context endpoint."""
+        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
+        if features_header:
+            headers["X-Client-Features"] = features_header
+        mock_request = Mock(
+            "request",
+            httprequest=Mock("httprequest", headers=headers),
+            future_response=Mock("future_response", headers={}),
+            _common_features=None,
+        )
+        service = self._get_wallet_service(caller.user)
+        with patch.object(svc, "request", mock_request):
+            return service.auth_context(target_ident)
+
+    def test_auth_context_returns_target_perms(self):
+        """auth_context returns the TARGET wallet's auth_context."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="3", addr="0xb")
+        result = self._call_auth_context(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(result, ["pledge"])
+
+    def test_auth_context_unknown_wallet_raises(self):
+        """Unknown wallet ident raises MissingError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        with self.assertRaises(MissingError):
+            self._call_auth_context(alice, "0xnonexistent", features_header="wallet/0")
+
+    def test_auth_context_requires_actions(self):
+        """Caller with no actions is rejected (require_actions=True)."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+        with self.assertRaises(AccessDenied):
+            self._call_auth_context(alice, "0xb", features_header="wallet/0")

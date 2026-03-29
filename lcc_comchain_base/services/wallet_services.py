@@ -5,6 +5,7 @@ from odoo.exceptions import AccessDenied, MissingError
 
 from odoo.addons.component.core import Component
 
+from odoo.addons.lcc_lokavaluto_app_connection.services import features, lcc_api
 
 _logger = logging.getLogger(__name__)
 
@@ -40,3 +41,23 @@ class WalletService(Component):
 
         self.env.comchain_caller_wallet = wallet
         return wallet.get_authorized_actions()
+
+    # -- Endpoints --
+
+    @lcc_api(
+        [(["/<wallet_ident>/auth_context"], "GET")],
+        require_actions=True,
+    )
+    @features("wallet/0")
+    def auth_context(self, wallet_ident):
+        """Return auth context for a target wallet on the caller's currency."""
+        caller = self.env.comchain_caller_wallet
+        currency = caller.alt_currency_id
+        wallet_ident = unquote(wallet_ident)
+        target = currency._search_active_wallets([("ident", "=", wallet_ident)])
+        if not target:
+            raise MissingError(
+                f"Wallet '{wallet_ident}' not found on currency '{currency.ident}'"
+            )
+        auth = target.get_auth_context()
+        return sorted(auth.get("comchain_perms", ()))
