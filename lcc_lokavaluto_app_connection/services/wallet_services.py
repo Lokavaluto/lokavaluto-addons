@@ -105,3 +105,24 @@ class WalletService(Component):
         target = self._resolve_target_wallet(wallet_ident)
         self._archive_wallet(target)
         return True
+
+    @lcc_api(
+        [(["/archived"], "GET")],
+        require_actions=True,
+    )
+    @features("wallet/0")
+    def archived(self):
+        """Return list of archived wallet idents on the caller's currency."""
+        currency = self._get_caller_currency()
+        wallets = (
+            self.env["res.partner.backend"]
+            .sudo()
+            .with_context(active_test=False)
+            .search(
+                [
+                    ("alt_currency_id", "=", currency.id),
+                    ("active", "=", False),
+                ]
+            )
+        )
+        return list({w.ident for w in wallets if w.ident})

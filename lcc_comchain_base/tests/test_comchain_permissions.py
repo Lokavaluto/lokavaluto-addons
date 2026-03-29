@@ -266,6 +266,56 @@ class TestComchainPermissions(TransactionComponentCase):
         with self.assertRaises(MissingError):
             self._call_archive(alice, "0xnonexistent", features_header="wallet/0")
 
+    ## Tests: wallet service archived endpoint
+
+    def _call_archived(self, caller, features_header=None):
+        """Call the archived endpoint via the wallet service."""
+        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
+        if features_header:
+            headers["X-Client-Features"] = features_header
+        mock_request = Mock(
+            "request",
+            httprequest=Mock("httprequest", headers=headers),
+            future_response=Mock("future_response", headers={}),
+            _common_features=None,
+        )
+        service = self._get_wallet_service(caller.user)
+        with patch.object(svc, "request", mock_request):
+            return service.archived()
+
+    def test_ws_archived_returns_archived_idents(self):
+        """archived endpoint returns idents of archived wallets."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+        charly = self._make_user_and_wallet("charly", comchain_type="0", addr="0xc")
+
+        # Archive bob's wallet
+        self._call_archive(alice, "0xb", features_header="wallet/0")
+
+        result = self._call_archived(alice, features_header="wallet/0")
+        self.assertEqual(result, ["0xb"])
+
+    def test_ws_archived_empty_when_none_archived(self):
+        """archived endpoint returns empty list when no wallets are archived."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        result = self._call_archived(alice, features_header="wallet/0")
+        self.assertEqual(result, [])
+
+    def test_ws_archived_personal_denied(self):
+        """Personal user (no actions) is denied on archived endpoint."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+
+        with self.assertRaises(AccessDenied):
+            self._call_archived(alice, features_header="wallet/0")
+
+    def test_ws_archived_pledge_allowed(self):
+        """Pledge user (has actions) can list archived wallets."""
+        alice = self._make_user_and_wallet("alice", comchain_type="3", addr="0xa")
+
+        result = self._call_archived(alice, features_header="wallet/0")
+        self.assertEqual(result, [])
+
     ## Tests: auth_context endpoint (comchain wallet service)
 
     def _call_auth_context(self, caller, target_ident, features_header=None):
