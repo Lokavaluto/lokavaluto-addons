@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from minimock import Mock
 
-from odoo.exceptions import AccessDenied, MissingError
+from odoo.exceptions import AccessDenied, MissingError, ValidationError
 from odoo.addons.component.tests.common import TransactionComponentCase
 
 import odoo.addons.lcc_lokavaluto_app_connection.services as svc
@@ -173,6 +173,163 @@ class TestComchainPermissions(TransactionComponentCase):
         actions = alice.wallet.get_authorized_actions()
         self.assertEqual(actions, [])
 
+    ## Tests: wallet service update endpoint
+
+    def _call_update(self, caller, wallet_ident, data, features_header=None):
+        """Call the update endpoint via the wallet service."""
+        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
+        if features_header:
+            headers["X-Client-Features"] = features_header
+        mock_request = Mock(
+            "request",
+            httprequest=Mock("httprequest", headers=headers),
+            future_response=Mock("future_response", headers={}),
+            _common_features=None,
+        )
+        service = self._get_wallet_service(caller.user)
+        params = SimpleNamespace(data=data)
+        with patch.object(svc, "request", mock_request):
+            return service.update(wallet_ident, params)
+
+    def test_ws_update_admin_can_set_admin_type(self):
+        """Admin can set admin account types via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        self._call_update(alice, "0xb", {"accountType": 2}, features_header="wallet/0")
+        self.assertEqual(bob.wallet.comchain_type, "2")
+
+    def test_ws_update_property_can_set_professional(self):
+        """Property admin can set non-admin account types."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        self._call_update(alice, "0xb", {"accountType": 1}, features_header="wallet/0")
+        self.assertEqual(bob.wallet.comchain_type, "1")
+
+    def test_ws_update_sets_comchain_status(self):
+        """wallet service update writes comchain_status from status."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", addr="0xb")
+
+        self._call_update(
+            alice, "0xb", {"status": "disabled"}, features_header="wallet/0"
+        )
+        self.assertEqual(bob.wallet.comchain_status, "disabled")
+
+    def test_ws_update_sets_credit_limits(self):
+        """wallet service update writes credit limits."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", addr="0xb")
+
+        self._call_update(
+            alice,
+            "0xb",
+            {"lowLimit": -500.0, "highLimit": 1000.0},
+            features_header="wallet/0",
+        )
+        self.assertEqual(bob.wallet.comchain_credit_min, -500.0)
+        self.assertEqual(bob.wallet.comchain_credit_max, 1000.0)
+
+    def test_ws_update_disabled_wallet(self):
+        """Admin can update a disabled (non-archived) wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", addr="0xb", comchain_status="disabled")
+
+        self._call_update(alice, "0xb", {"accountType": 1}, features_header="wallet/0")
+        self.assertEqual(bob.wallet.comchain_type, "1")
+
+    def test_ws_update_personal_denied(self):
+        """Personal user cannot update via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_update(
+                alice, "0xb", {"accountType": 1}, features_header="wallet/0"
+            )
+
+    def test_ws_update_property_cannot_promote_to_admin(self):
+        """Property admin cannot promote to admin types via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        for admin_type in (2, 3, 4):
+            with self.assertRaises(AccessDenied):
+                self._call_update(
+                    alice,
+                    "0xb",
+                    {"accountType": admin_type},
+                    features_header="wallet/0",
+                )
+
+    def test_ws_update_property_cannot_set_status_on_admin(self):
+        """Property admin cannot change status on admin-type wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="2", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_update(
+                alice, "0xb", {"status": "disabled"}, features_header="wallet/0"
+            )
+
+    def test_ws_update_invalid_account_type_not_int(self):
+        """accountType must be an integer."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(ValidationError):
+            self._call_update(
+                alice, "0xb", {"accountType": "admin"}, features_header="wallet/0"
+            )
+
+    def test_ws_update_invalid_account_type_unknown(self):
+        """Unknown accountType integer raises ValidationError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(ValidationError):
+            self._call_update(
+                alice, "0xb", {"accountType": 99}, features_header="wallet/0"
+            )
+
+    def test_ws_update_nonexistent_wallet(self):
+        """Updating a nonexistent wallet raises MissingError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        with self.assertRaises(MissingError):
+            self._call_update(
+                alice, "0xnonexistent", {"accountType": 1}, features_header="wallet/0"
+            )
+
+    def test_ws_update_pledge_denied(self):
+        """Pledge user cannot update via wallet service."""
+        alice = self._make_user_and_wallet("alice", comchain_type="3", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_update(
+                alice, "0xb", {"accountType": 1}, features_header="wallet/0"
+            )
+
+    def test_ws_update_permissions_change_on_type_update(self):
+        """Changing comchain_type via update changes permissions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        # Bob starts with no permissions
+        result = self._call_auth_context(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(result, [])
+
+        # Alice upgrades Bob to admin
+        self._call_update(alice, "0xb", {"accountType": 2}, features_header="wallet/0")
+
+        # Bob now has admin permissions
+        result = self._call_auth_context(alice, "0xb", features_header="wallet/0")
+        self.assertIn("set_admin", result)
+        self.assertIn("set_property", result)
+        self.assertIn("pledge", result)
+
     ## Tests: wallet service archive endpoint
 
     def _call_archive(self, caller, wallet_ident, features_header=None):
@@ -202,7 +359,7 @@ class TestComchainPermissions(TransactionComponentCase):
             .with_context(active_test=False)
             .browse(bob.wallet.id)
         )
-        self.assertEqual(wallet_bob.comchain_status, "inactive")
+        self.assertEqual(wallet_bob.comchain_status, "disabled")
         self.assertFalse(wallet_bob.active)
 
     def test_ws_archive_admin_can_archive_personal(self):
@@ -217,7 +374,7 @@ class TestComchainPermissions(TransactionComponentCase):
             .with_context(active_test=False)
             .browse(bob.wallet.id)
         )
-        self.assertEqual(wallet_bob.comchain_status, "inactive")
+        self.assertEqual(wallet_bob.comchain_status, "disabled")
         self.assertFalse(wallet_bob.active)
 
     def test_ws_archive_property_can_archive_personal(self):
@@ -232,7 +389,7 @@ class TestComchainPermissions(TransactionComponentCase):
             .with_context(active_test=False)
             .browse(bob.wallet.id)
         )
-        self.assertEqual(wallet_bob.comchain_status, "inactive")
+        self.assertEqual(wallet_bob.comchain_status, "disabled")
         self.assertFalse(wallet_bob.active)
 
     def test_ws_archive_property_cannot_archive_admin(self):

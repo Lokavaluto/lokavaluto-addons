@@ -4,6 +4,7 @@ from urllib.parse import unquote
 from odoo.exceptions import MissingError
 
 from odoo.addons.component.core import Component
+from odoo.addons.base_rest_datamodel.restapi import Datamodel
 
 from . import features, lcc_api
 
@@ -81,6 +82,17 @@ class WalletService(Component):
             )
         return target
 
+    def _update_wallet(self, wallet, vals):
+        """Update a wallet record with the given values.
+
+        Override in backend add-ons to validate, permission-check,
+        and apply backend-specific fields.  Base is a no-op.
+
+        Args:
+            wallet: single ``res.partner.backend`` record.
+            vals: dict of API-level field values from the request body.
+        """
+
     def _archive_wallet(self, wallet):
         """Archive a wallet record.
 
@@ -126,3 +138,15 @@ class WalletService(Component):
             )
         )
         return list({w.ident for w in wallets if w.ident})
+
+    @lcc_api(
+        [(["/<wallet_ident>/update"], "POST")],
+        input_param=Datamodel("wallet.update"),
+    )
+    @features("wallet/0")
+    def update(self, wallet_ident, params):
+        """Update a wallet on the caller's currency."""
+        wallet_ident = unquote(wallet_ident)
+        target = self._resolve_target_wallet(wallet_ident)
+        self._update_wallet(target, params.data)
+        return True
