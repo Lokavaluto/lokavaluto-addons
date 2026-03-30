@@ -25,7 +25,13 @@ class ResPartnerBackend(models.Model):
     comchain_wallet = fields.Text(string="Crypted json wallet", tracking=True)
     comchain_status = fields.Char(string="Comchain Status", tracking=True)
     comchain_type = fields.Selection(
-        [("0", "Personal"), ("1", "Company"), ("2", "Admin")],
+        [
+            ("0", "Personal"),
+            ("1", "Professional"),
+            ("2", "Admin"),
+            ("3", "Pledge Admin"),
+            ("4", "Property Admin"),
+        ],
         string="Type",
         tracking=True,
     )
