@@ -58,7 +58,14 @@ class ResPartnerBackend(models.Model):
                     "wallet": self.comchain_wallet_parsed,
                     "message_key": self.comchain_message_key,
                     "active": self.status == "active",
+                    "status": self.status,
                     "is_topup_allowed": self.is_topup_allowed,
+                    "comchain": {
+                        "accountType": int(self.comchain_type or "0"),
+                        "status": self.comchain_status,
+                        "lowLimit": self.comchain_credit_min,
+                        "highLimit": self.comchain_credit_max,
+                    },
                 }
             )
 

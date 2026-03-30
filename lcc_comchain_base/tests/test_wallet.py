@@ -77,6 +77,13 @@ class TestResWallet(TransactionComponentCase):
                     "message_key": "bar",
                     "active": False,
                     "is_topup_allowed": True,
+                    "status": False,
+                    "comchain": {
+                        "accountType": 0,
+                        "status": False,
+                        "lowLimit": 0,
+                        "highLimit": 0,
+                    },
                 }
             ],
             "min_credit_amount": getattr(
