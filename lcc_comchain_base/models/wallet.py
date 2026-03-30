@@ -44,6 +44,45 @@ class ResPartnerBackend(models.Model):
     def comchain_wallet_parsed(self):
         return json.loads(self.comchain_wallet) if self.comchain_wallet else {}
 
+    # Permissions are tuples (not sets) because they transit through
+    # Odoo's env.context which may be serialized in RPC/caching paths.
+    _ALL_COMCHAIN_PERMS = ("set_admin", "set_property", "pledge")
+
+    _TYPE_PERMS = {
+        "0": (),  # personal
+        "1": (),  # professional
+        "2": ("set_admin", "set_property", "pledge"),  # admin
+        "3": ("pledge",),  # pledgeAdmin
+        "4": ("set_property",),  # propertyAdmin
+    }
+
+    def get_auth_context(self):
+        """Return comchain-specific auth enrichment data for this wallet.
+
+        If the wallet's owner (``self.partner_id.user_ids``)
+        belongs to the legacy ``group_wallet_full_manager`` group,
+        full permissions are granted immediately (skip comchain
+        data inspection).
+
+        Otherwise, permissions are derived from ``comchain_type``
+        via ``_TYPE_PERMS``.
+
+        Returns:
+            dict: ``{"comchain_perms": tuple}`` merged with base.
+        """
+        self.ensure_one()
+        base_auth = super().get_auth_context()
+        if self.type != "comchain":
+            return base_auth
+        if any(
+            u.has_group("lcc_lokavaluto_app_connection.group_wallet_full_manager")
+            for u in self.partner_id.user_ids
+        ):
+            perms = self._ALL_COMCHAIN_PERMS
+        else:
+            perms = self._TYPE_PERMS.get(self.comchain_type or "0", ())
+        return {**base_auth, "comchain_perms": perms}
+
     def write(self, vals):
         if vals.get("comchain_id"):
             vals["ident"] = vals.get("comchain_id")
