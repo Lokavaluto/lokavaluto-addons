@@ -84,34 +84,64 @@ class ComchainService(Component):
                 "status": "Error",
             }
 
-        # Create the wallet if it does'nt already exist.
+        # Search for existing wallets (including archived) with this address
         Wallet = self.env["res.partner.backend"]
-        wallets = Wallet.search(
+        wallets = Wallet.with_context(active_test=False).search(
             [
                 ("alt_currency_id", "=", alt_currency.id),
                 ("comchain_id", "=", params.address),
             ]
         )
-        if len(wallets) == 0:
-            Wallet.sudo().create(
+
+        # Refuse if an active wallet with this address exists for another user
+        active_foreign = wallets.filtered(
+            lambda w: w.active and w.partner_id.id != partner.id
+        )
+        if active_foreign:
+            return {
+                "error": "Wallet is already registered to another user.",
+                "status": "Error",
+            }
+
+        # Refuse if already active for this user
+        active_own = wallets.filtered(
+            lambda w: w.active and w.partner_id.id == partner.id
+        )
+        if active_own:
+            return {
+                "error": "Wallet already registered.",
+                "status": "Error",
+            }
+
+        # Reactivate archived wallet for this user if it exists
+        archived_own = wallets.filtered(
+            lambda w: not w.active and w.partner_id.id == partner.id
+        )
+        if archived_own:
+            archived_own[0].sudo().write(
                 {
-                    "name": "comchain:%s" % params.address,
-                    "alt_currency_id": alt_currency.id,
-                    "ident": params.address,
-                    "partner_id": partner.id,
+                    "active": True,
                     "comchain_status": "pending",
-                    "comchain_id": params.address,
                     "comchain_wallet": params.wallet,
                     "comchain_message_key": params.message_key,
                 }
             )
-            res = True
-        else:
-            res = {
-                "error": "Wallet already registered.",
-                "status": "Error",
+            return True
+
+        # No existing wallet for this user — create a new one
+        Wallet.sudo().create(
+            {
+                "name": "comchain:%s" % params.address,
+                "alt_currency_id": alt_currency.id,
+                "ident": params.address,
+                "partner_id": partner.id,
+                "comchain_status": "pending",
+                "comchain_id": params.address,
+                "comchain_wallet": params.wallet,
+                "comchain_message_key": params.message_key,
             }
-        return res
+        )
+        return True
 
     @restapi.method(
         [(["/activate"], "POST")],
