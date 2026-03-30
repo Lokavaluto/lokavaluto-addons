@@ -1,6 +1,8 @@
 import json
 import logging
 
+import requests
+
 from odoo import api, fields, models
 
 from odoo.addons.lcc_lokavaluto_app_connection import tools
@@ -191,6 +193,17 @@ class ResPartnerBackend(models.Model):
                     and "newPassword" in e.args[1].json().get("properties", [])
                 ):
                     _logger.debug("Ignoring Cyclos NewPassword Error !")
+                else:
+                    raise
+            except requests.exceptions.HTTPError as e:
+                if (
+                    e.response.status_code == 409
+                    and e.response.json().get("code") == "staleEntity"
+                ):
+                    _logger.debug(
+                        "Ignoring Cyclos staleEntity on password change "
+                        "(concurrent request already applied it)"
+                    )
                 else:
                     raise
 
