@@ -5,7 +5,6 @@ from . import test_partner_services_search
 from . import test_partner_services_backend_credentials
 from . import test_res_alt_currency
 from . import test_partner_services_report_contact_info
-from . import test_partner_services_search_all
 from . import test_auth_lcc_user
 from . import test_wallet
 from . import test_features

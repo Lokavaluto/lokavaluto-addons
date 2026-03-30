@@ -309,41 +309,6 @@ class PartnerService(Component):
         )
 
     @restapi.method(
-        [(["/search_all"], "GET")],
-        input_param=Datamodel("partner.search.info"),
-    )
-    def search_all_recipients(self, recipients_search_info):
-        """Admin-only search for all recipients, without restrictions."""
-
-        if not (
-            self.env.user.has_group(
-                "lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
-            )
-            or self.env.user.has_group(
-                "lcc_lokavaluto_app_connection.group_wallet_full_manager"
-            )
-        ):
-            raise AccessDenied()
-
-        return self._search_recipients_common(
-            backend_keys=recipients_search_info.backend_keys,
-            value=recipients_search_info.value,
-            offset=recipients_search_info.offset,
-            limit=recipients_search_info.limit,
-            order=recipients_search_info.order,
-            website_url=recipients_search_info.website_url,
-            extra_domain=[
-                (
-                    "status",
-                    "not in",
-                    [
-                        "to_confirm",
-                    ],
-                ),
-            ],
-        )
-
-    @restapi.method(
         [(["/get_recipient_by_uri"], "GET")],
     )
     def search_recipient_by_uri(self):

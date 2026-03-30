@@ -261,5 +261,7 @@ def lcc_api(routes, require_actions=None, **kwargs):
 
 
 from . import partner_services  # noqa: E402
+from . import lccapi_services  # noqa: E402
 from . import wallet_services  # noqa: E402
+from . import recipient_services  # noqa: E402
 from . import auth_services  # noqa: E402

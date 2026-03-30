@@ -1,79 +1,15 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from minimock import Mock
-
 from odoo.exceptions import AccessDenied, MissingError, ValidationError
-from odoo.addons.component.tests.common import TransactionComponentCase
 
 import odoo.addons.lcc_lokavaluto_app_connection.services as svc
 
+from .common import ComchainTestCase
 
-class TestComchainPermissions(TransactionComponentCase):
+
+class TestComchainPermissions(ComchainTestCase):
     """Test per-currency permissions derived from comchain_type."""
-
-    def setUp(self):
-        super().setUp()
-        currency_product = self.env.ref(
-            "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
-        ).sudo()
-        self.comchain_currency = self.env["res.alt.currency"].create(
-            {
-                "name": "Test Comchain",
-                "ident": "testcomchain",
-                "active": True,
-                "engine": "comchain",
-                "currency_unit_product_id": currency_product.id,
-            }
-        )
-        self.currency_ident = "testcomchain"
-
-    ## Helpers
-
-    def _make_user_and_wallet(self, login, comchain_type="0", addr="0xabc"):
-        """Helper to create a user and associated comchain wallet."""
-        user = self._make_users(login)
-        user_uri = self._user_uri(addr)
-        wallet = self._make_comchain_wallet(
-            user, comchain_type=comchain_type, addr=addr
-        )
-        user_ident = wallet.ident
-        return SimpleNamespace(
-            user=user,
-            user_uri=user_uri,
-            user_ident=user_ident,
-            wallet=wallet,
-        )
-
-    def _make_users(self, *logins):
-        users = []
-        for login in logins:
-            user = self.env["res.users"].create(
-                {"name": login.capitalize(), "login": login}
-            )
-            users.append(user)
-        return users[0] if len(logins) == 1 else users
-
-    def _make_comchain_wallet(self, user, comchain_type="0", addr="0xabc"):
-        return self.env["res.partner.backend"].create(
-            {
-                "partner_id": user.partner_id.id,
-                "name": f"comchain:{addr}",
-                "ident": addr,
-                "alt_currency_id": self.comchain_currency.id,
-                "comchain_type": comchain_type,
-                "comchain_status": "active",
-            }
-        )
-
-    def _user_uri(self, addr):
-        """Build a user_uri for the given user on the test currency."""
-        return f"comchain://testcomchain/user/{addr}"
-
-    def _get_wallet_service(self, user):
-        collection = self.env["lokavaluto.private.services"].with_user(user).browse(1)
-        with collection.work_on("res.partner.backend") as work:
-            return work.component(usage="wallet")
 
     ## Tests: get_auth_context
 
@@ -177,15 +113,7 @@ class TestComchainPermissions(TransactionComponentCase):
 
     def _call_update(self, caller, wallet_ident, data, features_header=None):
         """Call the update endpoint via the wallet service."""
-        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
-        if features_header:
-            headers["X-Client-Features"] = features_header
-        mock_request = Mock(
-            "request",
-            httprequest=Mock("httprequest", headers=headers),
-            future_response=Mock("future_response", headers={}),
-            _common_features=None,
-        )
+        mock_request = self._mock_request(caller, features_header=features_header)
         service = self._get_wallet_service(caller.user)
         params = SimpleNamespace(data=data)
         with patch.object(svc, "request", mock_request):
@@ -334,15 +262,7 @@ class TestComchainPermissions(TransactionComponentCase):
 
     def _call_archive(self, caller, wallet_ident, features_header=None):
         """Call the archive endpoint via the wallet service."""
-        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
-        if features_header:
-            headers["X-Client-Features"] = features_header
-        mock_request = Mock(
-            "request",
-            httprequest=Mock("httprequest", headers=headers),
-            future_response=Mock("future_response", headers={}),
-            _common_features=None,
-        )
+        mock_request = self._mock_request(caller, features_header=features_header)
         service = self._get_wallet_service(caller.user)
         with patch.object(svc, "request", mock_request):
             return service.archive(wallet_ident)
@@ -427,15 +347,7 @@ class TestComchainPermissions(TransactionComponentCase):
 
     def _call_archived(self, caller, features_header=None):
         """Call the archived endpoint via the wallet service."""
-        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
-        if features_header:
-            headers["X-Client-Features"] = features_header
-        mock_request = Mock(
-            "request",
-            httprequest=Mock("httprequest", headers=headers),
-            future_response=Mock("future_response", headers={}),
-            _common_features=None,
-        )
+        mock_request = self._mock_request(caller, features_header=features_header)
         service = self._get_wallet_service(caller.user)
         with patch.object(svc, "request", mock_request):
             return service.archived()
@@ -545,15 +457,7 @@ class TestComchainPermissions(TransactionComponentCase):
 
     def _call_auth_context(self, caller, target_ident, features_header=None):
         """Call the comchain auth_context endpoint."""
-        headers = {"X-Lokapi-Caller-User-Uri": caller.user_uri}
-        if features_header:
-            headers["X-Client-Features"] = features_header
-        mock_request = Mock(
-            "request",
-            httprequest=Mock("httprequest", headers=headers),
-            future_response=Mock("future_response", headers={}),
-            _common_features=None,
-        )
+        mock_request = self._mock_request(caller, features_header=features_header)
         service = self._get_wallet_service(caller.user)
         with patch.object(svc, "request", mock_request):
             return service.auth_context(target_ident)
