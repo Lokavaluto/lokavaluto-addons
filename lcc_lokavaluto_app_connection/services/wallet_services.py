@@ -70,7 +70,46 @@ class WalletService(Component):
         """
         wallet.sudo().active = False
 
+    def _get_wallet(self, wallet):
+        """Return wallet account data from a resolved wallet record.
+
+        Fetches JSON data via ``get_wallet_json_data()`` and extracts
+        the single account entry.  Override in backend add-ons to add
+        permission checks before calling ``super()``.
+
+        Args:
+            wallet: single ``res.partner.backend`` record.
+
+        Returns:
+            dict with the single account data.
+
+        Raises:
+            odoo.exceptions.MissingError: if accounts data is missing
+                or has an unexpected number of entries.
+        """
+        data = wallet.get_wallet_json_data()
+        if "accounts" not in data:
+            raise MissingError("Wallet data should contain an 'accounts' field")
+        if len(data["accounts"]) == 0:
+            raise MissingError("Wallet has no account data")
+        if len(data["accounts"]) > 1:
+            raise MissingError(
+                "Wallet has more than one account data, which is not supported"
+            )
+        return data["accounts"][0]
+
     # -- Endpoints --
+
+    @lcc_api(
+        [(["/<wallet_ident>/get"], "GET")],
+        require_actions=True,
+    )
+    @features("wallet/0")
+    def get(self, wallet_ident):
+        """Return wallet JSON data for a target wallet."""
+        wallet_ident = unquote(wallet_ident)
+        target = self._resolve_target_wallet(wallet_ident)
+        return self._get_wallet(target)
 
     @lcc_api(
         [(["/<wallet_ident>/archive"], "POST")],

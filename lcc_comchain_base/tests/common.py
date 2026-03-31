@@ -30,13 +30,16 @@ class ComchainTestCase(TransactionComponentCase):
 
     ## User / wallet helpers
 
-    def _make_user_and_wallet(self, login, comchain_type="0", addr="0xabc"):
-        """Create a user and associated comchain wallet."""
+    def _make_user_and_wallet(self, login, addr="0xabc", **kw):
+        """Create a user and associated comchain wallet.
+
+        Extra keyword arguments are passed to ``_make_comchain_wallet``
+        and forwarded to the ``res.partner.backend`` create values
+        (e.g. ``comchain_type="2"``, ``comchain_wallet='"data"'``).
+        """
         user = self._make_users(login)
         user_uri = self._user_uri(addr)
-        wallet = self._make_comchain_wallet(
-            user, comchain_type=comchain_type, addr=addr
-        )
+        wallet = self._make_comchain_wallet(user, addr=addr, **kw)
         return SimpleNamespace(
             user=user,
             user_uri=user_uri,
@@ -53,17 +56,24 @@ class ComchainTestCase(TransactionComponentCase):
             users.append(user)
         return users[0] if len(logins) == 1 else users
 
-    def _make_comchain_wallet(self, user, comchain_type="0", addr="0xabc"):
-        return self.env["res.partner.backend"].create(
-            {
-                "partner_id": user.partner_id.id,
-                "name": f"comchain:{addr}",
-                "ident": addr,
-                "alt_currency_id": self.comchain_currency.id,
-                "comchain_type": comchain_type,
-                "comchain_status": "active",
-            }
-        )
+    def _make_comchain_wallet(self, user, addr="0xabc", **kw):
+        """Create a comchain wallet for *user*.
+
+        Defaults are ``comchain_type="0"`` and
+        ``comchain_status="active"``.  Any extra keyword argument
+        overrides or extends the create values (e.g.
+        ``comchain_wallet='"json"'``, ``comchain_message_key="key"``).
+        """
+        vals = {
+            "partner_id": user.partner_id.id,
+            "name": f"comchain:{addr}",
+            "ident": addr,
+            "alt_currency_id": self.comchain_currency.id,
+            "comchain_type": "0",
+            "comchain_status": "active",
+        }
+        vals.update(kw)
+        return self.env["res.partner.backend"].create(vals)
 
     def _user_uri(self, addr):
         """Build a user_uri for the given user on the test currency."""

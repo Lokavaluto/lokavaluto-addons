@@ -258,6 +258,88 @@ class TestComchainPermissions(ComchainTestCase):
         self.assertIn("set_property", result)
         self.assertIn("pledge", result)
 
+    ## Tests: wallet service get endpoint
+
+    def _call_get(self, caller, wallet_ident):
+        """Call the get endpoint via the wallet service."""
+        mock_request = self._mock_request(caller, features_header="wallet/0")
+        service = self._get_wallet_service(caller.user)
+        with patch.object(svc, "request", mock_request):
+            return service.get(wallet_ident)
+
+    def test_ws_get_admin_returns_account_data(self):
+        """Admin can get another wallet's data, returns single account dict."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet(
+            "bob", addr="0xb", comchain_wallet='"stub"', comchain_message_key="k"
+        )
+
+        result = self._call_get(alice, "0xb")
+        self.assertIsInstance(result, dict)
+        self.assertIn("comchain", result)
+        self.assertEqual(result["comchain"]["accountType"], 0)
+
+    def test_ws_get_disabled_wallet(self):
+        """Admin can get a disabled (non-archived) wallet's data."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet(
+            "bob",
+            addr="0xb",
+            comchain_status="disabled",
+            comchain_wallet='"stub"',
+            comchain_message_key="k",
+        )
+
+        result = self._call_get(alice, "0xb")
+        self.assertIsInstance(result, dict)
+        self.assertIn("comchain", result)
+        self.assertEqual(result["comchain"]["status"], "disabled")
+
+    def test_ws_get_property_admin_returns_account_data(self):
+        """Property admin can get another wallet's data."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet(
+            "bob", addr="0xb", comchain_wallet='"stub"', comchain_message_key="k"
+        )
+
+        result = self._call_get(alice, "0xb")
+        self.assertIsInstance(result, dict)
+        self.assertIn("comchain", result)
+
+    def test_ws_get_personal_denied(self):
+        """Personal user (no perms) cannot get another wallet's data."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_get(alice, "0xb")
+
+    def test_ws_get_nonexistent_wallet(self):
+        """Getting a nonexistent wallet raises MissingError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        with self.assertRaises(MissingError):
+            self._call_get(alice, "0xNONEXISTENT")
+
+    def test_ws_get_no_account_data_raises(self):
+        """Wallet with no comchain data raises MissingError on get."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        # Create a bare wallet with no comchain_wallet (no parsed account data)
+        bare_user = self._make_users("bare")
+        self.env["res.partner.backend"].create(
+            {
+                "partner_id": bare_user.partner_id.id,
+                "name": "comchain:0xbare",
+                "ident": "0xbare",
+                "alt_currency_id": self.comchain_currency.id,
+                "comchain_type": "0",
+                "comchain_status": "active",
+            }
+        )
+
+        with self.assertRaises(MissingError):
+            self._call_get(alice, "0xbare")
+
     ## Tests: wallet service archive endpoint
 
     def _call_archive(self, caller, wallet_ident, features_header=None):
