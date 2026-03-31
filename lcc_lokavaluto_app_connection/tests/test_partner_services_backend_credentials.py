@@ -96,38 +96,57 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
 
             expected_result = [
                 {
-                    'type': 'foo:currencyA',
-                    'accounts': [
+                    "type": "foo:currencyA",
+                    "accounts": [
                         {
-                            'wallet_uri': 'foo://currencyA/wallet/15487589688745824',
-                            'active': True,'is_topup_allowed': True
+                            "wallet_uri": "foo://currencyA/wallet/15487589688745824",
+                            "active": True,
+                            "is_topup_allowed": True,
+                            "auth_context": {},
+                            "authorized_actions": [],
                         },
                         {
-                            'wallet_uri': 'foo://currencyA/wallet/36fdqfldfqlkhfkqff',
-                            'active': True,
-                            'is_topup_allowed': True
-                        }
+                            "wallet_uri": "foo://currencyA/wallet/36fdqfldfqlkhfkqff",
+                            "active": True,
+                            "is_topup_allowed": True,
+                            "auth_context": {},
+                            "authorized_actions": [],
+                        },
                     ],
-                    'min_credit_amount': 0,
-                    'max_credit_amount': 0
+                    "min_credit_amount": 0,
+                    "max_credit_amount": 0,
                 },
                 {
-                    'type': 'foo:currencyB',
-                    'accounts': [
+                    "type": "foo:currencyB",
+                    "accounts": [
                         {
-                            'wallet_uri': 'foo://currencyB/wallet/rueqv51qvrhvqr',
-                            'active': True,
-                            'is_topup_allowed': True
+                            "wallet_uri": "foo://currencyB/wallet/rueqv51qvrhvqr",
+                            "active": True,
+                            "is_topup_allowed": True,
+                            "auth_context": {},
+                            "authorized_actions": [],
                         },
                         {
-                            'wallet_uri': 'foo://currencyB/wallet/tdfdsvqj656fdferf56vlrjq',
-                            'active': True,
-                            'is_topup_allowed': True
-                        }
+                            "wallet_uri": "foo://currencyB/wallet/tdfdsvqj656fdferf56vlrjq",
+                            "active": True,
+                            "is_topup_allowed": True,
+                            "auth_context": {},
+                            "authorized_actions": [],
+                        },
                     ],
-                    'min_credit_amount': 0,
-                    'max_credit_amount': 0
-                }
+                    "min_credit_amount": 0,
+                    "max_credit_amount": 0,
+                },
             ]
 
             self.assertEqual(result, expected_result)
+
+    def test_backend_credentials_auth_fields_present(self):
+        """Each account entry includes auth_context and authorized_actions."""
+        result = self.partner_1.get_partner_wallets_credentials()
+        for currency_data in result:
+            for account in currency_data["accounts"]:
+                self.assertIn("auth_context", account)
+                self.assertIn("authorized_actions", account)
+                self.assertIsInstance(account["auth_context"], dict)
+                self.assertIsInstance(account["authorized_actions"], list)

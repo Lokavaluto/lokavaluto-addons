@@ -72,7 +72,14 @@ class ResPartner(models.Model):
             return data
 
         for wallet in wallets:
-            data.append(wallet.get_wallet_json_data())
+            wallet_data = wallet.get_wallet_json_data()
+            auth = {
+                "auth_context": wallet.get_auth_context(),
+                "authorized_actions": wallet.get_authorized_actions(),
+            }
+            for account in wallet_data.get("accounts", []):
+                account.update(auth)
+            data.append(wallet_data)
 
         # Concatenate wallets from the same currency in the same parent
         merged_data = {}
