@@ -563,3 +563,117 @@ class TestComchainPermissions(ComchainTestCase):
         bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
         with self.assertRaises(AccessDenied):
             self._call_auth_context(alice, "0xb", features_header="wallet/0")
+
+    ## Tests: wallet service contact_info endpoint
+
+    def _call_contact_info(self, caller, wallet_ident, features_header=None):
+        """Call the contact_info endpoint via the wallet service."""
+        mock_request = self._mock_request(caller, features_header=features_header)
+        service = self._get_wallet_service(caller.user)
+        with patch.object(svc, "request", mock_request):
+            return service.contact_info(wallet_ident)
+
+    def test_ws_contact_info_admin_returns_data(self):
+        """Admin can get another wallet's contact info."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        result = self._call_contact_info(alice, "0xb", features_header="wallet/0")
+        self.assertIsInstance(result, dict)
+        self.assertIn("issuer", result)
+        self.assertIn("user", result)
+        self.assertEqual(result["user"]["name"], bob.user.partner_id.name)
+
+    def test_ws_contact_info_property_admin_returns_data(self):
+        """Property admin can get another wallet's contact info."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        result = self._call_contact_info(alice, "0xb", features_header="wallet/0")
+        self.assertIn("user", result)
+        self.assertEqual(result["user"]["name"], bob.user.partner_id.name)
+
+    def test_ws_contact_info_self_allowed_without_perms(self):
+        """Personal user can always retrieve their own contact info.
+
+        Short-circuits the ``set_property``/``set_admin`` check via
+        ``wallet == self.env.comchain_caller_wallet``.
+        """
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+
+        result = self._call_contact_info(alice, "0xa", features_header="wallet/0")
+        self.assertIn("user", result)
+        self.assertEqual(result["user"]["name"], alice.user.partner_id.name)
+
+    def test_ws_contact_info_personal_denied_on_other(self):
+        """Personal user cannot retrieve another wallet's contact info."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_contact_info(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_contact_info_pledge_denied_on_other(self):
+        """Pledge user (no set_property/set_admin) denied on other wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="3", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_contact_info(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_contact_info_nonexistent_wallet(self):
+        """Requesting contact info for a nonexistent wallet raises MissingError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        with self.assertRaises(MissingError):
+            self._call_contact_info(alice, "0xnonexistent", features_header="wallet/0")
+
+    def test_ws_contact_info_inactive_caller_denied(self):
+        """Archived caller cannot call contact_info, even on self."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        alice.wallet.active = False
+
+        with self.assertRaises(AccessDenied):
+            self._call_contact_info(alice, "0xa", features_header="wallet/0")
+
+    def test_ws_contact_info_disabled_caller_denied(self):
+        """Disabled caller cannot call contact_info."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        alice.wallet.comchain_status = "disabled"
+
+        with self.assertRaises(AccessDenied):
+            self._call_contact_info(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_contact_info_cross_currency_denied(self):
+        """Wallet on a different currency is not found via contact_info."""
+        currency_product = self.env.ref(
+            "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
+        ).sudo()
+        other_currency = self.env["res.alt.currency"].create(
+            {
+                "name": "Other Comchain CI",
+                "ident": "othercc_ci",
+                "active": True,
+                "engine": "comchain",
+                "currency_unit_product_id": currency_product.id,
+            }
+        )
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_users("bob")
+        self.env["res.partner.backend"].create(
+            {
+                "partner_id": bob.partner_id.id,
+                "name": "comchain:0xb",
+                "ident": "0xb",
+                "alt_currency_id": other_currency.id,
+                "comchain_type": "0",
+                "comchain_status": "active",
+            }
+        )
+
+        with self.assertRaises(MissingError):
+            self._call_contact_info(alice, "0xb", features_header="wallet/0")
+
