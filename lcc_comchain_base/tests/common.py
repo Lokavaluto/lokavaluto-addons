@@ -15,6 +15,13 @@ class ComchainTestCase(TransactionComponentCase):
 
     def setUp(self):
         super().setUp()
+        ## Purge any pre-existing reconversion rules.  The ``reconvert``
+        ## action flows from the ``reconversion.rule`` table; rules
+        ## persisted in the test DB (from manual seeding or prior runs)
+        ## would leak into tests that assert exact action lists.
+        ## TransactionCase rolls this back on teardown.
+        self.env["reconversion.rule"].search([]).unlink()
+
         currency_product = self.env.ref(
             "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
         ).sudo()

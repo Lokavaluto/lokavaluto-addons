@@ -193,3 +193,18 @@ class WalletService(Component):
         target = self._resolve_target_wallet(wallet_ident)
         return self._contact_info(target)
 
+    @lcc_api(
+        [(["/<wallet_ident>/authorized-actions"], "GET")],
+        require_actions=SELF | WALLET_ADMIN,
+    )
+    @features("wallet/0")
+    def authorized_actions(self, wallet_ident):
+        """Report authorized actions for a target wallet.
+
+        Returns the coarse-grained actions the *target* wallet is
+        allowed to perform (e.g. ``reconvert``, ``activate``,
+        ``validate-credit-request``).
+        """
+        wallet_ident = unquote(wallet_ident)
+        target = self._resolve_target_wallet(wallet_ident)
+        return target.get_authorized_actions()

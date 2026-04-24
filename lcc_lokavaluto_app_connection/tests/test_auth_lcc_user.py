@@ -8,6 +8,11 @@ class TestWalletAuthBase(TransactionCase):
 
     def setUp(self):
         super().setUp()
+        ## This test asserts ``get_authorized_actions()`` returns the
+        ## default empty list for a wallet with no reconversion rule
+        ## match; purge pre-existing rules so the default is reliable.
+        self.env["reconversion.rule"].search([]).unlink()
+
         currency_product = self.env.ref(
             "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
         ).sudo()

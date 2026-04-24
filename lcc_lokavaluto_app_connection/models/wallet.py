@@ -162,24 +162,42 @@ class ResPartnerBackend(models.Model):
         return {}
 
     def get_authorized_actions(self):
-        """Return coarse-grained actions available to the caller.
+        """Return coarse-grained actions available on this wallet.
 
         Actions are the interface between the generic currency service
-        and backend-specific permission systems.  Valid actions:
+        and backend-specific permission systems.  They split into:
+
+        *Admin actions* (what this wallet can do **to other wallets**
+        or administratively):
 
         - ``validate-credit-request``
         - ``search-all-recipients``
         - ``activate``
 
+        *User actions* (what this wallet can do **for itself**):
+
+        - ``reconvert`` — wallet is allowed to convert LCC back to €,
+          per the ``reconversion.rule`` table.
+
+        Admin endpoints gate on admin actions only (see
+        :data:`services.gate.ANY_ADMIN_ACTION`).  User actions must
+        never appear in admin gates — that is why they are listed but
+        kept categorically distinct.
+
         Override in financial backend add-ons to read
         backend-namespaced keys from ``self.env.context`` and map
-        them to action strings.
+        them to admin action strings.  Backend overrides should call
+        ``super().get_authorized_actions()`` and merge their
+        additions into the returned list.
 
         Returns:
-            list: sorted action strings.  Empty in base.
+            list: sorted action strings.
         """
         self.ensure_one()
-        return []
+        actions = []
+        if self.is_reconversion_allowed:
+            actions.append("reconvert")
+        return sorted(actions)
 
     def get_wallet_data(self):
         """Returns wallet informations
