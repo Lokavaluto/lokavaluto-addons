@@ -677,3 +677,316 @@ class TestComchainPermissions(ComchainTestCase):
         with self.assertRaises(MissingError):
             self._call_contact_info(alice, "0xb", features_header="wallet/0")
 
+    ## Tests: wallet service authorized_actions endpoint
+
+    def _call_authorized_actions(self, caller, wallet_ident, features_header=None):
+        """Call the authorized_actions endpoint via the wallet service."""
+        mock_request = self._mock_request(caller, features_header=features_header)
+        service = self._get_wallet_service(caller.user)
+        with patch.object(svc, "request", mock_request):
+            return service.authorized_actions(wallet_ident)
+
+    def _allow_reconversion_for(self, wallet):
+        """Create a reconversion.rule that allows *wallet* to reconvert."""
+        return self.env["reconversion.rule"].create(
+            {
+                "name": "test-allow",
+                "sequence": 10,
+                "active": True,
+                "wallet_domain": f"[('id', '=', {wallet.id})]",
+                "is_reconversion_allowed": True,
+            }
+        )
+
+    def test_ws_authorized_actions_admin_returns_data(self):
+        """Admin can get another wallet's authorized actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertIsInstance(result, list)
+        self.assertEqual(result, [])
+
+    def test_ws_authorized_actions_property_admin_returns_data(self):
+        """Property admin can get another wallet's authorized actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(result, [])
+
+    def test_ws_authorized_actions_admin_sees_target_admin_actions(self):
+        """Admin caller sees target's full perm-derived action list."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="2", addr="0xb")
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(
+            result,
+            ["activate", "search-all-recipients", "validate-credit-request"],
+        )
+
+    def test_ws_authorized_actions_admin_sees_target_reconvert(self):
+        """Admin caller sees ``reconvert`` on target when rule allows it."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+        self._allow_reconversion_for(bob.wallet)
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(result, ["reconvert"])
+
+    def test_ws_authorized_actions_self_allowed_without_perms(self):
+        """Personal user can retrieve their own authorized actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+
+        result = self._call_authorized_actions(alice, "0xa", features_header="wallet/0")
+        self.assertEqual(result, [])
+
+    def test_ws_authorized_actions_self_sees_own_reconvert(self):
+        """Self caller sees ``reconvert`` when rule allows own wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        self._allow_reconversion_for(alice.wallet)
+
+        result = self._call_authorized_actions(alice, "0xa", features_header="wallet/0")
+        self.assertEqual(result, ["reconvert"])
+
+    def test_ws_authorized_actions_personal_denied_on_other(self):
+        """Personal user cannot retrieve another wallet's actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_pledge_denied_on_other(self):
+        """Pledge user (no set_property/set_admin) denied on other wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="3", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_nonexistent_wallet(self):
+        """Requesting actions for a nonexistent wallet raises MissingError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        with self.assertRaises(MissingError):
+            self._call_authorized_actions(
+                alice, "0xnonexistent", features_header="wallet/0"
+            )
+
+    def test_ws_authorized_actions_inactive_caller_denied(self):
+        """Inactive caller cannot call authorized_actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        alice.wallet.active = False
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_disabled_caller_denied(self):
+        """Disabled caller cannot call authorized_actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        alice.wallet.comchain_status = "disabled"
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_cross_currency_denied(self):
+        """Wallet on a different currency is not found."""
+        currency_product = self.env.ref(
+            "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
+        ).sudo()
+        other_currency = self.env["res.alt.currency"].create(
+            {
+                "name": "Other Comchain AA",
+                "ident": "othercc_aa",
+                "active": True,
+                "engine": "comchain",
+                "currency_unit_product_id": currency_product.id,
+            }
+        )
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_users("bob")
+        self.env["res.partner.backend"].create(
+            {
+                "partner_id": bob.partner_id.id,
+                "name": "comchain:0xb",
+                "ident": "0xb",
+                "alt_currency_id": other_currency.id,
+                "comchain_type": "0",
+                "comchain_status": "active",
+            }
+        )
+
+        with self.assertRaises(MissingError):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    ## CRITICAL invariant tests: `reconvert` is a user action, NOT an
+    ## admin action.  A caller holding only `reconvert` must NOT pass
+    ## the ``ANY_ADMIN_ACTION`` gate on any admin endpoint.  These
+    ## tests guard against accidental conflation.
+
+    def test_reconvert_alone_does_not_pass_admin_gate_on_get(self):
+        """Reconvert-only caller cannot call the admin /get endpoint."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet(
+            "bob", addr="0xb", comchain_wallet='"stub"', comchain_message_key="k"
+        )
+        self._allow_reconversion_for(alice.wallet)
+
+        ## Sanity: alice has the reconvert action
+        self.assertIn("reconvert", alice.wallet.get_authorized_actions())
+
+        ## Admin gate (ANY_ADMIN_ACTION) must still reject her.
+        with self.assertRaises(AccessDenied):
+            self._call_get(alice, "0xb")
+
+    def test_reconvert_alone_does_not_pass_admin_gate_on_archived(self):
+        """Reconvert-only caller cannot list archived wallets."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        self._allow_reconversion_for(alice.wallet)
+        self.assertIn("reconvert", alice.wallet.get_authorized_actions())
+        with self.assertRaises(AccessDenied):
+            self._call_archived(alice, features_header="wallet/0")
+
+    def test_reconvert_alone_does_not_pass_admin_gate_on_auth_context(self):
+        """Reconvert-only caller cannot read another wallet's auth_context."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+        self._allow_reconversion_for(alice.wallet)
+        self.assertIn("reconvert", alice.wallet.get_authorized_actions())
+        with self.assertRaises(AccessDenied):
+            self._call_auth_context(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_admin_returns_data(self):
+        """Admin can get another wallet's authorized actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertIsInstance(result, list)
+        ## Bob is type 0 with no reconversion rule → no actions.
+        self.assertEqual(result, [])
+
+    def test_ws_authorized_actions_property_admin_returns_data(self):
+        """Property admin can get another wallet's authorized actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="4", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(result, [])
+
+    def test_ws_authorized_actions_admin_sees_target_admin_actions(self):
+        """Admin caller sees target's full perm-derived action list."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="2", addr="0xb")
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(
+            result,
+            ["activate", "search-all-recipients", "validate-credit-request"],
+        )
+
+    def test_ws_authorized_actions_admin_sees_target_reconvert(self):
+        """Admin caller sees ``reconvert`` on target when rule allows it."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+        self._allow_reconversion_for(bob.wallet)
+
+        result = self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+        self.assertEqual(result, ["reconvert"])
+
+    def test_ws_authorized_actions_self_allowed_without_perms(self):
+        """Personal user can retrieve their own authorized actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+
+        result = self._call_authorized_actions(alice, "0xa", features_header="wallet/0")
+        ## Alice is type 0 with no reconversion rule → empty list.
+        self.assertEqual(result, [])
+
+    def test_ws_authorized_actions_self_sees_own_reconvert(self):
+        """Self caller sees ``reconvert`` when rule allows own wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        self._allow_reconversion_for(alice.wallet)
+
+        result = self._call_authorized_actions(alice, "0xa", features_header="wallet/0")
+        self.assertEqual(result, ["reconvert"])
+
+    def test_ws_authorized_actions_personal_denied_on_other(self):
+        """Personal user cannot retrieve another wallet's actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="0", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_pledge_denied_on_other(self):
+        """Pledge user (no set_property/set_admin) denied on other wallet."""
+        alice = self._make_user_and_wallet("alice", comchain_type="3", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_nonexistent_wallet(self):
+        """Requesting actions for a nonexistent wallet raises MissingError."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+
+        with self.assertRaises(MissingError):
+            self._call_authorized_actions(
+                alice, "0xnonexistent", features_header="wallet/0"
+            )
+
+    def test_ws_authorized_actions_inactive_caller_denied(self):
+        """Inactive caller cannot call authorized_actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        alice.wallet.active = False
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_disabled_caller_denied(self):
+        """Disabled caller cannot call authorized_actions."""
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_user_and_wallet("bob", comchain_type="0", addr="0xb")
+
+        alice.wallet.comchain_status = "disabled"
+
+        with self.assertRaises(AccessDenied):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")
+
+    def test_ws_authorized_actions_cross_currency_denied(self):
+        """Wallet on a different currency is not found."""
+        currency_product = self.env.ref(
+            "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
+        ).sudo()
+        other_currency = self.env["res.alt.currency"].create(
+            {
+                "name": "Other Comchain AA",
+                "ident": "othercc_aa",
+                "active": True,
+                "engine": "comchain",
+                "currency_unit_product_id": currency_product.id,
+            }
+        )
+        alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
+        bob = self._make_users("bob")
+        self.env["res.partner.backend"].create(
+            {
+                "partner_id": bob.partner_id.id,
+                "name": "comchain:0xb",
+                "ident": "0xb",
+                "alt_currency_id": other_currency.id,
+                "comchain_type": "0",
+                "comchain_status": "active",
+            }
+        )
+
+        with self.assertRaises(MissingError):
+            self._call_authorized_actions(alice, "0xb", features_header="wallet/0")

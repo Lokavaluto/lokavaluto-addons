@@ -4,6 +4,11 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
     def setUp(self):
         super().setUp()
 
+        ## The test asserts empty ``authorized_actions`` on fresh
+        ## wallets; purge any pre-existing reconversion rules so the
+        ## assertion stays deterministic regardless of DB state.
+        self.env["reconversion.rule"].search([]).unlink()
+
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
         self.ResPartnerBackend = self.env["res.partner.backend"]
