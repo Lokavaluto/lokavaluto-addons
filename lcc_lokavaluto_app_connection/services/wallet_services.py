@@ -99,6 +99,32 @@ class WalletService(Component):
             )
         return data["accounts"][0]
 
+    def _contact_info(self, wallet):
+        """Return contact info for the issuer and user of a wallet."""
+
+        def contact_info(p):
+            res = {
+                "name": p.name,
+                "street": p.street,
+                "street2": p.street2,
+                "city": p.city,
+                "zip": p.zip,
+                "email": p.email,
+                "phone": p.phone,
+                "mobile": p.mobile,
+                "website": p.website,
+            }
+            if hasattr(p, "logo"):
+                res["logo"] = p.logo
+            return res
+
+        ## XXXvlab: it should be the company_id of the alt_currency_id
+        company_id = self.env.user.company_id
+        return {
+            "issuer": contact_info(company_id),
+            "user": contact_info(wallet.partner_id),
+        }
+
     # -- Endpoints --
 
     @lcc_api(
@@ -155,3 +181,15 @@ class WalletService(Component):
         target = self._resolve_target_wallet(wallet_ident)
         self._update_wallet(target, params.data)
         return True
+
+    @lcc_api(
+        [(["/<wallet_ident>/contact-info"], "GET")],
+        require_actions=SELF | WALLET_ADMIN,
+    )
+    @features("wallet/0")
+    def contact_info(self, wallet_ident):
+        """Report contact info for the issuer and user of a wallet."""
+        wallet_ident = unquote(wallet_ident)
+        target = self._resolve_target_wallet(wallet_ident)
+        return self._contact_info(target)
+
