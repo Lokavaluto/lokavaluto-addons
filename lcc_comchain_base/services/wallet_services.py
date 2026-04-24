@@ -6,6 +6,9 @@ from odoo.exceptions import AccessDenied, ValidationError
 from odoo.addons.component.core import Component
 
 from odoo.addons.lcc_lokavaluto_app_connection.services import features, lcc_api
+from odoo.addons.lcc_lokavaluto_app_connection.services.gate import (
+    ANY_ADMIN_ACTION,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -128,32 +131,11 @@ class WalletService(Component):
         wallet.sudo().comchain_status = "disabled"
         super()._archive_wallet(wallet)
 
-    def _get_wallet(self, wallet):
-        """Add comchain permission check before returning wallet data.
-
-        Requires ``set_property`` or ``set_admin`` permission.
-        """
-        auth_data = self.env.comchain_caller_wallet.get_auth_context()
-        perms = auth_data.get("comchain_perms", ())
-        if "set_property" not in perms and "set_admin" not in perms:
-            _logger.warning("get denied: caller lacks set_property/set_admin")
-            raise AccessDenied()
-        return super()._get_wallet(wallet)
-
     # -- Endpoints --
 
     @lcc_api(
-        [(["/<wallet_ident>/get"], "GET")],
-        require_actions=True,
-    )
-    @features("wallet/0")
-    def get(self, wallet_ident):
-        """Return wallet JSON data with comchain permission check."""
-        return super().get(wallet_ident)
-
-    @lcc_api(
         [(["/<wallet_ident>/auth_context"], "GET")],
-        require_actions=True,
+        require_actions=ANY_ADMIN_ACTION,
     )
     @features("wallet/0")
     def auth_context(self, wallet_ident):

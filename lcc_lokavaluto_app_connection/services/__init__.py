@@ -1,10 +1,24 @@
 import functools
+import inspect
 import logging
+from urllib.parse import unquote, urlparse
 
 from odoo.exceptions import AccessDenied
 from odoo.http import request
 
 from odoo.addons.base_rest import restapi
+
+from . import gate
+from .gate import (
+    ADMIN_ACTIONS,
+    ANY_ADMIN_ACTION,
+    And,
+    GateContext,
+    GateLit,
+    Not,
+    Or,
+    Self,
+)
 
 
 __api_version__ = 13
@@ -207,25 +221,93 @@ restapi.method = _features_restapi_method
 ##
 
 
+def _parse_caller_ident(user_uri):
+    """Extract the ident portion of a ``user_uri`` header value.
+
+    Expected shape: ``<scheme>://<currency>/user/<ident>``.
+
+    Backend-agnostic: every backend publishing a wallet service MUST
+    follow the ``/user/<ident>`` path convention.  A URI that does
+    not match is a structural error — the caller sent a malformed
+    or out-of-convention URI.  This function raises so the decorator
+    can fail the request loudly instead of silently degrading.
+
+    Args:
+        user_uri: non-empty value of the ``X-Lokapi-Caller-User-Uri``
+            header.  Must already have been checked for truthiness
+            by the caller.
+
+    Returns:
+        str: URL-decoded caller ident (e.g. ``"0xabc"``).
+
+    Raises:
+        ValueError: on any structural mismatch (bad URL syntax,
+            missing ``/user/`` segment, empty ident, etc.).  The
+            message embeds ``user_uri`` for diagnostics.
+    """
+    try:
+        parsed = urlparse(user_uri)
+    except (ValueError, AttributeError) as exc:
+        raise ValueError(
+            f"Malformed caller user_uri (urlparse failed): {user_uri!r}"
+        ) from exc
+    ## parsed.path looks like "/user/<ident>" — drop the leading "/"
+    parts = parsed.path.lstrip("/").split("/", 1)
+    if len(parts) != 2 or parts[0] != "user":
+        raise ValueError(
+            f"Malformed caller user_uri (expected '/user/<ident>' path): {user_uri!r}"
+        )
+    ident = parts[1]
+    if not ident:
+        raise ValueError(f"Malformed caller user_uri (empty ident): {user_uri!r}")
+    ## Normalise URL-encoding so it matches the target wallet_ident
+    ## which the decorator also unquotes before ``SELF`` comparison.
+    return unquote(ident)
+
+
 def lcc_api(routes, require_actions=None, **kwargs):
     """Like ``@restapi.method`` but auto-validates ``X-Lokapi-Caller-User-Uri``.
 
-    Reads the ``X-Lokapi-Caller-User-Uri`` HTTP header and delegates
-    authentication to ``self._auth_user_uri(user_uri)`` which each
-    backend overrides.  The decorator handles action gating from the
-    returned actions list.
+    Reads the ``X-Lokapi-Caller-User-Uri`` HTTP header, parses the
+    caller's ident, and delegates authentication to
+    ``self._auth_user_uri(user_uri)`` which each backend overrides.
+    Gates access using an explicit action-expression DSL — see
+    :mod:`.gate`.
 
     Args:
         routes: Same as ``@restapi.method`` routes parameter.
-        require_actions: Action gating (coarse-grained authorization).
-            - ``None`` (default): no action gate, only auth.
-            - ``True``: caller must have at least one action.
-            - tuple of strings: caller must have at least one
-              of these specific actions.
+        require_actions: Action gate.  Either ``None`` (no gate — any
+            authenticated caller passes) or any value accepted by
+            :class:`~.gate.And` (a string, a :class:`~.gate.GateExpr`,
+            or one of each).  The value is wrapped in
+            :class:`~.gate.And` and evaluated against a
+            :class:`~.gate.GateContext` built from the caller's
+            actions, ident, and the ``wallet_ident`` URL parameter
+            (if any).
         **kwargs: Passed through to ``@restapi.method``.
+
+    Raises:
+        TypeError: if ``require_actions`` is not a valid operand for
+            :class:`~.gate.And`, or if the gate uses :class:`~.gate.Self`
+            but the wrapped endpoint does not accept a ``wallet_ident``
+            parameter.
     """
+    gate_expr = None if require_actions is None else And(require_actions)
 
     def decorator(func):
+        # -- Inspect the wrapped function's signature --
+        sig = inspect.signature(func)
+        has_target_param = "wallet_ident" in sig.parameters
+
+        # -- Decoration-time validation --
+        if gate_expr is not None and gate_expr.needs_target:
+            if not has_target_param:
+                raise TypeError(
+                    f"@lcc_api gate for {func.__qualname__!r} uses "
+                    f"``SELF`` but the endpoint has no 'wallet_ident' "
+                    f"parameter: {gate_expr!r}"
+                )
+
         @functools.wraps(func)
         def wrapper(self, *args, **kw):
             # -- Read header --
@@ -236,20 +318,44 @@ def lcc_api(routes, require_actions=None, **kwargs):
                 _logger.debug("lcc_api: missing X-Lokapi-Caller-User-Uri header")
                 raise AccessDenied()
 
+            # -- Parse caller ident (backend-agnostic; fail-early) --
+            try:
+                caller_wallet_ident = _parse_caller_ident(caller_user_uri)
+            except ValueError as exc:
+                _logger.warning("lcc_api: %s", exc)
+                raise AccessDenied()
+
             # -- Delegate auth to backend --
             caller_actions = self._auth_user_uri(caller_user_uri)
 
-            # -- Action gating --
-            if require_actions is not None:
-                if require_actions is True:
-                    if not caller_actions:
-                        _logger.debug("lcc_api: no actions (gate=True)")
-                        raise AccessDenied()
-                elif not set(caller_actions) & set(require_actions):
+            # -- Build gate context & evaluate --
+            if gate_expr is not None:
+                ## Bind positional + keyword args to parameters so the
+                ## gate sees ``wallet_ident`` whether it was passed
+                ## positionally or as a kwarg.
+                target_raw = None
+                if has_target_param:
+                    try:
+                        bound = sig.bind(self, *args, **kw)
+                        target_raw = bound.arguments.get("wallet_ident")
+                    except TypeError:
+                        ## Signature mismatch — leave target_raw None
+                        ## and let the gate reject if it needs target.
+                        target_raw = None
+                target_ident = unquote(target_raw) if target_raw is not None else None
+                ctx = GateContext(
+                    caller_actions=frozenset(caller_actions or ()),
+                    caller_wallet_ident=caller_wallet_ident,
+                    target_wallet_ident=target_ident,
+                )
+                if not gate_expr.matches(ctx):
                     _logger.debug(
-                        "lcc_api: lacks required actions %s (has: %s)",
-                        require_actions,
-                        caller_actions,
+                        "lcc_api: caller ident=%r actions=%s "
+                        "target=%r do not satisfy gate %r",
+                        caller_wallet_ident,
+                        sorted(caller_actions or ()),
+                        ctx.target_wallet_ident,
+                        gate_expr,
                     )
                     raise AccessDenied()
 

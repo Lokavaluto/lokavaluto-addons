@@ -48,10 +48,14 @@ class TestWalletServiceBase(TransactionCase):
         self.assertTrue(result["called"])
 
     def test_lcc_api_with_base_auth_rejects_with_gate(self):
-        """@lcc_api with require_actions=True rejects when base returns []."""
+        """@lcc_api with an admin gate rejects when base returns []."""
+        from odoo.addons.lcc_lokavaluto_app_connection.services.gate import (
+            ANY_ADMIN_ACTION,
+        )
+
         service = self._get_wallet_service()
 
-        @lcc_api([(["/test"], "GET")], require_actions=True)
+        @lcc_api([(["/test"], "GET")], require_actions=ANY_ADMIN_ACTION)
         def dummy(self):
             return True
 

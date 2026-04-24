@@ -18,7 +18,7 @@ class RecipientService(Component):
 
     @lcc_api(
         [(["/search_all"], "GET")],
-        require_actions=("search-all-recipients",),
+        require_actions="search-all-recipients",
         input_param=Datamodel("partner.search.info"),
     )
     @features("recipient/0")
