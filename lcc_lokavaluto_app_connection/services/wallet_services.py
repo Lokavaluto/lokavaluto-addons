@@ -7,6 +7,7 @@ from odoo.addons.component.core import Component
 from odoo.addons.base_rest_datamodel.restapi import Datamodel
 
 from . import features, lcc_api
+from .gate import ANY_ADMIN_ACTION, SELF, WALLET_ADMIN
 
 _logger = logging.getLogger(__name__)
 
@@ -102,7 +103,7 @@ class WalletService(Component):
 
     @lcc_api(
         [(["/<wallet_ident>/get"], "GET")],
-        require_actions=True,
+        require_actions=SELF | WALLET_ADMIN,
     )
     @features("wallet/0")
     def get(self, wallet_ident):
@@ -124,7 +125,7 @@ class WalletService(Component):
 
     @lcc_api(
         [(["/archived"], "GET")],
-        require_actions=True,
+        require_actions=ANY_ADMIN_ACTION,
     )
     @features("wallet/0")
     def archived(self):
