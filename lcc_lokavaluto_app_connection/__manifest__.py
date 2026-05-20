@@ -38,10 +38,12 @@
         "views/unusual_transaction_views.xml",
         "views/res_alt_currency.xml",
         "views/menu.xml",
+        "views/lcc_monujo_config.xml",
         "views/portal_my_home.xml",
         "views/res_config_settings_view.xml",
         "data/numeric_data.xml",
         "data/res_alt_currency_data.xml",
+        "data/lcc_monujo_config_data.xml",
         "security/ir.model.access.csv",
     ],
     # only loaded in demonstration mode

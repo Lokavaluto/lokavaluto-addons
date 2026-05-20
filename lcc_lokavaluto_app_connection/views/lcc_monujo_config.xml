@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- =================================================================== -->
+    <!-- lcc.monujo.config — main model views                                -->
+    <!-- =================================================================== -->
+
+    <record id="lcc_monujo_config_view_tree" model="ir.ui.view">
+        <field name="name">lcc.monujo.config.view.tree</field>
+        <field name="model">lcc.monujo.config</field>
+        <field name="arch" type="xml">
+            <tree string="Monujo Configurations">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="ident"/>
+                <field name="is_default"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="lcc_monujo_config_view_form" model="ir.ui.view">
+        <field name="name">lcc.monujo.config.view.form</field>
+        <field name="model">lcc.monujo.config</field>
+        <field name="arch" type="xml">
+            <form string="Monujo Configuration">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="active" invisible="True"/>
+
+                    <field name="favicon" widget="image" class="oe_avatar"/>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Default"/></h1>
+                        <label for="ident"/>
+                        <h3><field name="ident" placeholder="e.g. default"/></h3>
+                    </div>
+
+                    <group>
+                        <group name="selection">
+                            <field name="is_default"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="General" name="general">
+                            <group>
+                                <group string="Endpoints">
+                                    <field name="lokapi_db"/>
+                                    <field name="lokapi_host"/>
+                                </group>
+                                <group string="External URLs">
+                                    <field name="map_url" widget="url"/>
+                                    <field name="help_url" widget="url"/>
+                                    <field name="cgu_url" widget="url"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Branding" name="branding">
+                            <group>
+                                <group string="Images">
+                                    <field name="logo" widget="image"/>
+                                    <field name="login_logo" widget="image"/>
+                                </group>
+                            </group>
+                            <separator string="Custom CSS"/>
+                            <field name="css" widget="text" placeholder=".nav-item {color: red}"/>
+                        </page>
+
+                        <page string="Theme" name="theme">
+                            <field name="theme_entry_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="key"/>
+                                    <field name="value"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Locales" name="locales">
+                            <group>
+                                <group>
+                                    <field name="locales_app_strings_language"/>
+                                    <field name="locales_default_language"/>
+                                    <field name="locales_prefer_navigator_language"/>
+                                </group>
+                            </group>
+                            <separator string="Available languages"/>
+                            <field name="language_ids">
+                                <tree editable="bottom">
+                                    <field name="lang_id"/>
+                                    <field name="code"/>
+                                    <field name="translation_file" filename="translation_filename"/>
+                                    <field name="translation_filename" invisible="True"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Refresh &amp; Toggles" name="behavior">
+                            <group>
+                                <group string="Refresh intervals (seconds)">
+                                    <field name="accounts_refresh_interval"/>
+                                    <field name="transactions_refresh_interval"/>
+                                    <field name="currencies_refresh_interval"/>
+                                </group>
+                                <group string="Feature toggles">
+                                    <field name="disable_reconversion"/>
+                                    <field name="disable_top_up"/>
+                                    <field name="disable_split_memo"/>
+                                    <field name="disable_badges"/>
+                                    <field name="disable_import_wallet"/>
+                                    <field name="disable_display_other_unpaid_topup"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Mobile app" name="mobile">
+                            <p class="text-muted">
+                                These values are served by the
+                                <code>/mobile-config</code> endpoint, not
+                                <code>/config</code>. They configure
+                                app-store linking and launcher / splash
+                                assets for the mobile app.
+                            </p>
+                            <group>
+                                <group string="Identity">
+                                    <field name="mobile_app_name"
+                                        placeholder="Monujo"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Assets">
+                                    <field name="mobile_icon" widget="image"/>
+                                    <field name="mobile_splash" widget="image"/>
+                                </group>
+                                <group string="Store identifiers">
+                                    <field name="android_play_store_app_id"
+                                        placeholder="fr.lokavaluto.monujo"/>
+                                    <field name="ios_app_store_app_id"
+                                        placeholder="1234567890"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Advanced" name="advanced">
+                            <separator string="Local auth policy (JSON)"/>
+                            <field name="local_auth_policy" widget="text"
+                                placeholder='["Retention", {"time": 900, "subConfig": ["Pin", {}]}]'/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="lcc_monujo_config_view_search" model="ir.ui.view">
+        <field name="name">lcc.monujo.config.view.search</field>
+        <field name="model">lcc.monujo.config</field>
+        <field name="arch" type="xml">
+            <search string="Search Monujo Configurations">
+                <field name="name"/>
+                <field name="ident"/>
+                <filter domain="[('is_default','=',True)]" string="Default" name="default"/>
+                <filter domain="[('active','=',True)]" string="Active" name="active"/>
+                <filter domain="[('active','=',False)]" string="Archived" name="archived"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_lcc_monujo_config" model="ir.actions.act_window">
+        <field name="name">Monujo Configurations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">lcc.monujo.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Monujo configuration.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="monujo_config_menu"
+        parent="lcc_lokavaluto_app_connection.menu_config_digital_currency"
+        sequence="50"
+        groups="lcc_lokavaluto_app_connection.group_wallet_accounts_manager"
+        action="action_lcc_monujo_config"/>
+
+</odoo>

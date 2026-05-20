@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- =========================================================== -->
+        <!-- Default Monujo configuration                                -->
+        <!-- =========================================================== -->
+        <!-- Values mirror monujo/public/config.sample.json so a fresh   -->
+        <!-- install yields a working /config endpoint out of the box.  -->
+        <!-- =========================================================== -->
+
+        <record id="lcc_monujo_config_default" model="lcc.monujo.config">
+            <field name="name">Default</field>
+            <field name="ident">default</field>
+            <field name="is_default" eval="True"/>
+            <field name="sequence">1</field>
+
+            <field name="lokapi_db">odoo</field>
+            <field name="lokapi_host">example.org</field>
+            <field name="map_url">https://carte.example.org</field>
+            <field name="help_url">https://help.com</field>
+            <field name="cgu_url">https://cgu.com</field>
+
+            <field name="locales_app_strings_language">en-US</field>
+            <field name="locales_default_language">en-US</field>
+            <field name="locales_prefer_navigator_language" eval="True"/>
+
+            <field name="accounts_refresh_interval">90</field>
+            <field name="transactions_refresh_interval">47</field>
+            <field name="currencies_refresh_interval">60</field>
+
+            <field name="disable_reconversion" eval="False"/>
+            <field name="disable_top_up" eval="False"/>
+            <field name="disable_split_memo" eval="False"/>
+            <field name="disable_badges" eval="False"/>
+            <field name="disable_import_wallet" eval="False"/>
+            <field name="disable_display_other_unpaid_topup" eval="False"/>
+
+            <field name="css">.nav-item {color: red !important} .refresh {background-color: #009688;}</field>
+            <field name="local_auth_policy">["Retention", {"time": 900, "subConfig": ["Pin", {}]}]</field>
+        </record>
+
+        <!-- =========================================================== -->
+        <!-- Default available language: English (no translation file —  -->
+        <!-- the Monujo app bundles English strings at build time).      -->
+        <!-- =========================================================== -->
+
+        <record id="lcc_monujo_config_default_lang_en" model="lcc.monujo.config.language">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="lang_id" ref="base.lang_en"/>
+        </record>
+
+        <!-- =========================================================== -->
+        <!-- Theme entries (key/value pairs from config.sample.json)     -->
+        <!-- =========================================================== -->
+
+        <record id="lcc_monujo_config_theme_color_1" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">10</field>
+            <field name="key">color-1</field>
+            <field name="value">#e4f2f1</field>
+        </record>
+        <record id="lcc_monujo_config_theme_color_2" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">20</field>
+            <field name="key">color-2</field>
+            <field name="value">#009688</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">30</field>
+            <field name="key">top-menu-background-color</field>
+            <field name="value">#fefefe</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_link_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">40</field>
+            <field name="key">top-menu-link-color</field>
+            <field name="value">#4a4a4a</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_link_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">50</field>
+            <field name="key">top-menu-link-background-color</field>
+            <field name="value">white</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_link_background_color_bg" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">60</field>
+            <field name="key">top-menu-link-background-color-bg</field>
+            <field name="value">white</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_link_hover_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">70</field>
+            <field name="key">top-menu-link-hover-color</field>
+            <field name="value">#777777</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_link_hover_color_bg" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">80</field>
+            <field name="key">top-menu-link-hover-color-bg</field>
+            <field name="value">#848484</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_link_hover_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">90</field>
+            <field name="key">top-menu-link-hover-background-color</field>
+            <field name="value">whitesmoke</field>
+        </record>
+        <record id="lcc_monujo_config_theme_top_menu_dropdown_divider_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">100</field>
+            <field name="key">top-menu-dropdown-divider-color</field>
+            <field name="value">whitesmoke</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_pay_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">110</field>
+            <field name="key">btn-pay-text-color</field>
+            <field name="value">#ffffff</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_pay_border_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">120</field>
+            <field name="key">btn-pay-border-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_pay_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">130</field>
+            <field name="key">btn-pay-background-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_request_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">140</field>
+            <field name="key">btn-request-text-color</field>
+            <field name="value">#ffffff</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_request_border_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">150</field>
+            <field name="key">btn-request-border-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_request_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">160</field>
+            <field name="key">btn-request-background-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_top_up_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">170</field>
+            <field name="key">btn-top-up-text-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_top_up_border_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">180</field>
+            <field name="key">btn-top-up-border-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_top_up_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">190</field>
+            <field name="key">btn-top-up-background-color</field>
+            <field name="value">#ffffff</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_login_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">200</field>
+            <field name="key">btn-login-text-color</field>
+            <field name="value">#ffffff</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_login_border_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">210</field>
+            <field name="key">btn-login-border-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_btn_login_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">220</field>
+            <field name="key">btn-login-background-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_inner_card_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">230</field>
+            <field name="key">inner-card-background-color</field>
+            <field name="value">#f0faf9</field>
+        </record>
+        <record id="lcc_monujo_config_theme_inner_card_border_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">240</field>
+            <field name="key">inner-card-border-color</field>
+            <field name="value">#f0faf9</field>
+        </record>
+        <record id="lcc_monujo_config_theme_inner_card_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">250</field>
+            <field name="key">inner-card-text-color</field>
+            <field name="value">#4a4a4a</field>
+        </record>
+        <record id="lcc_monujo_config_theme_inner_card_text_color_backend" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">260</field>
+            <field name="key">inner-card-text-color-backend</field>
+            <field name="value">#242424</field>
+        </record>
+        <record id="lcc_monujo_config_theme_inner_card_label_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">270</field>
+            <field name="key">inner-card-label-background-color</field>
+            <field name="value">transparent</field>
+        </record>
+        <record id="lcc_monujo_config_theme_inner_card_label_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">280</field>
+            <field name="key">inner-card-label-text-color</field>
+            <field name="value">#4a4a4a</field>
+        </record>
+        <record id="lcc_monujo_config_theme_inner_card_alt_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">290</field>
+            <field name="key">inner-card-alt-text-color</field>
+            <field name="value">#009688</field>
+        </record>
+        <record id="lcc_monujo_config_theme_body_size" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">300</field>
+            <field name="key">body-size</field>
+            <field name="value">14px</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tabs_border_bottom_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">310</field>
+            <field name="key">tabs-border-bottom-color</field>
+            <field name="value">white</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tabs_border_bottom_width" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">320</field>
+            <field name="key">tabs-border-bottom-width</field>
+            <field name="value">4px</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tabs_link_hover_border_bottom_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">330</field>
+            <field name="key">tabs-link-hover-border-bottom-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tabs_link_active_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">340</field>
+            <field name="key">tabs-link-active-color</field>
+            <field name="value">rgba(0, 0, 0, 0.8)</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tabs_link_active_border_bottom_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">350</field>
+            <field name="key">tabs-link-active-border-bottom-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tabs_link_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">360</field>
+            <field name="key">tabs-link-color</field>
+            <field name="value">rgba(0, 0, 0, 0.6)</field>
+        </record>
+        <record id="lcc_monujo_config_theme_navbar_fixed_z" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">370</field>
+            <field name="key">navbar-fixed-z</field>
+            <field name="value">50</field>
+        </record>
+        <record id="lcc_monujo_config_theme_primary_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">380</field>
+            <field name="key">primary-color</field>
+            <field name="value">#41b0a6</field>
+        </record>
+        <record id="lcc_monujo_config_theme_primary_color_lighter" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">390</field>
+            <field name="key">primary-color-lighter</field>
+            <field name="value">#d9efed</field>
+        </record>
+        <record id="lcc_monujo_config_theme_default_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">400</field>
+            <field name="key">default-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_modal_btn_background_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">410</field>
+            <field name="key">modal-btn-background-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_modal_btn_text_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">420</field>
+            <field name="key">modal-btn-text-color</field>
+            <field name="value">#ffffff</field>
+        </record>
+        <record id="lcc_monujo_config_theme_modal_btn_border_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">430</field>
+            <field name="key">modal-btn-border-color</field>
+            <field name="value">$color-2</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tx_topup_bg_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">440</field>
+            <field name="key">tx-topup-bg-color</field>
+            <field name="value">$inner-card-background-color</field>
+        </record>
+        <record id="lcc_monujo_config_theme_tx_reconversion_bg_color" model="lcc.monujo.config.theme.entry">
+            <field name="config_id" ref="lcc_monujo_config_default"/>
+            <field name="sequence">450</field>
+            <field name="key">tx-reconversion-bg-color</field>
+            <field name="value">$inner-card-background-color</field>
+        </record>
+
+    </data>
+</odoo>

@@ -11,3 +11,4 @@ from . import test_features
 from . import test_lcc_api
 from . import test_wallet_services
 from . import test_batch
+from . import test_monujo_config
