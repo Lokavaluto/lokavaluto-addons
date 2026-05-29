@@ -183,8 +183,6 @@ class AlternativeCurrency(models.Model):
 
         This cron will check all credit requests in error to ensure they are still
         in error.
-
-        It does not reprocess the credit requests, that remain a manual operation.
         """
         currencies = self.search([("active", "=", True), ("engine", "=", "comchain")])
         for alt_currency in currencies:
@@ -204,6 +202,8 @@ class AlternativeCurrency(models.Model):
         )
         for credit_request in credit_requests:
             credit_request.check_still_in_error()
+            if credit_request.state == 'error':
+                credit_request.renew_credit_attempt()
         _logger.info(
                 f"Check of credit requests in error for alt currency {self.name} finished.",
         )

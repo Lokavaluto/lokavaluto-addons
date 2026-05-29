@@ -1,6 +1,10 @@
 import json
 from unittest.mock import patch
+
 from odoo.addons.component.tests.common import TransactionComponentCase
+
+from ..models.credit_request import RPLCMNT_TX_UNDERPRICED
+
 
 class TestCreditRequest(TransactionComponentCase):
     def setUp(self):
@@ -42,18 +46,18 @@ class TestCreditRequest(TransactionComponentCase):
             }
         )
 
-    def _create_credit_request(self, wallet, amount=100):
-        return self.env["credit.request"].create(
-            {
-                "wallet_id": wallet.id,
-                "amount": amount,
-            }
-        )
+    def _create_credit_request(self, wallet, amount=100, error_message=None):
+        vals = {"wallet_id": wallet.id, "amount": amount}
+        if error_message is not None:
+            vals["error_message"] = error_message
+        return self.env["credit.request"].create(vals)
+
+    # ------------------------------------------------------------------
+    # check_still_in_error
+    # ------------------------------------------------------------------
 
     def test_check_still_in_error_1(self):
-        """Test check_still_in_error method when credit request is still in error."""
-
-        # Create data
+        """Test check_still_in_error when the transaction is still in error."""
         currency = self._create_alt_currency()
         partner = self._create_res_partner()
         wallet = self._create_res_partner_backend(partner, currency)
@@ -115,3 +119,61 @@ class TestCreditRequest(TransactionComponentCase):
 
         # Assert state is still error
         self.assertEqual(credit_request.state, "error")
+
+    # ------------------------------------------------------------------
+    # _new_credit_attempt_allowed
+    # ------------------------------------------------------------------
+
+    def test_new_credit_attempt_allowed_state_not_error(self):
+        """_new_credit_attempt_allowed returns False when state is not 'error'."""
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+        credit_request = self._create_credit_request(
+            wallet, amount=100, error_message=RPLCMNT_TX_UNDERPRICED
+        )
+
+        # State is "open" by default
+        self.assertFalse(credit_request._new_credit_attempt_allowed())
+
+        # Passing through valid transitions: open -> pending -> done
+        credit_request.state = "pending"
+        self.assertFalse(credit_request._new_credit_attempt_allowed())
+
+        credit_request.state = "done"
+        self.assertFalse(credit_request._new_credit_attempt_allowed())
+
+    def test_new_credit_attempt_allowed_no_error_message(self):
+        """_new_credit_attempt_allowed returns False when error_message is falsy."""
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+        credit_request = self._create_credit_request(wallet, amount=100)
+
+        credit_request.state = "error"
+        # error_message defaults to False — the method should return False
+        self.assertFalse(credit_request._new_credit_attempt_allowed())
+
+    def test_new_credit_attempt_allowed_rplcmnt_tx_underpriced(self):
+        """_new_credit_attempt_allowed returns True for the known error message."""
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+        credit_request = self._create_credit_request(
+            wallet, amount=100, error_message=RPLCMNT_TX_UNDERPRICED
+        )
+
+        credit_request.state = "error"
+        self.assertTrue(credit_request._new_credit_attempt_allowed())
+
+    def test_new_credit_attempt_allowed_other_error_message(self):
+        """_new_credit_attempt_allowed returns False for any other error message."""
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+        credit_request = self._create_credit_request(
+            wallet, amount=100, error_message="Some other error"
+        )
+
+        credit_request.state = "error"
+        self.assertFalse(credit_request._new_credit_attempt_allowed())
