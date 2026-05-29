@@ -477,37 +477,21 @@ class PartnerService(Component):
     def _get(self, _id):
         return self.env["res.partner"].sudo().browse(_id)
 
-    def _search_recipients_common(
+    def _build_search_recipients_domain(
         self,
-        backend_keys,
+        currency_uris,
         value="",
-        offset=0,
-        limit=None,
-        order="name asc",
         website_url=None,
-        sender_wallet_ident=None,
-        apply_restriction_rules=False,
         extra_domain=None,
     ):
-        """Search recipients by name, email, phone or website_url.
+        """Build the recipient search domain.
 
-        Resolves backend_keys to currencies, builds the search domain,
-        applies value/website_url filters, orders by favorites first,
-        and optionally enforces wallet restriction rules.
+        Applies value/website_url filters
 
         Args:
             extra_domain: additional Odoo domain clauses to inject
                 into the search (e.g. status filters).
-
-        XXXvlab: upon empty search string, returns favorites only.
-        Always orders by favorite first.
         """
-        backend_keys = set(self.env.user.partner_id.backends()) & set(
-            backend_keys,
-        )
-        # Transform backend_keys in backend_URI if needed
-        # TO BE REMOVED once Monujo sends URIs through the API
-        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
         alt_currency_ids = self.env["res.alt.currency"].search(
             [("uri", "in", currency_uris)],
         )
@@ -518,10 +502,6 @@ class PartnerService(Component):
         ]
         if extra_domain:
             domain += extra_domain
-
-        offset = offset or 0
-        limit = limit or None
-        order = _recipient_order_normalize(order or "name asc")
 
         if value:
             domain.extend(
@@ -551,11 +531,38 @@ class PartnerService(Component):
             except ValueError:
                 msg = "Url not valid."
                 raise MissingError(msg)
-        _logger.debug(f"DOMAIN: {domain}")
 
-        ## XXXvlab: as ``is_favorite`` cannot be stored, it can't be used
-        ## here for a direct search. We'll implement 2 search to fake an
-        ## order by ``is_favorite``
+        _logger.debug(f"DOMAIN: {domain}")
+        return domain
+
+    def _build_recipients_set(
+            self,
+            currency_uris,
+            domain,
+            value="",
+            offset=0,
+            limit=None,
+            order="name asc",
+            sender_wallet_ident=None,
+            apply_restriction_rules=False,
+    ):
+        """Build the searched recipients set.
+
+        Orders by favorites first, and optionally enforces wallet
+        restriction rules.
+
+        Args:
+            extra_domain: additional Odoo domain clauses to inject
+                into the search (e.g. status filters).
+
+        As ``is_favorite`` cannot be stored, it can't be used
+        here for a direct search. Two search are implemented to fake an
+        order by ``is_favorite``
+
+        Upon empty search string, returns favorites only.
+        Always orders by favorite first.
+        """
+
         rpb = self.env["res.partner.backend"].sudo()
         recipients_fav = rpb.search(
             [("partner_id.favorite_user_ids", "in", self.env.uid), *domain],
@@ -623,6 +630,53 @@ class PartnerService(Component):
                         )
                     ]
                 # if no wallet restriction rule matches, all recipients are allowed
+
+        return recipients
+
+    def _search_recipients_common(
+            self,
+            backend_keys,
+            value="",
+            offset=0,
+            limit=None,
+            order="name asc",
+            website_url=None,
+            sender_wallet_ident=None,
+            apply_restriction_rules=False,
+            extra_domain=None,
+    ):
+        """Search recipients by name, email, phone or website_url.
+
+        Resolves backend_keys to currencies, get search domain,
+        build recipients set, and group recipients by partner.
+        """
+        backend_keys = set(self.env.user.partner_id.backends()) & set(
+            backend_keys,
+        )
+        # Transform backend_keys in backend_URI if needed
+        # TO BE REMOVED once Monujo sends URIs through the API
+        currency_uris = self._transform_backend_keys_in_currency_uris(backend_keys)
+
+        domain = self._build_search_recipients_domain(
+            currency_uris,
+            value,
+            website_url,
+            extra_domain,
+        )
+        offset = offset or 0
+        limit = limit or None
+        order = _recipient_order_normalize(order or "name asc")
+
+        recipients = self._build_recipients_set(
+            currency_uris,
+            domain,
+            value,
+            offset,
+            limit,
+            order,
+            sender_wallet_ident,
+            apply_restriction_rules
+        )
 
         ## Group by partner
         rows = []
