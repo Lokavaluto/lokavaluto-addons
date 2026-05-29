@@ -42,7 +42,7 @@ class TestCreditRequest(TransactionComponentCase):
                 "comchain_id": ident,
                 "comchain_wallet": json.dumps("foo"),
                 "comchain_wallet_pwd": "strong_password",
-                "comchain_message_key": "bar"
+                "comchain_message_key": "bar",
             }
         )
 
@@ -63,61 +63,43 @@ class TestCreditRequest(TransactionComponentCase):
         wallet = self._create_res_partner_backend(partner, currency)
         credit_request = self._create_credit_request(wallet, amount=100)
 
-        # Simulate credit request in error
         credit_request.transaction_data = "tx_hash_123"
         credit_request.state = "error"
 
-        # Mock the check_transaction_content method
         with patch(
             "odoo.addons.lcc_comchain_base.models.credit_request.check_transaction_content",
-            return_value="Max retry reached to get transaction info (10 retries)"
+            return_value="Max retry reached to get transaction info (10 retries)",
         ):
-            # Check still in error
             credit_request.check_still_in_error()
-
-            # Assert state is still error
             self.assertEqual(credit_request.state, "error")
 
     def test_check_still_in_error_2(self):
-        """Test check_still_in_error method when credit request is no longer in error."""
-
-        # Create data
+        """Test check_still_in_error when the transaction is no longer in error."""
         currency = self._create_alt_currency()
         partner = self._create_res_partner()
         wallet = self._create_res_partner_backend(partner, currency)
         credit_request = self._create_credit_request(wallet, amount=100)
 
-        # Simulate credit request in error
         credit_request.transaction_data = "tx_hash_123"
         credit_request.state = "error"
 
-        # Mock the check_transaction_content method
         with patch(
             "odoo.addons.lcc_comchain_base.models.credit_request.check_transaction_content",
-            return_value=False
+            return_value=False,
         ):
-            # Check still in error
             credit_request.check_still_in_error()
-
-            # Assert state is now done
             self.assertEqual(credit_request.state, "done")
 
     def test_check_still_in_error_3(self):
-        """Test check_still_in_error method when credit request without transaction_data."""
-
-        # Create data
+        """Test check_still_in_error when there is no transaction_data."""
         currency = self._create_alt_currency()
         partner = self._create_res_partner()
         wallet = self._create_res_partner_backend(partner, currency)
         credit_request = self._create_credit_request(wallet, amount=100)
 
-        # Simulate credit request in error
         credit_request.state = "error"
 
-        # Check still in error
         credit_request.check_still_in_error()
-
-        # Assert state is still error
         self.assertEqual(credit_request.state, "error")
 
     # ------------------------------------------------------------------
