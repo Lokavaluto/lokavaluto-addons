@@ -5,6 +5,7 @@ from odoo import models
 _logger = logging.getLogger(__name__)
 
 RPLCMNT_TX_UNDERPRICED = "Failed transfer on behalf transaction: API Call failed with message: replacement transaction underpriced"
+INSUFFICIENT_FUNDS = "Failed transfer on behalf transaction: API Call failed with message: insufficient funds for gas * price + value"
 
 class CreditRequest(models.Model):
 
@@ -40,6 +41,12 @@ class CreditRequest(models.Model):
         # Replacement transaction underpriced: we know for sure that the
         # previous transaction attempt is lost.
         if self.error_message == RPLCMNT_TX_UNDERPRICED:
+            return True
+
+        # Insufficient funds: previous attempt failed because not enough gaz
+        # in the Odoo wallet. This wallet might have been reloaded by the
+        # dedicated cron, so we can retry.
+        if self.error_message == INSUFFICIENT_FUNDS:
             return True
 
         return False

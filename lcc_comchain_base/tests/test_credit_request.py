@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from odoo.addons.component.tests.common import TransactionComponentCase
 
-from ..models.credit_request import RPLCMNT_TX_UNDERPRICED
+from ..models.credit_request import RPLCMNT_TX_UNDERPRICED,INSUFFICIENT_FUNDS
 
 
 class TestCreditRequest(TransactionComponentCase):
@@ -136,16 +136,18 @@ class TestCreditRequest(TransactionComponentCase):
         # error_message defaults to False — the method should return False
         self.assertFalse(credit_request._new_credit_attempt_allowed())
 
-    def test_new_credit_attempt_allowed_rplcmnt_tx_underpriced(self):
+    def test_new_credit_attempt_allowed_known_error_message(self):
         """_new_credit_attempt_allowed returns True for the known error message."""
         currency = self._create_alt_currency()
         partner = self._create_res_partner()
         wallet = self._create_res_partner_backend(partner, currency)
-        credit_request = self._create_credit_request(
-            wallet, amount=100, error_message=RPLCMNT_TX_UNDERPRICED
-        )
-
+        credit_request = self._create_credit_request(wallet, amount=100)
         credit_request.state = "error"
+
+        credit_request.error_message = RPLCMNT_TX_UNDERPRICED
+        self.assertTrue(credit_request._new_credit_attempt_allowed())
+
+        credit_request.error_message = INSUFFICIENT_FUNDS
         self.assertTrue(credit_request._new_credit_attempt_allowed())
 
     def test_new_credit_attempt_allowed_other_error_message(self):
