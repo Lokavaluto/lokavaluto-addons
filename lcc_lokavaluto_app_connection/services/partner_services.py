@@ -283,6 +283,7 @@ class PartnerService(Component):
         extra_domain = [
             ("status", "=", "active"),
             ("partner_id.id", "!=", self.env.user.partner_id.id),
+            ("hide_in_search_results", "=", False),
         ]
         # Exclude safe wallets
         backend_keys = set(self.env.user.partner_id.backends()) & set(

@@ -63,7 +63,7 @@ class ResPartnerBackend(models.Model):
         "Is Topup Allowed ?", readonly=True, compute="_compute_is_topup_allowed"
     )
     tag_ids = fields.Many2many("wallet.tag", string="Tags", tracking=True)
-
+    hide_in_search_results = fields.Boolean("Hide in search results")
 
     @api.depends("alt_currency_id", "ident")
     def _compute_wallet_uri(self):

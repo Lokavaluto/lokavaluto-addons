@@ -190,6 +190,36 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
             monujo_backend_2 = row_2_monujo_backends[currency_A_backend_key][0]
             self.assertEqual(monujo_backend_2, self.wallet_A_3.ident)
 
+    # ── Tests for hide_in_search_results ────────────────────────
+
+    def test_hide_in_search_results_excludes_wallet(self):
+        """A partner whose wallet has hide_in_search_results=True must not appear."""
+        # Mark Tintin's currency-A wallet as hidden from search
+        self.wallet_A_2.hide_in_search_results = True
+
+        collection = (
+            self.env["lokavaluto.private.services"]
+            .with_user(self.user_1)
+            .browse(1)
+        )
+        currency_A_backend_key = f"{self.currencyA.engine}:{self.currencyA.ident}"
+        search_get_params = PartnerSearchInfo(
+            value="tintin",
+            backend_keys=[currency_A_backend_key],
+            offset=0,
+            limit=30,
+            order="is_favorite desc name",
+            sender_wallet_ident=self.wallet_A_1.name,
+        )
+        with collection.work_on("res.partner.backend") as work:
+            service = work.component(usage="partner")
+            result = service.search_recipients(
+                recipients_search_info=search_get_params
+            )
+
+            self.assertEqual(result.get("count", False), 0)
+            self.assertEqual(result.get("rows", []), [])
+
     # ── Tests for _build_search_recipients_domain ───────────────
 
     def test_build_search_recipients_domain_no_value(self):

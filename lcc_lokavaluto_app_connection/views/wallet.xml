@@ -37,6 +37,7 @@
 			    <field name="ident" />
 			    <field name="uri" readonly="True" />
                             <field name="status" readonly="True" />
+			    <field name="hide_in_search_results" />
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
                                    placeholder='e.g. "SSA"'/>
                         </group>
