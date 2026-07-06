@@ -77,6 +77,7 @@ class TestResWallet(TransactionComponentCase):
                     "message_key": "bar",
                     "active": False,
                     "is_topup_allowed": True,
+                    "is_payment_request_allowed": False,
                     "status": False,
                     "comchain": {
                         "accountType": 0,
@@ -94,6 +95,25 @@ class TestResWallet(TransactionComponentCase):
             ),
         }
         self.assertEqual(json_data, expected_result)
+
+    def _create_payment_request_allowed_rule(self):
+        self.env["payment.request.allowed.rule"].create(
+            {
+                "name": "Allow all",
+                "wallet_domain": "[]",
+                "is_payment_request_allowed": True,
+            }
+        )
+
+    def test_get_wallet_json_data_payment_request_allowed(self):
+        """A payment.request.allowed.rule changes is_payment_request_allowed."""
+        self._create_payment_request_allowed_rule()
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self._create_res_partner_backend(partner, currency)
+
+        json_data = wallet.get_wallet_json_data()
+        self.assertTrue(json_data["accounts"][0]["is_payment_request_allowed"])
 
     def test_get_wallet_balance(self):
         # Create data

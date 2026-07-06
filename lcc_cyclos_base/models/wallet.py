@@ -40,6 +40,7 @@ class ResPartnerBackend(models.Model):
                     "url": self.alt_currency_id.cyclos_server_url,
                     "active": self.status == "active",
                     "is_topup_allowed": self.is_topup_allowed,
+                    "is_payment_request_allowed": self.is_payment_request_allowed,
                 },
             )
 

@@ -140,6 +140,7 @@ class ResPartnerBackend(models.Model):
                     "active": self.status == "active",
                     "status": self.status,
                     "is_topup_allowed": self.is_topup_allowed,
+                    "is_payment_request_allowed": self.is_payment_request_allowed,
                     "comchain": {
                         "accountType": int(self.comchain_type or "0"),
                         "status": self.comchain_status,

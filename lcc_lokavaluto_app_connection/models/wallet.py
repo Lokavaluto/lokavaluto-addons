@@ -62,6 +62,11 @@ class ResPartnerBackend(models.Model):
     is_topup_allowed = fields.Boolean(
         "Is Topup Allowed ?", readonly=True, compute="_compute_is_topup_allowed"
     )
+    is_payment_request_allowed = fields.Boolean(
+        "Is Payment Request Allowed ?",
+        readonly=True,
+        compute="_compute_is_payment_request_allowed",
+    )
     tag_ids = fields.Many2many("wallet.tag", string="Tags", tracking=True)
     hide_in_search_results = fields.Boolean("Hide in search results")
 
@@ -197,6 +202,7 @@ class ResPartnerBackend(models.Model):
                     "wallet_uri": self.uri,
                     "active": self.status == "active",
                     "is_topup_allowed": self.is_topup_allowed,
+                    "is_payment_request_allowed": self.is_payment_request_allowed,
                 }
             )
         return data
@@ -272,6 +278,23 @@ class ResPartnerBackend(models.Model):
                     safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]
                 ):
                     record.is_topup_allowed = rule.is_topup_allowed
+                    # We stop after the first rule matched
+                    break
+
+    def _compute_is_payment_request_allowed(self):
+        all_rules = self.env["payment.request.allowed.rule"].search(
+            [("active", "=", True)], order="sequence"
+        )
+        for record in self:
+            # By default, payment request is NOT allowed
+            record.is_payment_request_allowed = False
+            for rule in all_rules:
+                if self.search(
+                    safe_eval(rule.wallet_domain or "[]") + [("id", "=", record.id)]
+                ):
+                    record.is_payment_request_allowed = (
+                        rule.is_payment_request_allowed
+                    )
                     # We stop after the first rule matched
                     break
 
