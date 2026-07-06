@@ -69,6 +69,7 @@ class TestResWallet(TransactionComponentCase):
                     "url": self.currency_A.cyclos_server_url,
                     "active": True,
                     "is_topup_allowed": True, # Default value when no topup rules
+                    "is_payment_request_allowed": False, # Default value when no payment request allowed rules
                 }
             ],
             "min_credit_amount": getattr(
@@ -80,3 +81,30 @@ class TestResWallet(TransactionComponentCase):
         }
 
         self.assertEqual(json_data, expected_result)
+
+    def _create_payment_request_allowed_rule(self):
+        self.env["payment.request.allowed.rule"].create(
+            {
+                "name": "Allow all",
+                "wallet_domain": "[]",
+                "is_payment_request_allowed": True,
+            }
+        )
+
+    def test_get_wallet_json_data_payment_request_allowed(self):
+        """A payment.request.allowed.rule changes is_payment_request_allowed."""
+        self._create_payment_request_allowed_rule()
+        cyclos_id = "1f2s34gf6sd7gq846f8fs4qv684fq3f86"
+        wallet = self.ResPartnerBackend.create(
+            {
+                "name": f"cyclos:{cyclos_id}",
+                "active": True,
+                "alt_currency_id": self.currency_A.id,
+                "partner_id": self.partner_roger.id,
+                "cyclos_id": f"-{cyclos_id}",
+                "cyclos_create_response": "OK",
+                "cyclos_status": "active",
+            }
+        )
+        json_data = wallet.get_wallet_json_data()
+        self.assertTrue(json_data["accounts"][0]["is_payment_request_allowed"])
