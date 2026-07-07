@@ -23,7 +23,8 @@ def check_transaction_content(tx_hash, amount=0):
     if not is_transaction_hash(tx_hash):
         return f"Comchain transaction failed: response is not the expected hash: {tx_hash}"
 
-    retry = 0
+    retry = 1
+    retry_max = 10
     while True:
         tx_data = None
         transaction = pyc3l.Transaction(tx_hash)
@@ -38,15 +39,16 @@ def check_transaction_content(tx_hash, amount=0):
         if tx_data is not None:
             received = tx_data.get("recieved")
             if received is None:
-                _logger.error(
-                    "Received incomplete transaction data. Missing 'recieved' field."
+                _logger.warning(
+                    f"Received incomplete transaction data. Missing 'recieved' field (retry {retry}/{retry_max})"
                 )
             else:
                 break
-        retry += 1
-        if retry >= 10:
-            return "Max retry reached to get transaction info (10 retries)"
 
+        if retry >= retry_max:
+            return f"Max retry reached to get transaction info ({retry_max} retries)"
+
+        retry += 1
         time.sleep(0.5)
 
     if received != round(amount * 100):

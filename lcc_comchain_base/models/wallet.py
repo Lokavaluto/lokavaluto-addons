@@ -255,6 +255,7 @@ class ResPartnerBackend(models.Model):
 
         message = check_transaction_content(response, amount)
         if message:
+            _logger.error(message)
             return {
                 "success": False,
                 "response": response,
