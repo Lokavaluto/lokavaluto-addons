@@ -47,6 +47,8 @@ class PaymentService(Component):
             raise ValidationError("Multiple creator wallets found")
         if creator_wallet_id.partner_id != self.env.user.partner_id:
             raise AccessDenied()
+        if not creator_wallet_id.is_payment_request_allowed:
+            raise AccessDenied()
 
         created_ids = []
         for idx, req in enumerate(params.requests):

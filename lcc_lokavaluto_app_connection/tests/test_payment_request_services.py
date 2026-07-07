@@ -4,7 +4,7 @@ from ..datamodel.payment_request_info import (
     UpdatePaymentRequestParams
 )
 from odoo.addons.component.tests.common import TransactionComponentCase
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessDenied, ValidationError
 from ..tools import transform_wallet_uris_in_wallet_backend_keys
 
 
@@ -66,6 +66,15 @@ class TestResWallet(TransactionComponentCase):
             }
         )
 
+    def _create_payment_request_allowed_rule(self):
+        self.env["payment.request.allowed.rule"].create(
+            {
+                "name": "Allow all",
+                "wallet_domain": "[]",
+                "is_payment_request_allowed": True,
+            }
+        )
+
     def test_payment_request_service_create_1(self):
         """Test creating a payment request via the service"""
         # Create data
@@ -75,6 +84,7 @@ class TestResWallet(TransactionComponentCase):
         user = self._create_res_user(partner=partner, company=company)
         wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
         wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        self._create_payment_request_allowed_rule()
         collection = self.Services.with_user(user).browse(1)
 
         # Use service to create payment request
@@ -111,6 +121,7 @@ class TestResWallet(TransactionComponentCase):
         user = self._create_res_user(partner=partner, company=company)
         wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
         wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        self._create_payment_request_allowed_rule()
         collection = self.Services.with_user(user).browse(1)
 
         # Use service to create payment request
@@ -137,6 +148,65 @@ class TestResWallet(TransactionComponentCase):
             self.assertEqual(payment_request.receiver_wallet_id.id, wallet_2.id)
             self.assertEqual(payment_request.amount, 50.0)
             self.assertEqual(payment_request.message, "Test Payment Request creation 2")
+
+    def test_payment_request_service_create_blocked_if_not_allowed(self):
+        """Creating payment requests is denied when is_payment_request_allowed is False."""
+        # Create data
+        company = self._create_company()
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        user = self._create_res_user(partner=partner, company=company)
+        wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
+        wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        # No payment.request.allowed.rule created → default is False
+        collection = self.Services.with_user(user).browse(1)
+
+        with collection.work_on("payment.request") as work:
+            service = work.component(usage="payment_request")
+            params = CreatePaymentRequestParam(
+                currency_uri=currency.uri,
+                creator_wallet_uri=wallet_1.uri,
+                requests=[
+                    {
+                        "sender_wallet_uri": wallet_2.uri,
+                        "receiver_wallet_uri": wallet_1.uri,
+                        "amount": 50.0,
+                        "message": "Should be blocked",
+                    }
+                ],
+            )
+            with self.assertRaises(AccessDenied):
+                service.create_payment_request(params)
+
+    def test_payment_request_service_create_allowed_by_rule(self):
+        """Creating payment requests succeeds when a matching rule allows it."""
+        self._create_payment_request_allowed_rule()
+        company = self._create_company()
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        user = self._create_res_user(partner=partner, company=company)
+        wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
+        wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        collection = self.Services.with_user(user).browse(1)
+
+        with collection.work_on("payment.request") as work:
+            service = work.component(usage="payment_request")
+            params = CreatePaymentRequestParam(
+                currency_uri=currency.uri,
+                creator_wallet_uri=wallet_1.uri,
+                requests=[
+                    {
+                        "sender_wallet_uri": wallet_2.uri,
+                        "receiver_wallet_uri": wallet_1.uri,
+                        "amount": 50.0,
+                        "message": "Allowed by rule",
+                    }
+                ],
+            )
+            res = service.create_payment_request(params)
+            self.assertTrue(res)
+            payment_request = self.PaymentRequest.browse(res)
+            self.assertEqual(payment_request.creator_wallet_id.id, wallet_1.id)
 
     def test_payment_request_service_list_1(self):
         """List payment requests for a given wallet"""

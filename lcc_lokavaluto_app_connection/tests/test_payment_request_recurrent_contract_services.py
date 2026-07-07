@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 
 from odoo.addons.component.tests.common import TransactionComponentCase
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessDenied, ValidationError
 
 from ..datamodel.payment_request_recurrent_contract_info import (
     CreatePaymentRequestRecurrentContractsParam,
@@ -84,6 +84,15 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
             }
         )
 
+    def _create_payment_request_allowed_rule(self):
+        self.env["payment.request.allowed.rule"].create(
+            {
+                "name": "Allow all",
+                "wallet_domain": "[]",
+                "is_payment_request_allowed": True,
+            }
+        )
+
     # -------------------------------------------------------------------------
     # Test: Create Payment Request Recurrent Contract Service
     # -------------------------------------------------------------------------
@@ -97,6 +106,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
         user = self._create_res_user(partner=partner, company=company)
         wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
         wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        self._create_payment_request_allowed_rule()
         collection = self.Services.with_user(user).browse(1)
 
         start_date = date.today()
@@ -145,6 +155,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
         user = self._create_res_user(partner=partner, company=company)
         wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
         wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        self._create_payment_request_allowed_rule()
         collection = self.Services.with_user(user).browse(1)
 
         start_date = date.today()
@@ -285,6 +296,67 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
             with self.assertRaises(ValidationError) as context:
                 service.create_payment_request_recurrent_contract(params)
             self.assertIn("Sender wallet not found", str(context.exception))
+
+    def test_create_recurrent_contract_service_blocked_if_not_allowed(self):
+        """Creating recurrent contracts is denied when is_payment_request_allowed is False."""
+        company = self._create_company()
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        user = self._create_res_user(partner=partner, company=company)
+        wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
+        wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        collection = self.Services.with_user(user).browse(1)
+        start_date = date.today()
+
+        with collection.work_on("payment.request.recurrent.contract") as work:
+            service = work.component(usage="payment_request_recurrent_contract")
+            params = CreatePaymentRequestRecurrentContractsParam(
+                currency_uri=currency.uri,
+                creator_wallet_uri=wallet_1.uri,
+                contracts=[
+                    {
+                        "sender_wallet_uri": wallet_2.uri,
+                        "receiver_wallet_uri": wallet_1.uri,
+                        "amount": 100.0,
+                        "date_start": start_date.isoformat(),
+                        "recurring_rule_type": "monthly",
+                        "recurring_interval": 1,
+                    }
+                ],
+            )
+            with self.assertRaises(AccessDenied):
+                service.create_payment_request_recurrent_contract(params)
+
+    def test_create_recurrent_contract_service_allowed_by_rule(self):
+        """Creating recurrent contracts succeeds when a matching rule allows it."""
+        self._create_payment_request_allowed_rule()
+        company = self._create_company()
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        user = self._create_res_user(partner=partner, company=company)
+        wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
+        wallet_2 = self._create_res_partner_backend(partner, currency, ident="67890")
+        collection = self.Services.with_user(user).browse(1)
+        start_date = date.today()
+
+        with collection.work_on("payment.request.recurrent.contract") as work:
+            service = work.component(usage="payment_request_recurrent_contract")
+            params = CreatePaymentRequestRecurrentContractsParam(
+                currency_uri=currency.uri,
+                creator_wallet_uri=wallet_1.uri,
+                contracts=[
+                    {
+                        "sender_wallet_uri": wallet_2.uri,
+                        "receiver_wallet_uri": wallet_1.uri,
+                        "amount": 100.0,
+                        "date_start": start_date.isoformat(),
+                        "recurring_rule_type": "monthly",
+                        "recurring_interval": 1,
+                    }
+                ],
+            )
+            res = service.create_payment_request_recurrent_contract(params)
+            self.assertTrue(res)
 
     # -------------------------------------------------------------------------
     # Test: List Payment Request Recurrent Contracts Service
