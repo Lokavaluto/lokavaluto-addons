@@ -42,7 +42,11 @@ Follow instruction to:
 In _odoo_: General Settings, search for 'OAuth providers'. Create one with:
 
 - Same client-id then the one used in Cyclos
-- scope: "openid profile" (space separated)
+- scope: "openid profile email" (space separated). The ``email`` scope is
+  required: Cyclos only returns the user e-mail in the ``userinfo``
+  response when it is requested. Odoo uses that e-mail to reconcile the
+  login with an existing ``res.users`` (or create a new one) and to create
+  the ``res.partner.backend``.
 - auth: ``${CYCLOS_URL}/api/oidc/authorize``
 - validation: ``${CYCLOS_URL}/api/oidc/token``
 - data: ``${CYCLOS_URL}/api/oidc/userinfo``
