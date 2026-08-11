@@ -371,3 +371,5 @@ from . import lccapi_services  # noqa: E402
 from . import wallet_services  # noqa: E402
 from . import recipient_services  # noqa: E402
 from . import auth_services  # noqa: E402
+from . import config_service  # noqa: E402
+from . import mobile_config_service  # noqa: E402

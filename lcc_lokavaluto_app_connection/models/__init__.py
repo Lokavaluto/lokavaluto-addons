@@ -12,5 +12,9 @@ from . import reconversion_rule
 from . import topup_rule
 from . import wallet_restriction_rule
 from . import lokavaluto_private_services_collection
+from . import lokavaluto_public_services_collection
 from . import res_alt_currency
 from . import unusual_transaction
+from . import lcc_monujo_config
+from . import lcc_monujo_config_theme_entry
+from . import lcc_monujo_config_language
