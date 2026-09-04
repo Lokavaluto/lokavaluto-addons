@@ -222,9 +222,17 @@ class PaymentRequestRecurrentContract(models.Model):
     def _cron_recurring_create_payment_requests(self):
         """
         Cron function to create recurrent payment requests from contracts.
-        Searches for active contracts where the next payment request date is due.
+        Closes expired contracts, then creates requests for due active contracts.
         """
         today = fields.Date.context_today(self)
+
+        expired_contracts = self.search(
+            [
+                ("state", "=", "open"),
+                ("date_end", "<", today),
+            ]
+        )
+        expired_contracts.action_close()
 
         # Find all running contracts where recurring_next_date is today or in the past
         # and where date_end is not reached (or not set)

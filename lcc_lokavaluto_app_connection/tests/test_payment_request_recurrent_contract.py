@@ -419,8 +419,8 @@ class TestPaymentRequestRecurrentContract(TransactionCase):
         self.assertEqual(final_count, initial_count)
         self.assertEqual(contract.payment_request_count, 0)
 
-    def test_cron_ignores_contracts_past_end_date(self):
-        """Cron should not process contracts whose end_date has passed."""
+    def test_cron_closes_contracts_past_end_date(self):
+        """Cron should close contracts whose end date has passed."""
         currency = self._create_alt_currency()
         partner = self._create_res_partner()
         wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
@@ -434,12 +434,15 @@ class TestPaymentRequestRecurrentContract(TransactionCase):
             date_end=yesterday,
         )
         contract.action_confirm()
+        self.assertEqual(contract.state, "open")
 
         initial_count = self.PaymentRequest.search_count([])
         self.RecurrentContract._cron_recurring_create_payment_requests()
         final_count = self.PaymentRequest.search_count([])
 
         self.assertEqual(final_count, initial_count)
+        self.assertEqual(contract.payment_request_count, 0)
+        self.assertEqual(contract.state, "closed")
 
     def test_cron_processes_multiple_due_contracts(self):
         """Cron should process all due contracts in a single run."""
