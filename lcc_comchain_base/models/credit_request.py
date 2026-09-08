@@ -24,7 +24,7 @@ class CreditRequest(models.Model):
             return
 
         if check_transaction_content(self.transaction_data, self.amount):
-            _logger.info(
+            _logger.error(
                 f"Credit request {self.id} is still in error.",
             )
             return
