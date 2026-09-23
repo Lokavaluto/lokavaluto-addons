@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="survey_completion_button" inherit_id="survey.survey_fill_form_done"
+              name="Optional survey completion action">
+        <xpath expr="//div[hasclass('o_survey_finished')]" position="inside">
+            <div class="o_survey_completion_action mt-4 d-none">
+                <button type="button" class="btn btn-primary o_survey_completion_button">Continue</button>
+            </div>
+        </xpath>
+    </template>
+    <template id="survey_retry_completion_options" inherit_id="survey.survey_button_retake"
+              name="Keep completion options when retrying">
+        <xpath expr="//t[@t-if='survey.is_attempts_limited']" position="before">
+            <t t-set="completion_query"
+               t-value="keep_query('parent_origin', 'return_label')" />
+            <t t-set="completion_retry_url"
+               t-value="'/survey/retry/%s/%s' % (survey.access_token, answer.access_token)
+                        + ('?' + completion_query if completion_query else '')" />
+        </xpath>
+        <xpath expr="//t[@t-if='survey.is_attempts_limited']//a" position="attributes">
+            <attribute name="t-att-href">completion_retry_url</attribute>
+        </xpath>
+        <xpath expr="//t[@t-else='']//a" position="attributes">
+            <attribute name="t-att-href">completion_retry_url</attribute>
+        </xpath>
+    </template>
+</odoo>
