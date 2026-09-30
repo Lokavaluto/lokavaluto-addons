@@ -62,7 +62,7 @@ class CyclosService(Component):
         input_param=Datamodel("cyclos.partners.info"),
     )
     def contact(self, params):
-        """Return public name for contact matching cyclos addresses"""
+        """Resolve public names for active and archived cyclos wallets."""
 
         partner = self.env["res.partner"]
         partner_ids = partner.search(
@@ -76,4 +76,12 @@ class CyclosService(Component):
                     "partner_id": partner.id,
                     "public_name": partner.public_name,
                 }
+        # Historical transactions still need names after a wallet is archived.
+        # Resolve only missing addresses so the active owner always wins.
+        missing = set(params.addresses) - res.keys()
+        res.update(
+            self.env["res.partner.backend"]._get_archived_wallet_contacts(
+                missing, "cyclos", "cyclos_id"
+            )
+        )
         return res

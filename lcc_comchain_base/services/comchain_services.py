@@ -27,7 +27,7 @@ class ComchainService(Component):
         input_param=Datamodel("comchain.partners.info"),
     )
     def contact(self, params):
-        """Return public name for contacts matching comchain addresses"""
+        """Resolve public names for active and archived comchain wallets."""
         partner = self.env["res.partner"]
         partner_ids = partner.search(
             [("lcc_backend_ids.comchain_id", "in", params.addresses)]
@@ -40,6 +40,14 @@ class ComchainService(Component):
                     "partner_id": partner.id,
                     "public_name": partner.public_name,
                 }
+        # Historical transactions still need names after a wallet is archived.
+        # Resolve only missing addresses so the active owner always wins.
+        missing = set(params.addresses) - res.keys()
+        res.update(
+            self.env["res.partner.backend"]._get_archived_wallet_contacts(
+                missing, "comchain", "comchain_id"
+            )
+        )
         return res
 
     @restapi.method(
