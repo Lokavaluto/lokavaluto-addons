@@ -121,6 +121,37 @@ class ResPartnerBackend(models.Model):
         return self.search([("name", "=", name)])
 
     @api.model
+    def _get_archived_wallet_contacts(self, addresses, wallet_type, identifier_field):
+        """Resolve archived wallet owners for addresses missing from active lookups.
+
+        Backend services supply their wallet type and identifier field. Only
+        active contacts are returned, with the newest wallet record taking
+        precedence when several archived wallets share an address.
+        """
+        if not addresses:
+            return {}
+        wallets = self.with_context(active_test=False).search(
+            [
+                ("active", "=", False),
+                ("type", "=", wallet_type),
+                (identifier_field, "in", list(addresses)),
+                ("partner_id.active", "=", True),
+            ],
+            order="id desc",
+        )
+        contacts = {}
+        for wallet in wallets:
+            partner = wallet.partner_id
+            contacts.setdefault(
+                wallet[identifier_field],
+                {
+                    "partner_id": partner.id,
+                    "public_name": partner.public_name,
+                },
+            )
+        return contacts
+
+    @api.model
     def get_by_uri(self, wallet_uri):
         """Resolve a wallet URI to a single active wallet record.
 
