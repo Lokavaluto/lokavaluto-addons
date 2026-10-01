@@ -29,6 +29,14 @@ batch. The ``send_started_at`` field is committed before the external call
 and ``send_attempt_count`` counts the attempts, so an interrupted attempt can
 be reconciled instead of blindly retried.
 
+The hourly cron ``Alt Currency: reconcile uncertain credit requests`` matches
+pending requests against the backend transaction history. It confirms the
+requests whose transfer is found, retries those still within
+``topup_max_send_attempts`` after ``topup_reconcile_grace_seconds``, and flags
+the remaining ones as ``error`` with an explicit message so they are reviewed
+manually instead of being sent twice. Backends without transaction lookup are
+left untouched.
+
 Known issues / Roadmap
 ======================
 

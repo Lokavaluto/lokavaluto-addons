@@ -7,6 +7,12 @@ from ..tools import after_commit
 
 _logger = logging.getLogger(__name__)
 
+UNCERTAIN_SEND = (
+    "Uncertain send status: the credit request may have been sent to the "
+    "backend, but its outcome could not be confirmed. Check the backend "
+    "transaction history manually before retrying."
+)
+
 
 class CreditRequest(models.Model):
     """
@@ -153,6 +159,34 @@ class CreditRequest(models.Model):
         self.env.cr.commit()
         self.credit_wallet()
         self.env.cr.commit()
+
+    def _apply_transaction_success(self, tx_hash):
+        """Mark the request as done with the given backend transaction hash.
+
+        Args:
+            tx_hash (str): identifier of the confirmed backend transaction.
+        """
+        self.ensure_one()
+        self.write(
+            {
+                "state": "done",
+                "transaction_data": tx_hash,
+            }
+        )
+
+    def _mark_uncertain(self):
+        """Flag the request as uncertain so it is reviewed manually.
+
+        Used when the send outcome cannot be determined and retrying could
+        double-credit the wallet.
+        """
+        self.ensure_one()
+        self.write(
+            {
+                "state": "error",
+                "error_message": UNCERTAIN_SEND,
+            }
+        )
 
     def unlink(self):
         for request in self:

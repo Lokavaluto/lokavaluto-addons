@@ -1,9 +1,12 @@
 import json
 from unittest.mock import patch
 
+from odoo.tests.common import TransactionCase
+
 from odoo.addons.component.tests.common import TransactionComponentCase
 
-from ..models.credit_request import RPLCMNT_TX_UNDERPRICED,INSUFFICIENT_FUNDS
+from ..models.credit_request import INSUFFICIENT_FUNDS, RPLCMNT_TX_UNDERPRICED
+from ..models.res_alt_currency import pyc3l
 
 
 class TestCreditRequest(TransactionComponentCase):
@@ -161,3 +164,132 @@ class TestCreditRequest(TransactionComponentCase):
 
         credit_request.state = "error"
         self.assertFalse(credit_request._new_credit_attempt_allowed())
+
+
+class TestFindTopupTransactions(TransactionCase):
+    """Test the on-chain lookup used to reconcile uncertain topups."""
+
+    def setUp(self):
+        super().setUp()
+        currency_product = self.env.ref(
+            "lcc_lokavaluto_app_connection.product_product_numeric_lcc"
+        ).sudo()
+        self.currency = self.env["res.alt.currency"].create(
+            {
+                "name": "CC Reconcile",
+                "ident": "ccreconcile",
+                "active": True,
+                "engine": "comchain",
+                "currency_unit_product_id": currency_product.id,
+            }
+        )
+        odoo_partner = self.env["res.partner"].create({"name": "Odoo Wallet"})
+        self.env["res.partner.backend"].create(
+            {
+                "name": "comchain:FROM",
+                "ident": "FROM",
+                "comchain_id": "FROM",
+                "alt_currency_id": self.currency.id,
+                "partner_id": odoo_partner.id,
+            }
+        )
+        self.currency.odoo_wallet_partner_id = odoo_partner.id
+        target_partner = self.env["res.partner"].create({"name": "Target"})
+        self.wallet = self.env["res.partner.backend"].create(
+            {
+                "name": "comchain:TO",
+                "ident": "TO",
+                "comchain_id": "TO",
+                "alt_currency_id": self.currency.id,
+                "partner_id": target_partner.id,
+            }
+        )
+
+    def _raw_tx(self, **overrides):
+        """Build a raw transaction as returned by the comchain tx list API."""
+        raw = {
+            "hash": "0xabc",
+            "sent": 1000,
+            "time": 5000,
+            "status": 0,
+            "currency": self.currency.ident,
+            "type": "Transfer",
+            "addr_from": "0xFROM",
+            "addr_to": "0xTO",
+        }
+        raw.update(overrides)
+        return raw
+
+    def _patch_chain(self, raw_txs):
+        """Mock the comchain transaction list of the Odoo wallet."""
+        patcher = patch.object(
+            pyc3l,
+            "getAccountTransactions",
+            lambda address, count=10, offset=0: raw_txs if offset == 0 else [],
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_matching_transfer_is_returned(self):
+        """A transfer to the wallet with the right amount matches."""
+        self._patch_chain([self._raw_tx()])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [{"hash": "0xabc", "time": 5000}])
+
+    def test_different_amount_is_ignored(self):
+        """A transfer with a different amount does not match."""
+        self._patch_chain([self._raw_tx(sent=2000)])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [])
+
+    def test_transfer_older_than_since_is_ignored(self):
+        """A transfer older than `since_ts` stops the lookup."""
+        self._patch_chain([self._raw_tx(time=500)])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [])
+
+    def test_transfer_to_another_wallet_is_ignored(self):
+        """A transfer to another recipient does not match."""
+        self._patch_chain([self._raw_tx(addr_to="0xOTHER")])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [])
+
+    def test_transfer_from_another_wallet_is_ignored(self):
+        """A transfer from another sender does not match."""
+        self._patch_chain([self._raw_tx(addr_from="0xOTHER")])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [])
+
+    def test_transfer_of_another_currency_is_ignored(self):
+        """A transfer of another currency does not match."""
+        self._patch_chain([self._raw_tx(currency="othercoin")])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [])
+
+    def test_transfer_of_another_type_is_ignored(self):
+        """A non-transfer operation does not match."""
+        self._patch_chain([self._raw_tx(type="Pledge")])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [])
+
+    def test_unconfirmed_transfer_is_ignored(self):
+        """A transfer with a non-zero status does not match."""
+        self._patch_chain([self._raw_tx(status=1)])
+        result = self.currency._find_topup_transactions(
+            self.wallet, 10.0, since_ts=1000
+        )
+        self.assertEqual(result, [])

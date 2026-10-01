@@ -34,6 +34,8 @@
                     </group>
                     <group name="options" string="Options">
                       <field name="activate_automatic_topup" />
+		      <field name="topup_reconcile_grace_seconds" />
+		      <field name="topup_max_send_attempts" />
 		      <field name="currency_unit_product_id" />
 		      <field name="commission_product_id" />
                     </group>
