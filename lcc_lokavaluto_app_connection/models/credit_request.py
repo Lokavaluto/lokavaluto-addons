@@ -54,6 +54,10 @@ class CreditRequest(models.Model):
 
     transaction_data = fields.Char("Transaction Message", tracking=True)
     error_message = fields.Char("Error Message", tracking=True)
+    send_started_at = fields.Datetime("Send started at", readonly=True, tracking=True)
+    send_attempt_count = fields.Integer(
+        "Send attempts", default=0, readonly=True, tracking=True
+    )
 
     limit_credit_aggregation = fields.Boolean("Limit credit aggregation", tracking=True)
     max_credit_amount = fields.Float("Maximum amount of credit allowed", tracking=True)
@@ -108,13 +112,47 @@ class CreditRequest(models.Model):
 
     @after_commit
     def _check_pending_requests_to_credit(self) -> None:
+        """Credit every pending request, each in its own transaction.
+
+        Handling each request separately means a failure or a crash while
+        processing one request can neither roll back the requests already
+        credited nor abort the rest of the batch.
+        """
         for request in self:
-            if (
+            if not (
                 request.alt_currency_id.activate_automatic_topup
                 and request.state == "pending"
             ):
-                # The top up has been paid, the credit process can start
-                request.sudo().credit_wallet()
+                continue
+            try:
+                request.sudo()._run_credit_attempt()
+            except Exception:
+                self.env.cr.rollback()
+                _logger.exception(
+                    "Credit attempt failed for credit request %s", request.id
+                )
+
+    def _run_credit_attempt(self) -> None:
+        """Perform one wallet credit attempt with a durable intent marker.
+
+        The ``send_started_at`` marker is committed *before* the external
+        backend call, so that an interrupted attempt can later be
+        reconciled instead of blindly retried. The outcome (``done`` or
+        ``error``) is committed right after the call.
+
+        This method commits twice and therefore must run on a dedicated
+        cursor (post-commit hook or cron), never on the caller's cursor.
+        """
+        self.ensure_one()
+        self.write(
+            {
+                "send_started_at": fields.Datetime.now(),
+                "send_attempt_count": self.send_attempt_count + 1,
+            }
+        )
+        self.env.cr.commit()
+        self.credit_wallet()
+        self.env.cr.commit()
 
     def unlink(self):
         for request in self:

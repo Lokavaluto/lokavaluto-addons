@@ -1,6 +1,7 @@
 import logging
 import traceback
 from functools import wraps
+
 from odoo import api, registry
 from odoo.sql_db import BaseCursor
 
@@ -80,8 +81,9 @@ def after_commit(func):
                 try:
                     func(self.with_env(env), *args, **kwargs)
                 except Exception as e:
-                    _logger.warning(
-                        "Postcommit function %s failed: %s" % (func.__name__, self)
+                    _logger.error(
+                        "Postcommit function %s failed for %s: %s"
+                        % (func.__name__, self, e)
                     )
                     _logger.exception(e)
 
