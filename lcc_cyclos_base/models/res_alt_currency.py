@@ -33,6 +33,17 @@ class AlternativeCurrency(models.Model):
 
     cyclos_server_login = fields.Char(string="Login for cyclos server", tracking=True)
 
+    cyclos_server_principal_type = fields.Char(
+        string="Login type for cyclos server",
+        help="Value of the ``Principal-Type`` HTTP header sent with the login "
+        "on every request to Cyclos: internal name of the user "
+        "identification method the login belongs to (for instance "
+        "``username`` or ``email``, or ``*`` to try all methods). Leave "
+        "empty to use the default identification method of the Cyclos "
+        "``webServices`` channel.",
+        tracking=True,
+    )
+
     cyclos_server_password = fields.Char(
         string="Password for cyclos server", tracking=True
     )
@@ -93,6 +104,8 @@ class AlternativeCurrency(models.Model):
             data = {}
         self.ensure_one()
         headers = {"Content-type": "application/json", "Accept": "text/plain"}
+        if self.cyclos_server_principal_type:
+            headers["Principal-Type"] = self.cyclos_server_principal_type
         requests.packages.urllib3.disable_warnings()
         if not api_login:
             api_login = self.cyclos_server_login

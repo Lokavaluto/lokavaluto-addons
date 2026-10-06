@@ -11,6 +11,7 @@
               <group name="cyclos" string="Cyclos specific parameters" attrs="{'invisible': [('engine', '!=', 'cyclos')]}">
 		<field name="cyclos_server_url" />
 		<field name="cyclos_server_login" />
+		<field name="cyclos_server_principal_type" placeholder="username" />
 		<field name="cyclos_server_password" password="True" />
 		<field name="cyclos_debit_wallet_partner" />
 		<field name="cyclos_date_last_reconversion_check" />

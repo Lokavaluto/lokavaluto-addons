@@ -129,6 +129,16 @@ msgid "Login for cyclos server"
 msgstr ""
 
 #. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_server_principal_type
+msgid "Login type for cyclos server"
+msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_server_principal_type
+msgid "Value of the ``Principal-Type`` HTTP header sent with the login on every request to Cyclos: internal name of the user identification method the login belongs to (for instance ``username`` or ``email``, or ``*`` to try all methods). Leave empty to use the default identification method of the Cyclos ``webServices`` channel."
+msgstr ""
+
+#. module: lcc_cyclos_base
 #: model:product.template,name:lcc_cyclos_base.product_product_cyclos_product_template
 msgid "Numeric LCC (Cyclos)"
 msgstr ""
