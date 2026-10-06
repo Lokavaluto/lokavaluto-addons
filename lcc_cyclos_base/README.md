@@ -16,6 +16,35 @@ will be installed by default.
 
 Define the Cyclos instance to which Odoo must connect in ``Settings/Digital Currency``
 
+Odoo authenticates on the Cyclos REST API with the configured login and
+password. Cyclos looks the login up with the default user identification
+method of its ``webServices`` channel (``GET /api/auth/data-for-login``
+shows it as ``defaultPrincipalType``). If the configured login is of
+another kind, set ``Login type for cyclos server`` to the internal name of
+that identification method (for instance ``username``): Odoo then sends it
+in the ``Principal-Type`` header of every request.
+
+A wrong login type makes Cyclos answer ``401`` with code ``login``, and
+Cyclos blocks the IP address of the Odoo server for a while after a few
+such failures (code ``remoteAddressBlocked``).
+
+The internal names of the Cyclos objects Odoo uses depend on how the
+Cyclos instance was configured. Set them on the currency (the defaults
+match the Lokavaluto Cyclos configuration):
+
+- ``Cyclos payment type to credit a user wallet`` / ``... a company
+  wallet``: payment types used to credit wallets, as
+  ``<system account type>.<transfer type>`` (defaults ``debit.toUser``
+  and ``debit.toPro``; ``GET /api/system/payments/data-for-perform``
+  lists the available ones).
+- ``Cyclos reconversion account type``: system account type receiving
+  the reconversion payments (default ``debit``; ``GET
+  /api/system/accounts`` lists the system account types).
+- ``Cyclos password type of wallets``: password type set when Odoo
+  forces the password of a wallet user (default
+  ``-4307382460900696903``; the internal name, e.g. ``login``, also
+  works).
+
 ### OAuth Configuration
 
 Source: [Cyclos OAuth wiki page](https://wiki.cyclos.org/index.php/OpenID_Connect_-_OAuth2)
