@@ -48,6 +48,40 @@ class AlternativeCurrency(models.Model):
         string="Password for cyclos server", tracking=True
     )
 
+    cyclos_credit_payment_type_user = fields.Char(
+        string="Cyclos payment type to credit a user wallet",
+        help="Internal name of the Cyclos payment type (``<system account "
+        "type>.<transfer type>``) used to credit the wallet of a "
+        "person.",
+        default="debit.toUser",
+        tracking=True,
+    )
+
+    cyclos_credit_payment_type_pro = fields.Char(
+        string="Cyclos payment type to credit a company wallet",
+        help="Internal name of the Cyclos payment type (``<system account "
+        "type>.<transfer type>``) used to credit the wallet of a "
+        "company.",
+        default="debit.toPro",
+        tracking=True,
+    )
+
+    cyclos_reconversion_account_type = fields.Char(
+        string="Cyclos reconversion account type",
+        help="Internal name of the Cyclos system account type receiving "
+        "the payments that wallets send for reconversion.",
+        default="debit",
+        tracking=True,
+    )
+
+    cyclos_password_type = fields.Char(
+        string="Cyclos password type of wallets",
+        help="Internal name or id of the Cyclos password type that Odoo "
+        "sets when it forces the password of a wallet user.",
+        default="-4307382460900696903",
+        tracking=True,
+    )
+
     cyclos_debit_wallet_partner = fields.Many2one(
         "res.partner",
         string="Cyclos Debit Wallet Partner",
@@ -218,7 +252,8 @@ class AlternativeCurrency(models.Model):
 
         # Set all the search criteria in the REST request entrypoint
         entrypoint = (
-            f"/transactions?{period_range}&orderBy=dateAsc&toAccountTypes=debit"
+            f"/transactions?{period_range}&orderBy=dateAsc"
+            f"&toAccountTypes={quote(self.cyclos_reconversion_account_type, safe='')}"
         )
 
         # Get the transactions from Cyclos
