@@ -275,7 +275,9 @@ class ResPartnerBackend(models.Model):
         if self.type != "cyclos":
             return res
         try:
-            res = self._cyclos_rest_call("GET", f"/{self.cyclos_id}/accounts")
+            res = self.alt_currency_id.cyclos_rest_call(
+                "GET", f"/{self.cyclos_id}/accounts"
+            )
             _logger.debug(f"res: {res}")
         except Exception as e:
             _logger.exception(tools.format_last_exception())

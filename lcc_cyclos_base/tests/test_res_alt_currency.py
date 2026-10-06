@@ -106,6 +106,17 @@ class TestCyclosRestCall(TransactionCase):
         )
         self.assertIn("toAccountTypes=stableAccount&", sent[1] + "&")
 
+    def test_wallet_balance_is_read_from_cyclos_accounts(self):
+        wallet = self._create_cyclos_wallet(self._create_cyclos_currency())
+        response = MagicMock(text='[{"status": {"balance": "393.57"}}]')
+        with patch(REQUEST_PATH, return_value=response) as request:
+            result = wallet.get_wallet_balance()
+        self.assertEqual(result, {"success": True, "response": 393.57})
+        self.assertTrue(
+            request.call_args.args[1].endswith("/4036691651388677992/accounts"),
+            request.call_args.args[1],
+        )
+
     def test_password_change_uses_configured_password_type(self):
         currency = self._create_cyclos_currency(cyclos_password_type="login")
         wallet = self._create_cyclos_wallet(currency)
