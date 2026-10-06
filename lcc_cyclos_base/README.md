@@ -28,6 +28,23 @@ A wrong login type makes Cyclos answer ``401`` with code ``login``, and
 Cyclos blocks the IP address of the Odoo server for a while after a few
 such failures (code ``remoteAddressBlocked``).
 
+The internal names of the Cyclos objects Odoo uses depend on how the
+Cyclos instance was configured. Set them on the currency (the defaults
+match the Lokavaluto Cyclos configuration):
+
+- ``Cyclos payment type to credit a user wallet`` / ``... a company
+  wallet``: payment types used to credit wallets, as
+  ``<system account type>.<transfer type>`` (defaults ``debit.toUser``
+  and ``debit.toPro``; ``GET /api/system/payments/data-for-perform``
+  lists the available ones).
+- ``Cyclos reconversion account type``: system account type receiving
+  the reconversion payments (default ``debit``; ``GET
+  /api/system/accounts`` lists the system account types).
+- ``Cyclos password type of wallets``: password type set when Odoo
+  forces the password of a wallet user (default
+  ``-4307382460900696903``; the internal name, e.g. ``login``, also
+  works).
+
 ### OAuth Configuration
 
 Source: [Cyclos OAuth wiki page](https://wiki.cyclos.org/index.php/OpenID_Connect_-_OAuth2)
