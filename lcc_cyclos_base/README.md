@@ -16,6 +16,18 @@ will be installed by default.
 
 Define the Cyclos instance to which Odoo must connect in ``Settings/Digital Currency``
 
+Odoo authenticates on the Cyclos REST API with the configured login and
+password. Cyclos looks the login up with the default user identification
+method of its ``webServices`` channel (``GET /api/auth/data-for-login``
+shows it as ``defaultPrincipalType``). If the configured login is of
+another kind, set ``Login type for cyclos server`` to the internal name of
+that identification method (for instance ``username``): Odoo then sends it
+in the ``Principal-Type`` header of every request.
+
+A wrong login type makes Cyclos answer ``401`` with code ``login``, and
+Cyclos blocks the IP address of the Odoo server for a while after a few
+such failures (code ``remoteAddressBlocked``).
+
 ### OAuth Configuration
 
 Source: [Cyclos OAuth wiki page](https://wiki.cyclos.org/index.php/OpenID_Connect_-_OAuth2)
