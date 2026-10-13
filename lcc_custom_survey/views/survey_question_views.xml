@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_survey_question_completion_action" model="ir.ui.view">
+        <field name="name">survey.question.completion.action</field>
+        <field name="model">survey.question</field>
+        <field name="inherit_id" ref="survey.survey_question_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='options']" position="inside">
+                <group string="Completion action" groups="survey.group_survey_manager"
+                       attrs="{'invisible': [('question_type', 'not in', ['char_box', 'text_box'])]}">
+                    <field name="completion_export_key" placeholder="email" />
+                    <div class="text-muted" colspan="2">
+                        Set the key to email to share this answer with the embedding page
+                        when the participant clicks the completion button. Other keys are not exported.
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
