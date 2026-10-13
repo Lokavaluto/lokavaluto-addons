@@ -12,5 +12,18 @@
             <field name="numbercall">-1</field>
             <field name="active">0</field>
         </record>
+
+        <record id="ir_cron_reconcile_credit_requests" model="ir.cron">
+            <field name="name">Alt Currency: reconcile uncertain credit requests</field>
+            <field name="model_id" ref="lcc_lokavaluto_app_connection.model_res_alt_currency" />
+            <field name="state">code</field>
+            <field name="code">
+                model._cron_reconcile_credit_requests()
+            </field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="active">1</field>
+        </record>
     </data>
 </odoo>

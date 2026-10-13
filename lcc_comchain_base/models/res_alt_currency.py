@@ -4,7 +4,6 @@ from pyc3l import Pyc3l
 
 from odoo import api, fields, models
 
-
 pyc3l = Pyc3l()
 _logger = logging.getLogger(__name__)
 
@@ -140,6 +139,102 @@ class AlternativeCurrency(models.Model):
                 f"{nb_txs} transactions found in Comchain block {block_nb}."
             )
             self.env.cr.commit()
+
+    TOPUP_RECONCILE_PAGE_SIZE = 50
+
+    @staticmethod
+    def _normalize_comchain_address(address):
+        """Strip the optional ``0x`` prefix from a comchain address.
+
+        Args:
+            address (str|None): raw address.
+
+        Returns:
+            str: address without its ``0x`` prefix, or an empty string.
+        """
+        if not address:
+            return ""
+        return address[2:] if address.startswith("0x") else address
+
+    def _supports_topup_reconciliation(self):
+        """Comchain exposes the on-chain transaction history, so uncertain
+        topups can be reconciled against it.
+
+        Returns:
+            bool: ``True`` for the comchain engine.
+        """
+        self.ensure_one()
+        return self.engine == "comchain"
+
+    def _find_topup_transactions(self, wallet, amount, since_ts=None):
+        """Return the on-chain topups matching a wallet and an amount.
+
+        The Odoo wallet transaction history is listed and filtered on the
+        currency, the transfer type, the amount, the sender, the recipient
+        and the confirmation status, so an unrelated transfer is never
+        matched.
+
+        Args:
+            wallet: ``res.partner.backend`` record the topup was sent to.
+            amount (float): expected topup amount.
+            since_ts (int|None): ignore transfers older than this unix
+                timestamp.
+
+        Returns:
+            list[dict] | None: matches as ``{"hash": ..., "time": ...}``, or
+            ``None`` when the currency is not a comchain one.
+        """
+        self.ensure_one()
+        if self.engine != "comchain":
+            return None
+        odoo_wallet = self.odoo_wallet_partner_id.lcc_backend_ids[:1]
+        from_address = odoo_wallet.comchain_id
+        to_address = wallet.comchain_id
+        if not from_address or not to_address:
+            _logger.warning(
+                "Missing wallet address on currency %s, cannot reconcile.",
+                self.name,
+            )
+            return []
+        expected = round(amount * 100)
+        matches = []
+        offset = 0
+        while True:
+            raw_txs = pyc3l.getAccountTransactions(
+                from_address, count=self.TOPUP_RECONCILE_PAGE_SIZE, offset=offset
+            )
+            if not raw_txs:
+                break
+            for raw in raw_txs:
+                tx_time = int(raw.get("time") or 0)
+                if since_ts and tx_time and tx_time < since_ts:
+                    return matches
+                if str(raw.get("currency") or "").lower() != self.ident.lower():
+                    continue
+                if raw.get("type") != "Transfer":
+                    continue
+                status = raw.get("status")
+                if status is None or int(status) != 0:
+                    continue
+                try:
+                    sent = int(raw["sent"])
+                except (KeyError, TypeError, ValueError):
+                    continue
+                if sent != expected:
+                    continue
+                if (
+                    self._normalize_comchain_address(raw.get("addr_from"))
+                    != from_address
+                ):
+                    continue
+                if (
+                    self._normalize_comchain_address(raw.get("addr_to"))
+                    != to_address
+                ):
+                    continue
+                matches.append({"hash": raw["hash"], "time": tx_time})
+            offset += self.TOPUP_RECONCILE_PAGE_SIZE
+        return matches
 
     def _safe_wallet_partners(self):
         return [*super()._safe_wallet_partners(), self.safe_wallet_partner_id]

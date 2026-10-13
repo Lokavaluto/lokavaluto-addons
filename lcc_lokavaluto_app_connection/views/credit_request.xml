@@ -70,6 +70,10 @@
                         <field name="invoice_id" />
                         <field name="order_id" />
                     </group>
+                    <group name="credit_attempt" string="Credit attempt">
+                        <field name="send_started_at" />
+                        <field name="send_attempt_count" />
+                    </group>
                     <group name="response" string="Response"
                         attrs="{'invisible': [('state','in',['open','pending'])]}">
                         <field name="transaction_data" />

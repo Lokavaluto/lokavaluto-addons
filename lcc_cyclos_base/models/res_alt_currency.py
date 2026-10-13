@@ -236,6 +236,87 @@ class AlternativeCurrency(models.Model):
             self.cyclos_date_last_reconversion_check = date_tx
             self.env.cr.commit()
 
+    TOPUP_RECONCILE_MAX_PAGES = 1000
+
+    def _supports_topup_reconciliation(self):
+        """Cyclos exposes the account transaction history, so uncertain
+        topups can be reconciled against it.
+
+        Returns:
+            bool: ``True`` for the cyclos engine.
+        """
+        self.ensure_one()
+        return self.engine == "cyclos"
+
+    def _find_topup_transactions(self, wallet, amount, since_ts=None):
+        """Return the Cyclos topups matching a wallet and an amount.
+
+        The wallet account transaction history is listed and filtered on the
+        amount. Only positive incoming transfers match, so an outgoing
+        transfer of the same amount is never mistaken for a topup.
+
+        Args:
+            wallet: ``res.partner.backend`` record the topup was sent to.
+            amount (float): expected topup amount.
+            since_ts (int|None): ignore transfers older than this unix
+                timestamp.
+
+        Returns:
+            list[dict] | None: matches as ``{"hash": ..., "time": ...}``, or
+            ``None`` when the currency is not a cyclos one.
+        """
+        self.ensure_one()
+        if self.engine != "cyclos":
+            return None
+        if not wallet.cyclos_id:
+            return []
+        # Cyclos expects an ISO8601 date; keep a one minute margin to tolerate
+        # clock differences between Odoo and the Cyclos server.
+        start_ts = (since_ts - 60) if since_ts else 0
+        start_date = datetime.utcfromtimestamp(start_ts).strftime(
+            "%Y-%m-%dT%H:%M:%S.%f"
+        )[:-3]
+        encoded_start = quote(start_date, safe="")
+        expected = round(amount, 2)
+        matches = []
+        page = 0
+        while page < self.TOPUP_RECONCILE_MAX_PAGES:
+            entrypoint = (
+                f"/{wallet.cyclos_id}/transactions"
+                f"?datePeriod={encoded_start}&orderBy=dateAsc&page={page}"
+            )
+            response = self.cyclos_rest_call("GET", entrypoint)
+            transactions = json.loads(response.text)
+            if not transactions:
+                break
+            for tx in transactions:
+                try:
+                    tx_amount = float(tx["amount"])
+                except (KeyError, TypeError, ValueError):
+                    continue
+                if tx_amount != expected:
+                    continue
+                # Only system topups ("debit.*") match, so an incoming
+                # payment from another user ("user.toUser") is never mistaken
+                # for a topup.
+                tx_type = (tx.get("type") or {}).get("internalName", "")
+                if not tx_type.startswith("debit."):
+                    continue
+                date = tx.get("date")
+                tx_id = tx.get("id")
+                if not date or tx_id is None:
+                    continue
+                matches.append(
+                    {
+                        "hash": str(tx_id),
+                        "time": int(datetime.fromisoformat(date).timestamp()),
+                    }
+                )
+            if response.headers.get("x-has-next-page", "false").lower() != "true":
+                break
+            page += 1
+        return matches
+
     def _safe_wallet_partners(self):
         return [
             *super()._safe_wallet_partners(),

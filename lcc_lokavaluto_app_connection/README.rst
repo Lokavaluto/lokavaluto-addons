@@ -13,10 +13,29 @@ Just install lcc_lokavaluto_app_connection, all dependencies
 will be installed by default.
 
 Utilisation
-============
+===========
 
 You can choose to allow sending allocation to individuals or not
 Go to "Settings">"Digital Currency">"allow credit request only to company"
+
+Credit requests
+---------------
+
+When automatic topup is enabled on a currency, a pending credit request is
+credited once its invoice is paid. Each request is credited in its own
+transaction: a failure or an interrupted process while crediting one request
+never rolls back the requests already credited, nor aborts the rest of the
+batch. The ``send_started_at`` field is committed before the external call
+and ``send_attempt_count`` counts the attempts, so an interrupted attempt can
+be reconciled instead of blindly retried.
+
+The hourly cron ``Alt Currency: reconcile uncertain credit requests`` matches
+pending requests against the backend transaction history. It confirms the
+requests whose transfer is found, retries those still within
+``topup_max_send_attempts`` after ``topup_reconcile_grace_seconds``, and flags
+the remaining ones as ``error`` with an explicit message so they are reviewed
+manually instead of being sent twice. Backends without transaction lookup are
+left untouched.
 
 Known issues / Roadmap
 ======================

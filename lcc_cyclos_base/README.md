@@ -60,6 +60,14 @@ implementation in odoo.
 
 ## Known issues / Roadmap
 
+## Credit request reconciliation
+
+The module implements the transaction lookup used to reconcile uncertain
+credit requests. When a topup send was interrupted, the hourly cron
+`Alt Currency: reconcile uncertain credit requests` matches pending requests
+against the wallet account transaction history (amount and incoming status),
+then confirms, retries or flags them for manual review.
+
 
 ## Bug Tracker
 
