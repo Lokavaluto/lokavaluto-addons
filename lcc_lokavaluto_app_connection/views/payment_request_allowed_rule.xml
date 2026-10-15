@@ -32,7 +32,7 @@
                         <field
                             name="wallet_domain"
                             widget="domain"
-                            options='{"model": "res.partner.backend"}' />
+                            options='{"model": "res.wallet"}' />
                     </group>
                     <group name="authorisation" string="Authorisation">
                         <field name="is_payment_request_allowed" />

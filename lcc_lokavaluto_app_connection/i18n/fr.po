@@ -99,11 +99,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__active
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__active
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__active
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__active
-#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__active
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_wallet__status__active
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.commission_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.payment_request_allowed_rule_view_search
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.reconversion_rule_view_search
@@ -160,7 +160,7 @@ msgid "Backend Identifier"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__blocked
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_wallet__status__blocked
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Blocked"
 msgstr "Bloqué"
@@ -322,7 +322,7 @@ msgstr "Créer un nouveau portefeuille"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_uid
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__create_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__create_uid
@@ -336,7 +336,7 @@ msgstr "Créé par"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__create_date
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__create_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__create_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__create_date
@@ -445,7 +445,7 @@ msgstr "Configuration des applications de monnaie numérique"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__display_name
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__display_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__display_name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__display_name
@@ -543,7 +543,7 @@ msgstr "A des produits de monnaie numérique"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__id
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__id
@@ -551,7 +551,7 @@ msgid "ID"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__inactive
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_wallet__status__inactive
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Inactive"
 msgstr "Inactif"
@@ -565,12 +565,12 @@ msgstr "Facturé"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__is_reconversion_allowed
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__is_reconversion_allowed
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__is_reconversion_allowed
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__is_reconversion_allowed
 msgid "Is Reconversion Allowed?"
 msgstr "Reconversion autorisée ?"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__is_topup_allowed
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__is_topup_allowed
 msgid "Is Topup Allowed ?"
 msgstr "Rechargement autorisé ?"
 
@@ -617,7 +617,7 @@ msgstr "Montant à créditer"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule____last_update
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend____last_update
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag____last_update
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule____last_update
@@ -631,7 +631,7 @@ msgstr "Dernière modification le"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_uid
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_uid
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__write_uid
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__write_uid
@@ -645,7 +645,7 @@ msgstr "Dernière modification par"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__write_date
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__write_date
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_tag__write_date
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__write_date
@@ -708,7 +708,7 @@ msgstr "URL de l'application Monujo Web"
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_commission_rule__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_payment_request_allowed_rule__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_reconversion_rule__name
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_topup_rule__name
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_wallet_restriction_rule__name
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
@@ -750,7 +750,7 @@ msgid "Numeric Wallets"
 msgstr "Portefeuilles numériques"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_partner_backend
+#: model:ir.model,name:lcc_lokavaluto_app_connection.model_res_wallet
 msgid ""
 "Object in Odoo which match a wallet in a connected transaction backend."
 msgstr ""
@@ -778,7 +778,7 @@ msgstr "Payé"
 #. module: lcc_lokavaluto_app_connection
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_credit_request__partner_id
 #: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_debit_request__partner_id
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__partner_id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__partner_id
 msgid "Partner"
 msgstr "Contact"
 
@@ -789,7 +789,7 @@ msgid "Partner Name"
 msgstr ""
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__partner_public_name
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__partner_public_name
 msgid "Partner Public Name"
 msgstr "Nom public du contact"
 
@@ -969,7 +969,7 @@ msgid "State"
 msgstr "État"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__status
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__status
 msgid "Status"
 msgstr "État"
 
@@ -979,7 +979,7 @@ msgid "Tag Name"
 msgstr "Nom de la catégorie"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__category_id
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__category_id
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Tags"
 msgstr "Catégories"
@@ -997,7 +997,7 @@ msgid "The active field allows you to hide the category without removing it."
 msgstr "Le champs actif vous permet de cacher la catégorie sans la supprimer."
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_partner_backend__status__to_confirm
+#: model:ir.model.fields.selection,name:lcc_lokavaluto_app_connection.selection__res_wallet__status__to_confirm
 msgid "To Confirm"
 msgstr "À confirmer"
 
@@ -1074,7 +1074,7 @@ msgid "Try again"
 msgstr "Ré-essayer"
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__type
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__type
 #: model_terms:ir.ui.view,arch_db:lcc_lokavaluto_app_connection.wallet_view_search
 msgid "Type"
 msgstr ""
@@ -1335,7 +1335,7 @@ msgid "Create a new payment request allowed rule."
 msgstr "Créer une nouvelle règle d'autorisation de demande de paiement."
 
 #. module: lcc_lokavaluto_app_connection
-#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_partner_backend__is_payment_request_allowed
+#: model:ir.model.fields,field_description:lcc_lokavaluto_app_connection.field_res_wallet__is_payment_request_allowed
 msgid "Is Payment Request Allowed ?"
 msgstr "Demande de paiement autorisée ?"
 

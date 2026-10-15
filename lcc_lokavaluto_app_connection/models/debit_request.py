@@ -24,7 +24,7 @@ class DebitRequest(models.Model):
     active = fields.Boolean(default=True, tracking=True)
     amount = fields.Float("Amount", required=True, tracking=True)
     wallet_id = fields.Many2one(
-        "res.partner.backend",
+        "res.wallet",
         string="Wallet",
         required=True,
         tracking=True,
@@ -107,7 +107,7 @@ class DebitRequest(models.Model):
     def write(self, vals):
         if vals.get("wallet_id") and not vals.get("commission_rule_id"):
             vals["commission_rule_id"] = (
-                self.env["res.partner.backend"]
+                self.env["res.wallet"]
                 .browse(vals["wallet_id"])
                 .get_wallet_commission_rule()
                 .id

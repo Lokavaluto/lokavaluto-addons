@@ -11,7 +11,7 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     lcc_backend_ids = fields.One2many(
-        "res.partner.backend", "partner_id", string="Local Currency Wallets"
+        "res.wallet", "partner_id", string="Local Currency Wallets"
     )
     nb_wallets = fields.Integer(
         "Nb Wallets", readonly=True, compute="_compute_nb_wallets"
@@ -46,7 +46,7 @@ class ResPartner(models.Model):
         if len(wallets) > 0:
             return wallets
         else:
-            return self.env["res.partner.backend"]
+            return self.env["res.wallet"]
 
     def backends(self):
         """

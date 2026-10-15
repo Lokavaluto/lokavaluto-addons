@@ -4,7 +4,7 @@
     <record id="action_wallet_view" model="ir.actions.act_window">
         <field name="name">Wallets</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">res.partner.backend</field>
+        <field name="res_model">res.wallet</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p>

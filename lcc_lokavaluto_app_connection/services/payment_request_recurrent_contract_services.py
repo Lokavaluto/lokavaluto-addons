@@ -27,7 +27,7 @@ class PaymentRecurrentContractService(Component):
     @features("payment_request/0 feature-less/0")
     def create_payment_request_recurrent_contract(self, params) -> list:
         PaymentRequestRecurrentContract = self.env["payment.request.recurrent.contract"]
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
 
         currency_uri = transform_backend_keys_in_currency_uris([params.currency_uri])[0]
 
@@ -108,7 +108,7 @@ class PaymentRecurrentContractService(Component):
         :rtype: list
         """
         PaymentRequestRecurrentContract = self.env["payment.request.recurrent.contract"]
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
 
         # Workaround to transform backend keys into URIs
         currency_uri = transform_backend_keys_in_currency_uris(
@@ -184,7 +184,7 @@ class PaymentRecurrentContractService(Component):
         :rtype: bool
         """
         PaymentRequestRecurrentContract = self.env["payment.request.recurrent.contract"]
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
 
         # Workaround to transform backend keys into URIs
         currency_uri = transform_backend_keys_in_currency_uris(
