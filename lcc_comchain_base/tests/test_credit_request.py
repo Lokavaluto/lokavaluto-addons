@@ -11,7 +11,7 @@ class TestCreditRequest(TransactionComponentCase):
         super().setUp()
 
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
         self.ResCreditRequest = self.env["credit.request"]
 
@@ -34,7 +34,7 @@ class TestCreditRequest(TransactionComponentCase):
         return self.ResPartner.create({"name": name})
 
     def _create_res_partner_backend(self, partner, currency, ident="98765"):
-        return self.ResPartnerBackend.create(
+        return self.ResWallet.create(
             {
                 "name": f"comchain:{ident}",
                 "alt_currency_id": currency.id,

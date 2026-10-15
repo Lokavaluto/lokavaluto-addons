@@ -7,7 +7,7 @@ class TestPartnerServiceReconversions(TransactionComponentCase):
 
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
         self.DebitRequest = self.env["debit.request"]
 
@@ -40,7 +40,7 @@ class TestPartnerServiceReconversions(TransactionComponentCase):
         self.partner = self.user.partner_id
 
         # Create wallets
-        self.wallet_A = self.ResPartnerBackend.create(
+        self.wallet_A = self.ResWallet.create(
             {
                 "partner_id": self.partner.id,
                 "name": "foo:15487589688745824",
@@ -48,7 +48,7 @@ class TestPartnerServiceReconversions(TransactionComponentCase):
                 "alt_currency_id": self.currencyA.id,
             }
         )
-        self.wallet_B = self.ResPartnerBackend.create(
+        self.wallet_B = self.ResWallet.create(
             {
                 "partner_id": self.partner.id,
                 "name": "foo:3654fsrfkhsjfh6s5qe4",
@@ -137,7 +137,7 @@ class TestPartnerServiceReconversions(TransactionComponentCase):
                 self.ident_debit_request_F
             ]
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
             result = service.reconversions(

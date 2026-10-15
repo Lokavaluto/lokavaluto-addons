@@ -18,7 +18,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
         self.ResCompany = self.env["res.company"]
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
         self.RecurrentContract = self.env["payment.request.recurrent.contract"]
         self.Services = self.env["lokavaluto.private.services"]
@@ -48,7 +48,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
         )
 
     def _create_res_partner_backend(self, partner, currency, ident="98765"):
-        return self.ResPartnerBackend.create(
+        return self.ResWallet.create(
             {
                 "name": f"foo:{ident}",
                 "alt_currency_id": currency.id,

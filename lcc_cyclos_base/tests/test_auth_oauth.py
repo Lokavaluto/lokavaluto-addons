@@ -3,7 +3,7 @@ from odoo.exceptions import AccessDenied
 
 
 class TestCyclosAuthOauth(TransactionComponentCase):
-    """Cyclos OAuth login: e-mail reconciliation + ``res.partner.backend``
+    """Cyclos OAuth login: e-mail reconciliation + ``res.wallet``
     creation, with fail-loud preconditions (RAF of lok/2631)."""
 
     def setUp(self):
@@ -11,7 +11,7 @@ class TestCyclosAuthOauth(TransactionComponentCase):
 
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
         self.AuthProvider = self.env["auth.oauth.provider"]
 
@@ -208,7 +208,7 @@ class TestCyclosAuthOauth(TransactionComponentCase):
             1,
         )
         # backend created for the reconciled user.
-        backend = self.ResPartnerBackend.search(
+        backend = self.ResWallet.search(
             [
                 ("partner_id", "=", existing.partner_id.id),
                 ("type", "=", "cyclos"),
@@ -265,7 +265,7 @@ class TestCyclosAuthOauth(TransactionComponentCase):
         self.assertEqual(self.ResPartner.search_count([]), partners_before)
         # oauth identity linked + wallet backend on that same partner.
         self.assertEqual(user.oauth_uid, self.cyclos_uid)
-        backend = self.ResPartnerBackend.search(
+        backend = self.ResWallet.search(
             [
                 ("partner_id", "=", partner.id),
                 ("type", "=", "cyclos"),
@@ -362,7 +362,7 @@ class TestCyclosAuthOauth(TransactionComponentCase):
         )
         self.assertEqual(b1, b2)
         self.assertEqual(
-            self.ResPartnerBackend.search_count(
+            self.ResWallet.search_count(
                 [
                     ("partner_id", "=", user.partner_id.id),
                     ("type", "=", "cyclos"),
@@ -382,7 +382,7 @@ class TestCyclosAuthOauth(TransactionComponentCase):
                 "email": "gina@example.test",
             }
         )
-        self.ResPartnerBackend.create(
+        self.ResWallet.create(
             {
                 "partner_id": user.partner_id.id,
                 "alt_currency_id": self.cyclos_currency.id,
@@ -397,7 +397,7 @@ class TestCyclosAuthOauth(TransactionComponentCase):
         self.assertEqual(backend.cyclos_id, self.cyclos_uid)
         # both wallets coexist on the partner.
         self.assertEqual(
-            self.ResPartnerBackend.search_count(
+            self.ResWallet.search_count(
                 [
                     ("partner_id", "=", user.partner_id.id),
                     ("type", "=", "cyclos"),
@@ -410,7 +410,7 @@ class TestCyclosAuthOauth(TransactionComponentCase):
         # Same cyclos_id already attached to a DIFFERENT partner -> integrity
         # error -> raise.
         other_partner = self.ResPartner.create({"name": "Other Owner"})
-        self.ResPartnerBackend.create(
+        self.ResWallet.create(
             {
                 "partner_id": other_partner.id,
                 "alt_currency_id": self.cyclos_currency.id,

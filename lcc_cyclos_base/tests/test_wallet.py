@@ -7,7 +7,7 @@ class TestResWallet(TransactionComponentCase):
 
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
 
         self.partner_roger = self.ResPartner.create({"name": "Roger"})
@@ -29,7 +29,7 @@ class TestResWallet(TransactionComponentCase):
         cyclos_id = "1f2s34gf6sd7gq846f8fs4qv684fq3f85"
 
         # Create wallet
-        wallet_1 = self.ResPartnerBackend.create(
+        wallet_1 = self.ResWallet.create(
             {
                 "name": f"cyclos:{cyclos_id}",
                 "active": True,
@@ -48,7 +48,7 @@ class TestResWallet(TransactionComponentCase):
         cyclos_id = "1f2s34gf6sd7gq846f8fs4qv684fq3f85"
 
         # Create wallet
-        wallet_1 = self.ResPartnerBackend.create(
+        wallet_1 = self.ResWallet.create(
             {
                 "name": f"cyclos:{cyclos_id}",
                 "active": True,
@@ -95,7 +95,7 @@ class TestResWallet(TransactionComponentCase):
         """A payment.request.allowed.rule changes is_payment_request_allowed."""
         self._create_payment_request_allowed_rule()
         cyclos_id = "1f2s34gf6sd7gq846f8fs4qv684fq3f86"
-        wallet = self.ResPartnerBackend.create(
+        wallet = self.ResWallet.create(
             {
                 "name": f"cyclos:{cyclos_id}",
                 "active": True,

@@ -4,7 +4,7 @@ from odoo.tests.common import TransactionCase
 
 
 class TestWalletAuthBase(TransactionCase):
-    """Test base get_auth_context and get_authorized_actions stubs on res.partner.backend."""
+    """Test base get_auth_context and get_authorized_actions stubs on res.wallet."""
 
     def setUp(self):
         super().setUp()
@@ -35,7 +35,7 @@ class TestWalletAuthBase(TransactionCase):
         user = self.env["res.users"].create(
             {"name": login.capitalize(), "login": login}
         )
-        wallet = self.env["res.partner.backend"].create(
+        wallet = self.env["res.wallet"].create(
             {
                 "partner_id": user.partner_id.id,
                 "name": f"foo:{addr}",
@@ -54,7 +54,7 @@ class TestWalletAuthBase(TransactionCase):
         self.assertEqual(result, {})
 
     def test_get_auth_context_ensures_one(self):
-        empty = self.env["res.partner.backend"].browse()
+        empty = self.env["res.wallet"].browse()
         with self.assertRaises(ValueError):
             empty.get_auth_context()
 
@@ -64,6 +64,6 @@ class TestWalletAuthBase(TransactionCase):
         self.assertEqual(result, [])
 
     def test_get_authorized_actions_ensures_one(self):
-        empty = self.env["res.partner.backend"].browse()
+        empty = self.env["res.wallet"].browse()
         with self.assertRaises(ValueError):
             empty.get_authorized_actions()
