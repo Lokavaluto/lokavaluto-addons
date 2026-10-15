@@ -32,13 +32,13 @@
                         <field
                             name="sender_wallet_domain"
                             widget="domain"
-                            options='{"model": "res.partner.backend"}' />
+                            options='{"model": "res.wallet"}' />
                     </group>
                     <group name="domain" string="Recipient Wallet Domain">
                         <field
                             name="recipient_wallet_domain"
                             widget="domain"
-                            options='{"model": "res.partner.backend"}' />
+                            options='{"model": "res.wallet"}' />
                     </group>
                 </sheet>
 		<div class="oe_chatter">

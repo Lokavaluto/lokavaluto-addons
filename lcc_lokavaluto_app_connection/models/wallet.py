@@ -8,10 +8,10 @@ from odoo.tools.safe_eval import safe_eval
 _logger = logging.getLogger(__name__)
 
 
-class ResPartnerBackend(models.Model):
+class ResWallet(models.Model):
     """Object in Odoo which match a wallet in an alternative currency."""
 
-    _name = "res.partner.backend"
+    _name = "res.wallet"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Wallet"
 
@@ -107,7 +107,7 @@ class ResPartnerBackend(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        res = super(ResPartnerBackend, self).create(vals_list)
+        res = super(ResWallet, self).create(vals_list)
         for wallet in self:
             if wallet.type == "foo":
                 wallet.ident = wallet.id
@@ -162,7 +162,7 @@ class ResPartnerBackend(models.Model):
             wallet_uri: full wallet URI string.
 
         Returns:
-            Single ``res.partner.backend`` record.
+            Single ``res.wallet`` record.
 
         Raises:
             odoo.exceptions.MissingError: if no active wallet

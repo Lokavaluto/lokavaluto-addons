@@ -14,7 +14,7 @@ class TestWalletServiceBase(TransactionCase):
 
     def _get_wallet_service(self):
         collection = self.env["lokavaluto.private.services"].browse(1)
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             return work.component(usage="wallet")
 
     def _call_with_mock_request(self, endpoint, headers=None):
@@ -77,7 +77,7 @@ class TestWalletServiceContactInfo(TransactionCase):
 
     def _get_wallet_service(self):
         collection = self.env["lokavaluto.private.services"].browse(1)
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             return work.component(usage="wallet")
 
     def _make_partner(self, **kw):
@@ -108,7 +108,7 @@ class TestWalletServiceContactInfo(TransactionCase):
                 "currency_unit_product_id": currency_product.id,
             }
         )
-        return self.env["res.partner.backend"].create(
+        return self.env["res.wallet"].create(
             {
                 "partner_id": partner.id,
                 "name": "testbase:stub",
@@ -168,7 +168,7 @@ class TestWalletServiceContactInfo(TransactionCase):
         partner = self._make_partner()
         wallet = self._make_wallet(partner)
         collection = self.env["lokavaluto.private.services"].with_user(user).browse(1)
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             service = work.component(usage="wallet")
             result = service._contact_info(wallet)
         self.assertEqual(result["issuer"]["name"], "Issuer Corp")

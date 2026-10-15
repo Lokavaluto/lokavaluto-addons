@@ -29,7 +29,7 @@ class PaymentRequest(models.Model):
     )
     amount = fields.Float("Amount", required=True, tracking=True)
     creator_wallet_id = fields.Many2one(
-        "res.partner.backend",
+        "res.wallet",
         string="Created by Wallet",
         required=True,
         tracking=True,
@@ -39,7 +39,7 @@ class PaymentRequest(models.Model):
         related="creator_wallet_id.partner_id",
     )
     sender_wallet_id = fields.Many2one(
-        "res.partner.backend",
+        "res.wallet",
         string="Sender Wallet",
         required=True,
         tracking=True,
@@ -49,7 +49,7 @@ class PaymentRequest(models.Model):
         related="sender_wallet_id.partner_id",
     )
     receiver_wallet_id = fields.Many2one(
-        "res.partner.backend",
+        "res.wallet",
         string="Receiver Wallet",
         required=True,
         tracking=True,

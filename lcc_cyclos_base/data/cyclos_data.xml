@@ -24,7 +24,7 @@
         <record id="res_partner_cyclos_debit_wallet" model="res.partner">
             <field name="name">Cyclos Debit Wallet</field>
         </record>
-        <record id="res_partner_backend_cyclos_debit_wallet" model="res.partner.backend">
+        <record id="res_partner_backend_cyclos_debit_wallet" model="res.wallet">
             <field name="name">cyclos:system</field>
             <field name="alt_currency_id" ref="lcc_cyclos_base.res_alt_currency_cyclos_1" />
             <field name="partner_id" ref="lcc_cyclos_base.res_partner_cyclos_debit_wallet" />

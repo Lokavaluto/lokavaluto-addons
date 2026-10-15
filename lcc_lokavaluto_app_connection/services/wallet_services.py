@@ -28,14 +28,14 @@ class WalletService(Component):
             wallet_ident: URL-decoded wallet identifier.
 
         Returns:
-            Single ``res.partner.backend`` record.
+            Single ``res.wallet`` record.
 
         Raises:
             odoo.exceptions.MissingError: if no non-archived wallet
                 matches the ident on the currency.
         """
         currency = self._get_caller_currency()
-        target = self.env["res.partner.backend"].search(
+        target = self.env["res.wallet"].search(
             [
                 ("alt_currency_id", "=", currency.id),
                 ("active", "=", True),
@@ -55,7 +55,7 @@ class WalletService(Component):
         and apply backend-specific fields.  Base is a no-op.
 
         Args:
-            wallet: single ``res.partner.backend`` record.
+            wallet: single ``res.wallet`` record.
             vals: dict of API-level field values from the request body.
         """
 
@@ -67,7 +67,7 @@ class WalletService(Component):
         calling ``super()``.
 
         Args:
-            wallet: single ``res.partner.backend`` record.
+            wallet: single ``res.wallet`` record.
         """
         wallet.sudo().active = False
 
@@ -79,7 +79,7 @@ class WalletService(Component):
         permission checks before calling ``super()``.
 
         Args:
-            wallet: single ``res.partner.backend`` record.
+            wallet: single ``res.wallet`` record.
 
         Returns:
             dict with the single account data.
@@ -158,7 +158,7 @@ class WalletService(Component):
         """Return list of archived wallet idents on the caller's currency."""
         currency = self._get_caller_currency()
         wallets = (
-            self.env["res.partner.backend"]
+            self.env["res.wallet"]
             .sudo()
             .with_context(active_test=False)
             .search(

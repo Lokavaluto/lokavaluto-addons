@@ -24,7 +24,7 @@ class AuthService(Component):
             if len(wallet_json_data["accounts"]) > 1:
                 raise("Multiple accounts for Cyclos not supported yet.")
             account = wallet_json_data["accounts"][0]
-            wallet = self.env["res.partner.backend"].search(
+            wallet = self.env["res.wallet"].search(
                 [
                     ("active", "=", True),
                     ("cyclos_id", "=", account["owner_id"]),

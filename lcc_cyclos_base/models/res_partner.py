@@ -14,7 +14,7 @@ class ResPartner(models.Model):
 
     def cyclos_add_user(self, alt_currency_id) -> None:
         for record in self:
-            backend_obj = self.env["res.partner.backend"]
+            backend_obj = self.env["res.wallet"]
             group = (
                 "particuliers" if record.company_type == "person" else "professionnels"
             )

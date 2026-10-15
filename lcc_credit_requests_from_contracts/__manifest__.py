@@ -3,7 +3,7 @@
 
 {
     "name": "lcc_credit_requests_from_contracts",
-    "version": "16.0.1.0.1",
+    "version": "16.0.1.1.0",
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "maintainer": "Stéphan Sainléger",

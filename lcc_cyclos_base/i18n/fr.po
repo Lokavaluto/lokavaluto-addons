@@ -76,7 +76,7 @@ msgid "Create new Cyclos Wallet"
 msgstr "Créer un portefeuille Cyclos"
 
 #. module: lcc_cyclos_base
-#: model:ir.model.fields.selection,name:lcc_cyclos_base.selection__res_partner_backend__type__cyclos
+#: model:ir.model.fields.selection,name:lcc_cyclos_base.selection__res_wallet__type__cyclos
 msgid "Cyclos"
 msgstr ""
 
@@ -87,17 +87,17 @@ msgid "Cyclos Debit Wallet Partner"
 msgstr "Contact portefeuille de débit Cyclos"
 
 #. module: lcc_cyclos_base
-#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_status
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_wallet__cyclos_status
 msgid "Cyclos Status"
 msgstr "État Cyclos"
 
 #. module: lcc_cyclos_base
-#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_create_response
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_wallet__cyclos_create_response
 msgid "Cyclos create response"
 msgstr "Réponse de création Cyclos"
 
 #. module: lcc_cyclos_base
-#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__cyclos_id
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_wallet__cyclos_id
 msgid "Cyclos id"
 msgstr "ID Cyclos"
 
@@ -150,7 +150,7 @@ msgid "Password must contain only the following characters: %s"
 msgstr "Le mot de passe doit contenir seulement les caractères suivants : %s"
 
 #. module: lcc_cyclos_base
-#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_partner_backend__type
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_wallet__type
 msgid "Type"
 msgstr ""
 
@@ -175,6 +175,6 @@ msgid "Validate Cyclos Wallet"
 msgstr "Activer le portefeuille"
 
 #. module: lcc_cyclos_base
-#: model:ir.model,name:lcc_cyclos_base.model_res_partner_backend
-msgid "res.partner.backend"
+#: model:ir.model,name:lcc_cyclos_base.model_res_wallet
+msgid "res.wallet"
 msgstr ""

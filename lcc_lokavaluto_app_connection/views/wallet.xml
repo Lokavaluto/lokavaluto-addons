@@ -2,7 +2,7 @@
 <odoo>
     <record id="wallet_form_view" model="ir.ui.view">
         <field name="name">wallet.form.view</field>
-        <field name="model">res.partner.backend</field>
+        <field name="model">res.wallet</field>
         <field name="priority">0</field>
         <field name="arch" type="xml">
             <form string="Digital Currency Wallet" create="0">
@@ -73,7 +73,7 @@
 
     <record id="wallet_view_tree" model="ir.ui.view">
         <field name="name">wallet.view.tree</field>
-        <field name="model">res.partner.backend</field>
+        <field name="model">res.wallet</field>
         <field name="arch" type="xml">
             <tree string="Digital Currency Wallet"
 		  decoration-muted="status == 'inactive'"
@@ -96,7 +96,7 @@
 
     <record id="wallet_view_search" model="ir.ui.view">
         <field name="name">wallet.view.search</field>
-        <field name="model">res.partner.backend</field>
+        <field name="model">res.wallet</field>
         <field name="arch" type="xml">
             <search string="Search wallets">
                 <field name="name" string="Name" />

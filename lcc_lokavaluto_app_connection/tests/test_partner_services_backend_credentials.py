@@ -11,7 +11,7 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
 
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
 
         self.currency_unit_product = self.env.ref(
@@ -44,7 +44,7 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
         self.partner_1.public_profile_id.email = "john@doe.com"
 
         # Create wallets
-        self.wallet_A_1 = self.ResPartnerBackend.create(
+        self.wallet_A_1 = self.ResWallet.create(
             {
                 "partner_id": self.partner_1.id,
                 "name": "foo:15487589688745824",
@@ -54,7 +54,7 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
                 "active": True,
             }
         )
-        self.wallet_A_2 = self.ResPartnerBackend.create(
+        self.wallet_A_2 = self.ResWallet.create(
             {
                 "partner_id": self.partner_1.id,
                 "name": "foo:36fdqfldfqlkhfkqff",
@@ -64,7 +64,7 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
                 "active": True,
             }
         )
-        self.wallet_B_1 = self.ResPartnerBackend.create(
+        self.wallet_B_1 = self.ResWallet.create(
             {
                 "partner_id": self.partner_1.id,
                 "name": "foo:ugfvq;rueqv51qvrhvqr",
@@ -74,7 +74,7 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
                 "active": True,
             }
         )
-        self.wallet_B_2 = self.ResPartnerBackend.create(
+        self.wallet_B_2 = self.ResWallet.create(
             {
                 "partner_id": self.partner_1.id,
                 "name": "foo:tdfdsvqj656fdferf56vlrjq",
@@ -94,7 +94,7 @@ class TestPartnerServiceBackendCredentials(TransactionComponentCase):
         )
         currency_A_backend_key = f"{self.currencyA.engine}:{self.currencyA.ident}"
         currency_B_backend_key = f"{self.currencyB.engine}:{self.currencyB.ident}"
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
             result = service.backend_credentials()

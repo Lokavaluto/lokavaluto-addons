@@ -16,10 +16,10 @@ pyc3l = Pyc3l()
 _logger = logging.getLogger(__name__)
 
 
-class ResPartnerBackend(models.Model):
+class ResWallet(models.Model):
     """Add backend commom property for local currency"""
 
-    _inherit = "res.partner.backend"
+    _inherit = "res.wallet"
 
     comchain_id = fields.Char(string="Address", tracking=True)
     comchain_wallet = fields.Text(string="Crypted json wallet", tracking=True)
@@ -121,7 +121,7 @@ class ResPartnerBackend(models.Model):
     def write(self, vals):
         if vals.get("comchain_id"):
             vals["ident"] = vals.get("comchain_id")
-        return super(ResPartnerBackend, self).write(vals)
+        return super(ResWallet, self).write(vals)
 
     def get_wallet_json_data(self):
         """Returns normalized wallet data in JSON

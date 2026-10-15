@@ -8,7 +8,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
 
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
 
         self.currency_unit_product = self.env.ref(
@@ -46,7 +46,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
         self.partner_3.public_profile_id.email = "haddock@herge.be"
 
         # Create wallets
-        self.wallet_A_1 = self.ResPartnerBackend.create(
+        self.wallet_A_1 = self.ResWallet.create(
             {
                 "partner_id": self.partner_1.id,
                 "name": "foo:15487589688745824",
@@ -55,7 +55,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
                 "status": "active",
             }
         )
-        self.wallet_A_2 = self.ResPartnerBackend.create(
+        self.wallet_A_2 = self.ResWallet.create(
             {
                 "partner_id": self.partner_2.id,
                 "name": "foo:36fdqfldfqlkhfkqff",
@@ -64,7 +64,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
                 "status": "active",
             }
         )
-        self.wallet_A_3 = self.ResPartnerBackend.create(
+        self.wallet_A_3 = self.ResWallet.create(
             {
                 "partner_id": self.partner_3.id,
                 "name": "foo:fdn:qjdnq5f4qfjk",
@@ -73,7 +73,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
                 "status": "active",
             }
         )
-        self.wallet_B_1 = self.ResPartnerBackend.create(
+        self.wallet_B_1 = self.ResWallet.create(
             {
                 "partner_id": self.partner_1.id,
                 "name": "foo:ugfvq;rueqv51qvrhvqr",
@@ -82,7 +82,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
                 "status": "active",
             }
         )
-        self.wallet_B_2 = self.ResPartnerBackend.create(
+        self.wallet_B_2 = self.ResWallet.create(
             {
                 "partner_id": self.partner_2.id,
                 "name": "foo:tdfdsvqj656fdferf56vlrjq",
@@ -91,7 +91,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
                 "status": "active",
             }
         )
-        self.wallet_B_3 = self.ResPartnerBackend.create(
+        self.wallet_B_3 = self.ResWallet.create(
             {
                 "partner_id": self.partner_3.id,
                 "name": "foo:oaeuhf3ef6zfhlqr65fqs",
@@ -109,7 +109,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
             .with_user(user)
             .browse(1)
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             return work.component(usage="partner")
 
     # ── High-level search tests ──────────────────────────────
@@ -129,7 +129,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
             order= "is_favorite desc name",
             sender_wallet_ident = self.wallet_A_1.name,
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
             result = service.search_recipients(
@@ -162,7 +162,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
             order= "is_favorite desc name",
             sender_wallet_ident = self.wallet_A_1.name,
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
             result = service.search_recipients(
@@ -211,7 +211,7 @@ class TestPartnerServiceSearchRecipients(TransactionComponentCase):
             order="is_favorite desc name",
             sender_wallet_ident=self.wallet_A_1.name,
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             service = work.component(usage="partner")
             result = service.search_recipients(
                 recipients_search_info=search_get_params

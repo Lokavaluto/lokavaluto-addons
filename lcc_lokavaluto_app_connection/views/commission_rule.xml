@@ -33,7 +33,7 @@
                         <field
                             name="wallet_domain"
                             widget="domain"
-                            options='{"model": "res.partner.backend"}' />
+                            options='{"model": "res.wallet"}' />
                     </group>
                     <group name="calculation" string="Calculation process">
                         <field name="calculation_rule" />
