@@ -1,3 +1,3 @@
 -- deactivate comchain transactions
-UPDATE res_partner_backend
+UPDATE res_wallet
    SET comchain_wallet_pwd = NULL;

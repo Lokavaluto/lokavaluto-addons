@@ -58,7 +58,7 @@ class AlternativeCurrency(models.Model):
         ]
         if domain:
             base_domain += domain
-        return self.env["res.partner.backend"].search(base_domain)
+        return self.env["res.wallet"].search(base_domain)
 
     def _safe_wallet_partners(self):
         return []
@@ -133,7 +133,7 @@ class AlternativeCurrency(models.Model):
 
             ## replace sender by wallet_id
 
-            wallet_ids = self.env["res.partner.backend"].search(
+            wallet_ids = self.env["res.wallet"].search(
                 [("name", "=", transaction["sender"])],
             )
             if len(wallet_ids) == 0:

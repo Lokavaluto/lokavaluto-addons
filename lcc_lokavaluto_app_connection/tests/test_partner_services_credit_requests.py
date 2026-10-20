@@ -11,7 +11,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
 
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
         self.CreditRequest = self.env["credit.request"]
 
@@ -57,7 +57,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
         )
         self.partner = self.user.partner_id
 
-        self.wallet = self.ResPartnerBackend.create(
+        self.wallet = self.ResWallet.create(
             {
                 "partner_id": self.partner.id,
                 "name": "foo:15487589688745824",
@@ -119,7 +119,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
                 "toto:tata",
             ]
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
             result = service.credit_requests(
@@ -139,7 +139,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
     #     pending_topup_get_params = {
     #         "backend_keys": "foo:15487589688745824"
     #     }
-    #     with collection.work_on("res.partner.backend") as work:
+    #     with collection.work_on("res.wallet") as work:
     #         # Notice : I did not understand which model I should put in work_on() argument
     #         service = work.component(usage="partner")
     #         result = service.pending_topup()
@@ -155,7 +155,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
     #         .browse(1)
     #     )
 
-    #     with collection.work_on("res.partner.backend") as work:
+    #     with collection.work_on("res.wallet") as work:
     #         # Notice : I did not understand which model I should put in work_on() argument
     #         service = work.component(usage="partner")
     #         result = service.remove_pending_topup()
@@ -170,7 +170,7 @@ class TestPartnerServiceCreditRequests(TransactionComponentCase):
         validate_credit_request_get_params = PartnerValidateCreditRequest(
             ids=[self.credit_request_F.id]
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
             result = service.validate_credit_requests(

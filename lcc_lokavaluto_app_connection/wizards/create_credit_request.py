@@ -7,11 +7,11 @@ class CreateCreditRequest(models.TransientModel):
 
     @api.model
     def _default_wallet_id(self):
-        return self.env["res.partner.backend"].browse(self._context.get("active_ids"))
+        return self.env["res.wallet"].browse(self._context.get("active_ids"))
 
     amount = fields.Float("Amount", required=True)
     wallet_id = fields.Many2one(
-        "res.partner.backend",
+        "res.wallet",
         string="Wallet",
         required=True,
         default=_default_wallet_id,

@@ -10,7 +10,7 @@ class TestPaymentRequestRecurrentContract(TransactionCase):
         super().setUp()
 
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResAltCurrency = self.env["res.alt.currency"]
         self.PaymentRequest = self.env["payment.request"]
         self.RecurrentContract = self.env["payment.request.recurrent.contract"]
@@ -30,7 +30,7 @@ class TestPaymentRequestRecurrentContract(TransactionCase):
         )
 
     def _create_res_partner_backend(self, partner, currency, ident="98765"):
-        return self.ResPartnerBackend.create(
+        return self.ResWallet.create(
             {
                 "name": f"foo:{ident}",
                 "alt_currency_id": currency.id,
@@ -49,13 +49,13 @@ class TestPaymentRequestRecurrentContract(TransactionCase):
         self.partner_sender = self.ResPartner.create({"name": "Sender Partner"})
         self.partner_receiver = self.ResPartner.create({"name": "Receiver Partner"})
 
-        self.wallet_sender = self.ResPartnerBackend.create({
+        self.wallet_sender = self.ResWallet.create({
             "name": "foo:sender_wallet",
             "alt_currency_id": self.currency.id,
             "partner_id": self.partner_sender.id,
             "ident": "sender_001",
         })
-        self.wallet_receiver = self.ResPartnerBackend.create({
+        self.wallet_receiver = self.ResWallet.create({
             "name": "foo:receiver_wallet",
             "alt_currency_id": self.currency.id,
             "partner_id": self.partner_receiver.id,

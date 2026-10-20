@@ -21,7 +21,7 @@ class CreditRequest(models.Model):
 
     amount = fields.Float("Amount", required=True, tracking=True)
     wallet_id = fields.Many2one(
-        "res.partner.backend",
+        "res.wallet",
         string="Wallet",
         required=True,
         tracking=True,

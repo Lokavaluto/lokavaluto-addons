@@ -21,7 +21,7 @@ class LccApiService(Component):
         """
         wallet_uri = unquote(user_uri.replace("/user/", "/wallet/", 1))
         try:
-            wallet = self.env["res.partner.backend"].get_by_uri(wallet_uri)
+            wallet = self.env["res.wallet"].get_by_uri(wallet_uri)
         except MissingError:
             _logger.debug(
                 "comchain _auth_user_uri: no wallet for URI '%s'",

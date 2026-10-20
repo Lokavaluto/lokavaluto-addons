@@ -326,7 +326,7 @@ class TestComchainPermissions(ComchainTestCase):
         alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
         # Create a bare wallet with no comchain_wallet (no parsed account data)
         bare_user = self._make_users("bare")
-        self.env["res.partner.backend"].create(
+        self.env["res.wallet"].create(
             {
                 "partner_id": bare_user.partner_id.id,
                 "name": "comchain:0xbare",
@@ -357,7 +357,7 @@ class TestComchainPermissions(ComchainTestCase):
         self._call_archive(alice, "0xb", features_header="wallet/0")
 
         wallet_bob = (
-            self.env["res.partner.backend"]
+            self.env["res.wallet"]
             .with_context(active_test=False)
             .browse(bob.wallet.id)
         )
@@ -372,7 +372,7 @@ class TestComchainPermissions(ComchainTestCase):
         self._call_archive(alice, "0xb", features_header="wallet/0")
 
         wallet_bob = (
-            self.env["res.partner.backend"]
+            self.env["res.wallet"]
             .with_context(active_test=False)
             .browse(bob.wallet.id)
         )
@@ -387,7 +387,7 @@ class TestComchainPermissions(ComchainTestCase):
         self._call_archive(alice, "0xb", features_header="wallet/0")
 
         wallet_bob = (
-            self.env["res.partner.backend"]
+            self.env["res.wallet"]
             .with_context(active_test=False)
             .browse(bob.wallet.id)
         )
@@ -517,7 +517,7 @@ class TestComchainPermissions(ComchainTestCase):
         )
         alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
         bob = self._make_users("bob")
-        self.env["res.partner.backend"].create(
+        self.env["res.wallet"].create(
             {
                 "partner_id": bob.partner_id.id,
                 "name": "comchain:0xb",
@@ -663,7 +663,7 @@ class TestComchainPermissions(ComchainTestCase):
         )
         alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
         bob = self._make_users("bob")
-        self.env["res.partner.backend"].create(
+        self.env["res.wallet"].create(
             {
                 "partner_id": bob.partner_id.id,
                 "name": "comchain:0xb",
@@ -811,7 +811,7 @@ class TestComchainPermissions(ComchainTestCase):
         )
         alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
         bob = self._make_users("bob")
-        self.env["res.partner.backend"].create(
+        self.env["res.wallet"].create(
             {
                 "partner_id": bob.partner_id.id,
                 "name": "comchain:0xb",
@@ -977,7 +977,7 @@ class TestComchainPermissions(ComchainTestCase):
         )
         alice = self._make_user_and_wallet("alice", comchain_type="2", addr="0xa")
         bob = self._make_users("bob")
-        self.env["res.partner.backend"].create(
+        self.env["res.wallet"].create(
             {
                 "partner_id": bob.partner_id.id,
                 "name": "comchain:0xb",
