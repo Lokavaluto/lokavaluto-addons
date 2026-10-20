@@ -12,14 +12,14 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
-class ResPartnerBackend(models.Model):
-    _inherit = "res.partner.backend"
+class ResWallet(models.Model):
+    _inherit = "res.wallet"
 
     qr = fields.Binary(string="Wallet QR code", store=True, copy=False)
 
     @api.model
     def create(self, vals):
-        res = super(ResPartnerBackend, self).create(vals)
+        res = super(ResWallet, self).create(vals)
         res.generate_qr()
         return res
 

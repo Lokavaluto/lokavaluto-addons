@@ -44,7 +44,7 @@ class ComchainService(Component):
         # Resolve only missing addresses so the active owner always wins.
         missing = set(params.addresses) - res.keys()
         res.update(
-            self.env["res.partner.backend"]._get_archived_wallet_contacts(
+            self.env["res.wallet"]._get_archived_wallet_contacts(
                 missing, "comchain", "comchain_id"
             )
         )
@@ -93,7 +93,7 @@ class ComchainService(Component):
             }
 
         # Search for existing wallets (including archived) with this address
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
         wallets = Wallet.with_context(active_test=False).search(
             [
                 ("alt_currency_id", "=", alt_currency.id),
@@ -160,7 +160,7 @@ class ComchainService(Component):
         Activate comchain account on partners
 
         """
-        wallet_obj = self.env["res.partner.backend"]
+        wallet_obj = self.env["res.wallet"]
         for account in params.accounts:
             domain = [
                 ("comchain_id", "=", account.address),
@@ -183,7 +183,7 @@ class ComchainService(Component):
     )
     def discard(self, params):
         """Discard comchain accounts"""
-        wallet_obj = self.env["res.partner.backend"]
+        wallet_obj = self.env["res.wallet"]
         for account in params.accounts:
             wallet_id = wallet_obj.search(
                 [

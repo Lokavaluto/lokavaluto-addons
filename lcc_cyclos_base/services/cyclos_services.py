@@ -80,7 +80,7 @@ class CyclosService(Component):
         # Resolve only missing addresses so the active owner always wins.
         missing = set(params.addresses) - res.keys()
         res.update(
-            self.env["res.partner.backend"]._get_archived_wallet_contacts(
+            self.env["res.wallet"]._get_archived_wallet_contacts(
                 missing, "cyclos", "cyclos_id"
             )
         )

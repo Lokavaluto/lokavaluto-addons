@@ -41,22 +41,22 @@ msgid "<span class=\"o_form_label\">Comchain top-up messages</span>"
 msgstr "<span class=\"o_form_label\">Messages de recharge Comchain</span>"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_id
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__comchain_id
 msgid "Address"
 msgstr "Adresse"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__comchain_type__2
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_wallet__comchain_type__2
 msgid "Admin"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__type__comchain
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_wallet__type__comchain
 msgid "Comchain"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_status
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__comchain_status
 msgid "Comchain Status"
 msgstr "État Comchain"
 
@@ -76,7 +76,7 @@ msgid "Companies"
 msgstr "Sociétés"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__comchain_type__1
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_wallet__comchain_type__1
 msgid "Company"
 msgstr "Société"
 
@@ -91,7 +91,7 @@ msgid "Contact"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_wallet
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__comchain_wallet
 msgid "Crypted json wallet"
 msgstr "Portefeuille JSON chiffré"
 
@@ -112,7 +112,7 @@ msgid "Last Block Checked Nb"
 msgstr "Nb dernier bloc vérifié"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_credit_max
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__comchain_credit_max
 msgid "Max Credit limit"
 msgstr "Crédit max"
 
@@ -123,7 +123,7 @@ msgid "Message from"
 msgstr "Message de"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_message_key
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__comchain_message_key
 msgid "Message keys"
 msgstr "Clés de message"
 
@@ -134,7 +134,7 @@ msgid "Message to"
 msgstr "Message à"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_credit_min
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__comchain_credit_min
 msgid "Min Credit limit"
 msgstr "Crédit min"
 
@@ -156,7 +156,7 @@ msgid "Odoo wallet password"
 msgstr "Mot de pass du portefeuille Odoo"
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_partner_backend__comchain_type__0
+#: model:ir.model.fields.selection,name:lcc_comchain_base.selection__res_wallet__comchain_type__0
 msgid "Personal"
 msgstr "Personnel"
 
@@ -196,12 +196,12 @@ msgstr ""
 "                                procuration pour réaliser des chargements depuis le portefeuille Coffre-fort."
 
 #. module: lcc_comchain_base
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__comchain_type
-#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_partner_backend__type
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__comchain_type
+#: model:ir.model.fields,field_description:lcc_comchain_base.field_res_wallet__type
 msgid "Type"
 msgstr ""
 
 #. module: lcc_comchain_base
-#: model:ir.model,name:lcc_comchain_base.model_res_partner_backend
-msgid "res.partner.backend"
+#: model:ir.model,name:lcc_comchain_base.model_res_wallet
+msgid "res.wallet"
 msgstr ""

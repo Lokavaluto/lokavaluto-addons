@@ -28,7 +28,7 @@ class PartnerSearchInfo(Datamodel):
 
 
 # Currently the format of sender_wallet_ident, to identify a wallet, is [_CURRENCY_ENGINE]:[_CURRENCY_WALLET_IDENT]
-# it corresponds to the field `name` in `res.partner.backend` table.
+# it corresponds to the field `name` in `res.wallet` table.
 # Soon it'll be replaced by WALLET_ID :== [_CURRENCY_ENGINE]://[_CURRENCY_IDENT]/wallet/[_CURRENCY_WALLET_IDENT]
 # cf https://docs.lokavaluto.fr/o73ElbpVSpWhIxkpiBDmwg#
 

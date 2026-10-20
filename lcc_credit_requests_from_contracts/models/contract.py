@@ -5,7 +5,7 @@ class ContractContract(models.Model):
     _inherit = "contract.contract"
 
     create_credit_requests = fields.Boolean("Create Credit Requests")
-    wallet_id = fields.Many2one("res.partner.backend", string="Wallet to credit")
+    wallet_id = fields.Many2one("res.wallet", string="Wallet to credit")
     different_credit_request_amount = fields.Boolean("Different credit request amount")
     credit_request_amount = fields.Float(string="Credit request amount")
     limit_credit_aggregation = fields.Boolean("Limit credit aggregation")

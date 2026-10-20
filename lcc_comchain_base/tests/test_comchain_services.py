@@ -8,7 +8,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
 
     def _get_service_as_user(self, user):
         collection = self.env["lokavaluto.private.services"].with_user(user).browse(1)
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             return work.component(usage="comchain")
 
     def _make_currency(self, ident="testcc"):
@@ -65,7 +65,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
         )
         self.assertTrue(result)
 
-        wallet = self.env["res.partner.backend"].search(
+        wallet = self.env["res.wallet"].search(
             [("comchain_id", "=", "0xdeadbeef")]
         )
         self.assertEqual(len(wallet), 1)
@@ -79,7 +79,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
         alice = self.env["res.users"].create({"name": "Alice", "login": "alice"})
 
         # Create and archive a wallet
-        wallet = self.env["res.partner.backend"].create(
+        wallet = self.env["res.wallet"].create(
             {
                 "partner_id": alice.partner_id.id,
                 "name": "comchain:0xabc",
@@ -100,7 +100,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
         self.assertTrue(result)
         wallet.invalidate_recordset()
         wallet = (
-            self.env["res.partner.backend"]
+            self.env["res.wallet"]
             .with_context(active_test=False)
             .browse(wallet.id)
         )
@@ -115,7 +115,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
         alice = self.env["res.users"].create({"name": "Alice", "login": "alice"})
 
         # Create an active wallet
-        self.env["res.partner.backend"].create(
+        self.env["res.wallet"].create(
             {
                 "partner_id": alice.partner_id.id,
                 "name": "comchain:0xabc",
@@ -142,7 +142,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
         bob = self.env["res.users"].create({"name": "Bob", "login": "bob"})
 
         # Bob owns an archived wallet
-        wallet = self.env["res.partner.backend"].create(
+        wallet = self.env["res.wallet"].create(
             {
                 "partner_id": bob.partner_id.id,
                 "name": "comchain:0xabc",
@@ -162,7 +162,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
         self.assertTrue(result)
 
         # Alice has her own wallet now
-        alice_wallet = self.env["res.partner.backend"].search(
+        alice_wallet = self.env["res.wallet"].search(
             [
                 ("comchain_id", "=", "0xabc"),
                 ("partner_id", "=", alice.partner_id.id),
@@ -179,7 +179,7 @@ class TestComchainServiceRegister(TransactionComponentCase):
         bob = self.env["res.users"].create({"name": "Bob", "login": "bob"})
 
         # Bob owns an active wallet
-        self.env["res.partner.backend"].create(
+        self.env["res.wallet"].create(
             {
                 "partner_id": bob.partner_id.id,
                 "name": "comchain:0xabc",

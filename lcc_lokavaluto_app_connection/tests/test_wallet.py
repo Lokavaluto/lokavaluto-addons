@@ -5,7 +5,7 @@ from odoo.tests.common import TransactionCase
 
 
 class TestWalletGetByUri(TransactionCase):
-    """Test res.partner.backend.get_by_uri."""
+    """Test res.wallet.get_by_uri."""
 
     def setUp(self):
         super().setUp()
@@ -30,7 +30,7 @@ class TestWalletGetByUri(TransactionCase):
         user = self.env["res.users"].create(
             {"name": login.capitalize(), "login": login}
         )
-        wallet = self.env["res.partner.backend"].create(
+        wallet = self.env["res.wallet"].create(
             {
                 "partner_id": user.partner_id.id,
                 "name": f"foo:{addr}",
@@ -46,27 +46,27 @@ class TestWalletGetByUri(TransactionCase):
     def test_get_by_uri_returns_wallet(self):
         alice = self._make_user_and_wallet("alice")
         uri = f"{self.currency.uri}/wallet/0xalice"
-        wallet = self.env["res.partner.backend"].get_by_uri(uri)
+        wallet = self.env["res.wallet"].get_by_uri(uri)
         self.assertEqual(wallet.id, alice.wallet.id)
 
     def test_get_by_uri_unknown_currency(self):
         self._make_user_and_wallet("alice")
         with self.assertRaises(MissingError):
-            self.env["res.partner.backend"].get_by_uri(
+            self.env["res.wallet"].get_by_uri(
                 "foo://nonexistent/wallet/0xalice"
             )
 
     def test_get_by_uri_unknown_wallet(self):
         self._make_user_and_wallet("alice")
         with self.assertRaises(MissingError):
-            self.env["res.partner.backend"].get_by_uri(
+            self.env["res.wallet"].get_by_uri(
                 f"{self.currency.uri}/wallet/0xnonexistent"
             )
 
     def test_get_by_uri_malformed(self):
         self._make_user_and_wallet("alice")
         with self.assertRaises(MissingError):
-            self.env["res.partner.backend"].get_by_uri("garbage")
+            self.env["res.wallet"].get_by_uri("garbage")
 
 
 class TestGetAuthorizedActionsReconvert(TransactionCase):
@@ -104,7 +104,7 @@ class TestGetAuthorizedActionsReconvert(TransactionCase):
         user = self.env["res.users"].create(
             {"name": login.capitalize(), "login": login}
         )
-        wallet = self.env["res.partner.backend"].create(
+        wallet = self.env["res.wallet"].create(
             {
                 "partner_id": user.partner_id.id,
                 "name": f"foo:0x{login}",
@@ -200,11 +200,11 @@ class TestPaymentRequestAllowedRule(TransactionCase):
             }
         )
         self.PaymentRequestAllowedRule = self.env["payment.request.allowed.rule"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
 
     def _make_wallet(self, name="foo:testwallet", ident="testwallet"):
         partner = self.env["res.partner"].create({"name": name})
-        return self.ResPartnerBackend.create(
+        return self.ResWallet.create(
             {
                 "partner_id": partner.id,
                 "name": name,

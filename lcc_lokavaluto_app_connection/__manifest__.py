@@ -4,7 +4,7 @@
     "author": "Lokavaluto",
     "website": "https://lokavaluto.fr",
     "category": "Website",
-    "version": "16.0.1.4.0",
+    "version": "16.0.1.5.0",
     "licence": "AGPL-3",
     # any module necessary for this one to work correctly
     "depends": [
@@ -21,6 +21,7 @@
         "sale",
         "sale_management",
     ],
+    "external_dependencies": {"python": ["openupgradelib"]},
     # always loaded
     "data": [
         "security/wallets_security.xml",

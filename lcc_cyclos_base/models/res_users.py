@@ -70,7 +70,7 @@ class ResUsers(models.Model):
         return validation
 
     ## Cyclos OAuth login: reconcile with an existing Odoo user by e-mail,
-    ## and guarantee the ``res.partner.backend`` exists.
+    ## and guarantee the ``res.wallet`` exists.
     ##
     ## ``oauth_data`` is what the base module calls ``validation``: the
     ## verified OAuth identity claims (token validation response merged
@@ -241,7 +241,7 @@ class ResUsers(models.Model):
         return partners
 
     def _cyclos_ensure_wallet(self, alt_currency, cyclos_owner_id):
-        """Guarantee the user's partner owns the ``res.partner.backend``
+        """Guarantee the user's partner owns the ``res.wallet``
         for the Cyclos identity ``cyclos_owner_id`` (the wallet owner id
         in Cyclos vocabulary).
 
@@ -259,7 +259,7 @@ class ResUsers(models.Model):
             )
 
         partner = self.partner_id
-        backend_obj = self.env["res.partner.backend"].sudo()
+        backend_obj = self.env["res.wallet"].sudo()
 
         existing = backend_obj.search(
             [

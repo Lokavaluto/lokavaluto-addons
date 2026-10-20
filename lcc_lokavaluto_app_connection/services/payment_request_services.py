@@ -27,7 +27,7 @@ class PaymentService(Component):
     @features("payment_request/0 feature-less/0")
     def create_payment_request(self, params) -> list:
         PaymentRequest = self.env["payment.request"]
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
 
         currency_uri = transform_backend_keys_in_currency_uris([params.currency_uri])[0]
 
@@ -102,7 +102,7 @@ class PaymentService(Component):
         :rtype: list
         """
         PaymentRequest = self.env["payment.request"]
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
 
         # Workaround to transform backend keys into URIs
         currency_uri = transform_backend_keys_in_currency_uris(
@@ -176,7 +176,7 @@ class PaymentService(Component):
         :rtype: bool
         """
         PaymentRequest = self.env["payment.request"]
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
 
         # Workaround to transform backend keys into URIs
         currency_uri = transform_backend_keys_in_currency_uris(

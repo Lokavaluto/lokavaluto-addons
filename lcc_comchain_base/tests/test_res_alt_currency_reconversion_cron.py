@@ -9,11 +9,11 @@ class TestResWallet(TransactionComponentCase):
         super().setUp()
 
         self.ResAltCurrency = self.env["res.alt.currency"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.ResPartner = self.env["res.partner"]
 
     def _create_res_partner_backend(self, partner, currency, ident="98765"):
-        return self.ResPartnerBackend.create(
+        return self.ResWallet.create(
             {
                 "name": f"comchain:{ident}",
                 "alt_currency_id": currency.id,

@@ -41,7 +41,7 @@ class ComchainTestCase(TransactionComponentCase):
         """Create a user and associated comchain wallet.
 
         Extra keyword arguments are passed to ``_make_comchain_wallet``
-        and forwarded to the ``res.partner.backend`` create values
+        and forwarded to the ``res.wallet`` create values
         (e.g. ``comchain_type="2"``, ``comchain_wallet='"data"'``).
         """
         user = self._make_users(login)
@@ -80,7 +80,7 @@ class ComchainTestCase(TransactionComponentCase):
             "comchain_status": "active",
         }
         vals.update(kw)
-        return self.env["res.partner.backend"].create(vals)
+        return self.env["res.wallet"].create(vals)
 
     def _user_uri(self, addr):
         """Build a user_uri for the given user on the test currency."""
@@ -90,12 +90,12 @@ class ComchainTestCase(TransactionComponentCase):
 
     def _get_wallet_service(self, user):
         collection = self.env["lokavaluto.private.services"].with_user(user).browse(1)
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             return work.component(usage="wallet")
 
     def _get_recipient_service(self, user):
         collection = self.env["lokavaluto.private.services"].with_user(user).browse(1)
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             return work.component(usage="recipient")
 
     ## Mock request helper

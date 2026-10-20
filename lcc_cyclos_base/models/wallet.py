@@ -10,10 +10,10 @@ from odoo.addons.lcc_lokavaluto_app_connection import tools
 _logger = logging.getLogger(__name__)
 
 
-class ResPartnerBackend(models.Model):
+class ResWallet(models.Model):
     """Add backend commom property for local currency."""
 
-    _inherit = "res.partner.backend"
+    _inherit = "res.wallet"
 
     cyclos_create_response = fields.Text(string="Cyclos create response", tracking=True)
     cyclos_id = fields.Char(string="Cyclos id", tracking=True)
@@ -22,7 +22,7 @@ class ResPartnerBackend(models.Model):
     def write(self, vals):
         if vals.get("cyclos_id"):
             vals["ident"] = vals.get("cyclos_id")
-        return super(ResPartnerBackend, self).write(vals)
+        return super(ResWallet, self).write(vals)
 
     def get_wallet_json_data(self):
         """Returns normalized wallet data in JSON

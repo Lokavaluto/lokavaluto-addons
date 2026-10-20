@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 
 
 def _recipient_order_normalize(order):
-    """Filters API's order to res.partner.backend order."""
+    """Filters API's order to res.wallet order."""
     ORDER_CONV = {
         "name": "partner_public_name",
     }
@@ -79,7 +79,7 @@ class PartnerService(Component):
         input_param=Datamodel("partner.credit.requests.get.param"),
     )
     def credit_requests(self, partner_credit_requests_get_param):
-        ResPartnerBackend = self.env["res.partner.backend"]
+        ResWallet = self.env["res.wallet"]
         backend_keys = set(self.env.user.partner_id.backends()) & set(
             partner_credit_requests_get_param.backend_keys,
         )
@@ -144,7 +144,7 @@ class PartnerService(Component):
         ]
         ## End of the workaround
 
-        wallets = self.env["res.partner.backend"].search(
+        wallets = self.env["res.wallet"].search(
             [
                 ("alt_currency_id.uri", "in", currency_uris),
                 ("partner_id.id", "=", self.env.user.partner_id.id),
@@ -335,7 +335,7 @@ class PartnerService(Component):
             ("partner_id.is_main_profile", "=", True),  # only main profiles
         ]
         try:
-            recipients = self.env["res.partner.backend"].search(
+            recipients = self.env["res.wallet"].search(
                 [
                     ("partner_id.id", "=", recipient_id),
                     ("name", "=", request.params["data"]["rpb"]),
@@ -378,7 +378,7 @@ class PartnerService(Component):
             account_search_info.backend_keys,
         )
         currency_uris = transform_backend_keys_in_currency_uris(backend_keys)
-        recipients = self.env["res.partner.backend"].search(
+        recipients = self.env["res.wallet"].search(
             [
                 ("status", "=", "to_confirm"),
                 ("alt_currency_id.uri", "in", currency_uris),
@@ -453,7 +453,7 @@ class PartnerService(Component):
     )
     def is_transaction_allowed(self, partner_is_transaction_allowed_get_params):
         """Check that transaction is allowed between sender and recipient, based on wallet restriction rules."""
-        Wallet = self.env["res.partner.backend"]
+        Wallet = self.env["res.wallet"]
         sender_wallet = Wallet.get_by_name(
             partner_is_transaction_allowed_get_params.sender_wallet_ident,
         )
@@ -567,7 +567,7 @@ class PartnerService(Component):
         Always orders by favorite first.
         """
 
-        rpb = self.env["res.partner.backend"].sudo()
+        rpb = self.env["res.wallet"].sudo()
         recipients_fav = rpb.search(
             [("partner_id.favorite_user_ids", "in", self.env.uid), *domain],
             limit=limit,
@@ -621,7 +621,7 @@ class PartnerService(Component):
 
             if (
                 sender_wallet
-            ):  # notice : bool(self.env["res.partner.backend"]) returns False
+            ):  # notice : bool(self.env["res.wallet"]) returns False
                 matched_wallet_restriction_rule = (
                     sender_wallet.get_first_matching_restriction_rule()
                 )

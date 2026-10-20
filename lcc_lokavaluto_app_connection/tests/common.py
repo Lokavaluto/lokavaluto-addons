@@ -28,7 +28,7 @@ class WalletContactTestMixin:
 
     def _make_wallet(self, owner, active=True, address=None):
         address = address or self.address
-        return self.env["res.partner.backend"].create({
+        return self.env["res.wallet"].create({
             "name": f"{self.wallet_type}:{address}",
             "alt_currency_id": self.currency.id,
             "partner_id": owner.partner_id.id,
@@ -41,7 +41,7 @@ class WalletContactTestMixin:
         collection = (
             self.env["lokavaluto.private.services"].with_user(self.owner).browse(1)
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             service = work.component(usage=self.wallet_type)
             return service.contact(self.contact_params_class(addresses=addresses))
 

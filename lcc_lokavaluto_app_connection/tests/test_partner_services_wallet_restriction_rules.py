@@ -8,7 +8,7 @@ class TestPartnerService(TransactionComponentCase):
 
         self.ResUsers = self.env["res.users"]
         self.ResPartner = self.env["res.partner"]
-        self.ResPartnerBackend = self.env["res.partner.backend"]
+        self.ResWallet = self.env["res.wallet"]
         self.WalletRestrictionRule = self.env["wallet.restriction.rule"]
         self.ResAltCurrency = self.env["res.alt.currency"]
 
@@ -23,7 +23,7 @@ class TestPartnerService(TransactionComponentCase):
         self.sender = self.ResPartner.create(
             {"name": "Sender", "user_id": self.sender_user.id}
         )
-        self.sender_wallet = self.ResPartnerBackend.create(
+        self.sender_wallet = self.ResWallet.create(
             {
                 "partner_id": self.sender.id,
                 "name": "foo:sender",
@@ -33,7 +33,7 @@ class TestPartnerService(TransactionComponentCase):
         )
 
         self.recipient_allowed = self.ResPartner.create({"name": "Allowed Recipient"})
-        self.recipient_allowed_wallet = self.ResPartnerBackend.create(
+        self.recipient_allowed_wallet = self.ResWallet.create(
             {
                 "partner_id": self.recipient_allowed.id,
                 "name": "foo:allowed_recipient",
@@ -44,7 +44,7 @@ class TestPartnerService(TransactionComponentCase):
         self.recipient_not_allowed = self.ResPartner.create(
             {"name": "Not Allowed Recipient"}
         )
-        self.recipient_not_allowed_wallet = self.ResPartnerBackend.create(
+        self.recipient_not_allowed_wallet = self.ResWallet.create(
             {
                 "partner_id": self.recipient_not_allowed.id,
                 "name": "foo:not_allowed_recipient",
@@ -76,7 +76,7 @@ class TestPartnerService(TransactionComponentCase):
             .with_user(self.sender_user)
             .browse(1)
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             # Notice : I did not understand which model I should put in work_on() argument
             service = work.component(usage="partner")
             result = service.is_transaction_allowed(
@@ -94,7 +94,7 @@ class TestPartnerService(TransactionComponentCase):
             .with_user(self.sender_user)
             .browse(1)
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             service = work.component(usage="partner")
             result = service.is_transaction_allowed(
                 partner_is_transaction_allowed_get_params=self.sender_to_allowed_recipient_get_params
@@ -128,7 +128,7 @@ class TestPartnerService(TransactionComponentCase):
             .with_user(self.sender_user)
             .browse(1)
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             service = work.component(usage="partner")
             result = service.is_transaction_allowed(
                 partner_is_transaction_allowed_get_params=self.sender_to_allowed_recipient_get_params
@@ -153,7 +153,7 @@ class TestPartnerService(TransactionComponentCase):
             .with_user(self.sender_user)
             .browse(1)
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             service = work.component(usage="partner")
             result = service.is_transaction_allowed(
                 partner_is_transaction_allowed_get_params=self.sender_to_allowed_recipient_get_params
@@ -170,7 +170,7 @@ class TestPartnerService(TransactionComponentCase):
         another_sender = self.ResPartner.create(
             {"name": "Another Sender", "user_id": another_sender_user.id}
         )
-        another_sender_wallet = self.ResPartnerBackend.create(
+        another_sender_wallet = self.ResWallet.create(
             {
                 "partner_id": another_sender.id,
                 "name": "foo:anothersender",
@@ -192,7 +192,7 @@ class TestPartnerService(TransactionComponentCase):
             .with_user(another_sender_user)
             .browse(1)
         )
-        with collection.work_on("res.partner.backend") as work:
+        with collection.work_on("res.wallet") as work:
             service = work.component(usage="partner")
             result = service.is_transaction_allowed(
                 partner_is_transaction_allowed_get_params=another_sender_to_allowed_recipient_get_params
