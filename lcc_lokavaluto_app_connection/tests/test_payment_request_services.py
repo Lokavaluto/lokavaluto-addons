@@ -6,6 +6,7 @@ from ..datamodel.payment_request_info import (
 from odoo.addons.component.tests.common import TransactionComponentCase
 from odoo.exceptions import AccessDenied, ValidationError
 from ..tools import transform_wallet_uris_in_wallet_backend_keys
+from .common import lcc_api_caller
 
 
 class TestResWallet(TransactionComponentCase):
@@ -249,9 +250,10 @@ class TestResWallet(TransactionComponentCase):
                 currency_uri=currency.uri,
                 wallet_uri=wallet_1.uri
             )
-            payment_requests = service.list_payment_requests(
-                list_payment_requests_params=params
-            )
+            with lcc_api_caller(wallet_1):
+                payment_requests = service.list_payment_requests(
+                    list_payment_requests_params=params
+                )
             wallet_1_backend_key = transform_wallet_uris_in_wallet_backend_keys(
                 [wallet_1.uri]
             )[0]
@@ -328,9 +330,10 @@ class TestResWallet(TransactionComponentCase):
                 wallet_uri=wallet_1.uri,
                 state=["paid"]
             )
-            payment_requests = service.list_payment_requests(
-                list_payment_requests_params=params
-            )
+            with lcc_api_caller(wallet_1):
+                payment_requests = service.list_payment_requests(
+                    list_payment_requests_params=params
+                )
             wallet_1_backend_key = transform_wallet_uris_in_wallet_backend_keys(
                 [wallet_1.uri]
             )[0]
@@ -393,9 +396,10 @@ class TestResWallet(TransactionComponentCase):
                 status="paid",
                 message="test_tx_id",
             )
-            res = service.update_payment_request(
-                update_payment_request_params=params
-            )
+            with lcc_api_caller(wallet_1):
+                res = service.update_payment_request(
+                    update_payment_request_params=params
+                )
             self.assertTrue(res)
             self.assertEqual(payment_request.state, "paid")
             self.assertEqual(payment_request.tx_id, "test_tx_id")
@@ -435,7 +439,7 @@ class TestResWallet(TransactionComponentCase):
                 status="paid",
                 message="test_tx_id",
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_1), self.assertRaises(ValidationError) as context:
                 service.update_payment_request(
                     update_payment_request_params=params
                 )
@@ -478,7 +482,7 @@ class TestResWallet(TransactionComponentCase):
                 status="paid",
                 message="test_tx_id",
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_1), self.assertRaises(ValidationError) as context:
                 service.update_payment_request(
                     update_payment_request_params=params
                 )
@@ -521,9 +525,10 @@ class TestResWallet(TransactionComponentCase):
                 status="cancelled",
                 message="Not needed anymore."
             )
-            res = service.update_payment_request(
-                update_payment_request_params=params
-            )
+            with lcc_api_caller(wallet_1):
+                res = service.update_payment_request(
+                    update_payment_request_params=params
+                )
             self.assertTrue(res)
             self.assertEqual(payment_request.state, "cancelled")
             self.assertEqual(payment_request.message, "Not needed anymore.")
@@ -565,7 +570,7 @@ class TestResWallet(TransactionComponentCase):
                 status="cancelled",
                 message="Not needed anymore."
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_2), self.assertRaises(ValidationError) as context:
                 service.update_payment_request(
                     update_payment_request_params=params
                 )
@@ -609,9 +614,10 @@ class TestResWallet(TransactionComponentCase):
                 status="refused",
                 message="I refuse to pay"
             )
-            res = service.update_payment_request(
-                update_payment_request_params=params
-            )
+            with lcc_api_caller(wallet_2):
+                res = service.update_payment_request(
+                    update_payment_request_params=params
+                )
             self.assertTrue(res)
             self.assertEqual(payment_request.state, "refused")
             self.assertEqual(payment_request.refusal_reason, "I refuse to pay")
@@ -654,7 +660,7 @@ class TestResWallet(TransactionComponentCase):
                 status="refused",
                 message="I refuse to pay"
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_1), self.assertRaises(ValidationError) as context:
                 service.update_payment_request(
                     update_payment_request_params=params
                 )

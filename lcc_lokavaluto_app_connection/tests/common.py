@@ -1,3 +1,33 @@
+from contextlib import contextmanager
+from unittest.mock import patch
+
+from minimock import Mock
+
+import odoo.addons.lcc_lokavaluto_app_connection.services as lcc_services
+
+CALLER_USER_URI_HEADER = "X-Lokapi-Caller-User-Uri"
+
+
+@contextmanager
+def lcc_api_caller(wallet):
+    """Bind a fake HTTP request whose caller is the owner of ``wallet``.
+
+    ``@lcc_api`` endpoints identify their caller from the
+    ``X-Lokapi-Caller-User-Uri`` header of the current HTTP request.
+    A test calling such an endpoint directly has no request bound,
+    so this binds one carrying the user URI of ``wallet``.
+    """
+    user_uri = wallet.uri.replace("/wallet/", "/user/", 1)
+    mock_request = Mock(
+        "request",
+        httprequest=Mock("httprequest", headers={CALLER_USER_URI_HEADER: user_uri}),
+        future_response=Mock("future_response", headers={}),
+        _common_features=None,
+    )
+    with patch.object(lcc_services, "request", mock_request):
+        yield
+
+
 class WalletContactTestMixin:
     """Shared scenarios for backend contact endpoints.
 

@@ -38,6 +38,7 @@ class TestPartnerServiceReconversions(TransactionComponentCase):
 
         self.user = self.ResUsers.create({"name": "John Doe", "login": "foo"})
         self.partner = self.user.partner_id
+        self._create_purchase_accounting(self.partner)
 
         # Create wallets
         self.wallet_A = self.ResPartnerBackend.create(
@@ -121,6 +122,39 @@ class TestPartnerServiceReconversions(TransactionComponentCase):
         )
         self.ident_debit_request_F = f"{self.currencyB.engine}://{self.currencyB.ident}/tx/{self.debit_request_F.transaction_id}"
 
+    def _create_purchase_accounting(self, partner):
+        """Provide what creating a debit invoice requires.
+
+        A debit request becomes ``received`` only once its debit invoice
+        (an ``in_invoice``) is created, which needs a purchase journal
+        and a payable account for ``partner``.  A database without a
+        chart of accounts has neither.
+        """
+        Account = self.env["account.account"]
+        payable = Account.create(
+            {
+                "name": "Reconversion test payable",
+                "code": "RTPAY",
+                "account_type": "liability_payable",
+                "reconcile": True,
+            }
+        )
+        expense = Account.create(
+            {
+                "name": "Reconversion test expense",
+                "code": "RTEXP",
+                "account_type": "expense",
+            }
+        )
+        self.env["account.journal"].create(
+            {
+                "name": "Reconversion test purchases",
+                "code": "RTPUR",
+                "type": "purchase",
+                "default_account_id": expense.id,
+            }
+        )
+        partner.property_account_payable_id = payable
 
     def test_reconversions(self):
         collection = (
