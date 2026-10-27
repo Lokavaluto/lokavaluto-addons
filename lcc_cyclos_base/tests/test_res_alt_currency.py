@@ -1,6 +1,9 @@
+import importlib.util
 import json
+import os
 from unittest.mock import MagicMock, patch
 
+from odoo.modules.module import get_module_path
 from odoo.tests.common import TransactionCase
 
 REQUEST_PATH = "odoo.addons.lcc_cyclos_base.models.res_alt_currency.requests.request"
@@ -124,3 +127,74 @@ class TestCyclosRestCall(TransactionCase):
         self.assertTrue(
             sent[1].endswith("/4036691651388677992/passwords/login/change"), sent[1]
         )
+
+    def test_wallet_ident_set_at_creation(self):
+        wallet = self._create_cyclos_wallet(self._create_cyclos_currency())
+        self.assertEqual(wallet.ident, "4036691651388677992")
+        self.assertTrue(wallet.uri.endswith("/wallet/4036691651388677992"), wallet.uri)
+
+    def test_reconversion_yields_uri_of_sender_wallet(self):
+        currency = self._create_cyclos_currency()
+        wallet = self._create_cyclos_wallet(currency)
+        transactions = [
+            {
+                "id": "4036655354888494952",
+                "date": "2026-10-27T10:00:00.000+01:00",
+                "amount": "1.00",
+                "from": {"user": {"id": "4036691651388677992"}},
+            }
+        ]
+        response = MagicMock(text=json.dumps(transactions))
+        with patch(REQUEST_PATH, return_value=response), patch.object(
+            self.env.cr, "commit"
+        ):
+            (transaction,) = list(currency._retrieve_last_debit_transactions())
+        self.assertEqual(transaction["wallet_uri"], wallet.uri)
+        self.assertNotIn("sender", transaction)
+
+
+class TestCyclosWalletIdentMigration(TransactionCase):
+    """Wallets created before ``ident`` was set at creation get it back."""
+
+    def _migrate(self):
+        path = get_module_path("lcc_cyclos_base")
+        spec = importlib.util.spec_from_file_location(
+            "lcc_cyclos_base_post_migrate_16_0_1_2_1",
+            os.path.join(path, "migrations", "16.0.1.2.1", "post-migrate.py"),
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        module.migrate(self.env.cr, "16.0.1.2.0")
+        self.env.invalidate_all()
+
+    def _wallet(self, currency, cyclos_id, ident):
+        partner = self.env["res.partner"].create({"name": f"Holder {cyclos_id}"})
+        wallet = self.env["res.partner.backend"].create(
+            {
+                "name": f"cyclos:{cyclos_id}",
+                "alt_currency_id": currency.id,
+                "partner_id": partner.id,
+                "cyclos_id": cyclos_id,
+            }
+        )
+        ## Simulate wallets stored before the fix, bypassing the ORM.
+        self.env.flush_all()
+        self.env.cr.execute(
+            "UPDATE res_partner_backend SET ident = %s, uri = %s WHERE id = %s",
+            (ident, f"{currency.uri}/wallet/{ident}", wallet.id),
+        )
+        self.env.invalidate_all(flush=False)
+        return wallet
+
+    def test_missing_wallet_ident_filled_from_cyclos_id(self):
+        currency = self.env["res.alt.currency"].create(
+            {"name": "C", "ident": "cyclos.example.test", "engine": "cyclos"}
+        )
+        missing = self._wallet(currency, "111", None)
+        kept = self._wallet(currency, "222", "already-set")
+
+        self._migrate()
+
+        self.assertEqual(missing.ident, "111")
+        self.assertEqual(missing.uri, f"{currency.uri}/wallet/111")
+        self.assertEqual(kept.ident, "already-set")

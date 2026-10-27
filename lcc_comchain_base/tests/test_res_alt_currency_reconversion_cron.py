@@ -35,6 +35,20 @@ class TestResWallet(TransactionComponentCase):
             }
         )
 
+    def test_wallet_ident_set_at_creation(self):
+        currency = self._create_alt_currency()
+        partner = self._create_res_partner()
+        wallet = self.ResPartnerBackend.create(
+            {
+                "name": "comchain:98765",
+                "alt_currency_id": currency.id,
+                "partner_id": partner.id,
+                "comchain_id": "98765",
+            }
+        )
+        self.assertEqual(wallet.ident, "98765")
+        self.assertEqual(wallet.uri, f"{currency.uri}/wallet/98765")
+
     def test_retrieve_last_debit_transactions_empty_tx_list(self):
         """Test that _retrieve_last_debit_transactions returns an
         empty list when no transactions are found.
@@ -94,7 +108,8 @@ class TestResWallet(TransactionComponentCase):
         txs = list(currency._retrieve_last_debit_transactions(1, 1))
 
         self.assertEqual(len(txs), 1)
-        self.assertEqual(txs[0]["sender"], "comchain:456")
+        self.assertEqual(txs[0]["wallet_uri"], f"{currency.uri}/wallet/456")
+        self.assertNotIn("sender", txs[0])
         self.assertEqual(txs[0]["amount"], 0.01)
         self.assertEqual(txs[0]["transaction_id"], "0xTransactionHash1")
         restore()

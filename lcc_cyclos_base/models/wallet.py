@@ -19,6 +19,13 @@ class ResPartnerBackend(models.Model):
     cyclos_id = fields.Char(string="Cyclos id", tracking=True)
     cyclos_status = fields.Char(string="Cyclos Status", tracking=True)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("cyclos_id"):
+                vals["ident"] = vals.get("cyclos_id")
+        return super(ResPartnerBackend, self).create(vals_list)
+
     def write(self, vals):
         if vals.get("cyclos_id"):
             vals["ident"] = vals.get("cyclos_id")

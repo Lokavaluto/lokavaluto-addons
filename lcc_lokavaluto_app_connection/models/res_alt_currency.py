@@ -131,7 +131,7 @@ class AlternativeCurrency(models.Model):
     def _assert_transaction_valid(self, transaction) -> None:
         """Check if the transaction has all required fields."""
         for field in [
-            "sender",
+            "wallet_uri",
             "amount",
             "backend_ident",
             "transaction_id",
@@ -155,24 +155,24 @@ class AlternativeCurrency(models.Model):
         for transaction in self._retrieve_last_debit_transactions(start, end):
             self._assert_transaction_valid(transaction)
 
-            ## replace sender by wallet_id
+            ## replace the sender's wallet uri by wallet_id
 
             wallet_ids = self.env["res.partner.backend"].search(
-                [("name", "=", transaction["sender"])],
+                [("uri", "=", transaction["wallet_uri"])],
             )
             if len(wallet_ids) == 0:
                 _logger.warning(
-                    "No wallet found for debit transaction %r (Sender requested: %r)"
-                    % (transaction["transaction_id"], transaction["sender"])
+                    "No wallet found for debit transaction %r (Sender wallet uri: %r)"
+                    % (transaction["transaction_id"], transaction["wallet_uri"])
                 )
                 continue
             if len(wallet_ids) > 1:
                 raise ValueError(
-                    "Too many wallets found for debit transaction %r (Sender requested: %r)"
-                    % (transaction["transaction_id"], transaction["sender"])
+                    "Too many wallets found for debit transaction %r (Sender wallet uri: %r)"
+                    % (transaction["transaction_id"], transaction["wallet_uri"])
                 )
             transaction["wallet_id"] = wallet_ids[0].id
-            del transaction["sender"]
+            del transaction["wallet_uri"]
 
             ## normalize date to UTC and remove timezone
 
@@ -235,7 +235,8 @@ class AlternativeCurrency(models.Model):
     def _retrieve_last_debit_transactions(self, start=None, end=None):
         """TO OVERIDE in digital currency backend dedicated add-ons
         A list of transactions (dictionary) is expected, with the following data:
-        - sender: the Odoo name of the wallet concerned by the debit request,
+        - wallet_uri: the uri of the wallet that sent the debit transaction
+          (``<currency uri>/wallet/<wallet ident>``),
         - amount: the amount debited from the wallet,
         - tx_id: the transaction ID in the digital currency backend
         - tx_timestamp: the timestamp of the transaction.

@@ -202,7 +202,8 @@ class AlternativeCurrency(models.Model):
         A list of transactions (dictionary) is expected, with the
         following data:
 
-        - sender: the Odoo name of the wallet concerned by the debit request,
+        - wallet_uri: the uri of the wallet that sent the debit transaction
+          (``<currency uri>/wallet/<wallet ident>``),
         - amount: the amount debited from the wallet,
         - transaction_id: the transaction ID in the digital currency backend
         - transaction_date: the timestamp of the transaction.
@@ -275,7 +276,7 @@ class AlternativeCurrency(models.Model):
                     msg,
                 )
             yield {
-                "sender": "cyclos:{}".format(tx["from"]["user"]["id"]),
+                "wallet_uri": f"{self.uri}/wallet/{tx['from']['user']['id']}",
                 "amount": float(tx["amount"]),
                 "transaction_id": tx["id"],
                 "backend_ident": backend_ident,
