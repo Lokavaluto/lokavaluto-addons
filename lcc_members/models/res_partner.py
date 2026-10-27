@@ -4,6 +4,7 @@
 import logging
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools import email_normalize
 from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
@@ -112,20 +113,39 @@ class res_partner(models.Model):
                 or partner.public_profile_id.name
             )
 
+    def write(self, vals):
+        partners = self
+        if "email" in vals:
+            # Legacy duplicates must still be able to save their unchanged email
+            new_email = vals["email"]
+            new_key = email_normalize(new_email, strict=False) or new_email
+            unchanged_ids = self.filtered(
+                lambda p: (p.email_normalized or p.email) == new_key
+            ).ids
+            if unchanged_ids:
+                partners = self.with_context(lcc_email_unchanged_ids=unchanged_ids)
+        return super(res_partner, partners).write(vals)
+
     @api.constrains("email")
     def _check_email_unique(self):
+        unchanged_ids = self.env.context.get("lcc_email_unchanged_ids", [])
         for rec in self.filtered("email"):
             if "," in rec.email:
                 raise UserError(
                     _("Field contains multiple email addresses. This is not supported.")
                 )
-            if rec.is_main_profile:
+            if rec.is_main_profile and rec.id not in unchanged_ids:
+                # email_normalized is False for invalid emails: compare them as is
+                email_domain = (
+                    ("email_normalized", "=", rec.email_normalized)
+                    if rec.email_normalized
+                    else ("email", "=", rec.email)
+                )
                 if self.search_count(
                     [
-                        ("email", "=", rec.email),
+                        email_domain,
                         ("id", "!=", rec.id),
                         ("is_main_profile", "=", True),
-                        ("is_company", "=", rec.is_company),
                     ]
                 ):
                     raise UserError(
