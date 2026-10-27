@@ -9,6 +9,7 @@ from ..datamodel.payment_request_recurrent_contract_info import (
     DeletePaymentRequestRecurrentContractsParams,
 )
 from ..tools import transform_wallet_uris_in_wallet_backend_keys
+from .common import lcc_api_caller
 
 
 class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
@@ -273,6 +274,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
         partner = self._create_res_partner()
         user = self._create_res_user(partner=partner, company=company)
         wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
+        self._create_payment_request_allowed_rule()
         collection = self.Services.with_user(user).browse(1)
 
         start_date = date.today()
@@ -416,7 +418,8 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 currency_uri=currency.uri,
                 wallet_uri=wallet_1.uri,
             )
-            contracts = service.list_payment_request_recurrent_contracts(params)
+            with lcc_api_caller(wallet_1):
+                contracts = service.list_payment_request_recurrent_contracts(params)
 
             self.assertEqual(len(contracts), 2)
 
@@ -471,7 +474,8 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 wallet_uri=wallet_1.uri,
                 state=["open"],
             )
-            contracts = service.list_payment_request_recurrent_contracts(params)
+            with lcc_api_caller(wallet_1):
+                contracts = service.list_payment_request_recurrent_contracts(params)
 
             self.assertEqual(len(contracts), 1)
             self.assertEqual(contracts[0]["id"], contract_open.id)
@@ -484,6 +488,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
         currency = self._create_alt_currency()
         partner = self._create_res_partner()
         user = self._create_res_user(partner=partner, company=company)
+        wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
         collection = self.Services.with_user(user).browse(1)
 
         with collection.work_on("payment.request.recurrent.contract") as work:
@@ -492,7 +497,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 currency_uri=currency.uri,
                 wallet_uri="invalid:wallet",
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_1), self.assertRaises(ValidationError) as context:
                 service.list_payment_request_recurrent_contracts(params)
             self.assertIn("Wallet not found", str(context.exception))
 
@@ -530,7 +535,8 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 currency_uri=currency.uri,
                 wallet_uri=wallet_1.uri,
             )
-            contracts = service.list_payment_request_recurrent_contracts(params)
+            with lcc_api_caller(wallet_1):
+                contracts = service.list_payment_request_recurrent_contracts(params)
 
             self.assertEqual(len(contracts), 1)
             result = contracts[0]
@@ -590,7 +596,8 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 wallet_uri=wallet_1.uri,
                 payment_request_ids=[contract_id],
             )
-            res = service.delete_payment_request_recurrent_contracts(params)
+            with lcc_api_caller(wallet_1):
+                res = service.delete_payment_request_recurrent_contracts(params)
 
             self.assertTrue(res)
             # Verify contract is deleted
@@ -635,7 +642,8 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 wallet_uri=wallet_1.uri,
                 payment_request_ids=contract_ids,
             )
-            res = service.delete_payment_request_recurrent_contracts(params)
+            with lcc_api_caller(wallet_1):
+                res = service.delete_payment_request_recurrent_contracts(params)
 
             self.assertTrue(res)
             # Verify both contracts are deleted
@@ -675,7 +683,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 wallet_uri=wallet_1.uri,
                 payment_request_ids=[contract.id],
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_1), self.assertRaises(ValidationError) as context:
                 service.delete_payment_request_recurrent_contracts(params)
             self.assertIn(
                 "Some payment request recurrent contracts do not belong to the given wallet",
@@ -702,7 +710,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 wallet_uri=wallet_1.uri,
                 payment_request_ids=[99999],  # Non-existent ID
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_1), self.assertRaises(ValidationError) as context:
                 service.delete_payment_request_recurrent_contracts(params)
             self.assertIn(
                 "Some payment request recurrent contracts were not found",
@@ -716,6 +724,7 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
         currency = self._create_alt_currency()
         partner = self._create_res_partner()
         user = self._create_res_user(partner=partner, company=company)
+        wallet_1 = self._create_res_partner_backend(partner, currency, ident="12345")
         collection = self.Services.with_user(user).browse(1)
 
         with collection.work_on("payment.request.recurrent.contract") as work:
@@ -725,6 +734,6 @@ class TestPaymentRequestRecurrentContractServices(TransactionComponentCase):
                 wallet_uri="invalid:wallet",
                 payment_request_ids=[1],
             )
-            with self.assertRaises(ValidationError) as context:
+            with lcc_api_caller(wallet_1), self.assertRaises(ValidationError) as context:
                 service.delete_payment_request_recurrent_contracts(params)
             self.assertIn("Wallet not found", str(context.exception))
