@@ -14,6 +14,7 @@
     # any module necessary for this one to work correctly
     "depends": [
         "base",
+        "mail",
         "auth_signup",
         "partner_firstname",
         "partner_industry_secondary",
