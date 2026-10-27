@@ -18,6 +18,8 @@
 		<field name="cyclos_credit_payment_type_pro" attrs="{'required': [('engine', '=', 'cyclos')]}" />
 		<field name="cyclos_reconversion_account_type" attrs="{'required': [('engine', '=', 'cyclos')]}" />
 		<field name="cyclos_password_type" attrs="{'required': [('engine', '=', 'cyclos')]}" />
+		<field name="cyclos_user_group_person" attrs="{'required': [('engine', '=', 'cyclos')]}" />
+		<field name="cyclos_user_group_company" attrs="{'required': [('engine', '=', 'cyclos')]}" />
 		<field name="cyclos_date_last_reconversion_check" />
               </group>
             </xpath>

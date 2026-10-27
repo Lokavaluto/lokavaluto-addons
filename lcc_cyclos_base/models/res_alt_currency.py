@@ -82,6 +82,22 @@ class AlternativeCurrency(models.Model):
         tracking=True,
     )
 
+    cyclos_user_group_person = fields.Char(
+        string="Cyclos group of person wallets",
+        help="Internal name of the Cyclos group in which Odoo creates the "
+        "user of a new wallet for a person.",
+        default="particuliers",
+        tracking=True,
+    )
+
+    cyclos_user_group_company = fields.Char(
+        string="Cyclos group of company wallets",
+        help="Internal name of the Cyclos group in which Odoo creates the "
+        "user of a new wallet for a company.",
+        default="professionnels",
+        tracking=True,
+    )
+
     cyclos_debit_wallet_partner = fields.Many2one(
         "res.partner",
         string="Cyclos Debit Wallet Partner",

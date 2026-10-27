@@ -44,6 +44,10 @@ match the Lokavaluto Cyclos configuration):
   forces the password of a wallet user (default
   ``-4307382460900696903``; the internal name, e.g. ``login``, also
   works).
+- ``Cyclos group of person wallets`` / ``... company wallets``: groups
+  in which Odoo creates the Cyclos user of a new wallet (defaults
+  ``particuliers`` and ``professionnels``; ``GET
+  /api/users/groups-for-registration`` lists the available ones).
 
 ### OAuth Configuration
 

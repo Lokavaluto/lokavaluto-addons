@@ -152,6 +152,32 @@ class TestCyclosRestCall(TransactionCase):
         self.assertEqual(transaction["wallet_uri"], wallet.uri)
         self.assertNotIn("sender", transaction)
 
+    def _registration_group(self, currency, is_company=False):
+        partner = self.env["res.partner"].create(
+            {"name": "New holder", "is_company": is_company}
+        )
+        (sent,) = self._sent_requests(
+            lambda: partner.cyclos_add_user(currency),
+            response_text='{"user": {"id": "1234"}, "status": "active"}',
+        )
+        return json.loads(sent[-1]["data"])["group"]
+
+    def test_registration_uses_configured_groups(self):
+        currency = self._create_cyclos_currency(
+            cyclos_user_group_person="individual",
+            cyclos_user_group_company="professional",
+        )
+        self.assertEqual(self._registration_group(currency), "individual")
+        self.assertEqual(
+            self._registration_group(currency, is_company=True), "professional"
+        )
+
+    def test_registration_groups_default_to_lokavaluto_cyclos_names(self):
+        currency = self._create_cyclos_currency()
+        self.assertEqual(self._registration_group(currency), "particuliers")
+        self.assertEqual(
+            self._registration_group(currency, is_company=True), "professionnels"
+        )
 
 class TestCyclosWalletIdentMigration(TransactionCase):
     """Wallets created before ``ident`` was set at creation get it back."""

@@ -16,7 +16,9 @@ class ResPartner(models.Model):
         for record in self:
             backend_obj = self.env["res.partner.backend"]
             group = (
-                "particuliers" if record.company_type == "person" else "professionnels"
+                alt_currency_id.cyclos_user_group_person
+                if record.company_type == "person"
+                else alt_currency_id.cyclos_user_group_company
             )
             data = {
                 "username": record.id,
