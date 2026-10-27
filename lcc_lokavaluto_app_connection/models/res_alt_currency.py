@@ -95,13 +95,37 @@ class AlternativeCurrency(models.Model):
                     f"No currency found for uri {currency_uri}.",
                 )
 
+        ## When syncing all currencies, each one is imported
+        ## independently: a failing currency must not prevent the
+        ## others from being imported. Its uncommitted work is rolled
+        ## back, and the cron run still fails at the end so that the
+        ## failure stays visible.
+        failed_currencies = []
         for alt_currency in currencies:
+            name = alt_currency.name
             _logger.info(
-                f"Start sync debit request for alt currency {alt_currency.name}.",
+                f"Start sync debit request for alt currency {name}.",
             )
-            alt_currency._sync_new_debit_requests(start, end)
+            try:
+                alt_currency._sync_new_debit_requests(start, end)
+            except Exception:
+                if currency_uri is not None:
+                    raise
+                self.env.cr.rollback()
+                _logger.exception(
+                    f"Sync of debit request for alt currency {name} failed.",
+                )
+                failed_currencies.append(name)
+                continue
+            if currency_uri is None:
+                self.env.cr.commit()
             _logger.info(
-                f"Sync of debit request for alt currency {alt_currency.name} finished.",
+                f"Sync of debit request for alt currency {name} finished.",
+            )
+        if failed_currencies:
+            raise RuntimeError(
+                "Sync of debit requests failed for alt currencies: %s "
+                "(see previous errors in the logs)." % ", ".join(failed_currencies)
             )
 
     def _assert_transaction_valid(self, transaction) -> None:
