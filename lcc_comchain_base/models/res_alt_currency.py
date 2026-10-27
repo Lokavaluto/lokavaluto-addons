@@ -38,7 +38,8 @@ class AlternativeCurrency(models.Model):
 
     def _retrieve_last_debit_transactions(self, start=None, end=None):
         """A list of transactions (dictionnary) is expected, with the following data:
-        - sender: the Odoo name of the wallet concerned by the debit request,
+        - wallet_uri: the uri of the wallet that sent the debit transaction
+          (``<currency uri>/wallet/<wallet ident>``),
         - amount: the amount debited from the wallet,
         - transaction_id: the transaction ID in the digital currency backend
         - transaction_date: the timestamp of the transaction.
@@ -124,7 +125,7 @@ class AlternativeCurrency(models.Model):
                     msg = "Sent amount overflows double precision limits"
                     raise ValueError(msg)
                 yield {
-                    "sender": f"comchain:{sender_address}",
+                    "wallet_uri": f"{self.uri}/wallet/{sender_address}",
                     "amount": float(f"{string_amount[0:-2]}.{string_amount[-2:]}"),
                     "transaction_id": tx.hash,
                     "backend_ident": backend_ident,

@@ -108,8 +108,8 @@ class ResPartnerBackend(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         res = super(ResPartnerBackend, self).create(vals_list)
-        for wallet in self:
-            if wallet.type == "foo":
+        for wallet in res:
+            if wallet.type == "foo" and not wallet.ident:
                 wallet.ident = wallet.id
         return res
 

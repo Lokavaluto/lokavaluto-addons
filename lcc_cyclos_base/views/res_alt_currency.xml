@@ -11,8 +11,15 @@
               <group name="cyclos" string="Cyclos specific parameters" attrs="{'invisible': [('engine', '!=', 'cyclos')]}">
 		<field name="cyclos_server_url" />
 		<field name="cyclos_server_login" />
+		<field name="cyclos_server_principal_type" placeholder="username" />
 		<field name="cyclos_server_password" password="True" />
 		<field name="cyclos_debit_wallet_partner" />
+		<field name="cyclos_credit_payment_type_user" attrs="{'required': [('engine', '=', 'cyclos')]}" />
+		<field name="cyclos_credit_payment_type_pro" attrs="{'required': [('engine', '=', 'cyclos')]}" />
+		<field name="cyclos_reconversion_account_type" attrs="{'required': [('engine', '=', 'cyclos')]}" />
+		<field name="cyclos_password_type" attrs="{'required': [('engine', '=', 'cyclos')]}" />
+		<field name="cyclos_user_group_person" attrs="{'required': [('engine', '=', 'cyclos')]}" />
+		<field name="cyclos_user_group_company" attrs="{'required': [('engine', '=', 'cyclos')]}" />
 		<field name="cyclos_date_last_reconversion_check" />
               </group>
             </xpath>

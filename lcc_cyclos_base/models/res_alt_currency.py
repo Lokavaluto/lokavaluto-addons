@@ -33,8 +33,69 @@ class AlternativeCurrency(models.Model):
 
     cyclos_server_login = fields.Char(string="Login for cyclos server", tracking=True)
 
+    cyclos_server_principal_type = fields.Char(
+        string="Login type for cyclos server",
+        help="Value of the ``Principal-Type`` HTTP header sent with the login "
+        "on every request to Cyclos: internal name of the user "
+        "identification method the login belongs to (for instance "
+        "``username`` or ``email``, or ``*`` to try all methods). Leave "
+        "empty to use the default identification method of the Cyclos "
+        "``webServices`` channel.",
+        tracking=True,
+    )
+
     cyclos_server_password = fields.Char(
         string="Password for cyclos server", tracking=True
+    )
+
+    cyclos_credit_payment_type_user = fields.Char(
+        string="Cyclos payment type to credit a user wallet",
+        help="Internal name of the Cyclos payment type (``<system account "
+        "type>.<transfer type>``) used to credit the wallet of a "
+        "person.",
+        default="debit.toUser",
+        tracking=True,
+    )
+
+    cyclos_credit_payment_type_pro = fields.Char(
+        string="Cyclos payment type to credit a company wallet",
+        help="Internal name of the Cyclos payment type (``<system account "
+        "type>.<transfer type>``) used to credit the wallet of a "
+        "company.",
+        default="debit.toPro",
+        tracking=True,
+    )
+
+    cyclos_reconversion_account_type = fields.Char(
+        string="Cyclos reconversion account type",
+        help="Internal name of the Cyclos system account type receiving "
+        "the payments that wallets send for reconversion.",
+        default="debit",
+        tracking=True,
+    )
+
+    cyclos_password_type = fields.Char(
+        string="Cyclos password type of wallets",
+        help="Internal name or id of the Cyclos password type that Odoo "
+        "sets when it forces the password of a wallet user.",
+        default="-4307382460900696903",
+        tracking=True,
+    )
+
+    cyclos_user_group_person = fields.Char(
+        string="Cyclos group of person wallets",
+        help="Internal name of the Cyclos group in which Odoo creates the "
+        "user of a new wallet for a person.",
+        default="particuliers",
+        tracking=True,
+    )
+
+    cyclos_user_group_company = fields.Char(
+        string="Cyclos group of company wallets",
+        help="Internal name of the Cyclos group in which Odoo creates the "
+        "user of a new wallet for a company.",
+        default="professionnels",
+        tracking=True,
     )
 
     cyclos_debit_wallet_partner = fields.Many2one(
@@ -93,6 +154,8 @@ class AlternativeCurrency(models.Model):
             data = {}
         self.ensure_one()
         headers = {"Content-type": "application/json", "Accept": "text/plain"}
+        if self.cyclos_server_principal_type:
+            headers["Principal-Type"] = self.cyclos_server_principal_type
         requests.packages.urllib3.disable_warnings()
         if not api_login:
             api_login = self.cyclos_server_login
@@ -155,7 +218,8 @@ class AlternativeCurrency(models.Model):
         A list of transactions (dictionary) is expected, with the
         following data:
 
-        - sender: the Odoo name of the wallet concerned by the debit request,
+        - wallet_uri: the uri of the wallet that sent the debit transaction
+          (``<currency uri>/wallet/<wallet ident>``),
         - amount: the amount debited from the wallet,
         - transaction_id: the transaction ID in the digital currency backend
         - transaction_date: the timestamp of the transaction.
@@ -205,7 +269,8 @@ class AlternativeCurrency(models.Model):
 
         # Set all the search criteria in the REST request entrypoint
         entrypoint = (
-            f"/transactions?{period_range}&orderBy=dateAsc&toAccountTypes=debit"
+            f"/transactions?{period_range}&orderBy=dateAsc"
+            f"&toAccountTypes={quote(self.cyclos_reconversion_account_type, safe='')}"
         )
 
         # Get the transactions from Cyclos
@@ -227,7 +292,7 @@ class AlternativeCurrency(models.Model):
                     msg,
                 )
             yield {
-                "sender": "cyclos:{}".format(tx["from"]["user"]["id"]),
+                "wallet_uri": f"{self.uri}/wallet/{tx['from']['user']['id']}",
                 "amount": float(tx["amount"]),
                 "transaction_id": tx["id"],
                 "backend_ident": backend_ident,

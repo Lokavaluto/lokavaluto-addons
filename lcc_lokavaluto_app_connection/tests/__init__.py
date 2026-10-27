@@ -15,3 +15,5 @@ from . import test_tools
 from . import test_payment_request_services
 from . import test_payment_request_recurrent_contract
 from . import test_payment_request_recurrent_contract_services
+from . import test_res_alt_currency_reconversion_cron
+from . import test_res_alt_currency_debit_sync

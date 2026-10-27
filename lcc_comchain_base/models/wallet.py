@@ -118,6 +118,13 @@ class ResPartnerBackend(models.Model):
             actions.update(self._PERM_ACTIONS.get(perm, ()))
         return sorted(actions)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("comchain_id"):
+                vals["ident"] = vals.get("comchain_id")
+        return super(ResPartnerBackend, self).create(vals_list)
+
     def write(self, vals):
         if vals.get("comchain_id"):
             vals["ident"] = vals.get("comchain_id")

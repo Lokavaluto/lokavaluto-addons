@@ -19,6 +19,13 @@ class ResPartnerBackend(models.Model):
     cyclos_id = fields.Char(string="Cyclos id", tracking=True)
     cyclos_status = fields.Char(string="Cyclos Status", tracking=True)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("cyclos_id"):
+                vals["ident"] = vals.get("cyclos_id")
+        return super(ResPartnerBackend, self).create(vals_list)
+
     def write(self, vals):
         if vals.get("cyclos_id"):
             vals["ident"] = vals.get("cyclos_id")
@@ -171,7 +178,6 @@ class ResPartnerBackend(models.Model):
 
     def force_cyclos_password(self, password) -> None:
         for record in self:
-            # TODO: need to stock password type id from cyclos API and replace -4307382460900696903
             data = {
                 "newPassword": password,
                 "checkConfirmation": True,
@@ -183,7 +189,7 @@ class ResPartnerBackend(models.Model):
                     "POST",
                     "/{}/passwords/{}/change".format(
                         record.cyclos_id,
-                        "-4307382460900696903",
+                        record.alt_currency_id.cyclos_password_type,
                     ),
                     data=data,
                 )
@@ -244,7 +250,11 @@ class ResPartnerBackend(models.Model):
             "amount": amount,
             "description": f"Credited by {self.alt_currency_id.name}",
             "subject": self.cyclos_id,
-            "type": "debit.toPro" if self.partner_id.is_company else "debit.toUser",
+            "type": (
+                self.alt_currency_id.cyclos_credit_payment_type_pro
+                if self.partner_id.is_company
+                else self.alt_currency_id.cyclos_credit_payment_type_user
+            ),
         }
         _logger.debug(f"data: {data}")
         response = self.alt_currency_id.cyclos_rest_call(
@@ -272,7 +282,9 @@ class ResPartnerBackend(models.Model):
         if self.type != "cyclos":
             return res
         try:
-            res = self._cyclos_rest_call("GET", f"/{self.cyclos_id}/accounts")
+            res = self.alt_currency_id.cyclos_rest_call(
+                "GET", f"/{self.cyclos_id}/accounts"
+            )
             _logger.debug(f"res: {res}")
         except Exception as e:
             _logger.exception(tools.format_last_exception())

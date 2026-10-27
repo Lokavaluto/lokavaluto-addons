@@ -129,6 +129,16 @@ msgid "Login for cyclos server"
 msgstr "Login pour le serveur Cyclos"
 
 #. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_server_principal_type
+msgid "Login type for cyclos server"
+msgstr "Type de login pour le serveur Cyclos"
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_server_principal_type
+msgid "Value of the ``Principal-Type`` HTTP header sent with the login on every request to Cyclos: internal name of the user identification method the login belongs to (for instance ``username`` or ``email``, or ``*`` to try all methods). Leave empty to use the default identification method of the Cyclos ``webServices`` channel."
+msgstr "Valeur de l'en-tête HTTP ``Principal-Type`` envoyé avec le login à chaque requête vers Cyclos : nom interne de la méthode d'identification à laquelle appartient le login (par exemple ``username`` ou ``email``, ou ``*`` pour essayer toutes les méthodes). Laisser vide pour utiliser la méthode d'identification par défaut du canal Cyclos ``webServices``."
+
+#. module: lcc_cyclos_base
 #: model:product.template,name:lcc_cyclos_base.product_product_cyclos_product_template
 msgid "Numeric LCC (Cyclos)"
 msgstr "MLC Numérique (Cyclos)"
@@ -178,3 +188,63 @@ msgstr "Activer le portefeuille"
 #: model:ir.model,name:lcc_cyclos_base.model_res_partner_backend
 msgid "res.partner.backend"
 msgstr ""
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_credit_payment_type_user
+msgid "Cyclos payment type to credit a user wallet"
+msgstr "Type de paiement Cyclos pour créditer un portefeuille de particulier"
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_credit_payment_type_user
+msgid "Internal name of the Cyclos payment type (``<system account type>.<transfer type>``) used to credit the wallet of a person."
+msgstr "Nom interne du type de paiement Cyclos (``<type de compte système>.<type de transfert>``) utilisé pour créditer le portefeuille d'une personne."
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_credit_payment_type_pro
+msgid "Cyclos payment type to credit a company wallet"
+msgstr "Type de paiement Cyclos pour créditer un portefeuille de professionnel"
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_credit_payment_type_pro
+msgid "Internal name of the Cyclos payment type (``<system account type>.<transfer type>``) used to credit the wallet of a company."
+msgstr "Nom interne du type de paiement Cyclos (``<type de compte système>.<type de transfert>``) utilisé pour créditer le portefeuille d'une société."
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_reconversion_account_type
+msgid "Cyclos reconversion account type"
+msgstr "Type de compte Cyclos de reconversion"
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_reconversion_account_type
+msgid "Internal name of the Cyclos system account type receiving the payments that wallets send for reconversion."
+msgstr "Nom interne du type de compte système Cyclos qui reçoit les paiements envoyés par les portefeuilles pour reconversion."
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_password_type
+msgid "Cyclos password type of wallets"
+msgstr "Type de mot de passe Cyclos des portefeuilles"
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_password_type
+msgid "Internal name or id of the Cyclos password type that Odoo sets when it forces the password of a wallet user."
+msgstr "Nom interne ou identifiant du type de mot de passe Cyclos qu'Odoo définit lorsqu'il force le mot de passe d'un utilisateur de portefeuille."
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_user_group_person
+msgid "Cyclos group of person wallets"
+msgstr "Groupe Cyclos des portefeuilles de particuliers"
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_user_group_person
+msgid "Internal name of the Cyclos group in which Odoo creates the user of a new wallet for a person."
+msgstr "Nom interne du groupe Cyclos dans lequel Odoo crée l'utilisateur d'un nouveau portefeuille de particulier."
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,field_description:lcc_cyclos_base.field_res_alt_currency__cyclos_user_group_company
+msgid "Cyclos group of company wallets"
+msgstr "Groupe Cyclos des portefeuilles de professionnels"
+
+#. module: lcc_cyclos_base
+#: model:ir.model.fields,help:lcc_cyclos_base.field_res_alt_currency__cyclos_user_group_company
+msgid "Internal name of the Cyclos group in which Odoo creates the user of a new wallet for a company."
+msgstr "Nom interne du groupe Cyclos dans lequel Odoo crée l'utilisateur d'un nouveau portefeuille de professionnel."
