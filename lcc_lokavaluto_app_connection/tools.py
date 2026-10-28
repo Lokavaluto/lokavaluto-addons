@@ -2,6 +2,7 @@ import logging
 import traceback
 from functools import wraps
 from odoo import api, registry
+from odoo.exceptions import MissingError
 from odoo.sql_db import BaseCursor
 
 _logger = logging.getLogger(__name__)
@@ -108,6 +109,12 @@ def transform_backend_keys_in_currency_uris(backend_keys):
     return currency_uris
 
 
+## Engines whose Monujo wallet key names its currency:
+## ``<engine>:<ident>@<currency ident>`` (lokapi cyclos ``internalId``).
+## TO BE REMOVED once Monujo uses backend URIs
+WALLET_KEY_CURRENCY_ENGINES = {"cyclos"}
+
+
 def transform_wallet_backend_keys_in_wallet_uris(wallet_backend_keys, currency_ident):
     """
     Transition function to transform wallet backend keys format in wallet URI format.
@@ -120,8 +127,17 @@ def transform_wallet_backend_keys_in_wallet_uris(wallet_backend_keys, currency_i
             # backend matches wished URI structure
             wallet_uris.append(backend)
         elif separator_count == 0:
-            # backend is OLD format
+            # backend is OLD format: ``<engine>:<ident>``, or
+            # ``<engine>:<ident>@<currency ident>`` for backends whose key
+            # names its currency (cyclos: ``cyclos:<owner id>@<host>``).
             engine, ident = backend.split(":", 1)
+            if "@" in ident:
+                ident, key_currency_ident = ident.split("@", 1)
+                if key_currency_ident != currency_ident:
+                    raise MissingError(
+                        f"Wallet backend id {backend} belongs to currency "
+                        f"{key_currency_ident}, not {currency_ident}"
+                    )
             wallet_uris.append(f"{engine}://{currency_ident}/wallet/{ident}")
         else:
             raise MissingError(f"Invalid backend id {backend}")
@@ -138,10 +154,13 @@ def transform_wallet_uris_in_wallet_backend_keys(wallet_uris):
         separator_count = uri.count("/wallet/")
         if separator_count == 1:
             # URI format: comchain://Lokacoin/wallet/abc123
-            # Extract engine and wallet address
-            engine = uri.split("://")[0]
-            wallet_address = uri.split("/wallet/")[1]
-            backend_keys.append(f"{engine}:{wallet_address}")
+            # Extract engine, currency ident and wallet address
+            engine, rest = uri.split("://", 1)
+            currency_ident, wallet_address = rest.split("/wallet/", 1)
+            if engine in WALLET_KEY_CURRENCY_ENGINES:
+                backend_keys.append(f"{engine}:{wallet_address}@{currency_ident}")
+            else:
+                backend_keys.append(f"{engine}:{wallet_address}")
         elif separator_count == 0:
             # Already in old format
             backend_keys.append(uri)
